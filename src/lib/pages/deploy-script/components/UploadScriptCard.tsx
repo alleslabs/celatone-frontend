@@ -1,16 +1,17 @@
-import { Flex, Text } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import type { ExposedFunction, Option } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { ComponentLoader } from "lib/components/ComponentLoader";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
 import { useDecodeScript } from "lib/services/move/module";
-import type { ExposedFunction, Option } from "lib/types";
+import { useCallback, useState } from "react";
+
 import type { FileState } from "..";
 
 const DEFAULT_TEMP_FILE = {
-  file: undefined,
   base64: "",
+  file: undefined,
 };
 
 interface UploadScriptCardProps {
@@ -24,13 +25,13 @@ interface UploadScriptCardProps {
 }
 
 export const UploadScriptCard = ({
-  fileState: { file, decodeRes },
+  fileState: { decodeRes, file },
   removeFile,
   setFile,
 }: UploadScriptCardProps) => {
   const [tempFile, setTempFile] = useState<{
-    file: Option<File>;
     base64: string;
+    file: Option<File>;
   }>(DEFAULT_TEMP_FILE);
   const [decodeError, setDecodeError] = useState("");
 
@@ -38,19 +39,19 @@ export const UploadScriptCard = ({
     base64EncodedFile: tempFile.base64,
     options: {
       enabled: Boolean(tempFile.base64),
-      retry: 0,
-      refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        setFile(tempFile.file, tempFile.base64, data);
-        setTempFile(DEFAULT_TEMP_FILE);
-        setDecodeError("");
-      },
       onError: () => {
         setDecodeError(
           "Failed to decode .mv file. Please make sure the file is a script."
         );
         setTempFile(DEFAULT_TEMP_FILE);
       },
+      onSuccess: (data) => {
+        setFile(tempFile.file, tempFile.base64, data);
+        setTempFile(DEFAULT_TEMP_FILE);
+        setDecodeError("");
+      },
+      refetchOnWindowFocus: false,
+      retry: 0,
     },
   });
 
@@ -61,7 +62,7 @@ export const UploadScriptCard = ({
       const dataUrl = reader.result as string;
       // strip "data:application/octet-stream;base64,oRzrCw..."
       const base64String = dataUrl.replace(/^data:.*;base64,/, "");
-      setTempFile({ file: target, base64: base64String });
+      setTempFile({ base64: base64String, file: target });
     };
     reader.readAsDataURL(target);
   }, []);
@@ -72,31 +73,31 @@ export const UploadScriptCard = ({
       border="1px solid"
       borderColor="gray.700"
       borderRadius={8}
-      p={4}
-      gap={4}
       flexDirection="column"
+      gap={4}
+      p={4}
       w="full"
     >
       <Flex direction="column">
         <ComponentLoader isLoading={isFetching}>
           {file ? (
-            <UploadCard file={file} deleteFile={removeFile} theme="gray" />
+            <UploadCard deleteFile={removeFile} file={file} theme="gray" />
           ) : (
             <DropZone
-              setFiles={(files: File[]) => handleFileDrop(files[0])}
-              fileType={["mv"]}
+              _hover={undefined}
               bgColor="background.main"
               error={decodeError}
-              _hover={undefined}
+              fileType={["mv"]}
+              setFiles={(files: File[]) => handleFileDrop(files[0])}
             />
           )}
         </ComponentLoader>
       </Flex>
       <Flex justifyContent="space-between" w="full">
-        <Text variant="body2" color="text.dark" fontWeight={600}>
+        <Text color="text.dark" fontWeight={600} variant="body2">
           Function name
         </Text>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           {decodeRes?.name ?? "-"}
         </Text>
       </Flex>

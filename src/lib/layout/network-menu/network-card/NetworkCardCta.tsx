@@ -1,7 +1,4 @@
 import { Flex, useToast } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useCallback } from "react";
-
 import {
   useChainConfigs,
   useInternalNavigate,
@@ -9,15 +6,17 @@ import {
 } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useLocalChainConfigStore, useNetworkStore } from "lib/providers/store";
+import { observer } from "mobx-react-lite";
+import { useCallback } from "react";
 
 interface NetworkCardCtaProps {
   chainId: string;
-  isSelected: boolean;
   isDraggable?: boolean;
+  isSelected: boolean;
 }
 
 export const NetworkCardCta = observer(
-  ({ chainId, isSelected, isDraggable }: NetworkCardCtaProps) => {
+  ({ chainId, isDraggable, isSelected }: NetworkCardCtaProps) => {
     const navigate = useInternalNavigate();
     const { chainConfigs } = useChainConfigs();
     const { isLocalChainIdExist } = useLocalChainConfigStore();
@@ -25,11 +24,11 @@ export const NetworkCardCta = observer(
     const isEditable = isLocalChainIdExist(chainId);
     const { isNetworkPinned, pinNetwork, removeNetwork } = useNetworkStore();
     const toast = useToast({
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      status: "success",
     });
 
     const handleSave = useCallback(
@@ -59,23 +58,23 @@ export const NetworkCardCta = observer(
     };
 
     const pinIconStyles = {
-      cursor: "pointer",
-      className: "icon-container",
-      align: "center",
-      padding: 1,
       _hover: isMobile
         ? undefined
         : {
             background: isSelected ? "gray.800" : "gray.900",
             borderRadius: 4,
           },
+      align: "center",
+      className: "icon-container",
+      cursor: "pointer",
+      padding: 1,
     };
 
     return (
       <Flex className="icon-wrapper" gap={2} zIndex={1}>
         {isDraggable && (
-          <Flex align="center" className="icon-container" {...opacityStyle}>
-            <CustomIcon name="drag" color="gray.600" />
+          <Flex className="icon-container" align="center" {...opacityStyle}>
+            <CustomIcon color="gray.600" name="drag" />
           </Flex>
         )}
         {isNetworkPinned(chainId) ? (
@@ -105,7 +104,7 @@ export const NetworkCardCta = observer(
               });
             }}
           >
-            <CustomIcon name="settings" color="gray.600" boxSize={6} />
+            <CustomIcon boxSize={6} color="gray.600" name="settings" />
           </Flex>
         )}
       </Flex>

@@ -1,14 +1,17 @@
-import { Box, Grid, Stack, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useMobile } from "lib/app-provider";
 import type { Nullable } from "lib/types";
+
+import { Box, Grid, Stack, Text } from "@chakra-ui/react";
+import { useMobile } from "lib/app-provider";
+import { useEffect, useState } from "react";
+
+import type { FullEditorSidebarMobileProps } from "./FullEditorSidebarMobile";
+import type { FilePath, SourceTreeNode } from "./types";
+
 import { Editor } from "./Editor";
 import { EditorSidebar } from "./EditorSidebar";
 import { EditorTop } from "./EditorTop";
-import type { FullEditorSidebarMobileProps } from "./FullEditorSidebarMobile";
 import { FullEditorSidebarMobile } from "./FullEditorSidebarMobile";
 import { generateSourceTree } from "./helpers";
-import type { FilePath, SourceTreeNode } from "./types";
 
 interface FullEditorProps
   extends Pick<FullEditorSidebarMobileProps, "isOpen" | "onClose"> {
@@ -20,8 +23,8 @@ interface FullEditorProps
 export const FullEditor = ({
   filesPath,
   initialFilePath,
-  libraryFilesPath,
   isOpen,
+  libraryFilesPath,
   onClose,
 }: FullEditorProps) => {
   const isMobile = useMobile();
@@ -77,33 +80,33 @@ export const FullEditor = ({
     >
       {isMobile ? (
         <FullEditorSidebarMobile
-          isOpen={isOpen}
-          onClose={onClose}
           initialFilePath={initialFilePath}
+          isOpen={isOpen}
+          selectedFile={selectedFile}
           sourceTreeNode={generatedSourceTree}
           onClick={handleUpdateFilesList}
-          selectedFile={selectedFile}
+          onClose={onClose}
         />
       ) : (
-        <Stack gap={1} px={4} pt={4} bg="gray.900" height="472px">
+        <Stack bg="gray.900" gap={1} height="472px" pt={4} px={4}>
           <Text variant="body2">Files</Text>
-          <Box overflow="auto" flexGrow={1} pb={4}>
+          <Box flexGrow={1} overflow="auto" pb={4}>
             <EditorSidebar
               initialFilePath={initialFilePath}
+              selectedFile={selectedFile}
               sourceTreeNode={generatedSourceTree}
               onClick={handleUpdateFilesList}
-              selectedFile={selectedFile}
             />
           </Box>
         </Stack>
       )}
       <Box>
         <EditorTop
+          filesList={filesList}
+          initialFilePath={initialFilePath}
           selectedFile={selectedFile}
           onClick={(index) => setSelectedFile(filesList[index])}
           onRemove={handleOnRemove}
-          filesList={filesList}
-          initialFilePath={initialFilePath}
         />
         <Editor
           language={selectedFile?.language}

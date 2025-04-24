@@ -1,3 +1,6 @@
+import type Big from "big.js";
+import type { BechAddr, TokenWithValue, USD } from "lib/types";
+
 import {
   Flex,
   Grid,
@@ -11,13 +14,10 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
-import type Big from "big.js";
-
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { TokenComposition, TokenImageRender } from "lib/components/token";
 import { big } from "lib/types";
-import type { BechAddr, TokenWithValue, USD } from "lib/types";
 import {
   compareTokenWithValues,
   formatPrice,
@@ -28,57 +28,57 @@ import {
 import { TotalCardTop } from "./TotalCardTop";
 
 interface TotalCardModel {
-  title: string;
-  message: string;
   address: BechAddr;
-  tokens: Record<string, TokenWithValue>;
   isOpen: boolean;
+  message: string;
   onClose: () => void;
+  title: string;
+  tokens: Record<string, TokenWithValue>;
 }
 
 const DelegationTokenCard = ({ token }: { token: TokenWithValue }) => (
   <Flex
+    alignItems={{ base: "flex-start", md: "center" }}
     bg="gray.900"
     borderRadius="8px"
-    p={{ base: 3, md: "12px 16px" }}
-    alignItems={{ base: "flex-start", md: "center" }}
-    justifyContent="space-between"
-    gap={{ base: 1, md: 0 }}
     direction={{ base: "column", md: "row" }}
+    gap={{ base: 1, md: 0 }}
+    justifyContent="space-between"
+    p={{ base: 3, md: "12px 16px" }}
   >
     <Flex align="center" gap={2}>
-      <TokenImageRender boxSize={6} logo={token.logo} alt={token.denom} />
-      <Text variant="body1" fontWeight={700}>
+      <TokenImageRender alt={token.denom} boxSize={6} logo={token.logo} />
+      <Text fontWeight={700} variant="body1">
         {getTokenLabel(token.denom, token.symbol)}
       </Text>
     </Flex>
     <TokenComposition
-      token={token}
       alignItems={{ base: "flex-start", md: "flex-end" }}
+      token={token}
     />
   </Flex>
 );
 
 export const TotalCardModal = ({
-  title,
-  message,
-  tokens,
   address,
   isOpen,
+  message,
   onClose,
+  title,
+  tokens,
 }: TotalCardModel) => (
   <Modal
-    isOpen={isOpen}
-    onClose={onClose}
     isCentered
+    isOpen={isOpen}
     returnFocusOnClose={false}
+    onClose={onClose}
   >
     <ModalOverlay />
-    <ModalContent w={{ base: "full", md: "800px" }} bg="gray.800" maxW="100vw">
+    <ModalContent bg="gray.800" maxW="100vw" w={{ base: "full", md: "800px" }}>
       <ModalHeader>
-        <Flex w="full" direction="row" alignItems="center" gap={3}>
-          <CustomIcon name="assets-solid" boxSize={5} m={1} color="gray.600" />
-          <Heading variant="h5" as="h5">
+        <Flex alignItems="center" direction="row" gap={3} w="full">
+          <CustomIcon boxSize={5} color="gray.600" m={1} name="assets-solid" />
+          <Heading as="h5" variant="h5">
             {title}
           </Heading>
         </Flex>
@@ -90,11 +90,11 @@ export const TotalCardModal = ({
             <GridItem>
               <Flex direction="column" gap={1}>
                 <TotalCardTop
-                  title={title}
-                  message={message}
                   fontWeight={600}
+                  message={message}
+                  title={title}
                 />
-                <Heading variant="h6" as="h6">
+                <Heading as="h6" variant="h6">
                   {formatPrice(
                     totalValueTokenWithValue(tokens, big(0) as USD<Big>)
                   )}
@@ -103,14 +103,14 @@ export const TotalCardModal = ({
             </GridItem>
             <GridItem>
               <Flex direction="column" gap="2px">
-                <Text variant="body2" fontWeight={600} textColor="text.dark">
+                <Text fontWeight={600} textColor="text.dark" variant="body2">
                   Account address
                 </Text>
-                <CopyLink value={address} type="user_address" isTruncate />
+                <CopyLink isTruncate type="user_address" value={address} />
               </Flex>
             </GridItem>
           </Grid>
-          <Flex gap={2} direction="column">
+          <Flex direction="column" gap={2}>
             {Object.values(tokens)
               .sort(compareTokenWithValues)
               .map((token) => (

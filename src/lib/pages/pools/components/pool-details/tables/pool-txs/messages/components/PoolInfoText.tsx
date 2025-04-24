@@ -1,14 +1,15 @@
-import { Flex, Text } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
+import { Flex, Text } from "@chakra-ui/react";
+
 interface PoolInfoTextProps {
-  title: string;
   children: ReactNode;
+  title: string;
 }
 
-export const PoolInfoText = ({ title, children }: PoolInfoTextProps) => (
+export const PoolInfoText = ({ children, title }: PoolInfoTextProps) => (
   <Flex direction="column" gap={1} minW={0}>
-    <Text variant="body2" textColor="gray.500" fontWeight={500}>
+    <Text fontWeight={500} textColor="gray.500" variant="body2">
       {title}
     </Text>
     {typeof children === "string" ? (

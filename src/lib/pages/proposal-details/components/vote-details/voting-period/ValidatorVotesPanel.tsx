@@ -1,10 +1,10 @@
-import { Button, Flex } from "@chakra-ui/react";
+import type { ProposalAnswerCountsResponse } from "lib/services/types";
+import type { Option } from "lib/types";
 
+import { Button, Flex } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "lib/components/table";
-import type { ProposalAnswerCountsResponse } from "lib/services/types";
-import type { Option } from "lib/types";
 
 import { ValidatorVotesTable } from "./validator-votes-table";
 
@@ -17,45 +17,45 @@ interface ValidatorVotesPanelProps {
 }
 
 export const ValidatorVotesPanel = ({
-  isOpen,
-  onBack,
   answers,
   id,
+  isOpen,
   isProposalResolved,
+  onBack,
 }: ValidatorVotesPanelProps) => {
   const isMobile = useMobile();
 
   return (
     <Flex
-      w="full"
-      position={isOpen ? "relative" : "absolute"}
-      opacity={isOpen ? 1 : 0}
-      left={isOpen ? "0" : "100%"}
-      top={0}
-      bottom={0}
-      overflowY="auto"
-      transition="all 0.25s ease-in-out"
-      direction="column"
       background={isMobile ? "transparent" : "gray.900"}
       border="1px solid"
       borderColor={isMobile ? "transparent" : "gray.700"}
       borderRadius="8px"
-      pointerEvents={isOpen ? "auto" : "none"}
-      p={isMobile ? 0 : 6}
+      bottom={0}
+      direction="column"
       gap={4}
+      left={isOpen ? "0" : "100%"}
+      opacity={isOpen ? 1 : 0}
+      overflowY="auto"
+      p={isMobile ? 0 : 6}
+      pointerEvents={isOpen ? "auto" : "none"}
+      position={isOpen ? "relative" : "absolute"}
+      top={0}
+      transition="all 0.25s ease-in-out"
+      w="full"
     >
       <Flex gap={2}>
-        <Button variant="ghost-gray" size="sm" p={0} onClick={onBack}>
-          <CustomIcon name="chevron-left" boxSize={4} />
+        <Button p={0} size="sm" variant="ghost-gray" onClick={onBack}>
+          <CustomIcon boxSize={4} name="chevron-left" />
         </Button>
-        <TableTitle title="Validator votes" count={answers?.total} />
+        <TableTitle count={answers?.total} title="Validator votes" />
       </Flex>
       <ValidatorVotesTable
         id={id}
         answers={answers}
+        enabled={isOpen}
         fullVersion
         isProposalResolved={isProposalResolved}
-        enabled={isOpen}
       />
     </Flex>
   );

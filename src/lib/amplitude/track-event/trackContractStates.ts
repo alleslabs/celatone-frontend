@@ -1,13 +1,14 @@
-import { amp } from "../Amplitude";
 import type { AmpEvent } from "../types";
+
+import { amp } from "../Amplitude";
 
 export const trackContractStatesLoad = (
   event:
-    | AmpEvent.USE_CONTRACT_STATES_LOAD_MORE
-    | AmpEvent.USE_CONTRACT_STATES_DOWNLOAD,
+    | AmpEvent.USE_CONTRACT_STATES_DOWNLOAD
+    | AmpEvent.USE_CONTRACT_STATES_LOAD_MORE,
   properties: {
     currentStates: number;
-    namespacesCount: number;
     namespaces: string[];
+    namespacesCount: number;
   }
 ) => amp.track(event, properties);

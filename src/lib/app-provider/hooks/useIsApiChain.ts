@@ -1,7 +1,8 @@
 import { CHAIN, SUPPORTED_NETWORK_TYPES } from "env";
 import { useApiChainConfigs } from "lib/services/chain-config";
-import { useCelatoneApp } from "../contexts";
+
 import { useInternalNavigate } from ".";
+import { useCelatoneApp } from "../contexts";
 
 export const useIsApiChain = ({
   shouldRedirect,

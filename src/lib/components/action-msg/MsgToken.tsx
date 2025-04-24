@@ -1,22 +1,23 @@
-import { Flex, Text } from "@chakra-ui/react";
-
 import type { TokenWithValue } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
 import { formatTokenWithValue, isSupportedToken } from "lib/utils";
+
 import { Copier } from "../copy";
 import { TooltipInfo } from "../Tooltip";
 
 interface MsgTokenProps {
-  token: TokenWithValue;
-  fontWeight?: number;
   ampCopierSection?: string;
+  fontWeight?: number;
+  token: TokenWithValue;
 }
 
 export const MsgToken = ({
-  token,
-  fontWeight = 600,
   ampCopierSection,
+  fontWeight = 600,
+  token,
 }: MsgTokenProps) => (
-  <Flex role="group" align="center" gap={1}>
+  <Flex align="center" gap={1} role="group">
     <Text fontWeight={fontWeight} variant="body2">
       {formatTokenWithValue(token)}
     </Text>
@@ -26,12 +27,12 @@ export const MsgToken = ({
       textAlign="center"
     />
     <Copier
-      type={isSupportedToken(token) ? "supported_asset" : "unsupported_asset"}
-      value={token.denom}
+      amptrackSection={ampCopierSection}
       copyLabel="Token ID copied!"
       display="none"
       ml={1}
-      amptrackSection={ampCopierSection}
+      type={isSupportedToken(token) ? "supported_asset" : "unsupported_asset"}
+      value={token.denom}
     />
   </Flex>
 );

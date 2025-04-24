@@ -1,27 +1,27 @@
-import { Button, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import type { ActionVariant, TxReceipt } from "lib/types";
 
+import { Button, Flex } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { getNavigationUrl } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { useOpenTxTab } from "lib/hooks";
-import type { ActionVariant, TxReceipt } from "lib/types";
 import { openNewTab } from "lib/utils";
+import { useRouter } from "next/router";
 
 // TODO: refactor props to pass param in txResultRendering instead of receipt
 interface ButtonSectionProps {
   actionVariant?: ActionVariant;
+  errorMsg?: string;
   onClose?: () => void;
   receipts: TxReceipt[];
-  errorMsg?: string;
 }
 
 export const ButtonSection = ({
   actionVariant,
+  errorMsg = "",
   onClose,
   receipts,
-  errorMsg = "",
 }: ButtonSectionProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
@@ -49,24 +49,24 @@ export const ButtonSection = ({
   };
 
   switch (actionVariant) {
-    case "sending":
-      return null;
-    case "upload-migrate":
+    case "failed":
       return (
-        <Button
-          variant="primary"
-          onClick={() => {
-            const codeId = receipts.find((r) => r.title === "Code ID")?.value;
-            navigate({
-              pathname: "/migrate",
-              query: { contract: router.query.contract, codeId },
-            });
-            onClose?.();
-          }}
-        >
-          Proceed to Migrate
-          <CustomIcon name="migrate" boxSize={3} />
-        </Button>
+        <Flex justify="space-between" w="full">
+          <CopyButton
+            amptrackSection="tx_error_log"
+            buttonText="Copy error log"
+            size="md"
+            value={errorMsg}
+          />
+          <Flex gap={2}>
+            <Button variant="outline-primary" onClick={onClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={openTxExplorer}>
+              See transaction
+            </Button>
+          </Flex>
+        </Flex>
       );
     case "migrate":
     case "update-admin":
@@ -82,16 +82,9 @@ export const ButtonSection = ({
             }
           >
             View contract details
-            <CustomIcon name="chevron-right" boxSize={3} />
+            <CustomIcon boxSize={3} name="chevron-right" />
           </Button>
         </>
-      );
-    case "rejected":
-    case "resend":
-      return (
-        <Button variant="outline-primary" onClick={onClose} w="120px">
-          Close
-        </Button>
       );
     case "proposal":
       return (
@@ -102,7 +95,7 @@ export const ButtonSection = ({
             onClick={openProposalExplorer}
           >
             View proposal
-            <CustomIcon name="launch" boxSize={3} ml={2} />
+            <CustomIcon boxSize={3} ml={2} name="launch" />
           </Button>
           <Button
             variant="primary"
@@ -114,28 +107,35 @@ export const ButtonSection = ({
             }}
           >
             See in proposal list
-            <CustomIcon name="chevron-right" boxSize={3} ml={2} />
+            <CustomIcon boxSize={3} ml={2} name="chevron-right" />
           </Button>
         </>
       );
-    case "failed":
+    case "rejected":
+    case "resend":
       return (
-        <Flex justify="space-between" w="full">
-          <CopyButton
-            buttonText="Copy error log"
-            value={errorMsg}
-            amptrackSection="tx_error_log"
-            size="md"
-          />
-          <Flex gap={2}>
-            <Button variant="outline-primary" onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={openTxExplorer}>
-              See transaction
-            </Button>
-          </Flex>
-        </Flex>
+        <Button variant="outline-primary" w="120px" onClick={onClose}>
+          Close
+        </Button>
+      );
+    case "sending":
+      return null;
+    case "upload-migrate":
+      return (
+        <Button
+          variant="primary"
+          onClick={() => {
+            const codeId = receipts.find((r) => r.title === "Code ID")?.value;
+            navigate({
+              pathname: "/migrate",
+              query: { codeId, contract: router.query.contract },
+            });
+            onClose?.();
+          }}
+        >
+          Proceed to Migrate
+          <CustomIcon boxSize={3} name="migrate" />
+        </Button>
       );
     default:
       return (

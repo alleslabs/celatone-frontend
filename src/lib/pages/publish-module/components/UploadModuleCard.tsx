@@ -1,6 +1,7 @@
-import { Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import type { DecodeModuleQueryResponse } from "lib/services/types";
+import type { Option, UpgradePolicy } from "lib/types";
 
+import { Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
 import { ComponentLoader } from "lib/components/ComponentLoader";
@@ -9,49 +10,50 @@ import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { UploadCard } from "lib/components/upload";
 import { useDecodeModule } from "lib/services/move/module";
-import type { DecodeModuleQueryResponse } from "lib/services/types";
-import type { Option, UpgradePolicy } from "lib/types";
+import { useCallback, useState } from "react";
+
 import type { Module, PublishStatus } from "../formConstants";
+
 import { statusResolver } from "../utils";
 
 const DEFAULT_TEMP_FILE = {
-  file: undefined,
   base64: "",
+  file: undefined,
 };
 
 interface UploadModuleCardProps {
-  index: number;
   fileState: Module;
+  index: number;
   modules: Module[];
+  moveEntry: (from: number, to: number) => void;
   policy: UpgradePolicy;
+  removeEntry: () => void;
+  removeFile: () => void;
   setFile: (
     file: Option<File>,
     base64File: string,
     decodeRes: DecodeModuleQueryResponse,
     publishStatus: PublishStatus
   ) => void;
-  removeFile: () => void;
-  removeEntry: () => void;
-  moveEntry: (from: number, to: number) => void;
 }
 
 export const UploadModuleCard = ({
-  index,
   fileState: {
-    file,
     decodeRes,
+    file,
     publishStatus: { status, text },
   },
+  index,
   modules,
-  policy,
-  setFile,
-  removeFile,
-  removeEntry,
   moveEntry,
+  policy,
+  removeEntry,
+  removeFile,
+  setFile,
 }: UploadModuleCardProps) => {
   const [tempFile, setTempFile] = useState<{
-    file: Option<File>;
     base64: string;
+    file: Option<File>;
   }>(DEFAULT_TEMP_FILE);
   const [decodeError, setDecodeError] = useState("");
   const { address } = useCurrentChain();
@@ -60,30 +62,30 @@ export const UploadModuleCard = ({
     base64EncodedFile: tempFile.base64,
     options: {
       enabled: Boolean(tempFile.base64),
-      retry: 0,
-      refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        setFile(
-          tempFile.file,
-          tempFile.base64,
-          data,
-          statusResolver({
-            data,
-            modules,
-            index,
-            policy,
-            address,
-          })
-        );
-        setDecodeError("");
-        setTempFile(DEFAULT_TEMP_FILE);
-      },
       onError: () => {
         setDecodeError(
           "Failed to decode .mv file. Please make sure the file is a module."
         );
         setTempFile(DEFAULT_TEMP_FILE);
       },
+      onSuccess: (data) => {
+        setFile(
+          tempFile.file,
+          tempFile.base64,
+          data,
+          statusResolver({
+            address,
+            data,
+            index,
+            modules,
+            policy,
+          })
+        );
+        setDecodeError("");
+        setTempFile(DEFAULT_TEMP_FILE);
+      },
+      refetchOnWindowFocus: false,
+      retry: 0,
     },
   });
 
@@ -94,7 +96,7 @@ export const UploadModuleCard = ({
       const dataUrl = reader.result as string;
       // strip "data:application/octet-stream;base64,oRzrCw..."
       const base64String = dataUrl.replace(/^data:.*;base64,/, "");
-      setTempFile({ file: target, base64: base64String });
+      setTempFile({ base64: base64String, file: target });
     };
     reader.readAsDataURL(target);
   }, []);
@@ -105,12 +107,12 @@ export const UploadModuleCard = ({
       border="1px solid"
       borderColor="gray.700"
       borderRadius={8}
-      p={4}
-      gap={4}
       flexDirection="column"
+      gap={4}
+      p={4}
     >
-      <Flex justifyContent="space-between" w="full" alignItems="center">
-        <Heading as="h6" variant="h6" color="text.dark" fontWeight={600}>
+      <Flex alignItems="center" justifyContent="space-between" w="full">
+        <Heading as="h6" color="text.dark" fontWeight={600} variant="h6">
           Module {index + 1}
         </Heading>
         <Flex
@@ -120,53 +122,53 @@ export const UploadModuleCard = ({
         >
           <Tooltip label="Move up" variant="primary-light">
             <IconButton
+              aria-label="move-up"
+              disabled={index === 0}
+              size="sm"
+              variant="ghost"
               onClick={() => {
                 track(AmpEvent.USE_UPLOAD_CARD_MOVE_UP, {
+                  currentBoxAmount: modules.length,
                   currentPosition: index + 1,
                   newPosition: index,
-                  currentBoxAmount: modules.length,
                 });
                 moveEntry(index, index - 1);
               }}
-              aria-label="move-up"
-              variant="ghost"
-              size="sm"
-              disabled={index === 0}
             >
-              <CustomIcon name="arrow-up" color="gray.600" />
+              <CustomIcon color="gray.600" name="arrow-up" />
             </IconButton>
           </Tooltip>
           <Tooltip label="Move down" variant="primary-light">
             <IconButton
+              aria-label="move-down"
+              disabled={index === modules.length - 1}
+              size="sm"
+              variant="ghost"
               onClick={() => {
                 track(AmpEvent.USE_UPLOAD_CARD_MOVE_DOWN, {
+                  currentBoxAmount: modules.length,
                   currentPosition: index + 1,
                   newPosition: index + 2,
-                  currentBoxAmount: modules.length,
                 });
                 moveEntry(index, index + 1);
               }}
-              aria-label="move-down"
-              variant="ghost"
-              size="sm"
-              disabled={index === modules.length - 1}
             >
-              <CustomIcon name="arrow-down" color="gray.600" />
+              <CustomIcon color="gray.600" name="arrow-down" />
             </IconButton>
           </Tooltip>
           <Tooltip label="Remove item" variant="primary-light">
             <IconButton
+              aria-label="remove"
+              size="sm"
+              variant="ghost"
               onClick={() => {
                 track(AmpEvent.USE_REMOVE_MODULE_UPLOAD_BOX, {
                   currentBoxAmount: modules.length - 1,
                 });
                 removeEntry();
               }}
-              aria-label="remove"
-              variant="ghost"
-              size="sm"
             >
-              <CustomIcon name="close" color="gray.600" />
+              <CustomIcon color="gray.600" name="close" />
             </IconButton>
           </Tooltip>
         </Flex>
@@ -175,28 +177,28 @@ export const UploadModuleCard = ({
         <ComponentLoader isLoading={isFetching}>
           {file ? (
             <UploadCard
-              file={file}
               deleteFile={removeFile}
-              theme="gray"
+              file={file}
               status={status}
               statusText={text}
+              theme="gray"
             />
           ) : (
             <DropZone
-              setFiles={(files: File[]) => handleFileDrop(files[0])}
-              fileType={["mv"]}
+              _hover={undefined}
               bgColor="background.main"
               error={decodeError}
-              _hover={undefined}
+              fileType={["mv"]}
+              setFiles={(files: File[]) => handleFileDrop(files[0])}
             />
           )}
         </ComponentLoader>
       </Flex>
       <Flex justifyContent="space-between" w="full">
-        <Text variant="body2" color="text.dark" fontWeight={600}>
+        <Text color="text.dark" fontWeight={600} variant="body2">
           Module path
         </Text>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           {decodeRes?.modulePath ?? "-"}
         </Text>
       </Flex>

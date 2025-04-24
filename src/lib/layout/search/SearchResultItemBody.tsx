@@ -1,29 +1,29 @@
-import { Flex, Text } from "@chakra-ui/react";
-
-import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import type { SearchResult } from "lib/services/searchService";
 
+import { Flex, Text } from "@chakra-ui/react";
+import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
+
 interface SearchResultItemBodyProps {
-  result: SearchResult;
   isAccountAddress: boolean;
+  result: SearchResult;
 }
 
 export const SearchResultItemBody = ({
-  result,
   isAccountAddress,
+  result,
 }: SearchResultItemBodyProps) => {
   if (isAccountAddress && !!result.metadata?.initiaUsername)
     return (
       <Flex direction="column">
         <Text variant="body2">{result.metadata.initiaUsername}</Text>
         <Flex
-          gap={{ base: 0, md: 1 }}
           direction={{ base: "column", md: "row" }}
+          gap={{ base: 0, md: 1 }}
         >
-          <Text variant="body2" color="text.dark" wordBreak="break-all">
+          <Text color="text.dark" variant="body2" wordBreak="break-all">
             ({result.value})
           </Text>
-          <Text variant="body2" color="text.disabled">
+          <Text color="text.disabled" variant="body2">
             – {result.type}
           </Text>
         </Flex>
@@ -34,7 +34,7 @@ export const SearchResultItemBody = ({
     return (
       <Flex direction="column">
         <Flex gap={1}>
-          <Flex gap={1} align="center">
+          <Flex align="center" gap={1}>
             <PrimaryNameMark />
             <Text variant="body2">
               {result.metadata.icns.icnsNames.primaryName}
@@ -44,26 +44,26 @@ export const SearchResultItemBody = ({
             result.metadata.icns.searchedName !==
               result.metadata.icns.icnsNames.primaryName && (
               <Text
-                variant="body2"
                 _before={{
+                  color: "text.dark",
                   content: '"/"',
                   fontSize: "12px",
-                  color: "text.dark",
                   mr: 1,
                 }}
+                variant="body2"
               >
                 {result.metadata.icns.searchedName}
               </Text>
             )}
         </Flex>
         <Flex
-          gap={{ base: 0, md: 1 }}
           direction={{ base: "column", md: "row" }}
+          gap={{ base: 0, md: 1 }}
         >
-          <Text variant="body2" color="text.dark" wordBreak="break-all">
+          <Text color="text.dark" variant="body2" wordBreak="break-all">
             ({result.value})
           </Text>
-          <Text variant="body2" color="text.disabled">
+          <Text color="text.disabled" variant="body2">
             – {result.type}
           </Text>
         </Flex>
@@ -74,19 +74,19 @@ export const SearchResultItemBody = ({
     return (
       <Flex direction="column">
         <Text
-          variant="body2"
           color={result.metadata?.nft?.name ? "text.main" : "text.dark"}
+          variant="body2"
         >
           {result.metadata?.nft?.name || "Untitled"}
         </Text>
         <Flex
-          gap={{ base: 0, md: 1 }}
           direction={{ base: "column", md: "row" }}
+          gap={{ base: 0, md: 1 }}
         >
-          <Text variant="body2" color="text.dark" wordBreak="break-all">
+          <Text color="text.dark" variant="body2" wordBreak="break-all">
             ({result.value})
           </Text>
-          <Text variant="body2" color="text.disabled">
+          <Text color="text.disabled" variant="body2">
             – {result.type}
           </Text>
         </Flex>
@@ -101,11 +101,11 @@ export const SearchResultItemBody = ({
     result.type === "Module path"
   )
     return (
-      <Flex gap={{ base: 0, md: 1 }} direction="column">
+      <Flex direction="column" gap={{ base: 0, md: 1 }}>
         <Text variant="body2" wordBreak="break-all">
           {result.value}
         </Text>
-        <Text variant="body2" color="text.disabled">
+        <Text color="text.disabled" variant="body2">
           – {result.type}
         </Text>
       </Flex>
@@ -116,7 +116,7 @@ export const SearchResultItemBody = ({
       <Text variant="body2" wordBreak="break-all">
         {result.value}
       </Text>
-      <Text variant="body2" color="text.disabled">
+      <Text color="text.disabled" variant="body2">
         – {result.type}
       </Text>
     </Flex>

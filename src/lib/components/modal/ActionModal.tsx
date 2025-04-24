@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import {
   Box,
   Button,
@@ -13,52 +15,52 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import type { ReactNode } from "react";
+import { trackUseOtherModal } from "lib/amplitude";
 import { useCallback } from "react";
 
-import { trackUseOtherModal } from "lib/amplitude";
 import type { IconKeys } from "../icon";
+
 import { CustomIcon } from "../icon";
 
 export interface ActionModalProps {
+  buttonRemark?: string;
+  children?: ReactNode;
+  closeOnOverlayClick?: boolean;
+  disabledMain?: boolean;
+  headerContent?: ReactNode;
   icon?: IconKeys;
   iconColor?: string;
-  title: string;
-  subtitle?: string;
-  headerContent?: ReactNode;
-  trigger?: ReactNode;
-  children?: ReactNode;
-  mainBtnTitle?: string;
   mainAction: () => void;
+  mainBtnTitle?: string;
   mainVariant?: string;
-  disabledMain?: boolean;
-  otherBtnTitle?: string;
-  otherAction?: () => void;
-  otherVariant?: string;
   noCloseButton?: boolean;
-  closeOnOverlayClick?: boolean;
-  buttonRemark?: string;
+  otherAction?: () => void;
+  otherBtnTitle?: string;
+  otherVariant?: string;
+  subtitle?: string;
+  title: string;
+  trigger?: ReactNode;
 }
 export function ActionModal({
+  buttonRemark,
+  children,
+  closeOnOverlayClick = true,
+  disabledMain = false,
+  headerContent,
   icon = "edit",
   iconColor = "gray.600",
-  title,
-  subtitle,
-  trigger,
-  headerContent,
-  children,
-  mainBtnTitle = "Proceed",
   mainAction,
+  mainBtnTitle = "Proceed",
   mainVariant = "primary",
-  disabledMain = false,
-  otherBtnTitle = "Cancel",
-  otherAction,
-  otherVariant = "outline-primary",
   noCloseButton = false,
-  closeOnOverlayClick = true,
-  buttonRemark,
+  otherAction,
+  otherBtnTitle = "Cancel",
+  otherVariant = "outline-primary",
+  subtitle,
+  title,
+  trigger,
 }: ActionModalProps) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const handleOnMain = useCallback(() => {
     mainAction();
@@ -81,17 +83,17 @@ export function ActionModal({
         {trigger || <Button>Open {title} Modal</Button>}
       </Flex>
       <Modal
-        isOpen={isOpen}
-        onClose={handleOnOther}
         closeOnOverlayClick={closeOnOverlayClick}
         isCentered
+        isOpen={isOpen}
+        onClose={handleOnOther}
       >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
             <Box w="full">
               <Flex alignItems="center" gap={3}>
-                <CustomIcon name={icon} color={iconColor} boxSize={5} />
+                <CustomIcon boxSize={5} color={iconColor} name={icon} />
                 <Heading
                   as="h5"
                   variant={{ base: "h6", md: "h5" }}
@@ -101,7 +103,7 @@ export function ActionModal({
                 </Heading>
               </Flex>
               {subtitle && (
-                <Text variant="body3" color="text.dark" pt={2}>
+                <Text color="text.dark" pt={2} variant="body3">
                   {subtitle}
                 </Text>
               )}
@@ -113,30 +115,30 @@ export function ActionModal({
           <ModalFooter>
             <Flex
               alignItems="center"
-              w="full"
-              justifyContent="center"
               direction="column"
               gap={4}
+              justifyContent="center"
+              w="full"
             >
               <Flex gap={2}>
                 <Button
+                  isDisabled={disabledMain}
+                  variant={mainVariant}
                   w="200px"
                   onClick={handleOnMain}
-                  variant={mainVariant}
-                  isDisabled={disabledMain}
                 >
                   {mainBtnTitle}
                 </Button>
                 <Button
-                  w="200px"
                   variant={otherVariant}
+                  w="200px"
                   onClick={handleOnOther}
                 >
                   {otherBtnTitle}
                 </Button>
               </Flex>
               {buttonRemark && (
-                <Text variant="body3" color="text.dark">
+                <Text color="text.dark" variant="body3">
                   {buttonRemark}
                 </Text>
               )}

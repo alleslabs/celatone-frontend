@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FormControl } from "@chakra-ui/react";
 import type {
   EnumOptionsType,
   FormContextType,
@@ -7,24 +6,25 @@ import type {
   StrictRJSFSchema,
   WidgetProps,
 } from "@rjsf/utils";
+import type React from "react";
+
+import { FormControl } from "@chakra-ui/react";
 import {
   descriptionId,
   enumOptionsIndexForValue,
   enumOptionsValueForIndex,
   getTemplate,
 } from "@rjsf/utils";
-import type React from "react";
-
 import { SelectInput } from "lib/components/forms";
 
 /**
  * chakra-react-select option base.
  */
 interface OptionBase {
-  variant?: string;
   colorScheme?: string;
-  isFixed?: boolean;
   isDisabled?: boolean;
+  isFixed?: boolean;
+  variant?: string;
 }
 
 export interface SelectOptionBase<T = unknown> extends OptionBase {
@@ -46,23 +46,23 @@ const SelectWidget = <
   props: WidgetProps<T, S, F>
 ) => {
   const {
-    schema,
+    autofocus,
+    disabled,
     id,
+    multiple,
+    onBlur,
+    onChange,
+    onFocus,
     options,
     placeholder = "",
-    multiple,
-    required,
-    disabled,
     readonly,
-    value,
-    autofocus,
-    onChange,
-    onBlur,
-    onFocus,
     // rawErrors = [],
     registry,
+    required,
+    schema,
+    value,
   } = props;
-  const { enumOptions, enumDisabled, emptyValue } = options;
+  const { emptyValue, enumDisabled, enumOptions } = options;
 
   const DescriptionFieldTemplate = getTemplate<
     "DescriptionFieldTemplate",
@@ -100,14 +100,14 @@ const SelectWidget = <
   const valueLabelMap: any = {};
   const displayEnumOptions = Array.isArray(enumOptions)
     ? enumOptions.map((option: EnumOptionsType<S>, index: number) => {
-        const { value: optionValue, label: optionLabel } = option;
+        const { label: optionLabel, value: optionValue } = option;
         valueLabelMap[index] = optionLabel || String(optionValue);
         return {
-          label: optionLabel,
-          value: String(index),
           isDisabled:
             Array.isArray(enumDisabled) &&
             enumDisabled.indexOf(optionValue) !== -1,
+          label: optionLabel,
+          value: String(index),
         };
       })
     : [];
@@ -135,37 +135,37 @@ const SelectWidget = <
 
   return (
     <FormControl
-      my={2}
       isDisabled={disabled || readonly}
-      isRequired={required && !readonly}
       isReadOnly={readonly}
+      isRequired={required && !readonly}
+      my={2}
       // isInvalid={rawErrors && rawErrors.length > 0}
-      sx={{ "& > p": { mt: 4, mb: 2 } }}
+      sx={{ "& > p": { mb: 2, mt: 4 } }}
     >
       {!!schema.description && (
         <DescriptionFieldTemplate
           id={descriptionId<T>(id)}
           description={schema.description}
-          schema={schema}
           registry={registry}
+          schema={schema}
         />
       )}
       <SelectInput
-        inputId={id}
-        name={id}
-        isMulti={isMultiple}
-        closeMenuOnSelect={!isMultiple}
-        onBlur={handleOnBlur}
-        onFocus={handleOnFocus}
         autoFocus={autofocus}
+        closeMenuOnSelect={!isMultiple}
+        inputId={id}
+        isMulti={isMultiple}
+        menuPortalTarget={document.body}
+        name={id}
         options={displayEnumOptions}
         placeholder={
           placeholder.length > 0 || readonly ? placeholder : "Select option"
         }
         size="md"
-        onChange={isMultiple ? handleOnMultiChange : handleOnChange}
         value={selectedIndex === undefined ? undefined : formValue}
-        menuPortalTarget={document.body}
+        onBlur={handleOnBlur}
+        onChange={isMultiple ? handleOnMultiChange : handleOnChange}
+        onFocus={handleOnFocus}
       />
     </FormControl>
   );

@@ -1,3 +1,5 @@
+import type { BechAddr20 } from "lib/types";
+
 import {
   Heading,
   Stack,
@@ -6,28 +8,26 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { useCallback } from "react";
-
 import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
-import type { BechAddr20 } from "lib/types";
+import { useCallback } from "react";
 
+import { TxsTabIndex } from "../types";
 import { EvmContractDetailsCosmosTxs } from "./EvmContractDetailsCosmosTxs";
 import { EvmContractDetailsEvmTxs } from "./EvmContractDetailsEvmTxs";
-import { TxsTabIndex } from "../types";
 
 interface EvmContractDetailsTxsProps {
   address: BechAddr20;
   onViewMore?: () => void;
-  tab: TxsTabIndex;
   setTab: (tab: TxsTabIndex) => void;
+  tab: TxsTabIndex;
 }
 
 export const EvmContractDetailsTxs = ({
   address,
   onViewMore,
-  tab,
   setTab,
+  tab,
 }: EvmContractDetailsTxsProps) => {
   const handleTabChange = useCallback(
     (nextTab: TxsTabIndex) => () => {

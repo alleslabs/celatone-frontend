@@ -1,7 +1,9 @@
-import type { Control } from "react-hook-form";
-import { useWatch } from "react-hook-form";
 import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import type { Control } from "react-hook-form";
+
 import { EvmVerifyOptions } from "lib/types";
+import { useWatch } from "react-hook-form";
+
 import {
   EvmContractVerifySolidityContractCode,
   EvmContractVerifySolidityFoundry,
@@ -30,14 +32,6 @@ export const EvmContractVerifyForms = ({
   });
 
   switch (verifyOption) {
-    // Solidity
-    case EvmVerifyOptions.SolidityUploadFiles:
-      return (
-        <EvmContractVerifySolidityUploadFiles
-          control={control}
-          evmVerifyConfig={evmVerifyConfig}
-        />
-      );
     case EvmVerifyOptions.SolidityContractCode:
       return (
         <EvmContractVerifySolidityContractCode
@@ -45,16 +39,16 @@ export const EvmContractVerifyForms = ({
           evmVerifyConfig={evmVerifyConfig}
         />
       );
-    case EvmVerifyOptions.SolidityJsonInput:
-      return <EvmContractVerifySolidityJsonInput control={control} />;
-    case EvmVerifyOptions.SolidityHardhat:
-      return <EvmContractVerifySolidityHardhat control={control} />;
     case EvmVerifyOptions.SolidityFoundry:
       return <EvmContractVerifySolidityFoundry control={control} />;
-    // Vyper
-    case EvmVerifyOptions.VyperUploadFile:
+    case EvmVerifyOptions.SolidityHardhat:
+      return <EvmContractVerifySolidityHardhat control={control} />;
+    case EvmVerifyOptions.SolidityJsonInput:
+      return <EvmContractVerifySolidityJsonInput control={control} />;
+    // Solidity
+    case EvmVerifyOptions.SolidityUploadFiles:
       return (
-        <EvmContractVerifyVyperUploadFile
+        <EvmContractVerifySolidityUploadFiles
           control={control}
           evmVerifyConfig={evmVerifyConfig}
         />
@@ -68,6 +62,14 @@ export const EvmContractVerifyForms = ({
       );
     case EvmVerifyOptions.VyperJsonInput:
       return <EvmContractVerifyVyperJsonInput control={control} />;
+    // Vyper
+    case EvmVerifyOptions.VyperUploadFile:
+      return (
+        <EvmContractVerifyVyperUploadFile
+          control={control}
+          evmVerifyConfig={evmVerifyConfig}
+        />
+      );
     default:
       return null;
   }

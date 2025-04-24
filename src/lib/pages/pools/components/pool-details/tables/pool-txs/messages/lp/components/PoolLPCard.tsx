@@ -1,32 +1,33 @@
-import { Flex } from "@chakra-ui/react";
+import type { AssetInfos, Option } from "lib/types";
 
+import { Flex } from "@chakra-ui/react";
 import { Loading } from "lib/components/Loading";
 import { useTxData } from "lib/services/tx";
-import type { AssetInfos, Option } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
+
 import { ErrorFetchingDetail, PoolAssetCard } from "../../components";
 import { getPoolDenom } from "../../utils";
 
 interface PoolLPCardProps {
-  txHash?: string;
-  msgIndex: number;
-  poolId: string;
-  msgShareAmount?: string;
+  ampCopierSection?: string;
   assetInfos: Option<AssetInfos>;
   isJoin: boolean;
   isOpened: boolean;
-  ampCopierSection?: string;
+  msgIndex: number;
+  msgShareAmount?: string;
+  poolId: string;
+  txHash?: string;
 }
 
 export const PoolLPCard = ({
-  txHash,
-  msgIndex,
-  poolId,
-  msgShareAmount,
+  ampCopierSection,
   assetInfos,
   isJoin,
   isOpened,
-  ampCopierSection,
+  msgIndex,
+  msgShareAmount,
+  poolId,
+  txHash,
 }: PoolLPCardProps) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (txHash && isLoading) return <Loading withBorder={false} />;
@@ -52,22 +53,22 @@ export const PoolLPCard = ({
   return (
     <Flex
       className="pool-msg-detail-container"
-      direction="column"
-      gap={2}
-      p={4}
+      bgColor="gray.900"
       border="1px solid"
       borderColor="transparent"
       borderRadius="8px"
-      bgColor="gray.900"
+      direction="column"
+      gap={2}
+      p={4}
     >
       <PoolAssetCard
-        poolId={Number(poolId)}
-        description={isJoin ? "Provided to" : "Removed from"}
-        assetText={isJoin ? "Received" : "Burn"}
-        poolToken={poolToken}
-        assetInfos={assetInfos}
-        isOpened={isOpened}
         ampCopierSection={ampCopierSection}
+        assetInfos={assetInfos}
+        assetText={isJoin ? "Received" : "Burn"}
+        description={isJoin ? "Provided to" : "Removed from"}
+        isOpened={isOpened}
+        poolId={Number(poolId)}
+        poolToken={poolToken}
       />
     </Flex>
   );

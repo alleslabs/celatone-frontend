@@ -1,6 +1,6 @@
-import { Flex } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
+import { Flex } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain, useInitia } from "lib/app-provider";
 import { useIcnsNamesByAddressRest } from "lib/services/name";
@@ -39,9 +39,9 @@ export const WalletSection = () => {
       return (
         <ConnectWalletButton
           buttonText={truncate(initiaUsername?.username || address)}
-          onClick={onClickOpenView}
           hasIcon
           variant="ghost-white"
+          onClick={onClickOpenView}
         />
       );
     }
@@ -49,8 +49,8 @@ export const WalletSection = () => {
     return (
       <ConnectWalletButton
         buttonText="Connect wallet"
-        onClick={onClickConnect}
         variant="white-solid"
+        onClick={onClickConnect}
       />
     );
   }
@@ -58,27 +58,27 @@ export const WalletSection = () => {
   return (
     <Flex px={0}>
       <WalletConnectComponent
-        walletStatus={walletProvider.context.status}
+        connected={
+          <ConnectWalletButton
+            buttonText={truncate(icnsNames?.primaryName || address)}
+            hasIcon
+            variant="ghost-white"
+            onClick={onClickOpenView}
+          />
+        }
+        connecting={<ConnectWalletButton isLoading />}
         disconnect={
           <ConnectWalletButton
             buttonText="Connect wallet"
             onClick={onClickConnect}
           />
         }
-        connecting={<ConnectWalletButton isLoading />}
-        connected={
-          <ConnectWalletButton
-            buttonText={truncate(icnsNames?.primaryName || address)}
-            onClick={onClickOpenView}
-            hasIcon
-            variant="ghost-white"
-          />
-        }
-        rejected={<Others buttonText="Reconnect" onClick={onClickConnect} />}
         error={<Others buttonText="Change wallet" onClick={onClickOpenView} />}
         notExist={
           <Others buttonText="Install wallet" onClick={onClickOpenView} />
         }
+        rejected={<Others buttonText="Reconnect" onClick={onClickConnect} />}
+        walletStatus={walletProvider.context.status}
       />
     </Flex>
   );

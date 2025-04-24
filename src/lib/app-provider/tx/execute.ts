@@ -1,21 +1,22 @@
 import type { Coin, StdFee } from "@cosmjs/stargate";
-import { Coins, MsgExecuteContract } from "@initia/initia.js";
-import { useCallback } from "react";
-
-import { trackTxSucceed } from "lib/amplitude";
-import { executeContractTx } from "lib/app-fns/tx/execute";
 import type { Activity } from "lib/stores/contract";
 import type { BechAddr32 } from "lib/types";
+
+import { Coins, MsgExecuteContract } from "@initia/initia.js";
+import { trackTxSucceed } from "lib/amplitude";
+import { executeContractTx } from "lib/app-fns/tx/execute";
 import { libEncode, toEncodeObject } from "lib/utils";
+import { useCallback } from "react";
+
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface ExecuteStreamParams {
-  estimatedFee: StdFee | undefined;
   contractAddress: BechAddr32;
-  msg: string | object;
+  estimatedFee: StdFee | undefined;
   funds: Coin[];
-  onTxSucceed?: (activity: Activity) => void;
+  msg: object | string;
   onTxFailed?: () => void;
+  onTxSucceed?: (activity: Activity) => void;
 }
 
 export const useExecuteContractTx = () => {
@@ -24,12 +25,12 @@ export const useExecuteContractTx = () => {
 
   return useCallback(
     async ({
-      onTxSucceed,
-      onTxFailed,
-      estimatedFee,
       contractAddress,
-      msg,
+      estimatedFee,
       funds,
+      msg,
+      onTxFailed,
+      onTxSucceed,
     }: ExecuteStreamParams) => {
       if (!address)
         throw new Error("No address provided (useExecuteContractTx)");
@@ -47,22 +48,22 @@ export const useExecuteContractTx = () => {
         ),
       ]);
 
-      const base64Message = libEncode(JSON.stringify({ msg, funds }));
+      const base64Message = libEncode(JSON.stringify({ funds, msg }));
 
       const action = typeof msg === "string" ? msg : Object.keys(msg)[0];
       return executeContractTx({
-        address,
-        contractAddress,
-        messages,
         action,
-        fee: estimatedFee,
+        address,
         base64Message,
-        signAndBroadcast,
+        contractAddress,
+        fee: estimatedFee,
+        messages,
+        onTxFailed,
         onTxSucceed: (activity) => {
           trackTxSucceed();
           onTxSucceed?.(activity);
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

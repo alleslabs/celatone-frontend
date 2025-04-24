@@ -4,37 +4,37 @@ import type { Nullable } from "../common";
 
 export enum TxStreamPhase {
   BROADCAST = "BROADCAST",
-  SUCCEED = "SUCCEED",
   FAILED = "FAILED",
+  SUCCEED = "SUCCEED",
 }
 
 export interface TxErrorRendering {
-  errorId?: string;
   error: unknown;
+  errorId?: string;
 }
 
 export interface TxReceipt {
-  title: string;
-  value?: Nullable<string | number>;
   html?: ReactNode;
+  title: string;
+  value?: Nullable<number | string>;
 }
 
 export interface ReceiptInfo {
-  header: string;
-  headerIcon?: ReactNode;
   description?: ReactNode;
   errorMsg?: string;
+  header: string;
+  headerIcon?: ReactNode;
 }
 
 export type ActionVariant =
-  | "sending"
-  | "upload-migrate"
+  | "failed"
   | "migrate"
+  | "proposal"
   | "rejected"
   | "resend"
+  | "sending"
   | "update-admin"
-  | "proposal"
-  | "failed";
+  | "upload-migrate";
 
 export interface TxResultRendering<T = unknown> {
   /**

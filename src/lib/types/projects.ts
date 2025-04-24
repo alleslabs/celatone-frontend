@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import type {
   AssetInfo,
   BechAddr,
@@ -9,7 +7,9 @@ import type {
   Option,
   PermissionAddresses,
 } from "lib/types";
+
 import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
+import { z } from "zod";
 
 import { zBechAddr, zBechAddr32 } from "./addrs";
 import { AccessConfigPermission } from "./code";
@@ -32,18 +32,18 @@ export interface PublicModule {
 }
 
 export interface RawPublicCode {
-  description: string;
-  id: number;
-  name: string;
-  slug: string;
   contracts: number;
-  uploader: BechAddr;
-  instantiatePermission: AccessConfigPermission;
-  permissionAddresses: PermissionAddresses;
-  github: string;
-  verified: boolean;
   cw2Contract: Option<Nullable<string>>;
   cw2Version: Option<Nullable<string>>;
+  description: string;
+  github: string;
+  id: number;
+  instantiatePermission: AccessConfigPermission;
+  name: string;
+  permissionAddresses: PermissionAddresses;
+  slug: string;
+  uploader: BechAddr;
+  verified: boolean;
 }
 
 export interface PublicCode extends Omit<RawPublicCode, "contracts"> {
@@ -52,13 +52,13 @@ export interface PublicCode extends Omit<RawPublicCode, "contracts"> {
 
 export interface RawPublicContract {
   address: BechAddr32;
+  admin: BechAddr;
   code: number;
   description: string;
+  instantiator: BechAddr;
+  label: string;
   name: string;
   slug: string;
-  instantiator: BechAddr;
-  admin: BechAddr;
-  label: string;
 }
 
 export interface PublicContract extends Omit<RawPublicContract, "address"> {
@@ -71,12 +71,12 @@ export interface Social {
 }
 
 export interface PublicDetail {
+  description: string;
   github: string;
   logo: string;
   name: string;
   socials: Social[];
   website: string;
-  description: string;
 }
 
 export interface RawPublicProjectInfo {
@@ -84,8 +84,8 @@ export interface RawPublicProjectInfo {
   assets: AssetInfo;
   codes: RawPublicCode[];
   contracts: RawPublicContract[];
-  modules: PublicModule[];
   details: PublicDetail;
+  modules: PublicModule[];
   slug: string;
 }
 
@@ -94,17 +94,17 @@ export interface PublicProjectInfo {
   assets: AssetInfo;
   codes: PublicCode[];
   contracts: PublicContract[];
-  modules: PublicModule[];
   details: PublicDetail;
+  modules: PublicModule[];
   slug: string;
 }
 
 export interface PublicInfo {
-  slug: string;
-  name: string;
   contractAddress: BechAddr32;
   description: string;
   github: string;
+  name: string;
+  slug: string;
 }
 
 // ------------------------------------------//

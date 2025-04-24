@@ -1,24 +1,25 @@
+import type { TokenWithValue } from "lib/types";
+
 import { Flex, Text } from "@chakra-ui/react";
 
-import type { TokenWithValue } from "lib/types";
 import { TokenCell } from "../TokenCell";
 
 interface TokensCellProps {
-  tokens: TokenWithValue[];
   isSingleBondDenom: boolean;
   isUnbonding?: boolean;
+  tokens: TokenWithValue[];
 }
 
 const EmptyTokenCell = () => (
-  <Text variant="body2" textColor="text.dark" h="full">
+  <Text h="full" textColor="text.dark" variant="body2">
     -
   </Text>
 );
 
 export const TokensCell = ({
-  tokens,
   isSingleBondDenom,
   isUnbonding,
+  tokens,
 }: TokensCellProps) => {
   if (isSingleBondDenom)
     return !tokens.length ? (
@@ -29,12 +30,12 @@ export const TokensCell = ({
 
   return (
     <Flex
-      direction="column"
-      p={3}
       bgColor={isUnbonding ? undefined : "gray.800"}
-      py={isUnbonding ? 0 : undefined}
       borderRadius="8px"
+      direction="column"
       gap={2}
+      p={3}
+      py={isUnbonding ? 0 : undefined}
       w="full"
     >
       {!tokens.length ? (

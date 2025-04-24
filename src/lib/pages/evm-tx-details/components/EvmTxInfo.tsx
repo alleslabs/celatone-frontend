@@ -1,19 +1,20 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { chakra, Flex } from "@chakra-ui/react";
+import type { TxData, TxDataJsonRpc } from "lib/services/types";
+import type { TokenWithValue } from "lib/types";
 
+import { chakra, Flex } from "@chakra-ui/react";
 import { useCelatoneApp } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { TokenImageWithAmount } from "lib/components/token";
-import type { TxData, TxDataJsonRpc } from "lib/services/types";
-import type { TokenWithValue } from "lib/types";
 
-import { EvmTxGasReceipt } from "./EvmTxGasReceipt";
 import type { GasInfo } from "../data";
 
+import { EvmTxGasReceipt } from "./EvmTxGasReceipt";
+
 interface EvmTxInfoProps extends FlexProps {
-  evmTxData: TxDataJsonRpc;
   cosmosTxData: TxData;
+  evmTxData: TxDataJsonRpc;
   evmTxValue: TokenWithValue;
   gasInfo: GasInfo;
 }
@@ -22,14 +23,14 @@ const Container = chakra(Flex, {
   baseStyle: {
     flexDir: "column",
     gap: 6,
-    w: "250px",
     minW: "180px",
+    w: "250px",
   },
 });
 
 export const EvmTxInfo = ({
-  evmTxData,
   cosmosTxData,
+  evmTxData,
   evmTxValue,
   gasInfo,
   ...flexProps
@@ -41,22 +42,22 @@ export const EvmTxInfo = ({
       <LabelText label="Network">{currentChainId}</LabelText>
       <LabelText label="Block height">
         <ExplorerLink
-          value={evmTxData.tx.blockNumber.toString()}
-          type="block_height"
-          showCopyOnHover
           ampCopierSection="tx_page_block_height"
+          showCopyOnHover
+          type="block_height"
+          value={evmTxData.tx.blockNumber.toString()}
         />
       </LabelText>
       <LabelText label="Cosmos tx">
         <ExplorerLink
-          value={cosmosTxData.txhash.toUpperCase()}
-          type="tx_hash"
           showCopyOnHover
+          type="tx_hash"
+          value={cosmosTxData.txhash.toUpperCase()}
         />
       </LabelText>
       <LabelText label="Nonce">{evmTxData.tx.nonce.toFixed(0)}</LabelText>
       <LabelText label="Amount">
-        <TokenImageWithAmount token={evmTxValue} hasTrailingZeros={false} />
+        <TokenImageWithAmount hasTrailingZeros={false} token={evmTxValue} />
       </LabelText>
       <EvmTxGasReceipt gasInfo={gasInfo} />
     </Container>

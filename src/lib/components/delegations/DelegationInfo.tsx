@@ -1,28 +1,29 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
+import { Button, Flex, Heading } from "@chakra-ui/react";
 import { trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+
 import { EmptyState } from "../state";
 import { TableTitle } from "../table";
 
 interface DelegationInfoProps {
-  totalBondedCard: JSX.Element;
-  otherInfoCards: JSX.Element;
-  redelegationCount: number;
+  hasTotalBonded?: boolean;
   onClickToggle?: MouseEventHandler<HTMLButtonElement> | undefined;
   onViewMore?: () => void;
-  hasTotalBonded?: boolean;
+  otherInfoCards: JSX.Element;
+  redelegationCount: number;
+  totalBondedCard: JSX.Element;
 }
 
 export const DelegationInfo = ({
-  totalBondedCard,
-  otherInfoCards,
-  redelegationCount,
+  hasTotalBonded = true,
   onClickToggle,
   onViewMore,
-  hasTotalBonded = true,
+  otherInfoCards,
+  redelegationCount,
+  totalBondedCard,
 }: DelegationInfoProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
@@ -30,38 +31,38 @@ export const DelegationInfo = ({
     <>
       {isMobileOverview ? (
         <Flex
-          justify="space-between"
-          w="full"
           bg="gray.900"
           borderRadius="8px"
+          justify="space-between"
           p={4}
+          w="full"
           onClick={() => {
             trackUseViewMore();
             onViewMore();
           }}
         >
           <Flex direction="column" gap={2}>
-            <Heading variant="h6" as="h6">
+            <Heading as="h6" variant="h6">
               Delegation details
             </Heading>
             {totalBondedCard}
           </Flex>
-          <CustomIcon name="chevron-right" color="gray.600" />
+          <CustomIcon color="gray.600" name="chevron-right" />
         </Flex>
       ) : (
         <Flex direction="column" gap={4} mt={{ base: 4, md: 0 }}>
-          <TableTitle title="Delegations" mb={0} showCount={false} />
+          <TableTitle mb={0} showCount={false} title="Delegations" />
           {hasTotalBonded ? (
             <Flex
-              direction={{ base: "column", md: "row" }}
               alignItems={{ base: "start", md: "center" }}
+              direction={{ base: "column", md: "row" }}
               justify="space-between"
               overflowX="scroll"
               overflowY="hidden"
             >
               <Flex
-                gap={{ base: 4, md: 8 }}
                 direction={{ base: "column", md: "row" }}
+                gap={{ base: 4, md: 8 }}
                 w="full"
               >
                 {totalBondedCard}
@@ -69,9 +70,9 @@ export const DelegationInfo = ({
               </Flex>
               {onViewMore ? (
                 <Button
-                  variant="ghost-gray"
                   minW="fit-content"
                   rightIcon={<CustomIcon name="chevron-right" />}
+                  variant="ghost-gray"
                   onClick={() => {
                     trackUseViewMore();
                     onViewMore();
@@ -81,16 +82,16 @@ export const DelegationInfo = ({
                 </Button>
               ) : (
                 <Flex
-                  w={{ base: "full", md: "auto" }}
                   justify={{ base: "center", md: "inherit" }}
                   mt={{ base: 6, md: 0 }}
+                  w={{ base: "full", md: "auto" }}
                 >
                   <Button
-                    variant="ghost-gray"
-                    minW="fit-content"
-                    leftIcon={<CustomIcon name="history" />}
-                    rightIcon={<CustomIcon name="chevron-right" />}
                     isDisabled={!redelegationCount}
+                    leftIcon={<CustomIcon name="history" />}
+                    minW="fit-content"
+                    rightIcon={<CustomIcon name="chevron-right" />}
+                    variant="ghost-gray"
                     onClick={onClickToggle}
                   >
                     See active redelegations ({redelegationCount})

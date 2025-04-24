@@ -1,3 +1,5 @@
+import type { TxResultRendering } from "lib/types";
+
 import {
   Box,
   Modal,
@@ -9,21 +11,19 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
+import { useInternalNavigate } from "lib/app-provider";
+import { TxStreamPhase } from "lib/types";
 import { useCallback } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
-import type { TxResultRendering } from "lib/types";
-import { TxStreamPhase } from "lib/types";
-
-import { ButtonSection } from "./ButtonSection";
 import { TxReceiptRender } from "../TxReceiptRender";
+import { ButtonSection } from "./ButtonSection";
 
 interface TxModalProps {
-  result: TxResultRendering;
   onClose: () => void;
+  result: TxResultRendering;
 }
 
-export const TxModal = ({ result, onClose }: TxModalProps) => {
+export const TxModal = ({ onClose, result }: TxModalProps) => {
   const navigate = useInternalNavigate();
 
   const isUpdateAdminSucceed =
@@ -41,10 +41,10 @@ export const TxModal = ({ result, onClose }: TxModalProps) => {
 
   return (
     <Modal
+      closeOnOverlayClick={false}
+      isCentered
       isOpen
       onClose={handleModalClose}
-      isCentered
-      closeOnOverlayClick={false}
     >
       <ModalOverlay />
       <ModalContent w="600px">
@@ -55,7 +55,7 @@ export const TxModal = ({ result, onClose }: TxModalProps) => {
         {showCloseButton && <ModalCloseButton color="gray.600" />}
         <ModalBody>
           {result.receiptInfo.description && (
-            <Text variant="body1" mb={4}>
+            <Text mb={4} variant="body1">
               {result.receiptInfo.description}
             </Text>
           )}
@@ -66,10 +66,10 @@ export const TxModal = ({ result, onClose }: TxModalProps) => {
             <Box
               bg="background.main"
               borderRadius="8px"
-              p={2}
-              mt={4}
               maxH="240px"
+              mt={4}
               overflowY="scroll"
+              p={2}
             >
               <Text>{result.receiptInfo.errorMsg}</Text>
             </Box>
@@ -78,9 +78,9 @@ export const TxModal = ({ result, onClose }: TxModalProps) => {
         <ModalFooter gap={2}>
           <ButtonSection
             actionVariant={result.actionVariant}
-            onClose={onClose}
-            receipts={result.receipts}
             errorMsg={result.receiptInfo.errorMsg}
+            receipts={result.receipts}
+            onClose={onClose}
           />
         </ModalFooter>
       </ModalContent>

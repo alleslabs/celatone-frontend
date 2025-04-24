@@ -1,32 +1,35 @@
 import type { FlexProps } from "@chakra-ui/react";
+
 import { Flex, Text } from "@chakra-ui/react";
+
 import type { SourceTreeNode } from "./types";
+
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
 
 interface EditorFileBodyProps extends FlexProps {
-  node: SourceTreeNode;
   initialFilePath: string;
   isNoWrap?: boolean;
+  node: SourceTreeNode;
 }
 
 export const EditorFileBody = ({
-  node,
   initialFilePath,
   isNoWrap,
+  node,
   ...props
 }: EditorFileBodyProps) => (
-  <Flex gap={0.5} alignItems="center" {...props}>
+  <Flex alignItems="center" gap={0.5} {...props}>
     {node.isFolder ? (
       <>
         <CustomIcon
+          boxSize={3}
+          color="gray.600"
           cursor="pointer"
           name="chevron-down"
-          color="gray.600"
-          boxSize={3}
           transform={node.isOpen ? "rotate(0deg)" : "rotate(-90deg)"}
         />
-        <CustomIcon name="folder" color="primary.main" boxSize={3} />
+        <CustomIcon boxSize={3} color="primary.main" name="folder" />
       </>
     ) : (
       <Flex
@@ -35,21 +38,21 @@ export const EditorFileBody = ({
       >
         {initialFilePath === node.path && (
           <Tooltip label="Main verified contract file">
-            <CustomIcon name="star-solid" color="secondary.main" boxSize={3} />
+            <CustomIcon boxSize={3} color="secondary.main" name="star-solid" />
           </Tooltip>
         )}
         {node.isLib ? (
           <Tooltip label="Library contract">
-            <CustomIcon name="document" color="gray.600" boxSize={3} />
+            <CustomIcon boxSize={3} color="gray.600" name="document" />
           </Tooltip>
         ) : (
-          <CustomIcon name="code-file" color="gray.600" boxSize={3.5} />
+          <CustomIcon boxSize={3.5} color="gray.600" name="code-file" />
         )}
       </Flex>
     )}
     <Text
-      variant="body2"
       noOfLines={!isNoWrap ? 1 : undefined}
+      variant="body2"
       whiteSpace={!isNoWrap ? "normal" : "nowrap"}
     >
       {node.name}

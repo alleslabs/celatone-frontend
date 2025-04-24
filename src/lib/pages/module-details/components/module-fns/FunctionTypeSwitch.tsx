@@ -1,92 +1,93 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Flex, Heading } from "@chakra-ui/react";
-
-import { MotionBox } from "lib/components/MotionBox";
 import type { Option } from "lib/types";
+
+import { Flex, Heading } from "@chakra-ui/react";
+import { MotionBox } from "lib/components/MotionBox";
+
 import { FunctionTypeTabIndex } from "../../types";
 
 interface FunctionTypeSwitchProps extends FlexProps {
+  counts: [Option<number>, Option<number>, Option<number>];
   currentTab: FunctionTypeTabIndex;
   disabled?: boolean;
-  counts: [Option<number>, Option<number>, Option<number>];
   onTabChange: (newTab: FunctionTypeTabIndex) => void;
 }
 
 const tabs = Object.values(FunctionTypeTabIndex);
 
 export const FunctionTypeSwitch = ({
+  counts,
   currentTab,
   disabled = false,
-  counts,
   onTabChange,
   ...flexProps
 }: FunctionTypeSwitchProps) => {
   const activeIndex = tabs.indexOf(currentTab);
   return (
     <Flex
+      align="center"
       border="1px solid var(--chakra-colors-gray-700)"
       borderRadius="4px"
-      p={1}
-      h="32px"
       direction="row"
-      align="center"
+      h="32px"
+      p={1}
       position="relative"
+      sx={{ ...(disabled ? { opacity: 0.3, pointerEvents: "none" } : {}) }}
       w={{ base: "full", md: "auto" }}
-      sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
       {...flexProps}
     >
       {tabs.map((tab, idx) => (
         <MotionBox
           key={tab}
-          w="full"
+          animate={currentTab === tab ? "active" : "inactive"}
+          initial="inactive"
           minW={{ base: "33%", md: "128px" }}
           p="2px 10px"
+          textAlign="center"
           variants={{
             active: { color: "var(--chakra-colors-text-main)" },
             inactive: {
               color: "var(--chakra-colors-primary-light)",
             },
           }}
-          initial="inactive"
-          animate={currentTab === tab ? "active" : "inactive"}
+          w="full"
           zIndex={1}
-          textAlign="center"
           {...(counts[idx] === 0
             ? {
-                opacity: 0.3,
                 cursor: "not-allowed",
                 onClick: undefined,
+                opacity: 0.3,
               }
             : {
-                onClick: () => onTabChange(tab),
                 cursor: "pointer",
+                onClick: () => onTabChange(tab),
               })}
         >
-          <Heading as="h6" variant="h6" fontSize={{ base: "12px", md: "14px" }}>
+          <Heading as="h6" fontSize={{ base: "12px", md: "14px" }} variant="h6">
             {tab} {`(${counts[idx]})`}
           </Heading>
         </MotionBox>
       ))}
 
       <MotionBox
-        h="calc(100% - 8px)"
-        w={{ base: "33%", md: "128px" }}
-        position="absolute"
-        borderRadius="2px"
-        backgroundColor={
-          counts[activeIndex] === 0 ? "primary.darker" : "primary.dark"
-        }
         animate={{
           left:
             activeIndex === 0
               ? "4px"
               : `calc(${(100 / 3) * activeIndex}% - 1px)`,
         }}
+        backgroundColor={
+          counts[activeIndex] === 0 ? "primary.darker" : "primary.dark"
+        }
+        borderRadius="2px"
+        h="calc(100% - 8px)"
+        position="absolute"
         transition={{
-          type: "spring",
-          stiffness: "250",
           damping: "30",
+          stiffness: "250",
+          type: "spring",
         }}
+        w={{ base: "33%", md: "128px" }}
       />
     </Flex>
   );

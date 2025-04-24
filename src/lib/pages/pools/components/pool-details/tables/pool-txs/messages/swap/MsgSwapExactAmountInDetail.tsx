@@ -1,62 +1,62 @@
-import { Box, Flex } from "@chakra-ui/react";
-
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfos, Option } from "lib/types";
-import { extractMsgType } from "lib/utils";
 import type { MsgSwapExactAmountInDetails } from "lib/utils/tx/types";
 
-import { PoolRoute, PoolSwap } from "./components";
+import { Box, Flex } from "@chakra-ui/react";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { extractMsgType } from "lib/utils";
+
 import { PoolInfoText } from "../components/PoolInfoText";
+import { PoolRoute, PoolSwap } from "./components";
 
 interface MsgSwapExactAmountInDetailProps {
-  txHash: string;
-  blockHeight: number;
-  msgIndex: number;
-  msg: MsgSwapExactAmountInDetails;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  blockHeight: number;
+  isOpened: boolean;
+  msg: MsgSwapExactAmountInDetails;
+  msgIndex: number;
+  txHash: string;
 }
 
 export const MsgSwapExactAmountInDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  txHash,
 }: MsgSwapExactAmountInDetailProps) => (
-  <Flex w="full" direction="column" alignItems="start" gap={6}>
+  <Flex alignItems="start" direction="column" gap={6} w="full">
     <Flex gap={12}>
       <PoolInfoText title="Block height">
         <ExplorerLink
-          value={blockHeight.toString()}
-          type="block_height"
-          showCopyOnHover
           ampCopierSection={ampCopierSection}
+          showCopyOnHover
+          type="block_height"
+          value={blockHeight.toString()}
         />
       </PoolInfoText>
       <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
     </Flex>
     <Box w="full">
       <PoolSwap
-        txHash={txHash}
+        ampCopierSection={ampCopierSection}
+        assetInfos={assetInfos}
         exactInput={{
-          isExactIn: true,
           amount: msg.token_in,
           expectedDenom: msg.routes[msg.routes.length - 1].tokenOutDenom,
+          isExactIn: true,
         }}
-        msgIndex={msgIndex}
-        assetInfos={assetInfos}
         isOpened={isOpened}
-        ampCopierSection={ampCopierSection}
+        msgIndex={msgIndex}
+        txHash={txHash}
       />
       <PoolRoute
-        routes={msg.routes}
+        ampCopierSection={ampCopierSection}
         assetInfos={assetInfos}
         isOpened={isOpened}
-        ampCopierSection={ampCopierSection}
+        routes={msg.routes}
       />
     </Box>
   </Flex>

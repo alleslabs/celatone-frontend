@@ -1,9 +1,5 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
 import type { BigSource } from "big.js";
 import type Big from "big.js";
-
-import { TokenImageRender } from "lib/components/token";
-import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
 import type {
   AssetInfos,
   Coin,
@@ -13,6 +9,10 @@ import type {
   U,
   USD,
 } from "lib/types";
+
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { TokenImageRender } from "lib/components/token";
+import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
 import {
   coinToTokenWithValue,
   formatPrice,
@@ -21,17 +21,17 @@ import {
 } from "lib/utils";
 
 interface DelegationRelatedTxsTokenChangeProps {
-  txHash: string;
-  coin: Coin;
   assetInfos: Option<AssetInfos>;
+  coin: Coin;
   movePoolInfos: Option<MovePoolInfos>;
+  txHash: string;
 }
 
 export const DelegationRelatedTxsTokenChange = ({
-  txHash,
-  coin,
   assetInfos,
+  coin,
   movePoolInfos,
+  txHash,
 }: DelegationRelatedTxsTokenChangeProps) => {
   const token = coinToTokenWithValue(
     coin.denom,
@@ -44,36 +44,36 @@ export const DelegationRelatedTxsTokenChange = ({
 
   return (
     <Flex
-      gap={2}
       key={`${txHash}-${token.denom}`}
-      w="100%"
-      justifyContent={{ base: "start", md: "end" }}
       alignItems="center"
+      gap={2}
+      justifyContent={{ base: "start", md: "end" }}
+      w="100%"
     >
       <Box textAlign={{ base: "left", md: "right" }}>
         <Flex alignItems="center" gap={1}>
           <Text
-            fontWeight={700}
             color={isPositiveAmount ? "success.main" : "error.main"}
+            fontWeight={700}
           >
             {formattedAmount}
           </Text>
           <Text>{getTokenLabel(token.denom, token.symbol)}</Text>
           <TokenImageRender
-            display={{ base: "block", md: "none" }}
             boxSize={4}
+            display={{ base: "block", md: "none" }}
             logo={token.logo ?? getUndefinedTokenIcon(token.denom)}
           />
         </Flex>
-        <Text variant="body3" color="text.dark">
+        <Text color="text.dark" variant="body3">
           {token.value
             ? `(${formatPrice(token.value.abs() as USD<BigSource>)})`
             : "-"}
         </Text>
       </Box>
       <TokenImageRender
-        display={{ base: "none", md: "block" }}
         boxSize={6}
+        display={{ base: "none", md: "block" }}
         logo={token.logo ?? getUndefinedTokenIcon(token.denom)}
       />
     </Flex>

@@ -4,9 +4,9 @@ import MultiSchemaField from "./MultiSchemaField";
 import NullField from "./NullField";
 
 export const Fields = {
+  AnyOfField: MultiSchemaField,
   ArrayField,
   BooleanField,
-  OneOfField: MultiSchemaField,
-  AnyOfField: MultiSchemaField,
   NullField,
+  OneOfField: MultiSchemaField,
 };

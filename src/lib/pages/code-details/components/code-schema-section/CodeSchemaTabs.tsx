@@ -1,17 +1,17 @@
-import { chakra, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import { capitalize } from "lodash";
-
-import { CustomTab } from "lib/components/CustomTab";
 import type { CodeSchema, Nullish, Option } from "lib/types";
+
+import { chakra, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { CustomTab } from "lib/components/CustomTab";
 import { SchemaProperties } from "lib/types";
+import { capitalize } from "lodash";
 
 import { SchemaPanel } from "./SchemaPanel";
 
 const StyledCustomTab = chakra(CustomTab, {
   baseStyle: {
+    _selected: { bgColor: "gray.800" },
     border: "unset",
     borderRadius: "4px",
-    _selected: { bgColor: "gray.800" },
   },
 });
 
@@ -29,22 +29,22 @@ const SchemaMsgTabList = [
 ];
 
 interface CodeSchemaTabsProps {
-  codeId: number;
   codeHash: string;
-  verifiedSchema: Nullish<CodeSchema>;
+  codeId: number;
   localSchema: Option<CodeSchema>;
+  verifiedSchema: Nullish<CodeSchema>;
 }
 
 export const CodeSchemaTabs = ({
-  codeId,
   codeHash,
-  verifiedSchema,
+  codeId,
   localSchema,
+  verifiedSchema,
 }: CodeSchemaTabsProps) => {
   const schema = verifiedSchema ?? localSchema;
   const hasSchema = Boolean(schema);
   return (
-    <Tabs variant="unstyled" orientation="vertical" mt={6}>
+    <Tabs mt={6} orientation="vertical" variant="unstyled">
       <TabList>
         <StyledCustomTab>Full schema</StyledCustomTab>
         {SchemaMsgTabList.map((schemaProperty) => (
@@ -56,19 +56,19 @@ export const CodeSchemaTabs = ({
       <TabPanels pl={6}>
         <StyledTabPanel>
           <SchemaPanel
-            codeId={codeId}
             codeHash={codeHash}
-            jsonSchema={schema}
+            codeId={codeId}
             hasSchema={hasSchema}
+            jsonSchema={schema}
           />
         </StyledTabPanel>
         {SchemaMsgTabList.map((schemaProperty) => (
           <StyledTabPanel key={schemaProperty}>
             <SchemaPanel
-              codeId={codeId}
               codeHash={codeHash}
-              jsonSchema={schema?.[schemaProperty]}
+              codeId={codeId}
               hasSchema={hasSchema}
+              jsonSchema={schema?.[schemaProperty]}
               schemaProperty={schemaProperty}
             />
           </StyledTabPanel>

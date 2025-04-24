@@ -1,45 +1,45 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import type { LVPair } from "lib/types";
 
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { SaveNewContractModal } from "lib/components/modal/contract";
 import { ADMIN_SPECIAL_SLUG, INSTANTIATED_LIST_NAME } from "lib/data";
-import type { LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
-import { StateImage } from "./StateImage";
 import { CustomIcon } from "../icon";
+import { StateImage } from "./StateImage";
 
 interface ZeroStateProps {
-  list: LVPair;
   isReadOnly?: boolean;
+  list: LVPair;
 }
 
 interface ActionSectionProps {
-  list: LVPair;
   handleAction?: () => void;
+  list: LVPair;
 }
 
-const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
+const ActionSection = ({ handleAction, list }: ActionSectionProps) =>
   list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? (
     <Button
-      leftIcon={<CustomIcon name="add-new" boxSize={4} />}
+      leftIcon={<CustomIcon boxSize={4} name="add-new" />}
       onClick={handleAction}
     >
       Deploy new contract
     </Button>
   ) : (
-    <Flex alignItems="center" gap={4} color="text.dark" direction="column">
+    <Flex alignItems="center" color="text.dark" direction="column" gap={4}>
       <Flex align="center">
         Save existing contracts to the list with
         <SaveNewContractModal
           key={list.value}
-          list={list}
           buttonProps={{
-            variant: "outline-primary",
-            leftIcon: <CustomIcon name="bookmark" />,
             children: "Save contract",
+            leftIcon: <CustomIcon name="bookmark" />,
             ml: 2,
+            variant: "outline-primary",
           }}
+          list={list}
         />
       </Flex>
       Contract lists and saved contracts are stored locally on your device.
@@ -48,10 +48,10 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
 
 const renderText = (listSlug: string) => {
   switch (listSlug) {
-    case formatSlugName(INSTANTIATED_LIST_NAME):
-      return "Your deployed contract through this address will display here.";
     case ADMIN_SPECIAL_SLUG:
       return "You don’t have any admin access to any contracts.";
+    case formatSlugName(INSTANTIATED_LIST_NAME):
+      return "Your deployed contract through this address will display here.";
     default:
       return "You don’t have any saved contracts.";
   }
@@ -62,24 +62,25 @@ const renderText = (listSlug: string) => {
  * @todo Will be refactored in the next PR
  */
 
-export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
+export const ZeroState = ({ isReadOnly, list }: ZeroStateProps) => {
   const navigate = useInternalNavigate();
   return (
     <Flex
-      width="full"
-      py={12}
-      gap={4}
-      direction="column"
       alignItems="center"
-      borderY="1px solid"
+      borderBottomWidth="1px"
       borderColor="gray.700"
+      borderTopWidth="1px"
+      direction="column"
+      gap={4}
+      py={12}
+      width="full"
     >
       <StateImage imageVariant="empty" />
       <Text color="text.dark">{renderText(list.value)}</Text>
       {!isReadOnly && (
         <ActionSection
-          list={list}
           handleAction={() => navigate({ pathname: "/deploy" })}
+          list={list}
         />
       )}
     </Flex>
@@ -88,15 +89,16 @@ export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
 
 export const AccountZeroState = ({ button }: { button: JSX.Element }) => (
   <Flex
-    width="full"
-    py={12}
+    alignItems="center"
+    borderBottomWidth="1px"
+    borderColor="gray.700"
+    borderTopWidth="1px"
+    color="text.dark"
+    direction="column"
     gap={4}
     my={8}
-    direction="column"
-    alignItems="center"
-    borderY="1px solid"
-    color="text.dark"
-    borderColor="gray.700"
+    py={12}
+    width="full"
   >
     <StateImage imageVariant="empty" />
     <Flex align="center">You don’t have any saved accounts.</Flex>
@@ -112,15 +114,16 @@ export const AccountZeroState = ({ button }: { button: JSX.Element }) => (
 
 export const SavedCodeZeroState = ({ button }: { button: JSX.Element }) => (
   <Flex
-    width="full"
-    py={12}
+    alignItems="center"
+    borderBottomWidth="1px"
+    borderColor="gray.700"
+    borderTopWidth="1px"
+    color="text.dark"
+    direction="column"
     gap={4}
     my={8}
-    direction="column"
-    alignItems="center"
-    borderY="1px solid"
-    borderColor="gray.700"
-    color="text.dark"
+    py={12}
+    width="full"
   >
     <StateImage imageVariant="empty" />
     <Flex align="center">You don’t have any saved codes.</Flex>

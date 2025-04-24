@@ -1,8 +1,9 @@
+import type { Coin, Option, ProposalParams, Token, U } from "lib/types";
+
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import { useProposalParams } from "lib/services/proposal";
 import { big } from "lib/types";
-import type { Coin, Option, ProposalParams, Token, U } from "lib/types";
 import {
   coinToTokenWithValue,
   compareTokenWithValues,
@@ -14,6 +15,7 @@ import {
 // TODO: remove and use `useDerivedProposalParams` instead
 export interface GovParams {
   depositParams: {
+    maxDepositPeriod: string;
     minDeposit: {
       amount: U<Token<Big>>;
       denom: string;
@@ -22,14 +24,13 @@ export interface GovParams {
       formattedToken: string;
       precision: number;
     };
-    minInitialDeposit: Token;
-    maxDepositPeriod: string;
     minExpeditedDeposit: Option<Coin[]>;
+    minInitialDeposit: Token;
     minInitialDepositRatio: Option<string>;
   };
   votingParams: {
-    votingPeriod: string;
     expeditedVotingPeriod: Option<string>;
+    votingPeriod: string;
   };
 }
 
@@ -58,6 +59,7 @@ export const useGovParamsDeprecated = (): {
   return {
     data: {
       depositParams: {
+        maxDepositPeriod: data.maxDepositPeriod,
         minDeposit: {
           ...minDepositParam,
           amount: minDepositToken.amount,
@@ -69,16 +71,15 @@ export const useGovParamsDeprecated = (): {
           formattedToken: formatTokenWithValue(minDepositToken),
           precision: minDepositToken.precision ?? 0,
         },
+        minExpeditedDeposit: data.expeditedMinDeposit,
         minInitialDeposit: big(data.minInitialDepositRatio)
           .times(minDepositAmount)
           .toFixed(2) as Token,
-        maxDepositPeriod: data.maxDepositPeriod,
         minInitialDepositRatio: data.minInitialDepositRatio.toString(),
-        minExpeditedDeposit: data.expeditedMinDeposit,
       },
       votingParams: {
-        votingPeriod: data.votingPeriod,
         expeditedVotingPeriod: data.expeditedVotingPeriod,
+        votingPeriod: data.votingPeriod,
       },
     },
     isLoading,
@@ -107,8 +108,8 @@ export const useDerivedProposalParams = (
   return {
     data: {
       ...data,
-      minDeposit: data.minDeposit
-        .map((coin) =>
+      emergencyMinDeposit: data.emergencyMinDeposit
+        ?.map((coin) =>
           coinToTokenWithValue(
             coin.denom,
             coin.amount,
@@ -127,8 +128,8 @@ export const useDerivedProposalParams = (
           )
         )
         .sort(compareTokenWithValues),
-      emergencyMinDeposit: data.emergencyMinDeposit
-        ?.map((coin) =>
+      minDeposit: data.minDeposit
+        .map((coin) =>
           coinToTokenWithValue(
             coin.denom,
             coin.amount,

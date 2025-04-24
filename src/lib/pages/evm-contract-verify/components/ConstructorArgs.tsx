@@ -1,7 +1,8 @@
-import { Box, Checkbox, Heading, Stack, Text } from "@chakra-ui/react";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
-import { useController, useWatch } from "react-hook-form";
+
+import { Box, Checkbox, Heading, Stack, Text } from "@chakra-ui/react";
 import { ControllerTextarea } from "lib/components/forms";
+import { useController, useWatch } from "react-hook-form";
 
 interface ConstructorArgsProps<T extends FieldValues> {
   control: Control<T>;
@@ -28,38 +29,38 @@ export const ConstructorArgs = <T extends FieldValues>({
         <Heading as="h6" variant="h6">
           Input constructor arguments
         </Heading>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           Provide ABI that will become the config of the contract
         </Text>
       </Stack>
       <Checkbox
-        p={2}
         isChecked={field.value}
+        p={2}
         onChange={(e) => field.onChange(e.target.checked)}
       >
         <Text>Have constructor arguments</Text>
       </Checkbox>
       <Box
-        py={4}
-        px={3}
         bgColor="gray.900"
         borderRadius="md"
         display={field.value ? "block" : "none"}
+        px={3}
+        py={4}
       >
         <ControllerTextarea
           backgroundColor="gray.900"
-          name={`${name}.value` as FieldPath<T>}
           control={control}
-          isRequired
-          label="Constructor arguments"
-          placeholder="ex.000000000000000000000000c005dc82818d67af737725bd4bf75435d065d239"
-          variant="fixed-floating"
-          labelBgColor="gray.900"
           error={
             constructorArgsValue === ""
               ? "Invalid constructor arguments"
               : undefined
           }
+          isRequired
+          label="Constructor arguments"
+          labelBgColor="gray.900"
+          name={`${name}.value` as FieldPath<T>}
+          placeholder="ex.000000000000000000000000c005dc82818d67af737725bd4bf75435d065d239"
+          variant="fixed-floating"
         />
       </Box>
     </Stack>

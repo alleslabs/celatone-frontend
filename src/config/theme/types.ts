@@ -1,34 +1,28 @@
 export type ThemeConfig = {
   branding: {
-    logo: string;
     favicon: string;
+    logo: string;
     seo: {
       appName: string;
-      title: string;
       description: string;
       image: string;
+      title: string;
       x: {
-        handle: string;
         cardType: string;
+        handle: string;
       };
     };
   };
   colors: {
-    primary: {
+    background: {
       main: string;
-      light: string;
-      lighter: string;
-      dark: string;
-      darker: string;
-      background: string;
+      overlay: string;
     };
-    secondary: {
-      main: string;
-      light: string;
-      lighter: string;
-      dark: string;
-      darker: string;
+    error: {
       background: string;
+      dark: string;
+      light: string;
+      main: string;
     };
     gray: {
       100: string;
@@ -39,123 +33,129 @@ export type ThemeConfig = {
       800: string;
       900: string;
     };
-    text: {
-      main: string;
+    primary: {
+      background: string;
       dark: string;
-      disabled: string;
-    };
-    background: {
+      darker: string;
+      light: string;
+      lighter: string;
       main: string;
-      overlay: string;
+    };
+    secondary: {
+      background: string;
+      dark: string;
+      darker: string;
+      light: string;
+      lighter: string;
+      main: string;
     };
     success: {
-      main: string;
-      light: string;
-      dark: string;
       background: string;
+      dark: string;
+      light: string;
+      main: string;
     };
-    error: {
-      main: string;
-      light: string;
+    text: {
       dark: string;
-      background: string;
+      disabled: string;
+      main: string;
     };
     warning: {
-      main: string;
-      light: string;
-      dark: string;
       background: string;
+      dark: string;
+      light: string;
+      main: string;
     };
+  };
+  footer?: {
+    description: string;
+    iconStyle: "regular" | "rounded";
+    logo: string;
   };
   illustration: {
     "404": string;
-    error: string;
-    searchNotFound: string;
-    searchEmpty: string;
     disconnected: string;
+    error: string;
+    searchEmpty: string;
+    searchNotFound: string;
   };
   jsonTheme: "monokai" | "one_dark" | "pastel_on_dark";
-  footer?: {
-    logo: string;
-    description: string;
-    iconStyle: "rounded" | "regular";
-  };
   socialMedia?: {
-    website?: string;
-    github?: string;
     discord?: string;
-    x?: string;
-    medium?: string;
-    telegram?: string;
-    reddit?: string;
+    github?: string;
     linkedin?: string;
+    medium?: string;
+    reddit?: string;
+    telegram?: string;
+    website?: string;
+    x?: string;
   };
 };
 
 export type ComponentConfig = {
   button: {
-    primary: {
-      background: string;
-      color: string;
-      disabledBackground: string;
-      disabledColor: string;
-      hoverBackground: string;
-      activeBackground: string;
-    };
     outlinePrimary: {
+      activeBackground: string;
       borderColor: string;
       color: string;
       disabledBorderColor: string;
       disabledColor: string;
       hoverBackground: string;
+    };
+    primary: {
       activeBackground: string;
+      background: string;
+      color: string;
+      disabledBackground: string;
+      disabledColor: string;
+      hoverBackground: string;
     };
   };
   proposalChip: {
-    depositPeriod: {
-      bg: string;
-    };
-    votingPeriod: {
-      bg: string;
-    };
-    failed: {
-      bg: string;
-    };
-    rejected: {
-      bg: string;
-    };
-    passed: {
-      bg: string;
-    };
     cancelled: {
       bg: string;
     };
     depositFailed: {
       bg: string;
     };
+    depositPeriod: {
+      bg: string;
+    };
+    failed: {
+      bg: string;
+    };
+    passed: {
+      bg: string;
+    };
+    rejected: {
+      bg: string;
+    };
+    votingPeriod: {
+      bg: string;
+    };
+  };
+  recentBlocks: {
+    missed: string;
+    proposed: string;
+    signed: string;
   };
   stepper: {
     active: { bg: string; color: string };
     disabled: { bg: string; color: string };
   };
   tag: {
-    signer: {
+    related: {
       bg: string;
       color: string;
     };
-    related: {
+    signer: {
       bg: string;
       color: string;
     };
   };
   voteParticipations: {
+    didNotVote: string;
     voted: string;
     votedAbstain: string;
-    didNotVote: string;
-  };
-  recentBlocks: {
-    signed: string;
-    proposed: string;
-    missed: string;
   };
 };

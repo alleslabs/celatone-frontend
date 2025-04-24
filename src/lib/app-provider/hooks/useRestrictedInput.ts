@@ -1,10 +1,11 @@
 import type { ChangeEvent, ClipboardEvent, KeyboardEvent } from "react";
+
 import { useCallback, useMemo } from "react";
 
 export interface RestrictedInputReturn {
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   onKeyPress: (event: KeyboardEvent<HTMLInputElement>) => void;
   onPaste?: (event: ClipboardEvent<HTMLInputElement>) => void;
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 /**
@@ -44,18 +45,17 @@ export function useRestrictedInput(
 }
 
 export interface RestrictedNumberInputParams {
-  type?: "decimal" | "integer";
   maxDecimalPoints?: number;
   maxIntegerPoints?: number;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  type?: "decimal" | "integer";
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export function useRestrictedNumberInput({
-  type = "decimal",
   maxDecimalPoints = 6,
   maxIntegerPoints = 7,
   onChange: _onChange,
+  type = "decimal",
 }: RestrictedNumberInputParams): RestrictedInputReturn {
   const { onKeyPress: restrictCharacters } = useRestrictedInput(
     type === "integer" ? "0-9" : "0-9."
@@ -83,7 +83,7 @@ export function useRestrictedNumberInput({
         return;
       }
 
-      const { value, selectionStart, selectionEnd } =
+      const { selectionEnd, selectionStart, value } =
         event.target as HTMLInputElement;
 
       if (
@@ -119,7 +119,7 @@ export function useRestrictedNumberInput({
         event.stopPropagation();
       }
 
-      const { value, selectionStart, selectionEnd } =
+      const { selectionEnd, selectionStart, value } =
         event.target as HTMLInputElement;
 
       if (
@@ -160,5 +160,5 @@ export function useRestrictedNumberInput({
     [_onChange]
   );
 
-  return { onKeyPress, onPaste, onChange };
+  return { onChange, onKeyPress, onPaste };
 }

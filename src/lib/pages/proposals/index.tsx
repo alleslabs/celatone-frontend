@@ -1,5 +1,4 @@
 import { Flex, Heading } from "@chakra-ui/react";
-
 import { useGovConfig, useMobile } from "lib/app-provider";
 import { NewProposalButton } from "lib/components/button/NewProposalButton";
 import PageContainer from "lib/components/PageContainer";
@@ -17,11 +16,11 @@ const Proposals = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Proposals" />
-      <Flex justify="space-between" alignItems="center">
+      <Flex alignItems="center" justify="space-between">
         <Heading as="h5" variant="h5">
           Proposals
         </Heading>
-        <Flex gap={4} align="center">
+        <Flex align="center" gap={4}>
           <UserDocsLink
             href="introduction/overview#recent-proposals"
             isButton

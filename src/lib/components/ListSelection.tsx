@@ -1,4 +1,7 @@
 import type { InputProps } from "@chakra-ui/react";
+import type { LVPair } from "lib/types";
+import type { CSSProperties, RefObject } from "react";
+
 import {
   Box,
   Flex,
@@ -12,44 +15,40 @@ import {
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
-import { matchSorter } from "match-sorter";
-import type { CSSProperties } from "react";
-import { forwardRef, useRef, useState } from "react";
-
 import { useContractStore } from "lib/providers/store";
-import type { LVPair } from "lib/types";
 import { formatSlugName, mergeRefs } from "lib/utils";
+import { matchSorter } from "match-sorter";
+import { forwardRef, useRef, useState } from "react";
 
 import { CustomIcon } from "./icon";
 import { CreateNewListModal } from "./modal/list";
 
 export interface ListSelectionProps extends InputProps {
+  helperText?: string;
+  labelBgColor?: string;
   placeholder?: string;
   result: LVPair[];
   setResult: (options: LVPair[]) => void;
-  helperText?: string;
-  labelBgColor?: string;
 }
 
 const listItemProps: CSSProperties = {
   borderRadius: "8px",
+  cursor: "pointer",
   margin: "4px 0px",
   padding: "8px",
-  cursor: "pointer",
 };
 
 export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
   (
     {
-      result,
-      setResult,
-      placeholder,
       helperText,
       labelBgColor = "gray.900",
+      placeholder,
+      result,
+      setResult,
       ...rest
     }: ListSelectionProps,
     ref
-    // eslint-disable-next-line sonarjs/cognitive-complexity
   ) => {
     const { getContractLists, isContractListExist } = useContractStore();
     const options = getContractLists().map((item) => ({
@@ -115,19 +114,20 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
 
     useOutsideClick({
       enabled: enableOutside,
-      ref: boxRef,
       handler: () => setDisplayOptions(false),
+      ref: boxRef as RefObject<HTMLDivElement>,
     });
+
     return (
-      <Box ref={boxRef} w="full">
+      <Box w="full" ref={boxRef}>
         <FormControl>
           <Flex
             alignItems="center"
-            color="text.main"
+            background="none"
             border="1px solid"
             borderColor="gray.700"
-            background="none"
             borderRadius="8px"
+            color="text.main"
             maxW="100%"
             overflowX="scroll"
           >
@@ -135,29 +135,30 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               <Flex alignItems="center" pl={2}>
                 {[...result].map((option) => (
                   <Flex
+                    key={option.value}
                     display="inline-block"
                     onClick={() => selectOption(option)}
-                    key={option.value}
                   >
                     <Tag
                       cursor="pointer"
-                      whiteSpace="nowrap"
-                      variant="primary-light"
                       gap={1}
                       mr={1}
+                      variant="primary-light"
+                      whiteSpace="nowrap"
                     >
                       {option.label}
-                      <CustomIcon name="close" boxSize={3} />
+                      <CustomIcon boxSize={3} name="close" />
                     </Tag>
                   </Flex>
                 ))}
               </Flex>
             )}
             <Input
-              w="100%"
+              style={{ border: "0" }}
               minW="200px"
-              size="lg"
               placeholder={result.length ? undefined : placeholder}
+              size="lg"
+              w="100%"
               onChange={(e) => filterOptions(e.currentTarget.value)}
               onFocus={() => {
                 if (!inputValue) {
@@ -166,42 +167,41 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                 setDisplayOptions(true);
               }}
               ref={mergeRefs([inputRef, ref])}
-              style={{ border: "0" }}
               {...rest}
             />
             <FormLabel
-              position="absolute"
-              top={0}
-              left={0}
-              fontWeight={400}
-              color="text.dark"
               bgColor={labelBgColor}
-              pointerEvents="none"
-              px={1}
-              my={2}
+              color="text.dark"
+              fontWeight={400}
+              left={0}
               lineHeight="1.2"
+              my={2}
+              pointerEvents="none"
+              position="absolute"
+              px={1}
+              top={0}
               transform="scale(0.75) translateY(-24px)"
             >
               Listed on
             </FormLabel>
           </Flex>
-          <FormHelperText ml={3} mt={1} fontSize="12px" color="text.dark">
+          <FormHelperText color="text.dark" fontSize="12px" ml={3} mt={1}>
             {helperText}
           </FormHelperText>
 
           {displayOptions && (
             <List
-              borderRadius="8px"
               bg="gray.800"
+              borderRadius="8px"
+              maxH="195px"
+              mt={0}
+              overflow="scroll"
+              position="absolute"
               px={2}
               py={1}
-              mt={0}
-              position="absolute"
-              zIndex="2"
-              w="full"
               top="60px"
-              maxH="195px"
-              overflow="scroll"
+              w="full"
+              zIndex="2"
             >
               {/* option selection section */}
               {partialResult.map((option) => (
@@ -216,11 +216,11 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                     <Text variant="body2">{option.label}</Text>
                     {isOptionSelected(option) && (
                       <CustomIcon
+                        boxSize={3}
+                        color="gray.600"
                         data-label={option.label}
                         mr={2}
                         name="check"
-                        color="gray.600"
-                        boxSize={3}
                       />
                     )}
                   </Flex>
@@ -229,24 +229,24 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               {/* creation section */}
               {canCreateOption && (
                 <CreateNewListModal
+                  inputValue={inputValue}
                   trigger={
                     <ListItem
-                      w="full"
                       style={listItemProps}
                       _hover={{ bg: "gray.700" }}
-                      transition="all 0.25s ease-in-out"
                       data-testid="create-option"
+                      transition="all 0.25s ease-in-out"
+                      w="full"
                       onClick={() => setEnableOutside(false)}
                     >
                       <Flex alignItems="center" gap={2}>
-                        <CustomIcon name="plus" color="text.dark" boxSize={3} />
+                        <CustomIcon boxSize={3} color="text.dark" name="plus" />
                         <Text variant="body2">Create new list </Text>
                       </Flex>
                     </ListItem>
                   }
-                  onCreate={createOption}
                   onClose={() => setEnableOutside(true)}
-                  inputValue={inputValue}
+                  onCreate={createOption}
                 />
               )}
             </List>

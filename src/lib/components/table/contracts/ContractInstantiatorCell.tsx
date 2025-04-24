@@ -1,9 +1,9 @@
-import { Flex, Text } from "@chakra-ui/react";
+import type { ContractInfo } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { RemarkOperation } from "lib/types";
-import type { ContractInfo } from "lib/types";
 
 interface ContractInstantiatorCellProps {
   contractInfo: ContractInfo;
@@ -11,7 +11,7 @@ interface ContractInstantiatorCellProps {
 }
 
 export const ContractInstantiatorCell = ({
-  contractInfo: { instantiator, remark, latestUpdater },
+  contractInfo: { instantiator, latestUpdater, remark },
   isReadOnly,
 }: ContractInstantiatorCellProps) => {
   const isMobile = useMobile();
@@ -23,13 +23,13 @@ export const ContractInstantiatorCell = ({
   if (!latestUpdater)
     return instantiator ? (
       <ExplorerLink
-        value={instantiator}
-        type={getAddressType(instantiator)}
-        showCopyOnHover
         isReadOnly={isReadOnly}
+        showCopyOnHover
+        type={getAddressType(instantiator)}
+        value={instantiator}
       />
     ) : (
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         N/A
       </Text>
     );
@@ -39,38 +39,38 @@ export const ContractInstantiatorCell = ({
   switch (remark?.operation) {
     case RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_GENESIS:
       return (
-        <Text variant="body2" color="text.dark" cursor="text">
+        <Text color="text.dark" cursor="text" variant="body2">
           Genesis
         </Text>
+      );
+    case RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT:
+      return (
+        <ExplorerLink
+          isReadOnly={isReadOnly}
+          showCopyOnHover
+          type={updaterType}
+          value={latestUpdater}
+        />
       );
     case RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE:
       return (
         <Flex direction="column" onClick={(e) => e.stopPropagation()}>
           {!isMobile && (
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               Migrated by
             </Text>
           )}
           <ExplorerLink
-            value={latestUpdater}
-            type={updaterType}
-            showCopyOnHover
             isReadOnly={isReadOnly}
+            showCopyOnHover
+            type={updaterType}
+            value={latestUpdater}
           />
         </Flex>
       );
-    case RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT:
-      return (
-        <ExplorerLink
-          value={latestUpdater}
-          type={updaterType}
-          showCopyOnHover
-          isReadOnly={isReadOnly}
-        />
-      );
     default:
       return (
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           N/A
         </Text>
       );

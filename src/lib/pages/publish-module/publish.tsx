@@ -1,10 +1,9 @@
-import { Box, Button, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useRouter } from "next/router";
+import type { DecodeModuleQueryResponse } from "lib/services/types";
+import type { Option } from "lib/types";
 import type { Dispatch, SetStateAction } from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
 
+import { Box, Button, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -21,9 +20,13 @@ import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { useTxBroadcast } from "lib/hooks";
 import { useSimulateFeeQuery } from "lib/services/tx";
-import type { DecodeModuleQueryResponse } from "lib/services/types";
-import type { Option } from "lib/types";
 import { composePublishMsg } from "lib/utils";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+
+import type { PublishCompleteState } from ".";
+import type { PublishModuleState, PublishStatus } from "./formConstants";
 
 import {
   Footer,
@@ -32,19 +35,17 @@ import {
   UploadAccordion,
   UploadModuleCard,
 } from "./components";
-import type { PublishModuleState, PublishStatus } from "./formConstants";
 import { defaultValues, emptyModule, POLICIES } from "./formConstants";
 import { statusResolver } from "./utils";
-import type { PublishCompleteState } from ".";
 
 interface PublishModuleProps {
-  setPublishTxInfo: Dispatch<SetStateAction<PublishCompleteState>>;
   setCompleted: Dispatch<SetStateAction<boolean>>;
+  setPublishTxInfo: Dispatch<SetStateAction<PublishCompleteState>>;
 }
 
 export const PublishModule = ({
-  setPublishTxInfo,
   setCompleted,
+  setPublishTxInfo,
 }: PublishModuleProps) => {
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
@@ -73,9 +74,9 @@ export const PublishModule = ({
     defaultValues,
   });
 
-  const { upgradePolicy, modules } = watch();
+  const { modules, upgradePolicy } = watch();
 
-  const { append, remove, update, move } = useFieldArray({
+  const { append, move, remove, update } = useFieldArray({
     control,
     name: "modules",
   });
@@ -89,9 +90,9 @@ export const PublishModule = ({
         publishStatus: PublishStatus
       ) => {
         update(index, {
-          file,
           base64EncodedFile,
           decodeRes,
+          file,
           publishStatus,
         });
       },
@@ -121,32 +122,32 @@ export const PublishModule = ({
       modules.map((file) => file.base64EncodedFile),
       upgradePolicy
     ),
+    onError: (e) => {
+      setSimulateError(e.message);
+      setEstimatedFee(undefined);
+    },
     onSuccess: (gasRes) => {
       if (gasRes) {
         setEstimatedFee(fabricateFee(gasRes));
         setSimulateError("");
       } else setEstimatedFee(undefined);
     },
-    onError: (e) => {
-      setSimulateError(e.message);
-      setEstimatedFee(undefined);
-    },
   });
 
   const proceed = useCallback(async () => {
     const stream = await postPublishTx({
-      onTxSucceed: (txResult) => {
-        setPublishTxInfo({ ...txResult, upgradePolicy, modules });
-        setProcessing(false);
-        setCompleted(true);
-      },
-      onTxFailed: () => setProcessing(false),
       estimatedFee,
       messages: composePublishMsg(
         address,
         modules.map((file) => file.base64EncodedFile),
         upgradePolicy
       ),
+      onTxFailed: () => setProcessing(false),
+      onTxSucceed: (txResult) => {
+        setPublishTxInfo({ ...txResult, modules, upgradePolicy });
+        setProcessing(false);
+        setCompleted(true);
+      },
     });
     if (stream) {
       setProcessing(true);
@@ -182,11 +183,11 @@ export const PublishModule = ({
       setValue(
         `modules.${index}.publishStatus`,
         statusResolver({
-          data: field.decodeRes,
-          modules,
-          index,
-          policy: upgradePolicy,
           address,
+          data: field.decodeRes,
+          index,
+          modules,
+          policy: upgradePolicy,
         })
       );
     });
@@ -194,11 +195,11 @@ export const PublishModule = ({
 
   const publishModuleText = useMemo(
     () => ({
-      header: "Publish / Republish modules",
+      connectWallet: "You need to connect wallet to proceed this action",
       description: `Upload .mv files to publish new module to ${chainPrettyName}. You can
       upload multiple .mv files to publish many modules within a
       transaction.`,
-      connectWallet: "You need to connect wallet to proceed this action",
+      header: "Publish / Republish modules",
     }),
     [chainPrettyName]
   );
@@ -211,23 +212,23 @@ export const PublishModule = ({
     <>
       <CelatoneSeo pageName="Publish / Republish modules" />
       <PageContainer p={0}>
-        <Box minH="inherit" maxW="1440px" mx="auto">
+        <Box maxW="1440px" minH="inherit" mx="auto">
           <Grid
-            templateColumns="1fr 6fr 4fr 1fr"
             columnGap="16px"
-            rowGap="48px"
             p={{ base: "16px", md: "48px" }}
+            rowGap="48px"
+            templateColumns="1fr 6fr 4fr 1fr"
           >
             <Box gridArea="1 / 2">
-              <Heading as="h4" variant="h4" textAlign="center">
+              <Heading as="h4" textAlign="center" variant="h4">
                 {publishModuleText.header}
               </Heading>
               <Text color="text.dark" pt={4} textAlign="center">
                 {publishModuleText.description}
               </Text>
               <ConnectWalletAlert
-                subtitle={publishModuleText.connectWallet}
                 mt={12}
+                subtitle={publishModuleText.connectWallet}
               />
             </Box>
             {/* Upload File Section */}
@@ -235,33 +236,33 @@ export const PublishModule = ({
               <Heading as="h6" variant="h6">
                 Upload .mv file(s)
               </Heading>
-              <Flex gap={6} flexDirection="column" my={6}>
+              <Flex flexDirection="column" gap={6} my={6}>
                 {modules.map((field, idx) => (
                   <UploadModuleCard
                     key={`${field.base64EncodedFile}-${idx.toString()}`}
+                    fileState={field}
                     index={idx}
                     modules={modules}
-                    fileState={field}
+                    moveEntry={move}
                     policy={upgradePolicy}
-                    setFile={setFileValue(idx)}
+                    removeEntry={() => remove(idx)}
                     removeFile={() => {
                       update(idx, emptyModule);
                     }}
-                    removeEntry={() => remove(idx)}
-                    moveEntry={move}
+                    setFile={setFileValue(idx)}
                   />
                 ))}
               </Flex>
               <Button
+                leftIcon={<CustomIcon name="add-new" />}
+                p="0 4px"
+                variant="ghost-primary"
                 onClick={() => {
                   track(AmpEvent.USE_ADD_MODULE_UPLOAD_BOX, {
                     currentBoxAmount: modules.length + 1,
                   });
                   append(emptyModule);
                 }}
-                leftIcon={<CustomIcon name="add-new" />}
-                variant="ghost-primary"
-                p="0 4px"
               >
                 Publish more modules
               </Button>
@@ -271,18 +272,18 @@ export const PublishModule = ({
               <Heading as="h6" variant="h6">
                 Upgrade policy
               </Heading>
-              <Text color="text.dark" variant="body2" mt={2}>
+              <Text color="text.dark" mt={2} variant="body2">
                 Specify how publishing modules will be able to republish.
               </Text>
               <Flex direction="column" gap={2} my={4}>
                 {POLICIES.map((item) => (
                   <PolicyCard
                     key={item.value}
-                    value={item.value}
-                    selected={upgradePolicy}
-                    onSelect={() => setValue("upgradePolicy", item.value)}
                     description={item.description}
                     hasCondition={item.condition}
+                    selected={upgradePolicy}
+                    value={item.value}
+                    onSelect={() => setValue("upgradePolicy", item.value)}
                   />
                 ))}
               </Flex>
@@ -291,12 +292,12 @@ export const PublishModule = ({
                 change to the more lenient policy.
               </Text>
               <Flex
-                mt={12}
-                fontSize="14px"
-                color="text.dark"
-                alignSelf="flex-start"
                 alignItems="center"
+                alignSelf="flex-start"
+                color="text.dark"
+                fontSize="14px"
                 gap={1}
+                mt={12}
               >
                 <p>Transaction fee:</p>
                 <EstimatedFeeRender
@@ -306,9 +307,9 @@ export const PublishModule = ({
               </Flex>
               {simulateError && (
                 <ErrorMessageRender
+                  alignSelf="flex-start"
                   error={simulateError}
                   mt={2}
-                  alignSelf="flex-start"
                 />
               )}
             </Box>
@@ -322,20 +323,20 @@ export const PublishModule = ({
         </Box>
       </PageContainer>
       <Footer
+        disabled={!enablePublish || Boolean(simulateError) || isSimulating}
+        fieldAmount={modules.length}
+        isLoading={processing}
         publishModule={() => {
           const republishModules = modules.filter((ampTrackRepublish) =>
             ampTrackRepublish.publishStatus.text.includes("republish")
           );
           track(AmpEvent.ACTION_MOVE_PUBLISH, {
             numberOfModule: modules.length,
-            numberOfRepublishModules: republishModules.length,
             numberOfNewPublishModules: modules.length - republishModules.length,
+            numberOfRepublishModules: republishModules.length,
           });
           proceed();
         }}
-        isLoading={processing}
-        disabled={!enablePublish || Boolean(simulateError) || isSimulating}
-        fieldAmount={modules.length}
       />
     </>
   );

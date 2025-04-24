@@ -1,53 +1,54 @@
-import { Stack } from "@chakra-ui/react";
-
-import { AssetsSection } from "lib/components/asset";
-import { EvmVerifySection } from "lib/components/evm-verify-section";
 import type {
   BechAddr,
   BechAddr20,
+  EvmVerifyInfo,
   HexAddr20,
   Nullish,
   Option,
-  EvmVerifyInfo,
 } from "lib/types";
 
+import { Stack } from "@chakra-ui/react";
+import { AssetsSection } from "lib/components/asset";
+import { EvmVerifySection } from "lib/components/evm-verify-section";
+
+import type { TxsTabIndex } from "../../types";
+
+import { EvmContractDetailsTxs } from "../EvmContractDetailsTxs";
 import { OverviewInfo } from "./OverviewInfo";
 import { OverviewVerifiedCmds } from "./OverviewVerifiedCmds";
 import { OverviewVerifiedInfo } from "./OverviewVerifiedInfo";
 import { OverviewVerifiedProxyTargetCmds } from "./OverviewVerifiedProxyTargetCmds";
-import type { TxsTabIndex } from "../../types";
-import { EvmContractDetailsTxs } from "../EvmContractDetailsTxs";
 
 interface EvmContractDetailsOverviewProps {
   contractAddressBech: BechAddr20;
   contractAddressHex: HexAddr20;
-  hash: Option<string>;
-  evmHash: Nullish<string>;
-  sender: Option<BechAddr>;
   created: Option<Date>;
+  evmHash: Nullish<string>;
+  evmVerifyInfo: Option<EvmVerifyInfo>;
+  hash: Option<string>;
   isContractInfoLoading: boolean;
   onViewMoreAssets: () => void;
   onViewMoreTxs: () => void;
-  tab: TxsTabIndex;
-  setTab: (tab: TxsTabIndex) => void;
-  evmVerifyInfo: Option<EvmVerifyInfo>;
   proxyTargetEvmVerifyInfo: Option<EvmVerifyInfo>;
+  sender: Option<BechAddr>;
+  setTab: (tab: TxsTabIndex) => void;
+  tab: TxsTabIndex;
 }
 
 export const EvmContractDetailsOverview = ({
   contractAddressBech,
   contractAddressHex,
-  hash,
-  evmHash,
-  sender,
   created,
+  evmHash,
+  evmVerifyInfo,
+  hash,
   isContractInfoLoading,
   onViewMoreAssets,
   onViewMoreTxs,
-  tab,
-  setTab,
-  evmVerifyInfo,
   proxyTargetEvmVerifyInfo,
+  sender,
+  setTab,
+  tab,
 }: EvmContractDetailsOverviewProps) => (
   <Stack gap={8}>
     <EvmVerifySection
@@ -55,11 +56,11 @@ export const EvmContractDetailsOverview = ({
       evmVerifyInfo={evmVerifyInfo}
     />
     <OverviewInfo
-      hash={hash}
-      evmHash={evmHash}
-      sender={sender}
       created={created}
+      evmHash={evmHash}
+      hash={hash}
       isContractInfoLoading={isContractInfoLoading}
+      sender={sender}
     />
     {evmVerifyInfo?.isVerified && (
       <>
@@ -82,9 +83,9 @@ export const EvmContractDetailsOverview = ({
     />
     <EvmContractDetailsTxs
       address={contractAddressBech}
-      onViewMore={onViewMoreTxs}
-      tab={tab}
       setTab={setTab}
+      tab={tab}
+      onViewMore={onViewMoreTxs}
     />
   </Stack>
 );

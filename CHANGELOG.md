@@ -41,9 +41,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+### Bug fixes
+
+## v1.12.0
+
+### Improvements
+
+- [#1301](https://github.com/alleslabs/celatone-frontend/pull/1301) Upgrade Nextjs 14 to 15
+- [#1294](https://github.com/alleslabs/celatone-frontend/pull/1294) Upgrade React & ESLint version
 - [#1309](https://github.com/alleslabs/celatone-frontend/pull/1309) Add emergency tag and fix sentence case in EVM verification flow
+- [#1311](https://github.com/alleslabs/celatone-frontend/pull/1311) Add emergency tag for initia lite version
 
 ### Bug fixes
+
+- [#1314](https://github.com/alleslabs/celatone-frontend/pull/1314) Fix css, sentence case in EVM verification flow
 
 ## v1.11.0
 

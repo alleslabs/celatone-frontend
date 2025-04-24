@@ -1,8 +1,7 @@
-import { useCallback } from "react";
+import type { HexAddr } from "lib/types";
 
 import { useCelatoneApp, useConvertHexAddress } from "lib/app-provider";
 import { zBechAddr, zHexAddr } from "lib/types";
-import type { HexAddr } from "lib/types";
 import {
   bech32AddressToHex,
   isHexModuleAddress,
@@ -10,6 +9,7 @@ import {
   toChecksumAddress,
   unpadHexAddress,
 } from "lib/utils";
+import { useCallback } from "react";
 
 export const useFormatAddresses = () => {
   const {
@@ -17,7 +17,7 @@ export const useFormatAddresses = () => {
       features: { move },
     },
   } = useCelatoneApp();
-  const { convertHexWalletAddress, convertHexModuleAddress } =
+  const { convertHexModuleAddress, convertHexWalletAddress } =
     useConvertHexAddress();
 
   const formatHexAddress = useCallback(

@@ -1,5 +1,6 @@
-import { useToast as useChakraToast } from "@chakra-ui/react";
 import type { AlertStatus } from "@chakra-ui/react";
+
+import { useToast as useChakraToast } from "@chakra-ui/react";
 // TODO: revisit this later
 
 // import type { ReactNode } from "react";
@@ -19,11 +20,11 @@ export function useToast() {
 
   return (title: string, status: AlertStatus, isClosable: boolean) => {
     toast({
-      title,
-      status,
       duration: 5000,
       isClosable,
       position: "bottom-right",
+      status,
+      title,
     });
   };
 }

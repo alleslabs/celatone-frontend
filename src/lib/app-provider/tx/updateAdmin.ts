@@ -1,19 +1,20 @@
 import type { StdFee } from "@cosmjs/stargate";
-import { MsgUpdateAdmin } from "@initia/initia.js";
-import { useCallback } from "react";
+import type { BechAddr, BechAddr32, Option } from "lib/types";
 
+import { MsgUpdateAdmin } from "@initia/initia.js";
 import { trackTxSucceed } from "lib/amplitude";
 import { updateAdminTx } from "lib/app-fns/tx/updateAdmin";
-import type { BechAddr, BechAddr32, Option } from "lib/types";
 import { toEncodeObject } from "lib/utils";
+import { useCallback } from "react";
+
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface UpdateAdminStreamParams {
   contractAddress: BechAddr32;
-  newAdmin: BechAddr;
   estimatedFee: Option<StdFee>;
-  onTxSucceed?: () => void;
+  newAdmin: BechAddr;
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
 }
 
 export const useUpdateAdminTx = () => {
@@ -23,10 +24,10 @@ export const useUpdateAdminTx = () => {
   return useCallback(
     async ({
       contractAddress,
-      newAdmin,
       estimatedFee,
-      onTxSucceed,
+      newAdmin,
       onTxFailed,
+      onTxSucceed,
     }: UpdateAdminStreamParams) => {
       if (!address) throw new Error("No address provided (useUpdateAdminTx)");
 
@@ -38,14 +39,14 @@ export const useUpdateAdminTx = () => {
 
       return updateAdminTx({
         address,
-        messages,
         fee: estimatedFee,
-        signAndBroadcast,
+        messages,
+        onTxFailed,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

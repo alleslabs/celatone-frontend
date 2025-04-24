@@ -1,25 +1,27 @@
-import { Text } from "@chakra-ui/react";
 import type { JsonFragmentType } from "ethers";
 import type { Control, FieldValues, Path } from "react-hook-form";
+
+import { Text } from "@chakra-ui/react";
 import { useAssetInfos } from "lib/services/assetService";
 import { useEvmParams } from "lib/services/evm";
 import { getTokenLabel } from "lib/utils";
+
 import { BaseField } from "./BaseField";
 import { TupleField } from "./TupleField";
 import { TypeLabel } from "./TypeLabel";
 
 interface FormFieldsProps<T extends FieldValues> {
-  control: Control<T>;
   components: ReadonlyArray<JsonFragmentType>;
-  isPayable: boolean;
+  control: Control<T>;
   isDisabled?: boolean;
+  isPayable: boolean;
 }
 
 export const FormFields = <T extends FieldValues>({
-  control,
   components,
-  isPayable,
+  control,
   isDisabled,
+  isPayable,
 }: FormFieldsProps<T>) => {
   const { data: evmParamsData } = useEvmParams();
   const { data: assetInfos } = useAssetInfos({
@@ -35,22 +37,22 @@ export const FormFields = <T extends FieldValues>({
     <>
       {components.length > 0 ? (
         <TupleField
-          control={control}
-          name={"inputs" as Path<T>}
           components={components}
+          control={control}
           isDisabled={isDisabled}
+          name={"inputs" as Path<T>}
           withoutBorder
         />
       ) : (
         <Text
-          variant="body2"
-          textColor="text.disabled"
-          fontWeight={500}
           bgColor="gray.800"
-          w="full"
-          py={4}
           borderRadius="4px"
+          fontWeight={500}
+          py={4}
           textAlign="center"
+          textColor="text.disabled"
+          variant="body2"
+          w="full"
         >
           Empty {isDisabled ? "Output" : "Input"}
         </Text>

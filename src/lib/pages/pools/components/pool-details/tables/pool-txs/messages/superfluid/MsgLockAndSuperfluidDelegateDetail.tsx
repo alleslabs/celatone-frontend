@@ -1,13 +1,14 @@
-import { Box, Flex } from "@chakra-ui/react";
+import type { AssetInfos, Option, PoolData } from "lib/types";
+import type { MsgLockAndSuperfluidDelegateDetails } from "lib/utils/tx/types";
 
+import { Box, Flex } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import { useTxData } from "lib/services/tx";
 import { useValidatorDataRest } from "lib/services/validator";
-import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue, extractMsgType } from "lib/utils";
-import type { MsgLockAndSuperfluidDelegateDetails } from "lib/utils/tx/types";
+
 import {
   ErrorFetchingDetail,
   PoolAssetCard,
@@ -16,25 +17,25 @@ import {
 import { getPoolDenom } from "../utils";
 
 interface MsgLockAndSuperfluidDelegateDetailProps {
-  txHash: string;
-  blockHeight: number;
-  msgIndex: number;
-  msg: MsgLockAndSuperfluidDelegateDetails;
-  pool: PoolData;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  blockHeight: number;
+  isOpened: boolean;
+  msg: MsgLockAndSuperfluidDelegateDetails;
+  msgIndex: number;
+  pool: PoolData;
+  txHash: string;
 }
 
 export const MsgLockAndSuperfluidDelegateDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  pool,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  pool,
+  txHash,
 }: MsgLockAndSuperfluidDelegateDetailProps) => {
   const poolDenom = getPoolDenom(pool.id.toString());
   const poolAsset = msg.coins.find((coin) => coin.denom === poolDenom) ?? {
@@ -67,39 +68,39 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
     ?.attributes.find((attr) => attr.key === "period_lock_id")?.value;
 
   return (
-    <Flex w="full" direction="column" gap={6}>
+    <Flex direction="column" gap={6} w="full">
       <Flex gap={12}>
         <PoolInfoText title="Block height">
           <ExplorerLink
-            value={blockHeight.toString()}
-            type="block_height"
-            showCopyOnHover
             ampCopierSection={ampCopierSection}
+            showCopyOnHover
+            type="block_height"
+            value={blockHeight.toString()}
           />
         </PoolInfoText>
         <PoolInfoText title="LockID">{lockId}</PoolInfoText>
         <PoolInfoText title="To validator">
           <ValidatorBadge
-            validator={{
-              validatorAddress: msg.val_addr,
-              moniker: validator?.moniker,
-              identity: undefined,
-            }}
-            badgeSize={6}
             ampCopierSection={ampCopierSection}
+            badgeSize={6}
+            validator={{
+              identity: undefined,
+              moniker: validator?.moniker,
+              validatorAddress: msg.val_addr,
+            }}
           />
         </PoolInfoText>
         <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
       </Flex>
       <Box w="full">
         <PoolAssetCard
-          poolId={pool.id}
-          description="Bonded to"
-          assetText="Bonded"
-          poolToken={poolToken}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          assetText="Bonded"
+          description="Bonded to"
+          isOpened={isOpened}
+          poolId={pool.id}
+          poolToken={poolToken}
         />
       </Box>
     </Flex>

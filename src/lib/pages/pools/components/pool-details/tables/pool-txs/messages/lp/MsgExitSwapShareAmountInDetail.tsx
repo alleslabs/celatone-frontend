@@ -1,64 +1,64 @@
-import { Box, Flex } from "@chakra-ui/react";
-
-import { DividerWithArrow } from "lib/components/DividerWithArrow";
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfos, Option } from "lib/types";
-import { extractMsgType } from "lib/utils";
 import type { MsgExitSwapShareAmountInDetails } from "lib/utils/tx/types";
 
-import { PoolAssetsGrid, PoolLPCard } from "./components";
+import { Box, Flex } from "@chakra-ui/react";
+import { DividerWithArrow } from "lib/components/DividerWithArrow";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { extractMsgType } from "lib/utils";
+
 import { PoolInfoText } from "../components/PoolInfoText";
+import { PoolAssetsGrid, PoolLPCard } from "./components";
 
 interface MsgExitSwapShareAmountInDetailProps {
-  txHash: string;
-  blockHeight: number;
-  msgIndex: number;
-  msg: MsgExitSwapShareAmountInDetails;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  blockHeight: number;
+  isOpened: boolean;
+  msg: MsgExitSwapShareAmountInDetails;
+  msgIndex: number;
+  txHash: string;
 }
 
 export const MsgExitSwapShareAmountInDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  txHash,
 }: MsgExitSwapShareAmountInDetailProps) => (
-  <Flex minW="full" direction="column" alignItems="start" gap={6}>
+  <Flex alignItems="start" direction="column" gap={6} minW="full">
     <Flex gap={12}>
       <PoolInfoText title="Block height">
         <ExplorerLink
-          value={blockHeight.toString()}
-          type="block_height"
-          showCopyOnHover
           ampCopierSection={ampCopierSection}
+          showCopyOnHover
+          type="block_height"
+          value={blockHeight.toString()}
         />
       </PoolInfoText>
       <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
     </Flex>
     <Box w="full">
       <PoolLPCard
-        msgIndex={msgIndex}
-        poolId={msg.pool_id}
-        msgShareAmount={msg.share_in_amount}
+        ampCopierSection={ampCopierSection}
         assetInfos={assetInfos}
         isJoin={false}
         isOpened={isOpened}
-        ampCopierSection={ampCopierSection}
+        msgIndex={msgIndex}
+        msgShareAmount={msg.share_in_amount}
+        poolId={msg.pool_id}
       />
       <DividerWithArrow />
       <PoolAssetsGrid
-        txHash={txHash}
+        ampCopierSection={ampCopierSection}
+        assetInfos={assetInfos}
+        isJoin={false}
+        isOpened={isOpened}
         msgIndex={msgIndex}
         msgSwapDenom={msg.token_out_denom}
-        isJoin={false}
-        assetInfos={assetInfos}
-        isOpened={isOpened}
-        ampCopierSection={ampCopierSection}
+        txHash={txHash}
       />
     </Box>
   </Flex>

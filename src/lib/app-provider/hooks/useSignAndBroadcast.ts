@@ -1,15 +1,15 @@
 import type { StdFee } from "@cosmjs/amino";
-import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { DeliverTxResponse } from "@cosmjs/stargate";
+import type { BechAddr20 } from "lib/types";
+
+import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import { sleep } from "lib/utils";
 import { useCallback } from "react";
 
-import type { BechAddr20 } from "lib/types";
-import { sleep } from "lib/utils";
-
+import { useCelatoneApp } from "../contexts";
 import { useCurrentChain } from "./useCurrentChain";
 import { useGetSigningClient } from "./useGetSigningClient";
-import { useCelatoneApp } from "../contexts";
 
 const getTxResponse = async (rpcEndpoint: string, txHash: string) => {
   const TIME_OUT_MS = 3000;
@@ -35,14 +35,14 @@ const getTxResponse = async (rpcEndpoint: string, txHash: string) => {
     return result
       ? {
           code: result.code,
-          height: result.height,
-          txIndex: result.txIndex,
-          rawLog: result.rawLog,
-          transactionHash: _txHash,
           events: result.events,
-          msgResponses: result.msgResponses,
           gasUsed: result.gasUsed,
           gasWanted: result.gasWanted,
+          height: result.height,
+          msgResponses: result.msgResponses,
+          rawLog: result.rawLog,
+          transactionHash: _txHash,
+          txIndex: result.txIndex,
         }
       : pollForTx(_txHash);
   };
@@ -63,8 +63,8 @@ const getTxResponse = async (rpcEndpoint: string, txHash: string) => {
 
 interface SignAndBroadcastParams {
   address: BechAddr20;
-  messages: EncodeObject[];
   fee: StdFee;
+  messages: EncodeObject[];
 }
 
 export type SignAndBroadcast = (
@@ -72,7 +72,7 @@ export type SignAndBroadcast = (
 ) => Promise<DeliverTxResponse>;
 
 export const useSignAndBroadcast = () => {
-  const { walletProvider, chainId } = useCurrentChain();
+  const { chainId, walletProvider } = useCurrentChain();
   const {
     chainConfig: { rpc: rpcEndpoint },
   } = useCelatoneApp();
@@ -81,8 +81,8 @@ export const useSignAndBroadcast = () => {
   return useCallback(
     async ({
       address,
-      messages,
       fee,
+      messages,
     }: SignAndBroadcastParams): Promise<DeliverTxResponse> => {
       if (walletProvider.type === "initia-widget") {
         const { requestTx } = walletProvider.context;

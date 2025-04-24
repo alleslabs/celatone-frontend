@@ -1,11 +1,12 @@
-import { context, loadScript } from "@initia/react-wallet-widget/ssr";
 import type { WalletWidget, WidgetConfig } from "@initia/utils";
-import { useEffect, useState } from "react";
-import type { ReactNode, PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactNode } from "react";
 
+import { context, loadScript } from "@initia/react-wallet-widget/ssr";
 import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { useL1InfoByNetworkType } from "lib/hooks";
+import { useEffect, useState } from "react";
+
 import pkg from "../../../package.json";
 
 declare global {
@@ -21,7 +22,7 @@ const WalletWidgetProvider = ({
 }: PropsWithChildren<WidgetConfig> & {
   fallback?: ReactNode;
 }) => {
-  const [widget, setWidget] = useState<WalletWidget | null>(null);
+  const [widget, setWidget] = useState<null | WalletWidget>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -49,16 +50,15 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
   return (
     <WalletWidgetProvider
       key={currentChainId}
-      useKeplrAsDirectSigner={enabledWasm.enabled}
       customLayer={
         chainConfig.network_type === "local"
           ? {
               apis: {
-                rest: [{ address: chainConfig.rest }],
-                rpc: [{ address: chainConfig.rpc }],
                 "json-rpc": chainConfig.features.evm.enabled
                   ? [{ address: chainConfig.features.evm.jsonRpc }]
                   : undefined,
+                rest: [{ address: chainConfig.rest }],
+                rpc: [{ address: chainConfig.rpc }],
               },
               bech32_prefix: "init" as const,
               chain_id: currentChainId,
@@ -67,12 +67,13 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
               logo_URIs: chainConfig.logo_URIs,
               network_type: "devnet",
               pretty_name: chainConfig.prettyName,
-              staking: chainConfig.registry?.staking,
               slip44: chainConfig.registry?.slip44,
+              staking: chainConfig.registry?.staking,
             }
           : undefined
       }
       fallback={<LoadingOverlay />}
+      useKeplrAsDirectSigner={enabledWasm.enabled}
       {...configs}
     >
       {children}

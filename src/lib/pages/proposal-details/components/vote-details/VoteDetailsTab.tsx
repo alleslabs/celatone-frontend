@@ -1,18 +1,19 @@
 import type { TabProps } from "@chakra-ui/react";
+import type { ProposalData } from "lib/types";
+
 import { Button, useMultiStyleConfig, useTab } from "@chakra-ui/react";
 
-import type { ProposalData } from "lib/types";
 import { ProposalStepper } from "../proposal-stepper";
 
 interface VoteDetailsTabProps extends TabProps {
-  step: number;
   proposalData: ProposalData;
+  step: number;
 }
 
 export const VoteDetailsTab = ({
-  step,
-  proposalData,
   isDisabled,
+  proposalData,
+  step,
   ...restProps
 }: VoteDetailsTabProps) => {
   const tabProps = useTab({ ...restProps });
@@ -21,35 +22,35 @@ export const VoteDetailsTab = ({
   return (
     <Button
       __css={styles.tab}
-      display="flex"
-      w="full"
-      mb={0}
-      py={3}
-      borderRadius="8px 8px 0px 0px"
-      color="text.main"
-      sx={{
-        "&[aria-selected=true]": {
-          background: "gray.800",
-          border: "1px solid",
-          borderColor: "gray.700",
-          opacity: "100%",
-          borderBottomColor: "gray.800",
-        },
-        "&[aria-selected=false]": {
-          background: "transparent",
-          border: "1px solid",
-          borderColor: "gray.700",
-          opacity: "70%",
-          borderBottomColor: "transparent",
-        },
-      }}
-      isDisabled={isDisabled}
       _active={{
         bg: "unset",
       }}
+      borderRadius="8px 8px 0px 0px"
+      color="text.main"
+      display="flex"
+      isDisabled={isDisabled}
+      mb={0}
+      py={3}
+      sx={{
+        "&[aria-selected=false]": {
+          background: "transparent",
+          border: "1px solid",
+          borderBottomColor: "transparent",
+          borderColor: "gray.700",
+          opacity: "70%",
+        },
+        "&[aria-selected=true]": {
+          background: "gray.800",
+          border: "1px solid",
+          borderBottomColor: "gray.800",
+          borderColor: "gray.700",
+          opacity: "100%",
+        },
+      }}
+      w="full"
       {...tabProps}
     >
-      <ProposalStepper step={step} proposalData={proposalData} />
+      <ProposalStepper proposalData={proposalData} step={step} />
     </Button>
   );
 };

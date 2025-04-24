@@ -1,19 +1,20 @@
-import axios from "axios";
-
 import type { HexAddr, HexAddr32, Option } from "lib/types";
+
+import axios from "axios";
 import {
   bech32AddressToHex,
   convertAccountPubkeyToAccountAddress,
   parseWithError,
 } from "lib/utils";
 
-import { getCollectionByCollectionAddressRest } from "./rest";
-import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import type { Activity, CollectionCreatorResponse } from "../types";
+
+import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import {
   zCollectionByCollectionAddressResponseSequencer,
   zCollectionsByAccountAddressResponseSequencer,
 } from "../types";
+import { getCollectionByCollectionAddressRest } from "./rest";
 
 export const getNftCollectionByCollectionAddressSequencer = async (
   endpoint: string,
@@ -55,8 +56,8 @@ export const getNftCollectionCreatorSequencer = async (
   collectionAddress: HexAddr32
 ): Promise<CollectionCreatorResponse> => {
   const txByCollectionAddress = await getTxsByAccountAddressSequencer({
-    endpoint,
     address: collectionAddress,
+    endpoint,
     limit: 1,
     reverse: false,
   });
@@ -72,9 +73,9 @@ export const getNftCollectionCreatorSequencer = async (
 
   return {
     creatorAddress: sender,
-    txhash: tx.hash,
     height: tx.height,
     timestamp: tx.created,
+    txhash: tx.hash,
   };
 };
 
@@ -84,16 +85,16 @@ export const getNftCollectionActivitiesSequencer = async (
   collectionAddress: HexAddr32
 ) => {
   const txsByCollectionAddress = await getTxsByAccountAddressSequencer({
-    endpoint,
     address: collectionAddress,
-    paginationKey,
+    endpoint,
     limit: 10,
+    paginationKey,
   });
 
   const collectionActivities: Activity[] = [];
 
   txsByCollectionAddress.items.forEach((tx) => {
-    const { events, hash, created } = tx;
+    const { created, events, hash } = tx;
 
     events?.reverse()?.forEach((event) => {
       if (
@@ -113,14 +114,14 @@ export const getNftCollectionActivitiesSequencer = async (
       }
 
       collectionActivities.push({
-        txhash: hash,
-        timestamp: created,
+        isCollectionCreate: eventValue === "CreateCollectionEvent",
         isNftBurn: eventValue === "BurnEvent",
         isNftMint: eventValue === "MintEvent",
         isNftTransfer: eventValue === "TransferEvent",
-        tokenId,
         nftAddress: null,
-        isCollectionCreate: eventValue === "CreateCollectionEvent",
+        timestamp: created,
+        tokenId,
+        txhash: hash,
       });
     });
   });

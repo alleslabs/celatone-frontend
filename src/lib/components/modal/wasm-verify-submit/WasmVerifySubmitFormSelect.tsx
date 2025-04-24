@@ -1,36 +1,37 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
-import { Box, Text } from "@chakra-ui/react";
-import { useController, useWatch } from "react-hook-form";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
+import { Box, Text } from "@chakra-ui/react";
 import { SelectInput } from "lib/components/forms";
+import { useController, useWatch } from "react-hook-form";
 
-import { WasmVerifySubmitFormSelectNoOptionsMessage } from "./WasmVerifySubmitFormSelectNoOptionsMessage";
 import type {
   WasmVerifySubmitFormOption,
   WasmVerifySubmitFormOptionValue,
 } from "./WasmVerifySubmitFormSelectOption";
+
+import { WasmVerifySubmitFormSelectNoOptionsMessage } from "./WasmVerifySubmitFormSelectNoOptionsMessage";
 import { WasmVerifySubmitFormSelectOption } from "./WasmVerifySubmitFormSelectOption";
 
 interface WasmVerifySubmitFormSelectProps<T extends FieldValues> {
-  name: FieldPath<T>;
   control: Control<T>;
+  name: FieldPath<T>;
   options: WasmVerifySubmitFormOption[];
 }
 
 export const WasmVerifySubmitFormSelect = <T extends FieldValues>({
-  name,
   control,
+  name,
   options,
 }: WasmVerifySubmitFormSelectProps<T>) => {
   const watcher = useWatch({
-    name,
     control,
+    name,
   });
 
   const { field } = useController<T>({
-    name,
     control,
+    name,
   });
 
   return (
@@ -38,38 +39,26 @@ export const WasmVerifySubmitFormSelect = <T extends FieldValues>({
       position="relative"
       sx={{
         "& .form-label": {
-          fontSize: "12px",
-          color: "text.dark",
-          backgroundColor: "gray.800",
-          letterSpacing: "0.15px",
-          position: "absolute",
-          ml: 3,
-          px: 1,
-          top: -2,
-          zIndex: 1,
-
           "::after": {
-            content: '"* (Required)"',
             color: "error.main",
+            content: '"* (Required)"',
             ml: 1,
           },
+          backgroundColor: "gray.800",
+          color: "text.dark",
+          fontSize: "12px",
+          letterSpacing: "0.15px",
+          ml: 3,
+          position: "absolute",
+          px: 1,
+          top: -2,
+
+          zIndex: 1,
         },
       }}
     >
       <Text className="form-label">Compiler version</Text>
       <SelectInput<WasmVerifySubmitFormOptionValue>
-        placeholder="Select or input the compiler version"
-        options={options}
-        menuPortalTarget={undefined}
-        onChange={(newValue) => {
-          const val = newValue as { label: string; value: string };
-          return field.onChange(val.value);
-        }}
-        value={options.find((option) => option.value === watcher)}
-        components={{
-          NoOptionsMessage: WasmVerifySubmitFormSelectNoOptionsMessage,
-          Option: WasmVerifySubmitFormSelectOption,
-        }}
         chakraStyles={{
           placeholder: (provided: SystemStyleObject) => ({
             ...provided,
@@ -77,6 +66,18 @@ export const WasmVerifySubmitFormSelect = <T extends FieldValues>({
             fontSize: "16px",
             whiteSpace: "nowrap",
           }),
+        }}
+        components={{
+          NoOptionsMessage: WasmVerifySubmitFormSelectNoOptionsMessage,
+          Option: WasmVerifySubmitFormSelectOption,
+        }}
+        menuPortalTarget={undefined}
+        options={options}
+        placeholder="Select or input the compiler version"
+        value={options.find((option) => option.value === watcher)}
+        onChange={(newValue) => {
+          const val = newValue as { label: string; value: string };
+          return field.onChange(val.value);
         }}
       />
     </Box>

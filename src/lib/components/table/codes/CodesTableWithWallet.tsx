@@ -1,25 +1,26 @@
+import type { CodeInfo } from "lib/types";
+
 import { useCurrentChain } from "lib/app-provider";
 import { DisconnectedState } from "lib/components/state";
-import type { CodeInfo } from "lib/types";
 
 import { CodesTable } from "./CodesTable";
 
 interface CodesTableWithWalletProps {
   codes: CodeInfo[];
-  isLoading: boolean;
-  emptyState: JSX.Element;
-  onRowSelect: (codeId: number) => void;
   disconnectedMessage: string;
+  emptyState: JSX.Element;
+  isLoading: boolean;
   isReadOnly?: boolean;
+  onRowSelect: (codeId: number) => void;
 }
 
 export const CodesTableWithWallet = ({
   codes,
-  isLoading,
-  emptyState,
-  onRowSelect,
   disconnectedMessage,
+  emptyState,
+  isLoading,
   isReadOnly = false,
+  onRowSelect,
 }: CodesTableWithWalletProps) => {
   const { address } = useCurrentChain();
 
@@ -28,10 +29,10 @@ export const CodesTableWithWallet = ({
   ) : (
     <CodesTable
       codes={codes}
-      isLoading={isLoading}
-      onRowSelect={onRowSelect}
       emptyState={emptyState}
+      isLoading={isLoading}
       isReadOnly={isReadOnly}
+      onRowSelect={onRowSelect}
     />
   );
 };

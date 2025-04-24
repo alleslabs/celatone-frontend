@@ -1,10 +1,11 @@
-import axios from "axios";
-
 import type { HexAddr20 } from "lib/types";
+
+import axios from "axios";
 import {
   convertAccountPubkeyToAccountAddress,
   parseWithError,
 } from "lib/utils";
+
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import { zEvmMsgCreate } from "../types";
 import { zEvmCodesByAddressResponseRest, zEvmParams } from "../types/evm";
@@ -25,8 +26,8 @@ export const getEvmContractInfoSequencer = async (
   address: HexAddr20
 ) => {
   const txs = await getTxsByAccountAddressSequencer({
-    endpoint,
     address,
+    endpoint,
     limit: 1,
     reverse: false,
   });
@@ -52,9 +53,9 @@ export const getEvmContractInfoSequencer = async (
       : undefined;
 
   return {
+    code,
+    created: tx.created,
     hash: tx.hash,
     sender,
-    created: tx.created,
-    code,
   };
 };

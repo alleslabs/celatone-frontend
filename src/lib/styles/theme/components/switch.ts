@@ -1,15 +1,15 @@
 import { switchAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/styled-system";
 
-const { definePartsStyle, defineMultiStyleConfig } =
+const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(switchAnatomy.keys);
 
 const baseStyle = definePartsStyle({
   track: {
-    bg: "gray.500",
     _checked: {
       bg: "primary.main",
     },
+    bg: "gray.500",
   },
 });
 

@@ -1,8 +1,9 @@
+import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
+
 import { Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
 
 interface OverviewProxyTargetInfoProps {
   proxyTargetAddressHex: HexAddr20;
@@ -20,21 +21,21 @@ export const OverviewProxyTargetInfo = ({
       <Heading as="h6" variant="h6">
         Proxy target contract
       </Heading>
-      <HStack spacing={2} alignItems="center">
-        <Text variant="body2" color="text.dark">
+      <HStack alignItems="center" spacing={2}>
+        <Text color="text.dark" variant="body2">
           Implementation Address:
         </Text>
         <ExplorerLink
+          showCopyOnHover
+          textFormat={isMobile ? "truncate" : "normal"}
           type="evm_contract_address"
           value={proxyTargetAddressHex}
-          textFormat={isMobile ? "truncate" : "normal"}
-          showCopyOnHover
         />
         {proxyTargetEvmVerifyInfo?.isVerified && (
           <CustomIcon
-            name="verification-solid"
             boxSize={4}
             color="secondary.main"
+            name="verification-solid"
           />
         )}
       </HStack>

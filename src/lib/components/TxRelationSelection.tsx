@@ -1,53 +1,53 @@
 import type { BoxProps } from "@chakra-ui/react";
-import { Box } from "@chakra-ui/react";
-
 import type { Option } from "lib/types";
+
+import { Box } from "@chakra-ui/react";
 
 import { SelectInputBase } from "./forms";
 
 enum RelationType {
   ALL = "ALL",
-  SIGNING = "SIGNING",
   RELATED = "RELATED",
+  SIGNING = "SIGNING",
 }
 
 const relationOptions = [
   {
+    disabled: false,
     label: "All",
     value: RelationType.ALL,
-    disabled: false,
   },
   {
+    disabled: false,
     label: "Signing address",
     value: RelationType.SIGNING,
-    disabled: false,
   },
   {
+    disabled: false,
     label: "Related address",
     value: RelationType.RELATED,
-    disabled: false,
   },
 ];
 
 interface TxRelationSelectionProps extends BoxProps {
-  value: Option<boolean>;
   setValue: (value: Option<boolean>) => void;
-  size?: string | object;
+  size?: object | string;
+  value: Option<boolean>;
 }
 
 export const TxRelationSelection = ({
-  value,
   setValue,
   size = "lg",
+  value,
   ...props
 }: TxRelationSelectionProps) => {
   let initialValue;
   switch (value) {
-    case undefined:
-      initialValue = RelationType.ALL;
-      break;
     case true:
       initialValue = RelationType.SIGNING;
+      break;
+    case undefined:
+      initialValue = RelationType.ALL;
       break;
     default:
       initialValue = RelationType.RELATED;
@@ -57,8 +57,9 @@ export const TxRelationSelection = ({
     <Box {...props}>
       <SelectInputBase
         formLabel="Filter by relation"
-        size={size}
+        initialSelected={initialValue}
         options={relationOptions}
+        size={size}
         onChange={(newValue: RelationType) =>
           setValue(
             newValue === RelationType.ALL
@@ -66,7 +67,6 @@ export const TxRelationSelection = ({
               : newValue === RelationType.SIGNING
           )
         }
-        initialSelected={initialValue}
       />
     </Box>
   );

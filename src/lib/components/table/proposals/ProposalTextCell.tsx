@@ -1,27 +1,28 @@
-import { Flex, Text } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import type { ProposalType } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { Emergency } from "lib/components/Emergency";
 import { Expedited } from "lib/components/Expedited";
-import type { ProposalType } from "lib/types";
+import { useRef, useState } from "react";
+
 import { MobileLabel } from "../MobileLabel";
 
 interface ProposalTextCellProps {
+  isDepositOrVoting: boolean;
+  isEmergency: boolean;
+  isExpedited: boolean;
   title: string;
   types: ProposalType[];
-  isExpedited: boolean;
-  isEmergency: boolean;
-  isDepositOrVoting: boolean;
 }
 
 export const ProposalTextCell = ({
+  isDepositOrVoting,
+  isEmergency,
+  isExpedited,
   title,
   types,
-  isExpedited,
-  isEmergency,
-  isDepositOrVoting,
 }: ProposalTextCellProps) => {
   const isMobile = useMobile();
   const [isHoverText, setIsHoverText] = useState(false);
@@ -60,15 +61,15 @@ export const ProposalTextCell = ({
           types.map((msgType, index) => (
             <Text
               key={msgType + index.toString()}
-              variant="body3"
               color="text.dark"
+              variant="body3"
               wordBreak="break-word"
             >
               {msgType}
             </Text>
           ))
         ) : (
-          <Text variant="body3" color="text.dark">
+          <Text color="text.dark" variant="body3">
             (No message)
           </Text>
         )}
@@ -77,23 +78,23 @@ export const ProposalTextCell = ({
 
   return (
     <Flex
+      bgColor={showName ? "gray.800" : "undefined"}
+      borderRadius="8px"
+      cursor="initial"
       flexDirection="column"
       justify="center"
-      borderRadius="8px"
-      bgColor={showName ? "gray.800" : "undefined"}
-      px={4}
       maxW={showName ? undefined : "full"}
-      onMouseOver={() => setIsHoverText(true)}
-      onMouseOut={() => setIsHoverText(false)}
+      px={4}
       onClick={(e) => e.stopPropagation()}
-      cursor="initial"
+      onMouseOut={() => setIsHoverText(false)}
+      onMouseOver={() => setIsHoverText(true)}
     >
       <Text
-        ref={titleRef}
+        className={showName ? undefined : "ellipsis"}
+        maxW={showName ? undefined : "full"}
         variant="body2"
         whiteSpace="nowrap"
-        maxW={showName ? undefined : "full"}
-        className={showName ? undefined : "ellipsis"}
+        ref={titleRef}
       >
         {title}
       </Text>
@@ -107,12 +108,12 @@ export const ProposalTextCell = ({
         )}
 
         <Text
-          ref={typeRef}
-          variant="body3"
-          color="text.dark"
-          whiteSpace="nowrap"
-          maxW={showName ? undefined : "full"}
           className={showName ? undefined : "ellipsis"}
+          color="text.dark"
+          maxW={showName ? undefined : "full"}
+          variant="body3"
+          whiteSpace="nowrap"
+          ref={typeRef}
         >
           {types.length
             ? types.map((msgType, index) => (

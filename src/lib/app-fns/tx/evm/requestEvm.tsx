@@ -1,65 +1,74 @@
-import { pipe } from "@rx-stream/pipe";
-import { toBeHex } from "ethers";
+import type { SignAndBroadcastEvm } from "lib/app-provider/hooks";
+import type { SimulatedFeeEvm, TxReceiptJsonRpc } from "lib/services/types";
+import type { HexAddr, TxResultRendering } from "lib/types";
 import type { Observable } from "rxjs";
 
-import type { SignAndBroadcastEvm } from "lib/app-provider/hooks";
+import { pipe } from "@rx-stream/pipe";
+import { toBeHex } from "ethers";
 import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { SimulatedFeeEvm, TxReceiptJsonRpc } from "lib/services/types";
-import type { HexAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
+
 import { catchTxError, postEvmTx } from "../common";
 import { sendingEvmTx } from "../common/sendingEvm";
 
 interface RequestEvmTxParams {
-  to: HexAddr;
   data: string;
-  value: string;
   estimatedFee: SimulatedFeeEvm;
-  signAndBroadcastEvm: SignAndBroadcastEvm;
-  onTxSucceed?: () => void;
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  signAndBroadcastEvm: SignAndBroadcastEvm;
+  to: HexAddr;
+  value: string;
 }
 
 export const requestEvmTx = ({
-  to,
   data,
-  value,
   estimatedFee,
-  signAndBroadcastEvm,
-  onTxSucceed,
   onTxFailed,
+  onTxSucceed,
+  signAndBroadcastEvm,
+  to,
+  value,
 }: RequestEvmTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingEvmTx(estimatedFee),
     postEvmTx<TxReceiptJsonRpc>({
       postFn: () =>
         signAndBroadcastEvm({
-          to,
           data,
+          to,
           value: value ? toBeHex(value) : null,
         }),
     }),
     (txResult) => {
       onTxSucceed?.();
       return {
-        value: null,
         phase: TxStreamPhase.SUCCEED,
+        receiptInfo: {
+          header: "Transaction complete!",
+          headerIcon: (
+            <CustomIcon
+              boxSize={5}
+              color="success.main"
+              name="check-circle-solid"
+            />
+          ),
+        },
         receipts: [
           {
-            title: "Tx hash",
-            value: txResult.value.transactionHash,
             html: (
               <ExplorerLink
+                openNewTab
                 type="evm_tx_hash"
                 value={txResult.value.transactionHash}
-                openNewTab
               />
             ),
+            title: "Tx hash",
+            value: txResult.value.transactionHash,
           },
           {
-            title: "Tx fee",
             html: (
               <EstimatedFeeEvmRender
                 gasPrice={txResult.value.effectiveGasPrice}
@@ -67,18 +76,10 @@ export const requestEvmTx = ({
                 loading={false}
               />
             ),
+            title: "Tx fee",
           },
         ],
-        receiptInfo: {
-          header: "Transaction complete!",
-          headerIcon: (
-            <CustomIcon
-              name="check-circle-solid"
-              color="success.main"
-              boxSize={5}
-            />
-          ),
-        },
+        value: null,
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

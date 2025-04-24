@@ -1,8 +1,4 @@
 import { Badge, Flex, Heading, Text } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useMoveConfig } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -12,6 +8,9 @@ import { AccountZeroState, EmptyState } from "lib/components/state";
 import { SavedAccountsTable } from "lib/components/table";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountStore } from "lib/providers/store";
+import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
 
 import { SaveAccountButton } from "./components";
 
@@ -53,35 +52,34 @@ const SavedAccounts = observer(() => {
         <Flex direction="column">
           <Flex alignItems="center">
             <Heading
-              variant="h5"
-              as="h5"
-              minH="36px"
-              display="flex"
               alignItems="center"
+              as="h5"
+              display="flex"
+              minH="36px"
+              variant="h5"
             >
               Saved accounts
             </Heading>
-            <Badge variant="primary" ml={2}>
+            <Badge ml={2} variant="primary">
               {accountsCount}
             </Badge>
           </Flex>
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             Your saved accounts will be stored locally
           </Text>
         </Flex>
         <SaveAccountButton />
       </Flex>
       <InputWithIcon
+        amptrackSection="saved-account-search"
         placeholder="Search with account name, address, or description"
+        size="lg"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        size="lg"
-        amptrackSection="saved-account-search"
       />
       {savedAccounts.length ? (
         <SavedAccountsTable
           accounts={filteredsavedAccounts}
-          isLoading={!isHydrated}
           emptyState={
             <EmptyState
               imageVariant="not-found"
@@ -89,6 +87,7 @@ const SavedAccounts = observer(() => {
               withBorder
             />
           }
+          isLoading={!isHydrated}
         />
       ) : (
         <AccountZeroState button={<SaveAccountButton />} />

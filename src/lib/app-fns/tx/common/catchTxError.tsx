@@ -1,36 +1,36 @@
-import type { OperatorFunction } from "rxjs";
-import { catchError } from "rxjs";
-
-import { trackTxFailed, trackTxRejected } from "lib/amplitude";
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon";
 import type {
   ActionVariant,
   ReceiptInfo,
   TxReceipt,
   TxResultRendering,
 } from "lib/types";
+import type { OperatorFunction } from "rxjs";
+
+import { trackTxFailed, trackTxRejected } from "lib/amplitude";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
+import { catchError } from "rxjs";
 
 const getReceiptInfo = (
   error: Error
-): Pick<ReceiptInfo, "header" | "errorMsg"> =>
+): Pick<ReceiptInfo, "errorMsg" | "header"> =>
   error.message === "Request rejected"
     ? {
         header: "Rejected by user",
       }
     : {
-        header: "Transaction failed",
         errorMsg: error.message,
+        header: "Transaction failed",
       };
 
 const getTxHashReceipts = (txHash?: string): TxReceipt[] =>
   txHash
     ? [
         {
+          html: <ExplorerLink openNewTab type="tx_hash" value={txHash} />,
           title: "Tx hash",
           value: txHash,
-          html: <ExplorerLink type="tx_hash" value={txHash} openNewTab />,
         },
       ]
     : [];
@@ -50,20 +50,20 @@ export const catchTxError = (
     }
     onTxFailed?.();
     return Promise.resolve<TxResultRendering>({
-      value: null,
+      actionVariant: getActionVariant(!txHash),
       phase: TxStreamPhase.FAILED,
       receiptInfo: {
         ...getReceiptInfo(error),
         headerIcon: (
           <CustomIcon
-            name="alert-triangle-solid"
-            color="error.light"
             boxSize={5}
+            color="error.light"
+            name="alert-triangle-solid"
           />
         ),
       },
       receipts: getTxHashReceipts(txHash),
-      actionVariant: getActionVariant(!txHash),
+      value: null,
     });
   });
 };

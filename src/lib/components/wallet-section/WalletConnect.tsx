@@ -1,31 +1,32 @@
-import { Button } from "@chakra-ui/react";
-import { WalletStatus } from "@cosmos-kit/core";
+import type { ConnectWalletType } from "lib/types";
 import type { MouseEventHandler, ReactNode } from "react";
 
-import type { ConnectWalletType } from "lib/types";
+import { Button } from "@chakra-ui/react";
+import { WalletStatus } from "@cosmos-kit/core";
+
 import { CustomIcon } from "../icon";
 
 export const ConnectWalletButton = ({
   buttonText,
-  isLoading,
+  hasIcon,
   isDisabled,
+  isLoading,
   onClick,
   variant,
-  hasIcon,
 }: ConnectWalletType) => (
   <Button
-    isLoading={isLoading}
-    isDisabled={isDisabled}
-    onClick={onClick}
-    variant={variant}
-    gap={1}
     alignContent="center"
+    gap={1}
+    isDisabled={isDisabled}
+    isLoading={isLoading}
     maxH="32px"
     px={hasIcon ? "8px" : "18px"}
+    variant={variant}
+    onClick={onClick}
   >
-    {hasIcon && <CustomIcon name="wallet" mr={2} />}
+    {hasIcon && <CustomIcon mr={2} name="wallet" />}
     {buttonText || "Connect wallet"}
-    {hasIcon && <CustomIcon name="chevron-down" boxSize={3} />}
+    {hasIcon && <CustomIcon boxSize={3} name="chevron-down" />}
   </Button>
 );
 
@@ -45,35 +46,35 @@ export const Others = ({
 );
 
 export const WalletConnectComponent = ({
-  walletStatus,
-  disconnect,
-  connecting,
   connected,
-  rejected,
+  connecting,
+  disconnect,
   error,
   notExist,
+  rejected,
+  walletStatus,
 }: {
-  walletStatus: WalletStatus;
-  disconnect: ReactNode;
-  connecting: ReactNode;
   connected: ReactNode;
-  rejected: ReactNode;
+  connecting: ReactNode;
+  disconnect: ReactNode;
   error: ReactNode;
   notExist: ReactNode;
+  rejected: ReactNode;
+  walletStatus: WalletStatus;
 }) => {
   switch (walletStatus) {
-    case WalletStatus.Disconnected:
-      return <>{disconnect}</>;
-    case WalletStatus.Connecting:
-      return <>{connecting}</>;
     case WalletStatus.Connected:
       return <>{connected}</>;
-    case WalletStatus.Rejected:
-      return <>{rejected}</>;
+    case WalletStatus.Connecting:
+      return <>{connecting}</>;
+    case WalletStatus.Disconnected:
+      return <>{disconnect}</>;
     case WalletStatus.Error:
       return <>{error}</>;
     case WalletStatus.NotExist:
       return <>{notExist}</>;
+    case WalletStatus.Rejected:
+      return <>{rejected}</>;
     default:
       return <>{disconnect}</>;
   }

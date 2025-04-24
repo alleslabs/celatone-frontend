@@ -1,7 +1,7 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
-import { Box, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react";
-import { useMemo } from "react";
+import type { IconKeys } from "lib/components/icon";
 
+import { Box, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import {
   useCelatoneApp,
   useMobile,
@@ -11,25 +11,25 @@ import {
 import { AppLink } from "lib/components/AppLink";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
-import type { IconKeys } from "lib/components/icon";
+import { useMemo } from "react";
 
 const cardProps: SystemStyleObject = {
-  width: "full",
-  height: "full",
-  padding: "16px",
-  borderRadius: "8px",
-  justifyContent: "space-between",
-  bg: "transparent",
   alignItems: "center",
+  bg: "transparent",
   border: "2px solid",
   borderColor: "gray.700",
+  borderRadius: "8px",
+  height: "full",
+  justifyContent: "space-between",
+  padding: "16px",
+  width: "full",
 };
 
 interface ShortcutMetadata {
-  title: string;
-  subtitle: string;
-  slug: string;
   icon: IconKeys;
+  slug: string;
+  subtitle: string;
+  title: string;
 }
 
 export const DevShortcuts = () => {
@@ -43,44 +43,44 @@ export const DevShortcuts = () => {
       ...(wasm.enabled
         ? [
             {
-              title: "Deploy",
-              subtitle: "Upload code or instantiate contract",
-              slug: "deploy",
               icon: "add-new" as const,
+              slug: "deploy",
+              subtitle: "Upload code or instantiate contract",
+              title: "Deploy",
             },
             {
-              title: "Query",
-              subtitle: "Query and get contract state data",
-              slug: "interact-contract",
               icon: "query" as const,
+              slug: "interact-contract",
+              subtitle: "Query and get contract state data",
+              title: "Query",
             },
             {
-              title: "Execute",
-              subtitle: "Send transactions to contracts",
-              slug: "interact-contract?selectedType=execute",
               icon: "execute" as const,
+              slug: "interact-contract?selectedType=execute",
+              subtitle: "Send transactions to contracts",
+              title: "Execute",
             },
           ]
         : []),
       ...(move.enabled
         ? [
             {
-              title: "Publish / Republish",
-              subtitle: "Upload .mv files to publish new module",
-              slug: "publish-module",
               icon: "add-new" as const,
+              slug: "publish-module",
+              subtitle: "Upload .mv files to publish new module",
+              title: "Publish / Republish",
             },
             {
-              title: "View / Execute",
-              subtitle: "Interact with module's functions",
-              slug: "interact",
               icon: "execute" as const,
+              slug: "interact",
+              subtitle: "Interact with module's functions",
+              title: "View / Execute",
             },
             {
-              title: "Deploy script",
-              subtitle: "Deploy one-time use script",
-              slug: "deploy-script",
               icon: "code" as const,
+              slug: "deploy-script",
+              subtitle: "Deploy one-time use script",
+              title: "Deploy script",
             },
           ]
         : []),
@@ -91,47 +91,47 @@ export const DevShortcuts = () => {
   if (shortcutList.length === 0) return null;
 
   return (
-    <Flex gap={4} direction="column" mb="48px">
+    <Flex direction="column" gap={4} mb="48px">
       <Heading as="h5" variant="h5">
         Dev shortcuts
       </Heading>
       <ConnectWalletAlert
-        title={`Connect wallet to start using ${theme.branding.seo.appName}`}
         subtitle="Specific use cases such as deploying new contract or sending execute messages require a wallet connection."
+        title={`Connect wallet to start using ${theme.branding.seo.appName}`}
       />
-      <SimpleGrid columns={{ sm: 1, md: 3 }} spacing={4} w="full">
+      <SimpleGrid columns={{ md: 3, sm: 1 }} spacing={4} w="full">
         {shortcutList.map((item) => (
           <div key={item.slug}>
             {!isMobile || item.slug === "query" ? (
-              <AppLink href={`/${item.slug}`} key={item.slug}>
+              <AppLink key={item.slug} href={`/${item.slug}`}>
                 <Flex
-                  sx={cardProps}
                   _hover={{ bg: "gray.800" }}
+                  sx={cardProps}
                   transition="all 0.25s ease-in-out"
                 >
                   <Flex alignItems="center" gap={3}>
                     <CustomIcon
-                      name={item.icon}
                       boxSize={{ base: 5, md: 6 }}
                       color="gray.600"
+                      name={item.icon}
                     />
                     <Box>
-                      <Text variant="body1" fontWeight="800">
+                      <Text fontWeight="800" variant="body1">
                         {item.title}
                       </Text>
                       <Text
+                        color="text.dark"
                         textDecoration="none"
                         variant="body2"
-                        color="text.dark"
                       >
                         {item.subtitle}
                       </Text>
                     </Box>
                   </Flex>
                   <CustomIcon
-                    name="chevron-right"
                     boxSize={{ base: 5, md: 6 }}
                     color="gray.600"
+                    name="chevron-right"
                   />
                 </Flex>
               </AppLink>
@@ -139,18 +139,18 @@ export const DevShortcuts = () => {
               <Flex opacity={0.5} sx={cardProps}>
                 <Flex alignItems="center" gap={3}>
                   <CustomIcon
-                    name={item.icon}
                     boxSize={{ base: 5, md: 6 }}
                     color="gray.600"
+                    name={item.icon}
                   />
                   <Box>
-                    <Text variant="body1" fontWeight="800">
+                    <Text fontWeight="800" variant="body1">
                       {item.title}
                     </Text>
                     <Text
+                      color="text.dark"
                       textDecoration="none"
                       variant="body2"
-                      color="text.dark"
                     >
                       {item.subtitle}
                     </Text>

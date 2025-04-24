@@ -1,8 +1,7 @@
+import type { HexAddr20 } from "lib/types";
+
 import { track } from "@amplitude/analytics-browser";
 import { Stack, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
-
 import { AmpEvent, trackUseTab } from "lib/amplitude";
 import {
   useConvertHexAddress,
@@ -24,15 +23,17 @@ import {
 } from "lib/services/evm";
 import { useEvmTxHashByCosmosTxHash } from "lib/services/tx";
 import { useEvmVerifyInfos } from "lib/services/verification/evm";
-import type { HexAddr20 } from "lib/types";
 import { isHexWalletAddress, toChecksumAddress, truncate } from "lib/utils";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
+
+import type { InteractTabsIndex } from "./types";
 
 import { EvmContractDetailsContractInfo } from "./components/evm-contract-details-contract-info";
 import { EvmContractDetailsOverview } from "./components/evm-contract-details-overview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
 import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
 import { InteractEvmContract } from "./components/interact-evm-contract";
-import type { InteractTabsIndex } from "./types";
 import { TabIndex, TxsTabIndex, zEvmContractDetailsQueryParams } from "./types";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
@@ -41,16 +42,16 @@ const tableHeaderId = "evmContractDetailsTab";
 
 interface EvmContractDetailsBodyProps {
   contractAddress: HexAddr20;
-  tab: TabIndex;
-  selectedType: InteractTabsIndex;
   selectedFn?: string;
+  selectedType: InteractTabsIndex;
+  tab: TabIndex;
 }
 
 const EvmContractDetailsBody = ({
   contractAddress,
-  tab,
-  selectedType,
   selectedFn,
+  selectedType,
+  tab,
 }: EvmContractDetailsBodyProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -92,13 +93,13 @@ const EvmContractDetailsBody = ({
       if (nextTab === tab) return;
       trackUseTab(nextTab);
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: "/evm-contracts/[contractAddress]/[tab]",
         query: {
           contractAddress,
           tab: nextTab,
-        },
-        options: {
-          shallow: true,
         },
       });
     },
@@ -137,10 +138,10 @@ const EvmContractDetailsBody = ({
           lazyBehavior="keepMounted"
         >
           <TabList
-            borderBottom="1px solid"
+            id={tableHeaderId}
+            borderBottomWidth="1px"
             borderColor="gray.700"
             overflowX="scroll"
-            id={tableHeaderId}
           >
             <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
               Overview
@@ -149,18 +150,18 @@ const EvmContractDetailsBody = ({
               Contract
             </CustomTab>
             <CustomTab
-              onClick={handleTabChange(TabIndex.ReadWrite)}
               hidden={
                 !evmVerifyInfo?.isVerified &&
                 !proxyTargetEvmVerifyInfo?.isVerified
               }
+              onClick={handleTabChange(TabIndex.ReadWrite)}
             >
               {isMobile ? "Read" : "Read/Write"}
             </CustomTab>
             <CustomTab
-              onClick={handleTabChange(TabIndex.Assets)}
               count={totalAssets}
               isDisabled={!totalAssets}
+              onClick={handleTabChange(TabIndex.Assets)}
             >
               Assets
             </CustomTab>
@@ -173,24 +174,24 @@ const EvmContractDetailsBody = ({
               <EvmContractDetailsOverview
                 contractAddressBech={contractAddressBechAddr}
                 contractAddressHex={contractAddress}
-                hash={evmContractInfoData?.hash}
-                evmHash={evmHash}
-                sender={evmContractInfoData?.sender}
                 created={evmContractInfoData?.created}
+                evmHash={evmHash}
+                evmVerifyInfo={evmVerifyInfo}
+                hash={evmContractInfoData?.hash}
                 isContractInfoLoading={isEvmContractInfoLoading}
+                proxyTargetEvmVerifyInfo={proxyTargetEvmVerifyInfo}
+                sender={evmContractInfoData?.sender}
+                setTab={setOverviewTabIndex}
+                tab={overviewTabIndex}
                 onViewMoreAssets={handleTabChange(TabIndex.Assets)}
                 onViewMoreTxs={handleOnViewMoreTxs}
-                tab={overviewTabIndex}
-                setTab={setOverviewTabIndex}
-                evmVerifyInfo={evmVerifyInfo}
-                proxyTargetEvmVerifyInfo={proxyTargetEvmVerifyInfo}
               />
             </TabPanel>
             <TabPanel p={0} pt={8}>
               <EvmContractDetailsContractInfo
                 byteCode={evmContractInfoData?.code}
-                deployedByteCode={evmCodesByAddressData.code}
                 contractAddress={contractAddress}
+                deployedByteCode={evmCodesByAddressData.code}
                 evmVerifyInfo={evmVerifyInfo}
               />
             </TabPanel>
@@ -199,8 +200,8 @@ const EvmContractDetailsBody = ({
                 contractAddress={contractAddress}
                 evmVerifyInfo={evmVerifyInfo}
                 proxyTargetEvmVerifyInfo={proxyTargetEvmVerifyInfo}
-                selectedType={selectedType}
                 selectedFn={selectedFn}
+                selectedType={selectedType}
               />
             </TabPanel>
             <TabPanel p={0}>
@@ -209,8 +210,8 @@ const EvmContractDetailsBody = ({
             <TabPanel p={0} pt={8}>
               <EvmContractDetailsTxs
                 address={contractAddressBechAddr}
-                tab={tableTabIndex}
                 setTab={setTableTabIndex}
+                tab={tableTabIndex}
               />
             </TabPanel>
           </TabPanels>

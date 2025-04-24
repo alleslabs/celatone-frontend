@@ -1,11 +1,11 @@
+import type { Option } from "lib/types";
+
 import dayjs from "dayjs";
 import pluginDuration from "dayjs/plugin/duration";
 import pluginRelativeTime from "dayjs/plugin/relativeTime";
 import pluginUtc from "dayjs/plugin/utc";
-import plur from "plur";
-
 import { big } from "lib/types";
-import type { Option } from "lib/types";
+import plur from "plur";
 
 import { isNumeric } from "./number";
 
@@ -59,7 +59,7 @@ export const formatSeconds = (sec: Option<string>) => {
   }
 };
 
-export const formatDuration = (duration: string | number) => {
+export const formatDuration = (duration: number | string) => {
   if (typeof duration === "number" || isNumeric(duration))
     return formatSeconds(big(duration).div(1e9).toFixed());
 

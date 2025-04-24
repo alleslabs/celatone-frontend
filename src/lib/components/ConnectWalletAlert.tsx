@@ -1,3 +1,6 @@
+import type { AlertProps } from "@chakra-ui/react";
+import type { MouseEventHandler } from "react";
+
 import {
   Alert,
   AlertDescription,
@@ -6,22 +9,19 @@ import {
   Button,
   Flex,
 } from "@chakra-ui/react";
-import type { AlertProps } from "@chakra-ui/react";
-import type { MouseEventHandler } from "react";
-
 import { trackUseClickWallet } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
 
 import { CustomIcon } from "./icon";
 
 interface ConnectWalletAlertProps extends AlertProps {
-  title?: string;
   subtitle?: string;
+  title?: string;
 }
 
 export const ConnectWalletAlert = ({
-  title,
   subtitle,
+  title,
   ...alertProps
 }: ConnectWalletAlertProps) => {
   const { address, connect } = useCurrentChain();
@@ -35,22 +35,22 @@ export const ConnectWalletAlert = ({
   return !address ? (
     <Alert
       {...alertProps}
-      variant="primary"
       alignItems="center"
       justifyContent="space-between"
       py={3}
+      variant="primary"
     >
       <Flex gap={2}>
-        <CustomIcon name="wallet-solid" boxSize={4} />
+        <CustomIcon boxSize={4} name="wallet-solid" />
         <Box>
           <AlertTitle>{title}</AlertTitle>
           <AlertDescription>{subtitle}</AlertDescription>
         </Box>
       </Flex>
       <Button
+        gap={2}
         size="sm"
         variant="ghost-primary"
-        gap={2}
         onClick={onClickConnect}
       >
         <CustomIcon name="connect" /> Connect wallet

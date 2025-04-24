@@ -1,36 +1,36 @@
-import { Flex } from "@chakra-ui/react";
-
-import { StatusMessageBox } from "lib/components/StatusMessageBox";
-import { WasmVerifySection } from "lib/components/wasm-verify-section";
 import type { BechAddr32, Nullish, WasmVerifyInfo } from "lib/types";
 
+import { Flex } from "@chakra-ui/react";
+import { StatusMessageBox } from "lib/components/StatusMessageBox";
+import { WasmVerifySection } from "lib/components/wasm-verify-section";
+
 interface ContractVerificationSectionProps {
-  contractAddress: BechAddr32;
-  codeId: number;
   codeHash: string;
+  codeId: number;
+  contractAddress: BechAddr32;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const ContractVerificationSection = ({
-  contractAddress,
   codeHash,
   codeId,
+  contractAddress,
   wasmVerifyInfo,
 }: ContractVerificationSectionProps) => (
-  <Flex direction="column" mb={6} gap={4}>
+  <Flex direction="column" gap={4} mb={6}>
     <StatusMessageBox
       content={
         <Flex
-          justifyContent="space-between"
           alignItems="center"
-          w="full"
           gap={2}
+          justifyContent="space-between"
+          w="full"
         >
           <WasmVerifySection
-            codeId={codeId}
             codeHash={codeHash}
-            wasmVerifyInfo={wasmVerifyInfo}
+            codeId={codeId}
             contractAddress={contractAddress}
+            wasmVerifyInfo={wasmVerifyInfo}
           />
         </Flex>
       }

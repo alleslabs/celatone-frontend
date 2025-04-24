@@ -1,13 +1,14 @@
-import { Flex, Text } from "@chakra-ui/react";
 import type { Control, UseFormSetValue } from "react-hook-form";
+
+import { Flex, Text } from "@chakra-ui/react";
+import { SelectInputBase } from "lib/components/forms";
 import { useWatch } from "react-hook-form";
 
-import { SelectInputBase } from "lib/components/forms";
+import type { AttachFundsState } from "./types";
 
 import { ASSETS_JSON_STR, ASSETS_SELECT, ATTACH_FUNDS_OPTION } from "./data";
 import { JsonFund } from "./JsonFund";
 import { SelectFund } from "./SelectFund";
-import type { AttachFundsState } from "./types";
 import { AttachFundsType } from "./types";
 
 interface AttachFundContentProps {
@@ -17,19 +18,19 @@ interface AttachFundContentProps {
 
 const attachFundsOptions = [
   {
+    disabled: false,
     label: "No funds attached",
     value: AttachFundsType.ATTACH_FUNDS_NULL,
-    disabled: false,
   },
   {
+    disabled: false,
     label: "Select asset and fill amount",
     value: AttachFundsType.ATTACH_FUNDS_SELECT,
-    disabled: false,
   },
   {
+    disabled: false,
     label: "Provide JSON asset list",
     value: AttachFundsType.ATTACH_FUNDS_JSON,
-    disabled: false,
   },
 ];
 
@@ -40,19 +41,19 @@ const AttachFundContent = ({ control, setValue }: AttachFundContentProps) => {
   });
 
   switch (attachFundsOption) {
+    case AttachFundsType.ATTACH_FUNDS_JSON:
+      return (
+        <JsonFund
+          assetsJson={assetsJson}
+          setValue={(value) => setValue(ASSETS_JSON_STR, value)}
+        />
+      );
     case AttachFundsType.ATTACH_FUNDS_SELECT:
       return (
         <SelectFund
           assetsSelect={assetsSelect}
           control={control}
           setValue={setValue}
-        />
-      );
-    case AttachFundsType.ATTACH_FUNDS_JSON:
-      return (
-        <JsonFund
-          setValue={(value) => setValue(ASSETS_JSON_STR, value)}
-          assetsJson={assetsJson}
         />
       );
     case AttachFundsType.ATTACH_FUNDS_NULL:
@@ -62,15 +63,15 @@ const AttachFundContent = ({ control, setValue }: AttachFundContentProps) => {
 };
 
 interface AttachFundProps {
-  control: Control<AttachFundsState>;
   attachFundsOption: AttachFundsType;
+  control: Control<AttachFundsState>;
   setValue: UseFormSetValue<AttachFundsState>;
   showLabel?: boolean;
 }
 
 export const AttachFund = ({
-  control,
   attachFundsOption,
+  control,
   setValue,
   showLabel = true,
 }: AttachFundProps) => (
@@ -78,19 +79,19 @@ export const AttachFund = ({
     <Flex mb={5}>
       <SelectInputBase
         formLabel={showLabel ? "Attach funds" : undefined}
-        options={attachFundsOptions}
-        onChange={(value: AttachFundsType) =>
-          setValue(ATTACH_FUNDS_OPTION, value)
-        }
-        initialSelected={attachFundsOption}
         helperTextComponent={
-          <Text variant="body3" color="text.dark">
+          <Text color="text.dark" variant="body3">
             Only the input values in your selected{" "}
             <span style={{ fontWeight: 700 }}>
               &#x2018;Attach funds&#x2019;
             </span>{" "}
             option will be used.
           </Text>
+        }
+        initialSelected={attachFundsOption}
+        options={attachFundsOptions}
+        onChange={(value: AttachFundsType) =>
+          setValue(ATTACH_FUNDS_OPTION, value)
         }
       />
     </Flex>

@@ -1,10 +1,10 @@
-import { Accordion, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import type { ProposalData } from "lib/types";
 
+import { Accordion, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { trackUseExpandAll } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
-import type { ProposalData } from "lib/types";
 import { jsonPrettify } from "lib/utils";
+import { useEffect, useState } from "react";
 
 import { ProposalMessageCard } from "./ProposalMessageCard";
 
@@ -23,28 +23,28 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
 
   return (
     <Flex
+      borderBottomWidth={{ base: hasMsgs ? "0px" : "1px", md: "0px" }}
+      borderColor="gray.700"
       direction="column"
       gap={4}
-      pt={2}
       pb={hasMsgs ? 0 : 8}
-      borderBottom={{ base: hasMsgs ? "0px" : "1px solid", md: "0px" }}
-      borderColor="gray.700"
+      pt={2}
     >
-      <Flex w="full" alignItems="center" justifyContent="space-between">
+      <Flex alignItems="center" justifyContent="space-between" w="full">
         <Heading as="h6" variant="h6">
           Proposal messages
         </Heading>
         {hasMsgs && (
           <Button
-            variant="ghost-primary"
             minW={{ base: "auto", md: 32 }}
-            size="sm"
             rightIcon={
               <CustomIcon
-                name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
                 boxSize={3}
+                name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
               />
             }
+            size="sm"
+            variant="ghost-primary"
             onClick={() => {
               trackUseExpandAll(
                 expandedIndexes.length ? "collapse" : "expand",
@@ -62,9 +62,9 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
       {hasMsgs ? (
         <Accordion
           allowMultiple
-          width="full"
-          variant="transparent"
           index={expandedIndexes}
+          variant="transparent"
+          width="full"
           onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
         >
           {messages.map((item, i) => (
@@ -76,7 +76,7 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
           ))}
         </Accordion>
       ) : (
-        <Text variant="body1" color="text.dark">
+        <Text color="text.dark" variant="body1">
           The proposal has no message.
         </Text>
       )}

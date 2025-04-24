@@ -1,17 +1,17 @@
-import { Flex } from "@chakra-ui/react";
+import type { Proposal } from "lib/types";
 
+import { Flex } from "@chakra-ui/react";
 import { useInternalNavigate, useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
+import { MobileCardTemplate } from "../MobileCardTemplate";
+import { MobileLabel } from "../MobileLabel";
 import { ProposalTextCell } from "./ProposalTextCell";
 import { Proposer } from "./Proposer";
 import { ResolvedHeight } from "./ResolvedHeight";
 import { StatusChip } from "./StatusChip";
 import { VotingEndTime } from "./VotingEndTime";
-import { MobileCardTemplate } from "../MobileCardTemplate";
-import { MobileLabel } from "../MobileLabel";
 
 export interface ProposalsTableMobileCardProps {
   proposal: Proposal;
@@ -34,34 +34,38 @@ export const ProposalsTableMobileCard = ({
     proposal.status === ProposalStatus.VOTING_PERIOD;
   return (
     <MobileCardTemplate
-      topContent={
-        <>
-          <Flex gap={2} align="center">
-            <MobileLabel label="Proposal ID" variant="body2" />
-            <ExplorerLink
-              type="proposal_id"
-              value={proposal.id.toString()}
-              showCopyOnHover
-            />
-          </Flex>
-          <StatusChip status={proposal.status} />
-        </>
+      bottomContent={
+        isFullTier && (
+          <>
+            <Flex direction="column" flex={1}>
+              <MobileLabel label="Resolved block height" />
+              <ResolvedHeight
+                isDepositOrVoting={isDepositOrVoting}
+                resolvedHeight={proposal.resolvedHeight}
+              />
+            </Flex>
+            <Flex direction="column" flex={1}>
+              <MobileLabel label="Proposed by" />
+              <Proposer proposer={proposal.proposer} />
+            </Flex>
+          </>
+        )
       }
       middleContent={
         <Flex direction="column" gap={3}>
           <ProposalTextCell
+            isDepositOrVoting={isDepositOrVoting}
+            isEmergency={proposal.isEmergency}
+            isExpedited={proposal.isExpedited}
             title={proposal.title}
             types={proposal.types}
-            isExpedited={proposal.isExpedited}
-            isEmergency={proposal.isEmergency}
-            isDepositOrVoting={isDepositOrVoting}
           />
           <Flex direction="column" gap={1}>
             <MobileLabel label="Voting ends" />
             <VotingEndTime
-              votingEndTime={proposal.votingEndTime}
               depositEndTime={proposal.depositEndTime}
               status={proposal.status}
+              votingEndTime={proposal.votingEndTime}
             />
           </Flex>
           {!isFullTier && (
@@ -72,22 +76,18 @@ export const ProposalsTableMobileCard = ({
           )}
         </Flex>
       }
-      bottomContent={
-        isFullTier && (
-          <>
-            <Flex direction="column" flex={1}>
-              <MobileLabel label="Resolved block height" />
-              <ResolvedHeight
-                resolvedHeight={proposal.resolvedHeight}
-                isDepositOrVoting={isDepositOrVoting}
-              />
-            </Flex>
-            <Flex direction="column" flex={1}>
-              <MobileLabel label="Proposed by" />
-              <Proposer proposer={proposal.proposer} />
-            </Flex>
-          </>
-        )
+      topContent={
+        <>
+          <Flex align="center" gap={2}>
+            <MobileLabel label="Proposal ID" variant="body2" />
+            <ExplorerLink
+              showCopyOnHover
+              type="proposal_id"
+              value={proposal.id.toString()}
+            />
+          </Flex>
+          <StatusChip status={proposal.status} />
+        </>
       }
       onClick={() => onCardSelect(proposal.id)}
     />

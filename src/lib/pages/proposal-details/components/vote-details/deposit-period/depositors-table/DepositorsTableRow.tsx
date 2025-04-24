@@ -1,32 +1,33 @@
-import { Flex, Grid, Text } from "@chakra-ui/react";
+import type { ProposalDeposit } from "lib/types";
 
+import { Flex, Grid, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
-import type { ProposalDeposit } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
+
 import { DepositAmounts } from "../../../DepositAmounts";
 
 interface DepositorsTableRowProps {
   proposalDeposit: ProposalDeposit;
-  templateColumns: string;
   showTransaction: boolean;
+  templateColumns: string;
 }
 
 export const DepositorsTableRow = ({
   proposalDeposit,
-  templateColumns,
   showTransaction,
+  templateColumns,
 }: DepositorsTableRowProps) => (
   <Grid
     className="copier-wrapper"
-    templateColumns={templateColumns}
     minW="min-content"
+    templateColumns={templateColumns}
   >
     <TableRow>
       <ExplorerLink
+        showCopyOnHover
         type="user_address"
         value={proposalDeposit.depositor}
-        showCopyOnHover
       />
     </TableRow>
     {showTransaction && (
@@ -34,12 +35,12 @@ export const DepositorsTableRow = ({
         <TableRow>
           {proposalDeposit.txHash ? (
             <ExplorerLink
+              showCopyOnHover
               type="tx_hash"
               value={proposalDeposit.txHash.toUpperCase()}
-              showCopyOnHover
             />
           ) : (
-            <Text variant="body3" textColor="text.dark">
+            <Text textColor="text.dark" variant="body3">
               N/A
             </Text>
           )}
@@ -50,12 +51,12 @@ export const DepositorsTableRow = ({
               <Text variant="body3">
                 {formatUTC(proposalDeposit.timestamp)}
               </Text>
-              <Text variant="body3" color="text.dark" mt="2px">
+              <Text color="text.dark" mt="2px" variant="body3">
                 ({dateFromNow(proposalDeposit.timestamp)})
               </Text>
             </Flex>
           ) : (
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               N/A
             </Text>
           )}

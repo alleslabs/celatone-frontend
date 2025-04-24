@@ -1,25 +1,25 @@
-import { Button, Flex, IconButton, Text } from "@chakra-ui/react";
-import { useCallback } from "react";
-
-import { AmpEvent, track } from "lib/amplitude";
-import { CustomIcon } from "lib/components/icon";
 import type { CodeSchema, Option } from "lib/types";
 
-import { ViewSchemaModal } from "./view/ViewSchemaModal";
+import { Button, Flex, IconButton, Text } from "@chakra-ui/react";
+import { AmpEvent, track } from "lib/amplitude";
+import { CustomIcon } from "lib/components/icon";
+import { useCallback } from "react";
+
 import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
+import { ViewSchemaModal } from "./view/ViewSchemaModal";
 
 interface AttachSchemaCardProps {
   attached: boolean;
-  codeId: number;
   codeHash: string;
+  codeId: number;
   localSchema: Option<CodeSchema>;
   openModal: () => void;
 }
 
 export const AttachSchemaCard = ({
   attached,
-  codeId,
   codeHash,
+  codeId,
   localSchema,
   openModal,
 }: AttachSchemaCardProps) => {
@@ -35,15 +35,15 @@ export const AttachSchemaCard = ({
 
   return (
     <Flex
+      align="center"
+      bg={!attached ? "gray.900" : "gray.800"}
       border={!attached ? "1px dashed" : "1px solid"}
       borderColor="gray.700"
-      bg={!attached ? "gray.900" : "gray.800"}
+      borderRadius="4px"
       justify="space-between"
-      align="center"
+      minW="480px"
       p={4}
       w="full"
-      minW="480px"
-      borderRadius="4px"
     >
       {!attached ? (
         <>
@@ -56,27 +56,27 @@ export const AttachSchemaCard = ({
         <>
           <Flex align="center" gap={1}>
             <CustomIcon
-              name="check-circle-solid"
-              color="success.main"
               boxSize={6}
+              color="success.main"
+              name="check-circle-solid"
             />
             <Text variant="body2">JSON schema attached</Text>
           </Flex>
           <Flex align="center" gap={2}>
             <ViewSchemaModal codeId={codeId} schema={localSchema} />
-            <Button variant="outline-gray" size="sm" onClick={handleReattach}>
+            <Button size="sm" variant="outline-gray" onClick={handleReattach}>
               Reattach
             </Button>
             <RemoveSchemaModal
-              codeId={codeId}
               codeHash={codeHash}
+              codeId={codeId}
               trigger={
                 <IconButton
-                  variant="ghost-gray"
-                  size="sm"
-                  color="gray.600"
-                  icon={<CustomIcon name="delete" boxSize={4} />}
                   aria-label="delete schema"
+                  color="gray.600"
+                  icon={<CustomIcon boxSize={4} name="delete" />}
+                  size="sm"
+                  variant="ghost-gray"
                 />
               }
             />

@@ -1,15 +1,15 @@
-import { Text } from "@chakra-ui/react";
-import { isNull } from "lodash";
-
 import type { Nullable, Ratio } from "lib/types";
+
+import { Text } from "@chakra-ui/react";
 import { ProposalStatus } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
+import { isNull } from "lodash";
 
 interface VoteQuorumTextProps {
-  status: ProposalStatus;
-  quorum: Ratio<number>;
-  totalRatio: Nullable<Ratio<number>>;
   isCompact: boolean;
+  quorum: Ratio<number>;
+  status: ProposalStatus;
+  totalRatio: Nullable<Ratio<number>>;
 }
 
 const Established = () => (
@@ -24,10 +24,10 @@ const Established = () => (
 );
 
 export const VoteQuorumText = ({
-  status,
-  quorum,
-  totalRatio,
   isCompact,
+  quorum,
+  status,
+  totalRatio,
 }: VoteQuorumTextProps) => {
   const fontVariant = isCompact ? "body2" : "body1";
   if (isNull(totalRatio))
@@ -43,13 +43,13 @@ export const VoteQuorumText = ({
 
   if (status === ProposalStatus.VOTING_PERIOD)
     return isPassingQuorum ? (
-      <Text variant={fontVariant} color="text.main">
+      <Text color="text.main" variant={fontVariant}>
         The proposal has successfully met the voting{" "}
         <span style={{ fontWeight: 700 }}>{quorumPercent}</span> quorum and will
         be <Established /> after the voting period ends.
       </Text>
     ) : (
-      <Text variant={fontVariant} color="text.main">
+      <Text color="text.main" variant={fontVariant}>
         The proposal required{" "}
         <span style={{ fontWeight: 700 }}>{quorumPercent}</span> vote quorum to
         establish.
@@ -57,13 +57,13 @@ export const VoteQuorumText = ({
     );
 
   return isPassingQuorum ? (
-    <Text variant={fontVariant} color="text.main">
+    <Text color="text.main" variant={fontVariant}>
       The proposal has successfully met the voting{" "}
       <span style={{ fontWeight: 700 }}>{quorumPercent}</span> quorum and{" "}
       <Established />.
     </Text>
   ) : (
-    <Text variant={fontVariant} color="text.main">
+    <Text color="text.main" variant={fontVariant}>
       This proposal{" "}
       <span
         style={{

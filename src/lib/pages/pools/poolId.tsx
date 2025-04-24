@@ -1,6 +1,3 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { usePoolConfig, useTierConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
@@ -8,6 +5,8 @@ import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import {
   PoolAssets,
@@ -21,7 +20,7 @@ const InvalidPool = () => <InvalidState title="Pool does not exist" />;
 
 const PoolIdBody = ({ poolId }: { poolId: number }) => {
   const router = useRouter();
-  const { pool, isLoading } = useDerivedPoolData(poolId);
+  const { isLoading, pool } = useDerivedPoolData(poolId);
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_POOL_DETAILS);
@@ -38,9 +37,9 @@ const PoolIdBody = ({ poolId }: { poolId: number }) => {
       <PoolAssets pool={pool} />
       <PoolRelatedTxs pool={pool} />
       <UserDocsLink
-        title="What is Osmosis liquidity pools?"
         cta="Read more about Osmosis Pool Details"
         href="osmosis/pool-detail"
+        title="What is Osmosis liquidity pools?"
       />
     </>
   );

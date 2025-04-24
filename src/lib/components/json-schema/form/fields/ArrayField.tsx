@@ -1,9 +1,4 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable react/no-unused-class-component-methods */
-/* eslint-disable sonarjs/cognitive-complexity */
-/* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Flex, Text } from "@chakra-ui/react";
 import type {
   ArrayFieldTemplateProps,
   ErrorSchema,
@@ -15,6 +10,8 @@ import type {
   StrictRJSFSchema,
   UiSchema,
 } from "@rjsf/utils";
+
+import { Button, Flex, Text } from "@chakra-ui/react";
 import {
   allowAdditionalItems,
   getTemplate,
@@ -26,6 +23,7 @@ import {
   optionsList,
   TranslatableString,
 } from "@rjsf/utils";
+import { CustomIcon } from "lib/components/icon";
 import { cloneDeep } from "lodash";
 import get from "lodash/get";
 import isObject from "lodash/isObject";
@@ -33,11 +31,10 @@ import set from "lodash/set";
 import { Component } from "react";
 import * as uuid from "uuid";
 
-import { CustomIcon } from "lib/components/icon";
 import { isNullFormData } from "../utils";
 
 /** Type used to represent the keyed form data used in the state */
-type KeyedFormDataType<T> = { key: string; item: T };
+type KeyedFormDataType<T> = { item: T; key: string };
 
 /** Type used for the state of the `ArrayField` component */
 type ArrayFieldState<T> = {
@@ -62,8 +59,8 @@ function generateKeyedFormData<T>(formData: T[]): KeyedFormDataType<T>[] {
     ? []
     : formData.map((item) => {
         return {
-          key: generateRowId(),
           item,
+          key: generateRowId(),
         };
       });
 }
@@ -90,6 +87,37 @@ class ArrayField<
   S extends StrictRJSFSchema = RJSFSchema,
   F extends FormContextType = any,
 > extends Component<FieldProps<T[], S, F>, ArrayFieldState<T>> {
+  /** Returns the appropriate title for an item by getting first the title from the schema.items, then falling back to
+   * the description from the schema.items, and finally the string "Item"
+   */
+  get itemTitle() {
+    const { registry, schema } = this.props;
+    const { translateString } = registry;
+    return get(
+      schema,
+      [ITEMS_KEY, "title"],
+      get(
+        schema,
+        [ITEMS_KEY, "description"],
+        translateString(TranslatableString.ArrayItemTitle)
+      )
+    );
+  }
+
+  /** Constructs an `ArrayField` from the `props`, generating the initial keyed data from the `formData`
+   *
+   * @param props - The `FieldProps` for this template
+   */
+  constructor(props: FieldProps<T[], S, F>) {
+    super(props);
+    const { formData = [] } = props;
+    const keyedFormData = generateKeyedFormData<T>(formData);
+    this.state = {
+      keyedFormData,
+      updatedKeyedFormData: false,
+    };
+  }
+
   /** React lifecycle method that is called when the props are about to change allowing the state to be updated. It
    * regenerates the keyed form data and returns it
    *
@@ -118,8 +146,8 @@ class ArrayField<
       nextFormData.length === previousKeyedFormData.length
         ? previousKeyedFormData.map((previousKeyedFormDatum, index) => {
             return {
-              key: previousKeyedFormDatum.key,
               item: nextFormData[index],
+              key: previousKeyedFormDatum.key,
             };
           })
         : generateKeyedFormData<T>(nextFormData);
@@ -128,42 +156,36 @@ class ArrayField<
     };
   }
 
-  /** Constructs an `ArrayField` from the `props`, generating the initial keyed data from the `formData`
+  /** Determines whether more items can be added to the array. If the uiSchema indicates the array doesn't allow adding
+   * then false is returned. Otherwise, if the schema indicates that there are a maximum number of items and the
+   * `formData` matches that value, then false is returned, otherwise true is returned.
    *
-   * @param props - The `FieldProps` for this template
+   * @param formItems - The list of items in the form
+   * @returns - True if the item is addable otherwise false
    */
-  constructor(props: FieldProps<T[], S, F>) {
-    super(props);
-    const { formData = [] } = props;
-    const keyedFormData = generateKeyedFormData<T>(formData);
-    this.state = {
-      keyedFormData,
-      updatedKeyedFormData: false,
-    };
-  }
-
-  /** Returns the appropriate title for an item by getting first the title from the schema.items, then falling back to
-   * the description from the schema.items, and finally the string "Item"
-   */
-  get itemTitle() {
-    const { schema, registry } = this.props;
-    const { translateString } = registry;
-    return get(
-      schema,
-      [ITEMS_KEY, "title"],
-      get(
-        schema,
-        [ITEMS_KEY, "description"],
-        translateString(TranslatableString.ArrayItemTitle)
-      )
+  canAddItem(formItems: any[]) {
+    const { registry, schema, uiSchema } = this.props;
+    let { addable } = getUiOptions<T[], S, F>(
+      uiSchema,
+      registry.globalUiOptions
     );
+    if (addable !== false) {
+      // if ui:options.addable was not explicitly set to false, we can add
+      // another item if we have not exceeded maxItems yet
+      if (schema.maxItems !== undefined) {
+        addable = formItems.length < schema.maxItems;
+      } else {
+        addable = true;
+      }
+    }
+    return addable;
   }
 
   /** Returns the default form information for an item based on the schema for that item. Deals with the possibility
    * that the schema is fixed and allows additional items.
    */
   getNewFormDataRow = (): T => {
-    const { schema, registry } = this.props;
+    const { registry, schema } = this.props;
     const { schemaUtils } = registry;
     let itemSchema = schema.items as S;
     if (isFixedItems(schema) && allowAdditionalItems(schema)) {
@@ -185,7 +207,7 @@ class ArrayField<
       event.preventDefault();
     }
 
-    const { onChange, errorSchema } = this.props;
+    const { errorSchema, onChange } = this.props;
     const { keyedFormData } = this.state;
     // refs #195: revalidate to ensure properly reindexing errors
     let newErrorSchema: ErrorSchema<T>;
@@ -201,8 +223,8 @@ class ArrayField<
     }
 
     const newKeyedFormDataRow: KeyedFormDataType<T> = {
-      key: generateRowId(),
       item: this.getNewFormDataRow(),
+      key: generateRowId(),
     };
     const newKeyedFormData = [...keyedFormData];
     if (index !== undefined) {
@@ -222,6 +244,22 @@ class ArrayField<
         )
     );
   };
+
+  /** Determines whether the item described in the schema is always required, which is determined by whether any item
+   * may be null.
+   *
+   * @param itemSchema - The schema for the item
+   * @return - True if the item schema type does not contain the "null" type
+   */
+  isItemRequired(itemSchema: S) {
+    if (Array.isArray(itemSchema.type)) {
+      // While we don't yet support composite/nullable jsonschema types, it's
+      // future-proof to check for requirement against these.
+      return !itemSchema.type.includes("null");
+    }
+    // All non-null array item types are inherently required by design
+    return itemSchema.type !== "null";
+  }
 
   /** Callback handler for when the user clicks on the add button. Creates a new row of keyed form data at the end of
    * the list, adding it into the state, and then returning `onChange()` with the plain form data converted from the
@@ -245,6 +283,32 @@ class ArrayField<
     };
   };
 
+  /** Callback handler used to deal with changing the value of the data in the array at the `index`. Calls the
+   * `onChange` callback with the updated form data
+   *
+   * @param index - The index of the item being changed
+   */
+  onChangeForIndex = (index: number) => {
+    return (value: any, newErrorSchema?: ErrorSchema<T>, id?: string) => {
+      const { errorSchema, formData, onChange } = this.props;
+      const arrayData = Array.isArray(formData) ? formData : [];
+      const newFormData = arrayData.map((item: T, i: number) => {
+        // We need to treat undefined items as nulls to have validation.
+        // See https://github.com/tdegrunt/jsonschema/issues/206
+        const jsonValue = typeof value === "undefined" ? null : value;
+        return index === i ? jsonValue : item;
+      });
+      onChange(
+        newFormData,
+        errorSchema && {
+          ...errorSchema,
+          [index]: newErrorSchema,
+        },
+        id
+      );
+    };
+  };
+
   /** Callback handler for when the user clicks on the copy button on an existing array element. Clones the row of
    * keyed form data at the `index` into the next position in the state, and then returning `onChange()` with the plain
    * form data converted from the keyed data
@@ -257,7 +321,7 @@ class ArrayField<
         event.preventDefault();
       }
 
-      const { onChange, errorSchema } = this.props;
+      const { errorSchema, onChange } = this.props;
       const { keyedFormData } = this.state;
       // refs #195: revalidate to ensure properly reindexing errors
       let newErrorSchema: ErrorSchema<T>;
@@ -273,8 +337,8 @@ class ArrayField<
       }
 
       const newKeyedFormDataRow: KeyedFormDataType<T> = {
-        key: generateRowId(),
         item: cloneDeep(keyedFormData[index].item),
+        key: generateRowId(),
       };
       const newKeyedFormData = [...keyedFormData];
       if (index !== undefined) {
@@ -307,7 +371,7 @@ class ArrayField<
       if (event) {
         event.preventDefault();
       }
-      const { onChange, errorSchema } = this.props;
+      const { errorSchema, onChange } = this.props;
       const { keyedFormData } = this.state;
       // refs #195: revalidate to ensure properly reindexing errors
       let newErrorSchema: ErrorSchema<T>;
@@ -349,7 +413,7 @@ class ArrayField<
         event.preventDefault();
         event.currentTarget.blur();
       }
-      const { onChange, errorSchema } = this.props;
+      const { errorSchema, onChange } = this.props;
       let newErrorSchema: ErrorSchema<T>;
       if (errorSchema) {
         newErrorSchema = {};
@@ -389,288 +453,197 @@ class ArrayField<
     };
   };
 
-  /** Callback handler used to deal with changing the value of the data in the array at the `index`. Calls the
-   * `onChange` callback with the updated form data
-   *
-   * @param index - The index of the item being changed
-   */
-  onChangeForIndex = (index: number) => {
-    return (value: any, newErrorSchema?: ErrorSchema<T>, id?: string) => {
-      const { formData, onChange, errorSchema } = this.props;
-      const arrayData = Array.isArray(formData) ? formData : [];
-      const newFormData = arrayData.map((item: T, i: number) => {
-        // We need to treat undefined items as nulls to have validation.
-        // See https://github.com/tdegrunt/jsonschema/issues/206
-        const jsonValue = typeof value === "undefined" ? null : value;
-        return index === i ? jsonValue : item;
-      });
-      onChange(
-        newFormData,
-        errorSchema && {
-          ...errorSchema,
-          [index]: newErrorSchema,
-        },
-        id
-      );
-    };
-  };
-
   /** Callback handler used to change the value for a checkbox */
   onSelectChange = (value: any) => {
-    const { onChange, idSchema } = this.props;
+    const { idSchema, onChange } = this.props;
     onChange(value, undefined, idSchema && idSchema.$id);
   };
 
-  /** Determines whether more items can be added to the array. If the uiSchema indicates the array doesn't allow adding
-   * then false is returned. Otherwise, if the schema indicates that there are a maximum number of items and the
-   * `formData` matches that value, then false is returned, otherwise true is returned.
-   *
-   * @param formItems - The list of items in the form
-   * @returns - True if the item is addable otherwise false
+  /** Renders the `ArrayField` depending on the specific needs of the schema and uischema elements
    */
-  canAddItem(formItems: any[]) {
-    const { schema, uiSchema, registry } = this.props;
-    let { addable } = getUiOptions<T[], S, F>(
-      uiSchema,
-      registry.globalUiOptions
-    );
-    if (addable !== false) {
-      // if ui:options.addable was not explicitly set to false, we can add
-      // another item if we have not exceeded maxItems yet
-      if (schema.maxItems !== undefined) {
-        addable = formItems.length < schema.maxItems;
-      } else {
-        addable = true;
-      }
+  render() {
+    const { idSchema, registry, schema, uiSchema } = this.props;
+    const { schemaUtils, translateString } = registry;
+    if (!(ITEMS_KEY in schema)) {
+      const uiOptions = getUiOptions<T[], S, F>(uiSchema);
+      const UnsupportedFieldTemplate = getTemplate<
+        "UnsupportedFieldTemplate",
+        T[],
+        S,
+        F
+      >("UnsupportedFieldTemplate", registry, uiOptions);
+
+      return (
+        <UnsupportedFieldTemplate
+          idSchema={idSchema}
+          reason={translateString(TranslatableString.MissingItems)}
+          registry={registry}
+          schema={schema}
+        />
+      );
     }
-    return addable;
+    if (schemaUtils.isMultiSelect(schema)) {
+      // If array has enum or uniqueItems set to true, call renderMultiSelect() to render the default multiselect widget or a custom widget, if specified.
+      return this.renderMultiSelect();
+    }
+    if (isCustomWidget<T[], S, F>(uiSchema)) {
+      return this.renderCustomWidget();
+    }
+    if (isFixedItems(schema)) {
+      return this.renderFixedArray();
+    }
+    if (schemaUtils.isFilesArray(schema, uiSchema)) {
+      return this.renderFiles();
+    }
+    return this.renderNormalArray();
   }
 
-  /** Determines whether the item described in the schema is always required, which is determined by whether any item
-   * may be null.
+  /** Renders the individual array item using a `SchemaField` along with the additional properties required to be send
+   * back to the `ArrayFieldItemTemplate`.
    *
-   * @param itemSchema - The schema for the item
-   * @return - True if the item schema type does not contain the "null" type
+   * @param props - The props for the individual array item to be rendered
    */
-  isItemRequired(itemSchema: S) {
-    if (Array.isArray(itemSchema.type)) {
-      // While we don't yet support composite/nullable jsonschema types, it's
-      // future-proof to check for requirement against these.
-      return !itemSchema.type.includes("null");
-    }
-    // All non-null array item types are inherently required by design
-    return itemSchema.type !== "null";
-  }
-
-  /** Renders a normal array without any limitations of length
-   */
-  renderNormalArray() {
+  renderArrayFieldItem(props: {
+    autofocus?: boolean;
+    canAdd: boolean;
+    canMoveDown: boolean;
+    canMoveUp: boolean;
+    canRemove?: boolean;
+    index: number;
+    itemData: T[];
+    itemErrorSchema?: ErrorSchema<T[]>;
+    itemIdSchema: IdSchema<T[]>;
+    itemSchema: S;
+    itemUiSchema: UiSchema<T[], S, F>;
+    key: string;
+    name: string;
+    onBlur: FieldProps<T[], S, F>["onBlur"];
+    onFocus: FieldProps<T[], S, F>["onFocus"];
+    rawErrors?: string[];
+    title: string | undefined;
+    totalItems: number;
+  }) {
     const {
-      schema,
-      uiSchema = {},
-      errorSchema,
-      idSchema,
+      autofocus,
+      canAdd,
+      canMoveDown,
+      canMoveUp,
+      canRemove = true,
+      index,
+      itemData,
+      itemErrorSchema,
+      itemIdSchema,
+      itemSchema,
+      itemUiSchema,
+      key,
       name,
-      title: titleProp,
-      disabled = false,
-      readonly = false,
-      autofocus = false,
-      required = false,
-      registry,
-      onChange,
       onBlur,
       onFocus,
-      idPrefix,
-      idSeparator = "_",
       rawErrors,
-      formData: rawFormData,
-    } = this.props;
-
-    const { keyedFormData } = this.state;
-    const fieldTitle = schema.title || titleProp || name;
-    const { schemaUtils, formContext } = registry;
-    const uiOptions = getUiOptions<T[], S, F>(uiSchema);
-    const schemaItems: S = isObject(schema.items)
-      ? (schema.items as S)
-      : ({} as S);
-    const itemsSchema: S = schemaUtils.retrieveSchema(schemaItems);
-    const formData = keyedToPlainFormData(keyedFormData);
-    const canAdd = this.canAddItem(formData);
-    const arrayProps: ArrayFieldTemplateProps<T[], S, F> = {
-      canAdd,
-      items: keyedFormData.map((keyedItem, index) => {
-        const { key, item } = keyedItem;
-        // While we are actually dealing with a single item of type T, the types require a T[], so cast
-        const itemCast = item as unknown as T[];
-        const itemSchema = schemaUtils.retrieveSchema(schemaItems, itemCast);
-        const itemErrorSchema = errorSchema
-          ? (errorSchema[index] as ErrorSchema<T[]>)
-          : undefined;
-        const itemIdPrefix = idSchema.$id + idSeparator + index;
-        const itemIdSchema = schemaUtils.toIdSchema(
-          itemSchema,
-          itemIdPrefix,
-          itemCast,
-          idPrefix,
-          idSeparator
-        );
-        return this.renderArrayFieldItem({
-          key,
-          index,
-          name: name && `${name}-${index}`,
-          title: fieldTitle ? `${fieldTitle}-${index + 1}` : undefined,
-          canAdd,
-          canMoveUp: index > 0,
-          canMoveDown: index < formData.length - 1,
-          itemSchema,
-          itemIdSchema,
-          itemErrorSchema,
-          itemData: itemCast,
-          itemUiSchema: uiSchema.items,
-          autofocus: autofocus && index === 0,
-          onBlur,
-          onFocus,
-          rawErrors,
-          totalItems: keyedFormData.length,
-        });
-      }),
-      className: `field field-array field-array-of-${itemsSchema.type}`,
+      title,
+      totalItems,
+    } = props;
+    const {
       disabled,
-      idSchema,
-      uiSchema,
-      onAddClick: this.onAddClick,
-      readonly,
-      required,
-      schema,
-      title: fieldTitle,
       formContext,
-      formData: rawFormData,
-      rawErrors,
+      hideError,
+      idPrefix,
+      idSeparator,
+      readonly,
       registry,
+      uiSchema,
+    } = this.props;
+    const {
+      fields: { ArraySchemaField, SchemaField },
+      globalUiOptions,
+    } = registry;
+    const ItemSchemaField = ArraySchemaField || SchemaField;
+    const {
+      copyable = false,
+      orderable = true,
+      removable = true,
+    } = getUiOptions<T[], S, F>(uiSchema, globalUiOptions);
+    const has: { [key: string]: boolean } = {
+      copy: copyable && canAdd,
+      moveDown: orderable && canMoveDown,
+      moveUp: orderable && canMoveUp,
+      remove: removable && canRemove,
+      toolbar: false,
     };
+    has.toolbar = Object.keys(has).some((k: keyof typeof has) => has[k]);
 
-    const Template = getTemplate<"ArrayFieldTemplate", T[], S, F>(
-      "ArrayFieldTemplate",
+    return {
+      canAdd,
+      children: (
+        <ItemSchemaField
+          autofocus={autofocus}
+          disabled={disabled}
+          errorSchema={itemErrorSchema}
+          formContext={formContext}
+          formData={itemData}
+          hideError={hideError}
+          idPrefix={idPrefix}
+          idSchema={itemIdSchema}
+          idSeparator={idSeparator}
+          index={index}
+          name={name}
+          rawErrors={rawErrors}
+          readonly={readonly}
+          registry={registry}
+          required={this.isItemRequired(itemSchema)}
+          schema={itemSchema}
+          title={title}
+          uiSchema={itemUiSchema}
+          onBlur={onBlur}
+          onChange={this.onChangeForIndex(index)}
+          onFocus={onFocus}
+        />
+      ),
+      className: "array-item",
+      disabled,
+      hasCopy: has.copy,
+      hasMoveDown: has.moveDown,
+      hasMoveUp: has.moveUp,
+      hasRemove: has.remove,
+      hasToolbar: has.toolbar,
+      index,
+      key,
+      onAddIndexClick: this.onAddIndexClick,
+      onCopyIndexClick: this.onCopyIndexClick,
+      onDropIndexClick: this.onDropIndexClick,
+      onReorderClick: this.onReorderClick,
+      readonly,
       registry,
-      uiOptions
-    );
-    return (
-      <Flex direction="column">
-        <Template {...arrayProps} />
-        {!readonly &&
-          (isNullFormData(rawFormData) ? (
-            <Button
-              fontSize="12px"
-              variant="outline-primary"
-              onClick={() => onChange([])}
-              leftIcon={<CustomIcon name="plus" boxSize={3} />}
-            >
-              Create an empty array
-            </Button>
-          ) : (
-            <Button
-              py={0}
-              height="fit-content"
-              alignSelf="start"
-              variant="outline"
-              size="sm"
-              onClick={() => onChange(null as any)}
-            >
-              <Flex gap={1} alignItems="center" h="fit-content">
-                <CustomIcon name="delete" boxSize={3} color="error.main" />
-                <Text color="error.main">Delete array</Text>
-              </Flex>
-            </Button>
-          ))}
-      </Flex>
-    );
+      schema: itemSchema,
+      totalItems,
+      uiSchema: itemUiSchema,
+    };
   }
 
   /** Renders an array using the custom widget provided by the user in the `uiSchema`
    */
   renderCustomWidget() {
     const {
-      schema,
-      idSchema,
-      uiSchema,
-      disabled = false,
-      readonly = false,
       autofocus = false,
-      required = false,
+      disabled = false,
+      formData: items = [],
       hideError,
-      placeholder,
-      onBlur,
-      onFocus,
-      formData: items = [],
-      registry,
-      rawErrors,
-      name,
-    } = this.props;
-    const { widgets, formContext, globalUiOptions, schemaUtils } = registry;
-    const {
-      widget,
-      title: uiTitle,
-      ...options
-    } = getUiOptions<T[], S, F>(uiSchema, globalUiOptions);
-    const Widget = getWidget<T[], S, F>(schema, widget, widgets);
-    const label = uiTitle ?? schema.title ?? name;
-    const displayLabel = schemaUtils.getDisplayLabel(
-      schema,
-      uiSchema,
-      globalUiOptions
-    );
-    return (
-      <Widget
-        id={idSchema.$id}
-        name={name}
-        multiple
-        onChange={this.onSelectChange}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        options={options}
-        schema={schema}
-        uiSchema={uiSchema}
-        registry={registry}
-        value={items}
-        disabled={disabled}
-        readonly={readonly}
-        hideError={hideError}
-        required={required}
-        label={label}
-        hideLabel={!displayLabel}
-        placeholder={placeholder}
-        formContext={formContext}
-        autofocus={autofocus}
-        rawErrors={rawErrors}
-      />
-    );
-  }
-
-  /** Renders an array as a set of checkboxes
-   */
-  renderMultiSelect() {
-    const {
-      schema,
       idSchema,
-      uiSchema,
-      formData: items = [],
-      disabled = false,
-      readonly = false,
-      autofocus = false,
-      required = false,
-      placeholder,
+      name,
       onBlur,
       onFocus,
-      registry,
+      placeholder,
       rawErrors,
-      name,
+      readonly = false,
+      registry,
+      required = false,
+      schema,
+      uiSchema,
     } = this.props;
-    const { widgets, schemaUtils, formContext, globalUiOptions } = registry;
-    const itemsSchema = schemaUtils.retrieveSchema(schema.items as S, items);
-    const enumOptions = optionsList(itemsSchema);
+    const { formContext, globalUiOptions, schemaUtils, widgets } = registry;
     const {
-      widget = "select",
       title: uiTitle,
+      widget,
       ...options
     } = getUiOptions<T[], S, F>(uiSchema, globalUiOptions);
     const Widget = getWidget<T[], S, F>(schema, widget, widgets);
@@ -683,25 +656,26 @@ class ArrayField<
     return (
       <Widget
         id={idSchema.$id}
-        name={name}
+        autofocus={autofocus}
+        disabled={disabled}
+        formContext={formContext}
+        hideError={hideError}
+        hideLabel={!displayLabel}
+        label={label}
         multiple
-        onChange={this.onSelectChange}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        options={{ ...options, enumOptions }}
+        name={name}
+        options={options}
+        placeholder={placeholder}
+        rawErrors={rawErrors}
+        readonly={readonly}
+        registry={registry}
+        required={required}
         schema={schema}
         uiSchema={uiSchema}
-        registry={registry}
         value={items}
-        disabled={disabled}
-        readonly={readonly}
-        required={required}
-        label={label}
-        hideLabel={!displayLabel}
-        placeholder={placeholder}
-        formContext={formContext}
-        autofocus={autofocus}
-        rawErrors={rawErrors}
+        onBlur={onBlur}
+        onChange={this.onSelectChange}
+        onFocus={onFocus}
       />
     );
   }
@@ -710,24 +684,24 @@ class ArrayField<
    */
   renderFiles() {
     const {
-      schema,
-      uiSchema,
+      autofocus = false,
+      disabled = false,
+      formData: items = [],
       idSchema,
       name,
-      disabled = false,
-      readonly = false,
-      autofocus = false,
-      required = false,
       onBlur,
       onFocus,
-      registry,
-      formData: items = [],
       rawErrors,
+      readonly = false,
+      registry,
+      required = false,
+      schema,
+      uiSchema,
     } = this.props;
-    const { widgets, formContext, globalUiOptions, schemaUtils } = registry;
+    const { formContext, globalUiOptions, schemaUtils, widgets } = registry;
     const {
-      widget = "files",
       title: uiTitle,
+      widget = "files",
       ...options
     } = getUiOptions<T[], S, F>(uiSchema, globalUiOptions);
     const Widget = getWidget<T[], S, F>(schema, widget, widgets);
@@ -739,25 +713,25 @@ class ArrayField<
     );
     return (
       <Widget
-        options={options}
         id={idSchema.$id}
-        name={name}
+        autofocus={autofocus}
+        disabled={disabled}
+        formContext={formContext}
+        hideLabel={!displayLabel}
+        label={label}
         multiple
-        onChange={this.onSelectChange}
-        onBlur={onBlur}
-        onFocus={onFocus}
+        name={name}
+        options={options}
+        rawErrors={rawErrors}
+        readonly={readonly}
+        registry={registry}
+        required={required}
         schema={schema}
         uiSchema={uiSchema}
         value={items}
-        disabled={disabled}
-        readonly={readonly}
-        required={required}
-        registry={registry}
-        formContext={formContext}
-        autofocus={autofocus}
-        rawErrors={rawErrors}
-        label={label}
-        hideLabel={!displayLabel}
+        onBlur={onBlur}
+        onChange={this.onSelectChange}
+        onFocus={onFocus}
       />
     );
   }
@@ -766,29 +740,29 @@ class ArrayField<
    */
   renderFixedArray() {
     const {
-      schema,
-      uiSchema = {},
-      formData = [],
-      errorSchema,
-      idPrefix,
-      idSeparator = "_",
-      idSchema,
-      name,
-      title,
-      disabled = false,
-      readonly = false,
       autofocus = false,
-      required = false,
-      registry,
+      disabled = false,
+      errorSchema,
+      formData = [],
+      idPrefix,
+      idSchema,
+      idSeparator = "_",
+      name,
       onBlur,
       onFocus,
       rawErrors,
+      readonly = false,
+      registry,
+      required = false,
+      schema,
+      title,
+      uiSchema = {},
     } = this.props;
     const { keyedFormData } = this.state;
     let { formData: items = [] } = this.props;
     const fieldTitle = schema.title || title || name;
     const uiOptions = getUiOptions<T[], S, F>(uiSchema);
-    const { schemaUtils, formContext } = registry;
+    const { formContext, schemaUtils } = registry;
     const schemaItems: S[] = isObject(schema.items)
       ? (schema.items as S[])
       : ([] as S[]);
@@ -811,10 +785,12 @@ class ArrayField<
       canAdd,
       className: "field field-array field-array-fixed-items",
       disabled,
-      idSchema,
+      errorSchema,
+      formContext,
       formData,
+      idSchema,
       items: keyedFormData.map((keyedItem, index) => {
-        const { key, item } = keyedItem;
+        const { item, key } = keyedItem;
         // While we are actually dealing with a single item of type T, the types require a T[], so cast
         const itemCast = item as unknown as T[];
         const additional = index >= itemSchemas.length;
@@ -840,36 +816,34 @@ class ArrayField<
           : undefined;
 
         return this.renderArrayFieldItem({
-          key,
-          index,
-          name: name && `${name}-${index}`,
-          title: fieldTitle ? `${fieldTitle}-${index + 1}` : undefined,
-          canAdd,
-          canRemove: additional,
-          canMoveUp: index >= itemSchemas.length + 1,
-          canMoveDown: additional && index < items.length - 1,
-          itemSchema,
-          itemData: itemCast,
-          itemUiSchema,
-          itemIdSchema,
-          itemErrorSchema,
           autofocus: autofocus && index === 0,
+          canAdd,
+          canMoveDown: additional && index < items.length - 1,
+          canMoveUp: index >= itemSchemas.length + 1,
+          canRemove: additional,
+          index,
+          itemData: itemCast,
+          itemErrorSchema,
+          itemIdSchema,
+          itemSchema,
+          itemUiSchema,
+          key,
+          name: name && `${name}-${index}`,
           onBlur,
           onFocus,
           rawErrors,
+          title: fieldTitle ? `${fieldTitle}-${index + 1}` : undefined,
           totalItems: keyedFormData.length,
         });
       }),
       onAddClick: this.onAddClick,
-      readonly,
-      required,
-      registry,
-      schema,
-      uiSchema,
-      title: fieldTitle,
-      formContext,
-      errorSchema,
       rawErrors,
+      readonly,
+      registry,
+      required,
+      schema,
+      title: fieldTitle,
+      uiSchema,
     };
 
     const Template = getTemplate<"ArrayFieldTemplate", T[], S, F>(
@@ -880,165 +854,188 @@ class ArrayField<
     return <Template {...arrayProps} />;
   }
 
-  /** Renders the individual array item using a `SchemaField` along with the additional properties required to be send
-   * back to the `ArrayFieldItemTemplate`.
-   *
-   * @param props - The props for the individual array item to be rendered
+  /** Renders an array as a set of checkboxes
    */
-  renderArrayFieldItem(props: {
-    key: string;
-    index: number;
-    name: string;
-    title: string | undefined;
-    canAdd: boolean;
-    canRemove?: boolean;
-    canMoveUp: boolean;
-    canMoveDown: boolean;
-    itemSchema: S;
-    itemData: T[];
-    itemUiSchema: UiSchema<T[], S, F>;
-    itemIdSchema: IdSchema<T[]>;
-    itemErrorSchema?: ErrorSchema<T[]>;
-    autofocus?: boolean;
-    onBlur: FieldProps<T[], S, F>["onBlur"];
-    onFocus: FieldProps<T[], S, F>["onFocus"];
-    rawErrors?: string[];
-    totalItems: number;
-  }) {
+  renderMultiSelect() {
     const {
-      key,
-      index,
+      autofocus = false,
+      disabled = false,
+      formData: items = [],
+      idSchema,
       name,
-      canAdd,
-      canRemove = true,
-      canMoveUp,
-      canMoveDown,
-      itemSchema,
-      itemData,
-      itemUiSchema,
-      itemIdSchema,
-      itemErrorSchema,
-      autofocus,
       onBlur,
       onFocus,
+      placeholder,
       rawErrors,
-      totalItems,
-      title,
-    } = props;
-    const {
-      disabled,
-      hideError,
-      idPrefix,
-      idSeparator,
-      readonly,
+      readonly = false,
+      registry,
+      required = false,
+      schema,
       uiSchema,
-      registry,
-      formContext,
     } = this.props;
+    const { formContext, globalUiOptions, schemaUtils, widgets } = registry;
+    const itemsSchema = schemaUtils.retrieveSchema(schema.items as S, items);
+    const enumOptions = optionsList(itemsSchema);
     const {
-      fields: { ArraySchemaField, SchemaField },
-      globalUiOptions,
-    } = registry;
-    const ItemSchemaField = ArraySchemaField || SchemaField;
-    const {
-      orderable = true,
-      removable = true,
-      copyable = false,
+      title: uiTitle,
+      widget = "select",
+      ...options
     } = getUiOptions<T[], S, F>(uiSchema, globalUiOptions);
-    const has: { [key: string]: boolean } = {
-      moveUp: orderable && canMoveUp,
-      moveDown: orderable && canMoveDown,
-      copy: copyable && canAdd,
-      remove: removable && canRemove,
-      toolbar: false,
-    };
-    has.toolbar = Object.keys(has).some((k: keyof typeof has) => has[k]);
-
-    return {
-      children: (
-        <ItemSchemaField
-          name={name}
-          title={title}
-          index={index}
-          schema={itemSchema}
-          uiSchema={itemUiSchema}
-          formData={itemData}
-          formContext={formContext}
-          errorSchema={itemErrorSchema}
-          idPrefix={idPrefix}
-          idSeparator={idSeparator}
-          idSchema={itemIdSchema}
-          required={this.isItemRequired(itemSchema)}
-          onChange={this.onChangeForIndex(index)}
-          onBlur={onBlur}
-          onFocus={onFocus}
-          registry={registry}
-          disabled={disabled}
-          readonly={readonly}
-          hideError={hideError}
-          autofocus={autofocus}
-          rawErrors={rawErrors}
-        />
-      ),
-      className: "array-item",
-      disabled,
-      canAdd,
-      hasCopy: has.copy,
-      hasToolbar: has.toolbar,
-      hasMoveUp: has.moveUp,
-      hasMoveDown: has.moveDown,
-      hasRemove: has.remove,
-      index,
-      totalItems,
-      key,
-      onAddIndexClick: this.onAddIndexClick,
-      onCopyIndexClick: this.onCopyIndexClick,
-      onDropIndexClick: this.onDropIndexClick,
-      onReorderClick: this.onReorderClick,
-      readonly,
-      registry,
-      schema: itemSchema,
-      uiSchema: itemUiSchema,
-    };
+    const Widget = getWidget<T[], S, F>(schema, widget, widgets);
+    const label = uiTitle ?? schema.title ?? name;
+    const displayLabel = schemaUtils.getDisplayLabel(
+      schema,
+      uiSchema,
+      globalUiOptions
+    );
+    return (
+      <Widget
+        id={idSchema.$id}
+        autofocus={autofocus}
+        disabled={disabled}
+        formContext={formContext}
+        hideLabel={!displayLabel}
+        label={label}
+        multiple
+        name={name}
+        options={{ ...options, enumOptions }}
+        placeholder={placeholder}
+        rawErrors={rawErrors}
+        readonly={readonly}
+        registry={registry}
+        required={required}
+        schema={schema}
+        uiSchema={uiSchema}
+        value={items}
+        onBlur={onBlur}
+        onChange={this.onSelectChange}
+        onFocus={onFocus}
+      />
+    );
   }
 
-  /** Renders the `ArrayField` depending on the specific needs of the schema and uischema elements
+  /** Renders a normal array without any limitations of length
    */
-  render() {
-    const { schema, uiSchema, idSchema, registry } = this.props;
-    const { schemaUtils, translateString } = registry;
-    if (!(ITEMS_KEY in schema)) {
-      const uiOptions = getUiOptions<T[], S, F>(uiSchema);
-      const UnsupportedFieldTemplate = getTemplate<
-        "UnsupportedFieldTemplate",
-        T[],
-        S,
-        F
-      >("UnsupportedFieldTemplate", registry, uiOptions);
+  renderNormalArray() {
+    const {
+      autofocus = false,
+      disabled = false,
+      errorSchema,
+      formData: rawFormData,
+      idPrefix,
+      idSchema,
+      idSeparator = "_",
+      name,
+      onBlur,
+      onChange,
+      onFocus,
+      rawErrors,
+      readonly = false,
+      registry,
+      required = false,
+      schema,
+      title: titleProp,
+      uiSchema = {},
+    } = this.props;
 
-      return (
-        <UnsupportedFieldTemplate
-          schema={schema}
-          idSchema={idSchema}
-          reason={translateString(TranslatableString.MissingItems)}
-          registry={registry}
-        />
-      );
-    }
-    if (schemaUtils.isMultiSelect(schema)) {
-      // If array has enum or uniqueItems set to true, call renderMultiSelect() to render the default multiselect widget or a custom widget, if specified.
-      return this.renderMultiSelect();
-    }
-    if (isCustomWidget<T[], S, F>(uiSchema)) {
-      return this.renderCustomWidget();
-    }
-    if (isFixedItems(schema)) {
-      return this.renderFixedArray();
-    }
-    if (schemaUtils.isFilesArray(schema, uiSchema)) {
-      return this.renderFiles();
-    }
-    return this.renderNormalArray();
+    const { keyedFormData } = this.state;
+    const fieldTitle = schema.title || titleProp || name;
+    const { formContext, schemaUtils } = registry;
+    const uiOptions = getUiOptions<T[], S, F>(uiSchema);
+    const schemaItems: S = isObject(schema.items)
+      ? (schema.items as S)
+      : ({} as S);
+    const itemsSchema: S = schemaUtils.retrieveSchema(schemaItems);
+    const formData = keyedToPlainFormData(keyedFormData);
+    const canAdd = this.canAddItem(formData);
+    const arrayProps: ArrayFieldTemplateProps<T[], S, F> = {
+      canAdd,
+      className: `field field-array field-array-of-${itemsSchema.type}`,
+      disabled,
+      formContext,
+      formData: rawFormData,
+      idSchema,
+      items: keyedFormData.map((keyedItem, index) => {
+        const { item, key } = keyedItem;
+        // While we are actually dealing with a single item of type T, the types require a T[], so cast
+        const itemCast = item as unknown as T[];
+        const itemSchema = schemaUtils.retrieveSchema(schemaItems, itemCast);
+        const itemErrorSchema = errorSchema
+          ? (errorSchema[index] as ErrorSchema<T[]>)
+          : undefined;
+        const itemIdPrefix = idSchema.$id + idSeparator + index;
+        const itemIdSchema = schemaUtils.toIdSchema(
+          itemSchema,
+          itemIdPrefix,
+          itemCast,
+          idPrefix,
+          idSeparator
+        );
+        return this.renderArrayFieldItem({
+          autofocus: autofocus && index === 0,
+          canAdd,
+          canMoveDown: index < formData.length - 1,
+          canMoveUp: index > 0,
+          index,
+          itemData: itemCast,
+          itemErrorSchema,
+          itemIdSchema,
+          itemSchema,
+          itemUiSchema: uiSchema.items,
+          key,
+          name: name && `${name}-${index}`,
+          onBlur,
+          onFocus,
+          rawErrors,
+          title: fieldTitle ? `${fieldTitle}-${index + 1}` : undefined,
+          totalItems: keyedFormData.length,
+        });
+      }),
+      onAddClick: this.onAddClick,
+      rawErrors,
+      readonly,
+      registry,
+      required,
+      schema,
+      title: fieldTitle,
+      uiSchema,
+    };
+
+    const Template = getTemplate<"ArrayFieldTemplate", T[], S, F>(
+      "ArrayFieldTemplate",
+      registry,
+      uiOptions
+    );
+    return (
+      <Flex direction="column">
+        <Template {...arrayProps} />
+        {!readonly &&
+          (isNullFormData(rawFormData) ? (
+            <Button
+              fontSize="12px"
+              leftIcon={<CustomIcon boxSize={3} name="plus" />}
+              variant="outline-primary"
+              onClick={() => onChange([])}
+            >
+              Create an empty array
+            </Button>
+          ) : (
+            <Button
+              alignSelf="start"
+              height="fit-content"
+              py={0}
+              size="sm"
+              variant="outline"
+              onClick={() => onChange(null as any)}
+            >
+              <Flex alignItems="center" gap={1} h="fit-content">
+                <CustomIcon boxSize={3} color="error.main" name="delete" />
+                <Text color="error.main">Delete array</Text>
+              </Flex>
+            </Button>
+          ))}
+      </Flex>
+    );
   }
 }
 

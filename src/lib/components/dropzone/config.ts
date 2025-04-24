@@ -1,13 +1,13 @@
 import type { Accept } from "react-dropzone";
 
 export type DropzoneFileType =
-  | "wasm"
   | "json"
-  | "mv"
   | "move"
+  | "mv"
+  | "sol"
   | "toml"
   | "vy"
-  | "sol";
+  | "wasm";
 
 export interface DropzoneConfig {
   accept: Accept;
@@ -17,16 +17,16 @@ export interface DropzoneConfig {
 }
 
 export const DROPZONE_CONFIG: { [key in DropzoneFileType]: DropzoneConfig } = {
-  wasm: {
-    accept: { "application/octet-stream": [".wasm"] },
-    text: {
-      rawFileType: ".wasm",
-    },
-  },
   json: {
     accept: { "application/json": [".json"] },
     text: {
       rawFileType: ".json",
+    },
+  },
+  move: {
+    accept: { "application/octet-stream": [".move"] },
+    text: {
+      rawFileType: ".move",
     },
   },
   mv: {
@@ -35,10 +35,10 @@ export const DROPZONE_CONFIG: { [key in DropzoneFileType]: DropzoneConfig } = {
       rawFileType: ".mv",
     },
   },
-  move: {
-    accept: { "application/octet-stream": [".move"] },
+  sol: {
+    accept: { "application/octet-stream": [".sol"] },
     text: {
-      rawFileType: ".move",
+      rawFileType: ".sol",
     },
   },
   toml: {
@@ -53,10 +53,10 @@ export const DROPZONE_CONFIG: { [key in DropzoneFileType]: DropzoneConfig } = {
       rawFileType: ".vy",
     },
   },
-  sol: {
-    accept: { "application/octet-stream": [".sol"] },
+  wasm: {
+    accept: { "application/octet-stream": [".wasm"] },
     text: {
-      rawFileType: ".sol",
+      rawFileType: ".wasm",
     },
   },
 };

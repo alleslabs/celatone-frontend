@@ -1,13 +1,12 @@
-import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useWasmConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import { CelatoneSeo } from "lib/components/Seo";
 import { TierSwitcher } from "lib/components/TierSwitcher";
+import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { RecentCodesTableFull } from "./components/RecentCodesTableFull";
 import { RecentCodesTableLite } from "./components/RecentCodesTableLite";
@@ -24,9 +23,9 @@ const RecentCodes = observer(() => {
     <PageContainer>
       <CelatoneSeo pageName="Codes" />
       <PageHeader
-        title="Codes"
-        subtitle="This page displays all codes on this network sorted by recency"
         docHref="introduction/overview#recent-codes"
+        subtitle="This page displays all codes on this network sorted by recency"
+        title="Codes"
       />
       <TierSwitcher
         full={<RecentCodesTableFull />}

@@ -1,36 +1,36 @@
-import { Flex, SkeletonText, Text } from "@chakra-ui/react";
-
-import { useProposalParams } from "lib/services/proposal";
 import type { Option, Ratio } from "lib/types";
+
+import { Flex, SkeletonText, Text } from "@chakra-ui/react";
+import { useProposalParams } from "lib/services/proposal";
 import { formatPrettyPercent, formatSeconds } from "lib/utils";
 
 import { CustomIcon } from "./icon";
 import { Tooltip } from "./Tooltip";
 
 const ExpeditedText = ({
+  isLoading,
   quorum,
   threshold,
   votingPeriod,
-  isLoading,
 }: {
+  isLoading: boolean;
   quorum: Option<Ratio<number>>;
   threshold: Option<Ratio<number>>;
   votingPeriod: Option<string>;
-  isLoading: boolean;
 }) => {
   if (isLoading)
     <SkeletonText
       color="white"
       noOfLines={4}
-      spacing={2.5}
       skeletonHeight={2}
+      spacing={2.5}
       w="250px"
     />;
 
   return (
     <Text variant="body3">
       An expedited governance proposal is required to{" "}
-      <span style={{ fontWeight: 700, color: "text.main" }}>
+      <span style={{ color: "text.main", fontWeight: 700 }}>
         pass a quorum of {quorum ? formatPrettyPercent(quorum, 1, true) : "N/A"}{" "}
         and a high threshold of{" "}
         {threshold ? formatPrettyPercent(threshold, 1, true) : "N/A"} within{" "}
@@ -55,24 +55,24 @@ export const Expedited = ({ isActiveExpedited }: ExpeditedProps) => {
     <Tooltip
       label={
         <ExpeditedText
+          isLoading={isLoading}
           quorum={quorum}
           threshold={threshold}
           votingPeriod={votingPeriod}
-          isLoading={isLoading}
         />
       }
     >
-      <Flex as="span" align="center">
+      <Flex align="center" as="span">
         <CustomIcon
-          name="expedited"
           boxSize={4}
-          ml={0}
           color={isActiveExpedited ? "secondary.main" : "gray.400"}
+          ml={0}
+          name="expedited"
         />
         <Text
           as="span"
-          variant="body3"
           color={isActiveExpedited ? "secondary.main" : "text.dark"}
+          variant="body3"
         >
           Expedited
         </Text>

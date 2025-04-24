@@ -21,26 +21,26 @@ export const AnnouncementModal = ({
   isOpen,
   onClose,
 }: AnnouncementModalProps) => (
-  <Modal isOpen={isOpen} isCentered onClose={() => {}}>
+  <Modal isCentered isOpen={isOpen} onClose={() => {}}>
     <ModalOverlay />
     <ModalContent w="640px">
       <ModalHeader py={2}>
-        <Flex w="full" justifyContent="center" alignItems="center" pt={4}>
+        <Flex alignItems="center" justifyContent="center" pt={4} w="full">
           <Image
-            src="/allesinitialogo.svg"
             alt=""
+            src="/allesinitialogo.svg"
             width={{ base: 280, md: 320 }}
           />
         </Flex>
       </ModalHeader>
       <ModalBody maxH="400px" overflow="overlay">
         <Divider color="gray.700" mb={6} />
-        <Flex direction="column" gap={3} alignItems="center" textAlign="center">
+        <Flex alignItems="center" direction="column" gap={3} textAlign="center">
           <Heading as="h5" variant="h5">
             Alles Labs is joining{" "}
             <span style={{ display: "inline-flex" }}>Initia Labs</span>
           </Heading>
-          <Text variant="body1" textAlign="center" color="text.dark">
+          <Text color="text.dark" textAlign="center" variant="body1">
             Alles Labs, the team behind Celatone, is joining Initia Labs to
             enhance the user and developer experience within the Initia
             ecosystem. The Celatone explorer on existing chains will continue to
@@ -50,15 +50,15 @@ export const AnnouncementModal = ({
       </ModalBody>
       <ModalFooter>
         <Flex
-          w="full"
-          direction="row"
           align="center"
-          justifyContent="center"
+          direction="row"
           gap={4}
+          justifyContent="center"
+          w="full"
         >
           <Button
-            minW="256px"
             cursor="pointer"
+            minW="256px"
             variant="outline-primary"
             onClick={onClose}
           >

@@ -1,14 +1,13 @@
-import { z } from "zod";
-
 import { zCoin, zValidatorAddr } from "lib/types";
 import { snakeToCamel } from "lib/utils";
+import { z } from "zod";
 
 export const zDelegationRewardsResponseRest = z
   .object({
     rewards: z.array(
       z.object({
-        validator_address: zValidatorAddr,
         reward: z.array(zCoin),
+        validator_address: zValidatorAddr,
       })
     ),
     total: z.array(zCoin),

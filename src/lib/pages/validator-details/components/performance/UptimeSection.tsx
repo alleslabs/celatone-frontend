@@ -1,3 +1,6 @@
+import type { ValidatorUptimeResponse } from "lib/services/types";
+import type { ComputedUptime, Ratio, ValidatorAddr } from "lib/types";
+
 import {
   Button,
   Divider,
@@ -9,15 +12,12 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import { useMemo } from "react";
-
 import { trackUseUpTime, trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
-import type { ValidatorUptimeResponse } from "lib/services/types";
-import type { ComputedUptime, Ratio, ValidatorAddr } from "lib/types";
 import { formatRatio } from "lib/utils";
+import { useMemo } from "react";
 
 import { PenaltyEvent } from "./PenaltyEvent";
 import { RecentBlocksLegends } from "./RecentBlocksLegends";
@@ -26,19 +26,19 @@ import { RecentBlocksSection } from "./RecentBlocksSection";
 const SUPPORTED_UPTIME_BLOCKS = [100, 1000, 10000];
 
 interface UptimeSectionProps {
-  validatorAddress: ValidatorAddr;
-  uptimeData: ValidatorUptimeResponse;
-  uptimeBlock: number;
-  setUptimeBlock?: (block: number) => void;
   onViewMore?: () => void;
+  setUptimeBlock?: (block: number) => void;
+  uptimeBlock: number;
+  uptimeData: ValidatorUptimeResponse;
+  validatorAddress: ValidatorAddr;
 }
 
 export const UptimeSection = ({
-  validatorAddress,
-  uptimeData,
-  uptimeBlock,
-  setUptimeBlock,
   onViewMore,
+  setUptimeBlock,
+  uptimeBlock,
+  uptimeData,
+  validatorAddress,
 }: UptimeSectionProps) => {
   const isMobile = useMobile();
 
@@ -46,12 +46,12 @@ export const UptimeSection = ({
     const data = uptimeData.uptime;
 
     return {
-      signed: data.signedBlocks,
-      proposed: data.proposedBlocks,
       missed: data.missedBlocks,
-      signedRatio: (data.signedBlocks / data.total) as Ratio<number>,
-      proposedRatio: (data.proposedBlocks / data.total) as Ratio<number>,
       missedRatio: (data.missedBlocks / data.total) as Ratio<number>,
+      proposed: data.proposedBlocks,
+      proposedRatio: (data.proposedBlocks / data.total) as Ratio<number>,
+      signed: data.signedBlocks,
+      signedRatio: (data.signedBlocks / data.total) as Ratio<number>,
       uptimeRatio: ((data.signedBlocks + data.proposedBlocks) /
         data.total) as Ratio<number>,
     };
@@ -60,9 +60,9 @@ export const UptimeSection = ({
 
   return (
     <Flex
+      backgroundColor="gray.900"
       direction="column"
       gap={4}
-      backgroundColor="gray.900"
       p={{ base: 4, md: 6 }}
       rounded={8}
       w="100%"
@@ -70,15 +70,15 @@ export const UptimeSection = ({
       <Flex direction="column" gap={2}>
         <Flex justifyContent="space-between" w="full">
           <Flex alignItems="center" gap={2}>
-            <Heading variant="h6" as="h6" color="text.main">
+            <Heading as="h6" color="text.main" variant="h6">
               Uptime
             </Heading>
             {setUptimeBlock ? (
               <Menu>
                 <MenuButton>
-                  <Text variant="body2" color="text.dark">
+                  <Text color="text.dark" variant="body2">
                     Latest {uptimeBlock} Blocks
-                    <CustomIcon name="chevron-down" ml={2} />
+                    <CustomIcon ml={2} name="chevron-down" />
                   </Text>
                 </MenuButton>
                 <MenuList>
@@ -96,15 +96,15 @@ export const UptimeSection = ({
                 </MenuList>
               </Menu>
             ) : (
-              <Text variant="body2" color="text.dark">
+              <Text color="text.dark" variant="body2">
                 Latest 100 blocks
               </Text>
             )}
           </Flex>
           {onViewMore && !isMobile && (
             <Button
-              variant="ghost-primary"
               rightIcon={<CustomIcon name="chevron-right" />}
+              variant="ghost-primary"
               onClick={() => {
                 trackUseViewMore();
                 onViewMore();
@@ -128,8 +128,8 @@ export const UptimeSection = ({
           ))}
           {isMobile && (
             <Button
-              variant="ghost-primary"
               rightIcon={<CustomIcon name="chevron-right" />}
+              variant="ghost-primary"
               onClick={() => {
                 trackUseViewMore();
                 onViewMore();

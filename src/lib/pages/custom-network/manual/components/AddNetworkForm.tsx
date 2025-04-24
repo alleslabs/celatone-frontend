@@ -5,22 +5,23 @@ import type {
   UseFormTrigger,
 } from "react-hook-form";
 
+import type { AddNetworkManualForm } from "../../types";
+
 import GasFeeDetails from "./GasFeeDetails";
 import { NetworkDetails } from "./NetworkDetails";
 import { WalletRegistry } from "./WalletRegistry";
-import type { AddNetworkManualForm } from "../../types";
 
 interface AddNetworkFormProps {
-  currentStepIndex: number;
   control: Control<AddNetworkManualForm>;
+  currentStepIndex: number;
   errors: FieldErrors<AddNetworkManualForm>;
   setValue: UseFormSetValue<AddNetworkManualForm>;
   trigger: UseFormTrigger<AddNetworkManualForm>;
 }
 
 export const AddNetworkForm = ({
-  currentStepIndex,
   control,
+  currentStepIndex,
   errors,
   setValue,
   trigger,

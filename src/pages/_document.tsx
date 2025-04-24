@@ -1,12 +1,12 @@
-import { ColorModeScript } from "@chakra-ui/react";
 import type { DocumentContext } from "next/document";
-import Document, { Head, Html, Main, NextScript } from "next/document";
-import Script from "next/script";
 
+import { ColorModeScript } from "@chakra-ui/react";
 import { FALLBACK_THEME } from "config/theme";
 import Meta from "lib/components/Meta";
 import { config } from "lib/styles/theme/config";
 import { fontHrefs } from "lib/styles/theme/fonts";
+import Document, { Head, Html, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 class MyDocument extends Document {
   static getInitialProps(ctx: DocumentContext) {
@@ -22,8 +22,8 @@ class MyDocument extends Document {
           <link href={fontHrefs.mono} rel="stylesheet" />
           <link
             id="favicon"
-            rel="shortcut icon"
             href={FALLBACK_THEME.branding.favicon}
+            rel="shortcut icon"
           />
           <Meta />
         </Head>
@@ -32,10 +32,10 @@ class MyDocument extends Document {
           <Main />
           <NextScript />
           <Script
-            strategy="lazyOnload"
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+            strategy="lazyOnload"
           />
-          <Script strategy="lazyOnload" id="google-tag-manager">
+          <Script id="google-tag-manager" strategy="lazyOnload">
             {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}

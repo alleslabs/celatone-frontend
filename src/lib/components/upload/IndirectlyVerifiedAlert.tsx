@@ -1,7 +1,8 @@
-import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
-
 import type { Option } from "lib/types";
+
+import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
 import { formatRelatedVerifiedCodes } from "lib/utils";
+
 import { CustomIcon } from "../icon";
 
 interface IndirectlyVerifiedAlertProps {
@@ -11,9 +12,9 @@ interface IndirectlyVerifiedAlertProps {
 export const IndirectlyVerifiedAlert = ({
   relatedVerifiedCodes = [],
 }: IndirectlyVerifiedAlertProps) => (
-  <Alert variant="secondary" alignItems="center">
+  <Alert alignItems="center" variant="secondary">
     <Flex gap={2}>
-      <CustomIcon name="info-circle" boxSize={4} />
+      <CustomIcon boxSize={4} name="info-circle" />
       <AlertDescription wordBreak="break-word">
         <span style={{ fontWeight: 500 }}>
           This code has the same code hash as the following verified stored

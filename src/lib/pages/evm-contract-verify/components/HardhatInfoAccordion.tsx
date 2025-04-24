@@ -12,17 +12,17 @@ export const HarthatInfoAccordion = () => (
   <Accordion
     allowToggle
     defaultIndex={[0]}
-    variant="transparent"
     position="sticky"
     top={0}
+    variant="transparent"
   >
     <AccordionItem>
       <AccordionButton>
         <Text
-          variant="body2"
-          fontWeight={700}
           color="text.main"
+          fontWeight={700}
           textAlign="start"
+          variant="body2"
         >
           What is Hardhat?
         </Text>
@@ -30,12 +30,13 @@ export const HarthatInfoAccordion = () => (
       </AccordionButton>
       <AccordionPanel
         bg="transparent"
-        py={3}
-        px={0}
-        borderY="1px solid"
+        borderBottomWidth="1px"
         borderColor="gray.700"
+        borderTopWidth="1px"
+        px={0}
+        py={3}
       >
-        <Text variant="body2" color="text.dark" p={1}>
+        <Text color="text.dark" p={1} variant="body2">
           Hardhat simplifies contract verification by generating metadata during
           compilation and automating the process through plugins.
         </Text>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import type { HexAddr, Option } from "lib/types";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
@@ -6,45 +6,45 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable, ViewMore } from "lib/components/table";
 import { useModuleTxs } from "lib/services/move/module";
-import type { HexAddr, Option } from "lib/types";
+import { useEffect } from "react";
 
 interface ModuleTxsTableProps {
-  vmAddress: HexAddr;
   moduleName: string;
-  txCount: Option<number>;
   onViewMore?: () => void;
   scrollComponentId?: string;
+  txCount: Option<number>;
+  vmAddress: HexAddr;
 }
 
 export const ModuleTxsTable = ({
-  vmAddress,
   moduleName,
-  txCount,
   onViewMore,
   scrollComponentId,
+  txCount,
+  vmAddress,
 }: ModuleTxsTableProps) => {
   const { currentChainId } = useCelatoneApp();
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: txCount,
     initialState: {
-      pageSize: onViewMore ? 5 : 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: onViewMore ? 5 : 10,
     },
+    total: txCount,
   });
 
   const {
     data: moduleTxs,
-    isLoading,
     error,
+    isLoading,
   } = useModuleTxs(vmAddress, moduleName, pageSize, offset);
 
   useEffect(() => {
@@ -55,21 +55,21 @@ export const ModuleTxsTable = ({
   return (
     <>
       <TransactionsTable
-        transactions={moduleTxs?.items}
-        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="transactions" />
           ) : (
             <EmptyState
-              withBorder
               imageVariant="empty"
               message="There are no transactions on this module."
+              withBorder
             />
           )
         }
+        isLoading={isLoading}
         showAction={false}
         showRelations={false}
+        transactions={moduleTxs?.items}
       />
       {!!txCount &&
         (onViewMore
@@ -77,17 +77,17 @@ export const ModuleTxsTable = ({
           : txCount > 10 && (
               <Pagination
                 currentPage={currentPage}
-                pagesQuantity={pagesQuantity}
                 offset={offset}
-                totalData={txCount}
                 pageSize={pageSize}
+                pagesQuantity={pagesQuantity}
+                scrollComponentId={scrollComponentId}
+                totalData={txCount}
                 onPageChange={setCurrentPage}
                 onPageSizeChange={(e) => {
                   const size = Number(e.target.value);
                   setPageSize(size);
                   setCurrentPage(1);
                 }}
-                scrollComponentId={scrollComponentId}
               />
             ))}
     </>

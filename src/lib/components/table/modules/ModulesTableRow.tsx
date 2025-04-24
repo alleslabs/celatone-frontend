@@ -1,29 +1,29 @@
-import { Box, Button, Flex, Grid, Tag, Text } from "@chakra-ui/react";
+import type { MoveVerifyInfoResponse } from "lib/services/types";
+import type { ModuleInfo, Option } from "lib/types";
 
+import { Box, Button, Flex, Grid, Tag, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CountBadge } from "lib/components/module";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import type { MoveVerifyInfoResponse } from "lib/services/types";
-import type { ModuleInfo, Option } from "lib/types";
 import { dateFromNow, formatUTC, resolveMoveVerifyStatus } from "lib/utils";
 
-import { ModulePathLink } from "./ModulePathLink";
 import { TableRow } from "../tableComponents";
+import { ModulePathLink } from "./ModulePathLink";
 
 interface ModulesTableRowProps {
-  moduleInfo: ModuleInfo;
-  templateColumns: string;
   isPublishedModules: boolean;
+  moduleInfo: ModuleInfo;
   moveVerifyInfo: Option<MoveVerifyInfoResponse>;
+  templateColumns: string;
 }
 
 export const ModulesTableRow = ({
-  moduleInfo,
-  templateColumns,
   isPublishedModules,
+  moduleInfo,
   moveVerifyInfo,
+  templateColumns,
 }: ModulesTableRowProps) => {
   const navigate = useInternalNavigate();
   const formatAddresses = useFormatAddresses();
@@ -35,12 +35,12 @@ export const ModulesTableRow = ({
   );
 
   return (
-    <Box w="full" minW="min-content">
+    <Box minW="min-content" w="full">
       <Grid
         className="copier-wrapper"
-        templateColumns={templateColumns}
-        cursor="pointer"
         _hover={{ background: "gray.900" }}
+        cursor="pointer"
+        templateColumns={templateColumns}
         transition="all 0.25s ease-in-out"
         onClick={() =>
           navigate({
@@ -79,7 +79,7 @@ export const ModulesTableRow = ({
           </>
         )}
         <TableRow>
-          <ExplorerLink value={creator} type="user_address" showCopyOnHover />
+          <ExplorerLink showCopyOnHover type="user_address" value={creator} />
         </TableRow>
         {!isPublishedModules && (
           <>
@@ -97,7 +97,7 @@ export const ModulesTableRow = ({
                     <Text variant="body3">
                       {formatUTC(moduleInfo.latestUpdated)}
                     </Text>
-                    <Text variant="body3" color="text.dark">
+                    <Text color="text.dark" variant="body3">
                       {`(${dateFromNow(moduleInfo.latestUpdated)})`}
                     </Text>
                   </>
@@ -109,10 +109,10 @@ export const ModulesTableRow = ({
           </>
         )}
         <TableRow>
-          <Flex gap="8px" w="full" justifyContent="end">
+          <Flex gap="8px" justifyContent="end" w="full">
             <Button
-              variant="outline-white"
               size="sm"
+              variant="outline-white"
               onClick={(e) => {
                 track(AmpEvent.USE_MODULE_TABLE_CTA, { label: "view" });
                 e.stopPropagation();
@@ -120,8 +120,8 @@ export const ModulesTableRow = ({
                   pathname: "/interact",
                   query: {
                     address: moduleInfo.address,
-                    moduleName: moduleInfo.moduleName,
                     functionType: "view",
+                    moduleName: moduleInfo.moduleName,
                   },
                 });
               }}
@@ -129,8 +129,8 @@ export const ModulesTableRow = ({
               View
             </Button>
             <Button
-              variant="outline-white"
               size="sm"
+              variant="outline-white"
               onClick={(e) => {
                 track(AmpEvent.USE_MODULE_TABLE_CTA, { label: "execute" });
                 e.stopPropagation();
@@ -138,8 +138,8 @@ export const ModulesTableRow = ({
                   pathname: "/interact",
                   query: {
                     address: moduleInfo.address,
-                    moduleName: moduleInfo.moduleName,
                     functionType: "execute",
+                    moduleName: moduleInfo.moduleName,
                   },
                 });
               }}
@@ -148,8 +148,8 @@ export const ModulesTableRow = ({
             </Button>
             {isPublishedModules && (
               <Button
-                variant="outline-white"
                 size="sm"
+                variant="outline-white"
                 onClick={(e) => {
                   track(AmpEvent.USE_MODULE_TABLE_CTA, { label: "republish" });
                   e.stopPropagation();

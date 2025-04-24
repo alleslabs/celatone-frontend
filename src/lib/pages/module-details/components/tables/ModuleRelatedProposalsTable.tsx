@@ -1,46 +1,47 @@
+import type { HexAddr, Option } from "lib/types";
+
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable, ViewMore } from "lib/components/table";
 import { useModuleRelatedProposals } from "lib/services/move/module";
-import type { HexAddr, Option } from "lib/types";
 
 interface ModuleRelatedProposalsTableProps {
-  vmAddress: HexAddr;
   moduleName: string;
-  scrollComponentId: string;
-  relatedProposalsCount: Option<number>;
   onViewMore?: () => void;
+  relatedProposalsCount: Option<number>;
+  scrollComponentId: string;
+  vmAddress: HexAddr;
 }
 
 export const ModuleRelatedProposalsTable = ({
-  vmAddress,
   moduleName,
-  scrollComponentId,
-  relatedProposalsCount,
   onViewMore,
+  relatedProposalsCount,
+  scrollComponentId,
+  vmAddress,
 }: ModuleRelatedProposalsTableProps) => {
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
     setTotalData,
   } = usePaginator({
-    total: relatedProposalsCount,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: relatedProposalsCount,
   });
 
   const {
     data: relatedProposals,
-    isLoading,
     error,
+    isLoading,
   } = useModuleRelatedProposals(
     vmAddress,
     moduleName,
@@ -54,8 +55,6 @@ export const ModuleRelatedProposalsTable = ({
   return (
     <>
       <ProposalsTable
-        proposals={relatedProposals?.items}
-        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="related proposals" />
@@ -66,6 +65,8 @@ export const ModuleRelatedProposalsTable = ({
             />
           )
         }
+        isLoading={isLoading}
+        proposals={relatedProposals?.items}
       />
       {!!relatedProposalsCount &&
         (onViewMore
@@ -73,11 +74,11 @@ export const ModuleRelatedProposalsTable = ({
           : relatedProposalsCount > 10 && (
               <Pagination
                 currentPage={currentPage}
-                pagesQuantity={pagesQuantity}
                 offset={offset}
-                totalData={relatedProposalsCount}
-                scrollComponentId={scrollComponentId}
                 pageSize={pageSize}
+                pagesQuantity={pagesQuantity}
+                scrollComponentId={scrollComponentId}
+                totalData={relatedProposalsCount}
                 onPageChange={setCurrentPage}
                 onPageSizeChange={(e) => {
                   const size = Number(e.target.value);

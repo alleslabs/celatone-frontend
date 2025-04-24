@@ -1,19 +1,19 @@
-import { Divider, Flex, Text } from "@chakra-ui/react";
+import type { PoolData, Ratio } from "lib/types";
 
+import { Divider, Flex, Text } from "@chakra-ui/react";
 import { useGetAddressType } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import type { PoolData, Ratio } from "lib/types";
 import { PoolType } from "lib/types";
 import { formatRatio } from "lib/utils";
+
 import { JsonModalButton } from "../JsonModalButton";
 
 interface PoolInfoProps {
   pool: PoolData;
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export const PoolInfo = ({ pool }: PoolInfoProps) => {
   const getAddressType = useGetAddressType();
   const futurePoolGovernorType = getAddressType(
@@ -24,43 +24,43 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
     <Flex
       background="gray.900"
       borderRadius="8px"
+      columnGap={12}
+      mt={6}
       px={4}
       py={3}
-      columnGap={12}
       rowGap={6}
-      mt={6}
       wrap="wrap"
     >
       <LabelText label="Pool ID">
         <CopyLink
-          value={pool.id.toString()}
-          type="pool_id"
-          showCopyOnHover
-          w="50px"
           amptrackSection="pool_info"
+          showCopyOnHover
+          type="pool_id"
+          value={pool.id.toString()}
+          w="50px"
         />
       </LabelText>
       <LabelText label="Created height">
         <ExplorerLink
+          ampCopierSection="pool_info"
+          isReadOnly={!pool.createdHeight}
+          showCopyOnHover
           type="block_height"
           value={(pool.createdHeight ?? "N/A").toString()}
-          showCopyOnHover
-          isReadOnly={!pool.createdHeight}
-          ampCopierSection="pool_info"
         />
       </LabelText>
       <LabelText label="Pool created by">
         <ExplorerLink
-          value={pool.creator ?? "N/A"}
-          type={getAddressType(pool.creator)}
+          ampCopierSection="pool_info"
           isReadOnly={!pool.creator}
           showCopyOnHover
           textFormat="truncate"
+          type={getAddressType(pool.creator)}
+          value={pool.creator ?? "N/A"}
           w="140px"
-          ampCopierSection="pool_info"
         />
       </LabelText>
-      <Divider orientation="vertical" h="46px" />
+      <Divider h="46px" orientation="vertical" />
       {(pool.type === PoolType.BALANCER ||
         pool.type === PoolType.STABLESWAP) && (
         <LabelText
@@ -88,10 +88,10 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
         <LabelText label="Future governor">
           {futurePoolGovernorType !== "invalid_address" ? (
             <ExplorerLink
-              type={futurePoolGovernorType}
-              value={pool.futurePoolGovernor}
               showCopyOnHover
               textFormat="truncate"
+              type={futurePoolGovernorType}
+              value={pool.futurePoolGovernor}
               w="140px"
             />
           ) : (
@@ -128,19 +128,19 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
       {pool.smoothWeightChangeParams !== null && (
         <LabelText label="Smooth weight change params">
           <JsonModalButton
-            modalHeader="Smooth weight change params"
             jsonString={JSON.stringify(pool.smoothWeightChangeParams)}
+            modalHeader="Smooth weight change params"
           />
         </LabelText>
       )}
       {pool.scalingFactors !== null && (
         <LabelText label="Scaling factors">
           <JsonModalButton
-            modalHeader="Scaling factors"
             jsonString={JSON.stringify({
-              scaling_factors: pool.scalingFactors,
               scaling_factor_controller: pool.scalingFactorController,
+              scaling_factors: pool.scalingFactors,
             })}
+            modalHeader="Scaling factors"
           />
         </LabelText>
       )}
@@ -149,13 +149,13 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           {pool.contractAddress ? (
             <Text variant="body2">
               <ExplorerLink
-                value={pool.contractAddress.toString()}
-                type="contract_address"
                 showCopyOnHover
+                type="contract_address"
+                value={pool.contractAddress.toString()}
               />
             </Text>
           ) : (
-            <Text variant="body2" color="text.disabled">
+            <Text color="text.disabled" variant="body2">
               N/A
             </Text>
           )}

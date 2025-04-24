@@ -2,30 +2,30 @@ import type { TokenWithValue } from "./asset";
 import type { Validator } from "./validator";
 
 export interface StakingParams {
-  unbondingTime: string; // e.g. "14 days"
-  maxEntries: number;
   bondDenoms: TokenWithValue[];
+  maxEntries: number;
+  unbondingTime: string; // e.g. "14 days"
 }
 
 export interface Delegation {
-  validator: Validator;
   balances: TokenWithValue[];
+  validator: Validator;
 }
 
 export interface Unbonding {
-  validator: Validator;
-  completionTime: Date;
   balances: TokenWithValue[];
+  completionTime: Date;
+  validator: Validator;
 }
 
 export interface Redelegation {
-  srcValidator: Validator;
-  dstValidator: Validator;
-  completionTime: Date;
   balances: TokenWithValue[];
+  completionTime: Date;
+  dstValidator: Validator;
+  srcValidator: Validator;
 }
 
 export interface NonRedelegatable {
-  dstValidator: Validator;
   completionTime: Date;
+  dstValidator: Validator;
 }

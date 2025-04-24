@@ -1,8 +1,8 @@
-import { Box, Grid } from "@chakra-ui/react";
-import { matchSorter } from "match-sorter";
-import { observer } from "mobx-react-lite";
-import { useMemo, useState } from "react";
+import type { WasmVerifyInfosResponse } from "lib/services/types";
+import type { ContractLocalInfo } from "lib/stores/contract";
+import type { Option, PublicContract } from "lib/types";
 
+import { Box, Grid } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
@@ -14,10 +14,10 @@ import {
   ViewMore,
 } from "lib/components/table";
 import { useContractStore } from "lib/providers/store";
-import type { WasmVerifyInfosResponse } from "lib/services/types";
 import { useWasmVerifyInfos } from "lib/services/verification/wasm";
-import type { ContractLocalInfo } from "lib/stores/contract";
-import type { Option, PublicContract } from "lib/types";
+import { matchSorter } from "match-sorter";
+import { observer } from "mobx-react-lite";
+import { useMemo, useState } from "react";
 
 import { PublicProjectContractMobileCard } from "./PublicProjectContractMobileCard";
 import { PublicProjectContractRow } from "./PublicProjectContractRow";
@@ -34,7 +34,7 @@ interface PublicProjectContractTableProps {
 const TEMPLATE_COLUMNS = "max(160px) minmax(300px, 1fr) max(200px) max(300px) ";
 
 const ContractTableHeader = () => (
-  <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
+  <Grid minW="min-content" templateColumns={TEMPLATE_COLUMNS}>
     <TableHeader>Contract address</TableHeader>
     <TableHeader>Contract name</TableHeader>
     <TableHeader>Instantiated by</TableHeader>
@@ -66,8 +66,8 @@ const ContentRender = ({
       {publicContracts.map((contract) => (
         <PublicProjectContractRow
           key={contract.publicInfo.contractAddress}
-          templateColumns={TEMPLATE_COLUMNS}
           publicContractInfo={contract}
+          templateColumns={TEMPLATE_COLUMNS}
           wasmVerifyInfo={wasmVerifyInfos?.[contract.publicInfo.code]}
         />
       ))}
@@ -108,16 +108,16 @@ export const PublicProjectContractTable = observer(
       }));
 
     return (
-      <Box mt={{ base: 8, md: 12 }} mb={4}>
-        <TableTitle title="Contracts" count={contracts.length} />
+      <Box mb={4} mt={{ base: 8, md: 12 }}>
+        <TableTitle count={contracts.length} title="Contracts" />
         {!onViewMore && (
           <InputWithIcon
+            amptrackSection="public-project-contract-search"
+            my={2}
             placeholder="Search with contract address or contract name"
+            size={{ base: "md", md: "lg" }}
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
-            size={{ base: "md", md: "lg" }}
-            my={2}
-            amptrackSection="public-project-contract-search"
           />
         )}
         {publicContracts.length ? (
@@ -127,12 +127,12 @@ export const PublicProjectContractTable = observer(
           />
         ) : (
           <EmptyState
+            imageVariant={contracts.length ? "not-found" : "empty"}
             message={
               contracts.length
                 ? "No matching contracts found for this project. Make sure you are searching with Contract Address or Contract Name"
                 : "There are currently no contracts related to this project."
             }
-            imageVariant={contracts.length ? "not-found" : "empty"}
             withBorder
           />
         )}

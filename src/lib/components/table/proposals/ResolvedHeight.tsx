@@ -1,17 +1,16 @@
 import { Text } from "@chakra-ui/react";
-
 import { ExplorerLink } from "lib/components/ExplorerLink";
 
 import type { ProposalsTableRowProps } from "./ProposalsTableRow";
 
 export const ResolvedHeight = ({
-  resolvedHeight,
-  isDepositOrVoting,
   amptrackSection,
+  isDepositOrVoting,
+  resolvedHeight,
 }: {
-  resolvedHeight: ProposalsTableRowProps["proposal"]["resolvedHeight"];
-  isDepositOrVoting: boolean;
   amptrackSection?: string;
+  isDepositOrVoting: boolean;
+  resolvedHeight: ProposalsTableRowProps["proposal"]["resolvedHeight"];
 }) => {
   if (isDepositOrVoting)
     return (
@@ -27,11 +26,11 @@ export const ResolvedHeight = ({
     );
   return (
     <ExplorerLink
+      ampCopierSection={amptrackSection}
+      showCopyOnHover
+      textVariant="body2"
       type="block_height"
       value={resolvedHeight.toString()}
-      showCopyOnHover
-      ampCopierSection={amptrackSection}
-      textVariant="body2"
     />
   );
 };

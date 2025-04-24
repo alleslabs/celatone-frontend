@@ -1,18 +1,17 @@
-/* eslint-disable complexity */
-import { Flex, Tag, Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
+import type { IconKeys } from "lib/components/icon";
+import type { BechAddr } from "lib/types";
+import type { VoteOption } from "lib/utils";
 import type { ReactNode } from "react";
 
+import { Flex, Tag, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { WasmVerifyBadgeById } from "lib/components/WasmVerifyBadge";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
-import type { BechAddr } from "lib/types";
-import type { VoteOption } from "lib/utils";
 import {
   coinToTokenWithValue,
   extractMsgType,
@@ -30,10 +29,10 @@ interface TxMsgExpandProps extends TxMsgData {
 }
 
 export const TxMsgExpand = ({
-  msgBody,
-  log,
   isExpand,
   isSingleMsg,
+  log,
+  msgBody,
   onClick,
 }: TxMsgExpandProps) => {
   const isMobile = useMobile();
@@ -42,173 +41,11 @@ export const TxMsgExpand = ({
   const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
 
   const { "@type": type, ...body } = msgBody;
-  const { isIbc, isOpinit, isEvm } = getTxBadges(type, log);
+  const { isEvm, isIbc, isOpinit } = getTxBadges(type, log);
 
   let msgIcon: IconKeys = "file";
   let content: ReactNode;
   switch (type) {
-    case "/cosmwasm.wasm.v1.MsgStoreCode": {
-      const codeId = findAttr(log?.events, "store_code", "code_id") ?? "";
-
-      msgIcon = "upload";
-      content = (
-        <Flex gap={1} display="inline">
-          Upload Wasm{" "}
-          {log && (
-            <>
-              {" "}
-              and stored as{" "}
-              <ExplorerLink
-                type="code_id"
-                value={codeId}
-                showCopyOnHover
-                fontSize="24px"
-                textVariant="body1"
-                rightIcon={<WasmVerifyBadgeById codeId={Number(codeId)} />}
-                ampCopierSection="tx_page_message_header_code"
-              />
-            </>
-          )}
-        </Flex>
-      );
-      break;
-    }
-    case "/cosmwasm.wasm.v1.MsgInstantiateContract":
-      msgIcon = "instantiate";
-      content = (
-        <Flex gap={1} display="inline">
-          Instantiate{" "}
-          {log && (
-            <ExplorerLink
-              type="contract_address"
-              value={
-                findAttr(log.events, "instantiate", "_contract_address") ?? ""
-              }
-              showCopyOnHover
-              textVariant="body1"
-              ampCopierSection="tx_page_message_header_contract"
-            />
-          )}{" "}
-          from{" "}
-          <ExplorerLink
-            type="code_id"
-            value={body.code_id as string}
-            showCopyOnHover
-            textVariant="body1"
-            rightIcon={<WasmVerifyBadgeById codeId={Number(body.code_id)} />}
-            ampCopierSection="tx_page_message_header_code"
-          />
-        </Flex>
-      );
-      break;
-    case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
-      msgIcon = "instantiate";
-      content = (
-        <Flex gap={1} display="inline">
-          Instantiate2{" "}
-          {log && (
-            <ExplorerLink
-              type="contract_address"
-              value={
-                findAttr(log.events, "instantiate", "_contract_address") ?? ""
-              }
-              showCopyOnHover
-              textVariant="body1"
-              ampCopierSection="tx_page_message_header_contract"
-            />
-          )}{" "}
-          from{" "}
-          <ExplorerLink
-            type="code_id"
-            value={body.code_id as string}
-            showCopyOnHover
-            textVariant="body1"
-            rightIcon={<WasmVerifyBadgeById codeId={Number(body.code_id)} />}
-            ampCopierSection="tx_page_message_header_code"
-          />
-        </Flex>
-      );
-      break;
-    case "/cosmwasm.wasm.v1.MsgExecuteContract":
-      msgIcon = "execute";
-      content = (
-        <Flex gap={1} display="inline">
-          Execute{" "}
-          <span style={{ fontWeight: 700 }}>
-            {Object.keys(body.msg as Record<string, unknown>)[0]}
-          </span>{" "}
-          on{" "}
-          <ExplorerLink
-            type="contract_address"
-            value={body.contract as string}
-            showCopyOnHover
-            textVariant="body1"
-            ampCopierSection="tx_page_message_header_contract"
-          />
-        </Flex>
-      );
-      break;
-    case "/cosmwasm.wasm.v1.MsgMigrateContract":
-      msgIcon = "migrate";
-      content = (
-        <Flex gap={1} display="inline">
-          Migrate{" "}
-          <ExplorerLink
-            type="contract_address"
-            value={body.contract as string}
-            showCopyOnHover
-            textVariant="body1"
-            ampCopierSection="tx_page_message_header_contract"
-          />{" "}
-          to code ID{" "}
-          <ExplorerLink
-            type="code_id"
-            value={body.code_id as string}
-            showCopyOnHover
-            textVariant="body1"
-            ampCopierSection="tx_page_message_header_code"
-          />
-        </Flex>
-      );
-      break;
-    case "/cosmwasm.wasm.v1.MsgUpdateAdmin":
-      msgIcon = "admin-edit";
-      content = (
-        <Flex gap={1} display="inline">
-          Update admin on{" "}
-          <ExplorerLink
-            type="contract_address"
-            value={body.contract as string}
-            showCopyOnHover
-            textVariant="body1"
-            ampCopierSection="tx_page_message_header_contract"
-          />{" "}
-          to{" "}
-          <ExplorerLink
-            type={getAddressType(body.new_admin as string)}
-            value={body.new_admin as string}
-            showCopyOnHover
-            textVariant="body1"
-            ampCopierSection="tx_page_message_header_admin"
-          />
-        </Flex>
-      );
-      break;
-    case "/cosmwasm.wasm.v1.MsgClearAdmin":
-      msgIcon = "admin-clear";
-      content = (
-        <Flex gap={1} display="inline">
-          Clear admin on{" "}
-          <ExplorerLink
-            type="contract_address"
-            value={body.contract as string}
-            showCopyOnHover
-            textVariant="body1"
-            ampCopierSection="tx_page_message_header_contract"
-          />
-        </Flex>
-      );
-      break;
     case "/cosmos.bank.v1beta1.MsgSend":
       {
         const toAddress = body.to_address as BechAddr;
@@ -225,36 +62,36 @@ export const TxMsgExpand = ({
             : formatTokenWithValue(singleToken);
         msgIcon = "send";
         content = (
-          <Flex gap={1} display="inline">
+          <Flex display="inline" gap={1}>
             Send {assetText} to{" "}
             <ExplorerLink
-              type={getAddressType(toAddress)}
-              value={toAddress}
+              ampCopierSection="tx_page_message_header_send_address"
               showCopyOnHover
               textVariant="body1"
-              ampCopierSection="tx_page_message_header_send_address"
+              type={getAddressType(toAddress)}
+              value={toAddress}
             />
           </Flex>
         );
       }
       break;
-    case "/cosmos.gov.v1beta1.MsgSubmitProposal":
     case "/cosmos.gov.v1.MsgSubmitProposal":
+    case "/cosmos.gov.v1beta1.MsgSubmitProposal":
       msgIcon = "submit-proposal";
       content = (
-        <Flex gap={1} display="inline">
+        <Flex display="inline" gap={1}>
           Submit proposal {(body.is_expedited as boolean) && " expedited "}
           {log && (
             <>
               ID{" "}
               <ExplorerLink
+                ampCopierSection="tx_page_message_header_proposal"
+                showCopyOnHover
+                textVariant="body1"
                 type="proposal_id"
                 value={
                   findAttr(log.events, "submit_proposal", "proposal_id") ?? ""
                 }
-                showCopyOnHover
-                textVariant="body1"
-                ampCopierSection="tx_page_message_header_proposal"
               />
             </>
           )}
@@ -264,18 +101,18 @@ export const TxMsgExpand = ({
     case "/cosmos.gov.v1beta1.MsgVote":
       msgIcon = "vote";
       content = (
-        <Flex gap={1} display="inline">
+        <Flex display="inline" gap={1}>
           Vote{" "}
           <span style={{ fontWeight: 700 }}>
             {voteOption[body.option as VoteOption]}
           </span>{" "}
           on proposal ID{" "}
           <ExplorerLink
-            type="proposal_id"
-            value={body.proposal_id as string}
+            ampCopierSection="tx_page_message_header_proposal"
             showCopyOnHover
             textVariant="body1"
-            ampCopierSection="tx_page_message_header_proposal"
+            type="proposal_id"
+            value={body.proposal_id as string}
           />
         </Flex>
       );
@@ -283,22 +120,184 @@ export const TxMsgExpand = ({
     case "/cosmos.staking.v1beta1.MsgDelegate":
       msgIcon = "delegate";
       content = (
-        <Flex gap={1} display="inline">
+        <Flex display="inline" gap={1}>
           Delegate by{" "}
           <ExplorerLink
-            type={getAddressType(body.delegator_address as string)}
-            value={body.delegator_address as string}
+            ampCopierSection="tx_page_message_header_delegator"
             showCopyOnHover
             textVariant="body1"
-            ampCopierSection="tx_page_message_header_delegator"
+            type={getAddressType(body.delegator_address as string)}
+            value={body.delegator_address as string}
           />{" "}
           to{" "}
           <ExplorerLink
-            type={getAddressType(body.validator_address as string)}
-            value={body.validator_address as string}
+            ampCopierSection="tx_page_message_header_validator"
             showCopyOnHover
             textVariant="body1"
-            ampCopierSection="tx_page_message_header_validator"
+            type={getAddressType(body.validator_address as string)}
+            value={body.validator_address as string}
+          />
+        </Flex>
+      );
+      break;
+    case "/cosmwasm.wasm.v1.MsgClearAdmin":
+      msgIcon = "admin-clear";
+      content = (
+        <Flex display="inline" gap={1}>
+          Clear admin on{" "}
+          <ExplorerLink
+            ampCopierSection="tx_page_message_header_contract"
+            showCopyOnHover
+            textVariant="body1"
+            type="contract_address"
+            value={body.contract as string}
+          />
+        </Flex>
+      );
+      break;
+    case "/cosmwasm.wasm.v1.MsgExecuteContract":
+      msgIcon = "execute";
+      content = (
+        <Flex display="inline" gap={1}>
+          Execute{" "}
+          <span style={{ fontWeight: 700 }}>
+            {Object.keys(body.msg as Record<string, unknown>)[0]}
+          </span>{" "}
+          on{" "}
+          <ExplorerLink
+            ampCopierSection="tx_page_message_header_contract"
+            showCopyOnHover
+            textVariant="body1"
+            type="contract_address"
+            value={body.contract as string}
+          />
+        </Flex>
+      );
+      break;
+    case "/cosmwasm.wasm.v1.MsgInstantiateContract":
+      msgIcon = "instantiate";
+      content = (
+        <Flex display="inline" gap={1}>
+          Instantiate{" "}
+          {log && (
+            <ExplorerLink
+              ampCopierSection="tx_page_message_header_contract"
+              showCopyOnHover
+              textVariant="body1"
+              type="contract_address"
+              value={
+                findAttr(log.events, "instantiate", "_contract_address") ?? ""
+              }
+            />
+          )}{" "}
+          from{" "}
+          <ExplorerLink
+            ampCopierSection="tx_page_message_header_code"
+            rightIcon={<WasmVerifyBadgeById codeId={Number(body.code_id)} />}
+            showCopyOnHover
+            textVariant="body1"
+            type="code_id"
+            value={body.code_id as string}
+          />
+        </Flex>
+      );
+      break;
+    case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
+      msgIcon = "instantiate";
+      content = (
+        <Flex display="inline" gap={1}>
+          Instantiate2{" "}
+          {log && (
+            <ExplorerLink
+              ampCopierSection="tx_page_message_header_contract"
+              showCopyOnHover
+              textVariant="body1"
+              type="contract_address"
+              value={
+                findAttr(log.events, "instantiate", "_contract_address") ?? ""
+              }
+            />
+          )}{" "}
+          from{" "}
+          <ExplorerLink
+            ampCopierSection="tx_page_message_header_code"
+            rightIcon={<WasmVerifyBadgeById codeId={Number(body.code_id)} />}
+            showCopyOnHover
+            textVariant="body1"
+            type="code_id"
+            value={body.code_id as string}
+          />
+        </Flex>
+      );
+      break;
+    case "/cosmwasm.wasm.v1.MsgMigrateContract":
+      msgIcon = "migrate";
+      content = (
+        <Flex display="inline" gap={1}>
+          Migrate{" "}
+          <ExplorerLink
+            ampCopierSection="tx_page_message_header_contract"
+            showCopyOnHover
+            textVariant="body1"
+            type="contract_address"
+            value={body.contract as string}
+          />{" "}
+          to code ID{" "}
+          <ExplorerLink
+            ampCopierSection="tx_page_message_header_code"
+            showCopyOnHover
+            textVariant="body1"
+            type="code_id"
+            value={body.code_id as string}
+          />
+        </Flex>
+      );
+      break;
+    case "/cosmwasm.wasm.v1.MsgStoreCode": {
+      const codeId = findAttr(log?.events, "store_code", "code_id") ?? "";
+
+      msgIcon = "upload";
+      content = (
+        <Flex display="inline" gap={1}>
+          Upload Wasm{" "}
+          {log && (
+            <>
+              {" "}
+              and stored as{" "}
+              <ExplorerLink
+                ampCopierSection="tx_page_message_header_code"
+                fontSize="24px"
+                rightIcon={<WasmVerifyBadgeById codeId={Number(codeId)} />}
+                showCopyOnHover
+                textVariant="body1"
+                type="code_id"
+                value={codeId}
+              />
+            </>
+          )}
+        </Flex>
+      );
+      break;
+    }
+    case "/cosmwasm.wasm.v1.MsgUpdateAdmin":
+      msgIcon = "admin-edit";
+      content = (
+        <Flex display="inline" gap={1}>
+          Update admin on{" "}
+          <ExplorerLink
+            ampCopierSection="tx_page_message_header_contract"
+            showCopyOnHover
+            textVariant="body1"
+            type="contract_address"
+            value={body.contract as string}
+          />{" "}
+          to{" "}
+          <ExplorerLink
+            ampCopierSection="tx_page_message_header_admin"
+            showCopyOnHover
+            textVariant="body1"
+            type={getAddressType(body.new_admin as string)}
+            value={body.new_admin as string}
           />
         </Flex>
       );
@@ -311,87 +310,87 @@ export const TxMsgExpand = ({
 
   return (
     <Flex
-      position="relative"
-      p="16px 8px"
+      _after={{
+        bg: "gray.700",
+        bottom: 0,
+        content: '""',
+        h: "1px",
+        left: "50%",
+        position: "absolute",
+        transform: "translateX(-50%)",
+        w: "99%",
+      }}
+      _hover={{ backgroundColor: "gray.800" }}
       align="center"
-      justify="space-between"
       borderRadius="8px"
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
+      justify="space-between"
+      p="16px 8px"
+      position="relative"
+      transition="all 0.25s ease-in-out"
       onClick={() => {
         track(AmpEvent.USE_TX_MSG_EXPAND, {
           action: isExpand ? "collapse" : "expand",
-          msg: type,
           ibc: isIbc,
           isSingleMsg,
+          msg: type,
         });
         onClick();
-      }}
-      _hover={{ backgroundColor: "gray.800" }}
-      _after={{
-        content: '""',
-        position: "absolute",
-        bottom: 0,
-        left: "50%",
-        transform: "translateX(-50%)",
-        h: "1px",
-        w: "99%",
-        bg: "gray.700",
       }}
     >
       <Flex
         align={{ base: "start", md: "center" }}
-        gap={2}
         fontSize="16px"
         fontWeight={500}
+        gap={2}
       >
         <CustomIcon
-          name={msgIcon}
           boxSize={4}
           color="primary.main"
           m={0}
           mt={{ base: 1, md: 0 }}
+          name={msgIcon}
         />
         <Text wordBreak="break-all">{content}</Text>
         {!isMobile && isIbc && (
-          <Tag mx={2} variant="secondary" size="md" minW="hug-content">
+          <Tag minW="hug-content" mx={2} size="md" variant="secondary">
             IBC
           </Tag>
         )}
         {!isMobile && isOpinit && (
-          <Tag mx={2} variant="teal" size="md" minW="hug-content">
+          <Tag minW="hug-content" mx={2} size="md" variant="teal">
             OPInit
           </Tag>
         )}
         {!isMobile && isEvm && (
-          <Tag mx={2} variant="primary-light" size="md" minW="hug-content">
+          <Tag minW="hug-content" mx={2} size="md" variant="primary-light">
             EVM
           </Tag>
         )}
       </Flex>
       <Flex align="center">
         {isMobile && isIbc && (
-          <Tag mx={2} variant="secondary" size="sm" minW="hug-content">
+          <Tag minW="hug-content" mx={2} size="sm" variant="secondary">
             IBC
           </Tag>
         )}
         {isMobile && isOpinit && (
-          <Tag mx={2} variant="teal" size="md" minW="hug-content">
+          <Tag minW="hug-content" mx={2} size="md" variant="teal">
             OPInit
           </Tag>
         )}
         {isMobile && isEvm && (
-          <Tag mx={2} variant="primary-light" size="md" minW="hug-content">
+          <Tag minW="hug-content" mx={2} size="md" variant="primary-light">
             EVM
           </Tag>
         )}
         <CustomIcon
-          name="chevron-down"
-          color="gray.600"
           boxSize={4}
+          color="gray.600"
+          m={0}
+          name="chevron-down"
           transform={isExpand ? "rotate(180deg)" : "rotate(0)"}
           transition="all 0.25s ease-in-out"
-          m={0}
         />
       </Flex>
     </Flex>

@@ -11,10 +11,8 @@ export const getRouteOptions = (
         pathname: "/accounts/[accountAddress]",
         query: ["accountAddress"],
       };
-    case "Transaction hash":
-      return { pathname: "/txs/[txHash]", query: ["txHash"] };
-    case "EVM transaction hash":
-      return { pathname: "/evm-txs/[txHash]", query: ["txHash"] };
+    case "Block":
+      return { pathname: "/blocks/[height]", query: ["height"] };
     case "Code ID":
       return { pathname: "/codes/[codeId]", query: ["codeId"] };
     case "Contract address":
@@ -24,17 +22,8 @@ export const getRouteOptions = (
           : "/contracts/[contractAddress]",
         query: ["contractAddress"],
       };
-    case "Block":
-      return { pathname: "/blocks/[height]", query: ["height"] };
-    case "Proposal ID":
-      return { pathname: "/proposals/[proposalId]", query: ["proposalId"] };
-    case "Validator address":
-      return {
-        pathname: "/validators/[validatorAddress]",
-        query: ["validatorAddress"],
-      };
-    case "Pool ID":
-      return { pathname: "/pools/[poolId]", query: ["poolId"] };
+    case "EVM transaction hash":
+      return { pathname: "/evm-txs/[txHash]", query: ["txHash"] };
     case "Module path":
       return {
         pathname: "/modules/[address]/[moduleName]",
@@ -50,6 +39,17 @@ export const getRouteOptions = (
         pathname: "/nft-collections/[collectionAddress]",
         query: ["collectionAddress"],
       };
+    case "Pool ID":
+      return { pathname: "/pools/[poolId]", query: ["poolId"] };
+    case "Proposal ID":
+      return { pathname: "/proposals/[proposalId]", query: ["proposalId"] };
+    case "Transaction hash":
+      return { pathname: "/txs/[txHash]", query: ["txHash"] };
+    case "Validator address":
+      return {
+        pathname: "/validators/[validatorAddress]",
+        query: ["validatorAddress"],
+      };
     default:
       return null;
   }
@@ -61,12 +61,12 @@ export const getNextCursor = (
   lastIndex: number
 ) => {
   switch (key) {
-    case "ArrowUp":
-      if (current === undefined) return lastIndex;
-      return current <= 0 ? lastIndex : current - 1;
     case "ArrowDown":
       if (current === undefined) return 0;
       return current >= lastIndex ? 0 : current + 1;
+    case "ArrowUp":
+      if (current === undefined) return lastIndex;
+      return current <= 0 ? lastIndex : current - 1;
     default:
       return undefined;
   }

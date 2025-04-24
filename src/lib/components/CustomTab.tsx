@@ -1,4 +1,6 @@
 import type { TabProps } from "@chakra-ui/react";
+import type { Nullish } from "lib/types";
+
 import {
   Badge,
   Button,
@@ -7,19 +9,17 @@ import {
   useTab,
 } from "@chakra-ui/react";
 
-import type { Nullish } from "lib/types";
-
 interface CustomTabProps extends TabProps {
   count?: Nullish<number>;
-  isLoading?: boolean;
   fallbackValue?: string;
+  isLoading?: boolean;
 }
 
 export const CustomTab = ({
   count,
-  isLoading,
-  isDisabled,
   fallbackValue = "N/A",
+  isDisabled,
+  isLoading,
   ...restProps
 }: CustomTabProps) => {
   const tabProps = useTab({ ...restProps });
@@ -29,43 +29,43 @@ export const CustomTab = ({
   return (
     <Button
       __css={styles.tab}
-      display="flex"
-      alignItems="center"
-      fontSize="14px"
-      fontWeight={700}
-      lineHeight="24px"
-      letterSpacing="0.4px"
-      variant="ghost-gray"
-      minW="fit-content"
-      mb={0}
-      sx={{
-        "&[aria-selected=true]": {
-          color: "primary.light",
-        },
-        "&[aria-selected=false]": {
-          color: "gray.500",
-        },
-      }}
-      isDisabled={isDisabled}
       _active={{
         bg: "unset",
       }}
+      alignItems="center"
+      display="flex"
+      fontSize="14px"
+      fontWeight={700}
+      isDisabled={isDisabled}
+      letterSpacing="0.4px"
+      lineHeight="24px"
+      mb={0}
+      minW="fit-content"
+      sx={{
+        "&[aria-selected=false]": {
+          color: "gray.500",
+        },
+        "&[aria-selected=true]": {
+          color: "primary.light",
+        },
+      }}
+      variant="ghost-gray"
       {...tabProps}
     >
       {tabProps.children}
 
       {isLoading ? (
         <Skeleton
-          ml={2}
-          h={4}
-          w={8}
           borderRadius={8}
-          startColor="gray.500"
           endColor="gray.700"
+          h={4}
+          ml={2}
+          startColor="gray.500"
+          w={8}
         />
       ) : (
         count !== undefined && (
-          <Badge variant={isSelected ? "primary" : "gray"} ml={2}>
+          <Badge ml={2} variant={isSelected ? "primary" : "gray"}>
             {count === null ? fallbackValue : count}
           </Badge>
         )

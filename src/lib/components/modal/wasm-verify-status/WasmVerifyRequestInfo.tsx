@@ -1,9 +1,10 @@
 import type { FlexProps, TextProps } from "@chakra-ui/react";
+import type { WasmVerifyInfoBase } from "lib/types";
+
 import { Divider, Flex, Text } from "@chakra-ui/react";
+import { formatUTC, getWasmVerifyStatus } from "lib/utils";
 import Link from "next/link";
 
-import type { WasmVerifyInfoBase } from "lib/types";
-import { formatUTC, getWasmVerifyStatus } from "lib/utils";
 import { Copier } from "../../copy";
 import { CopyLink } from "../../CopyLink";
 import { ExplorerLink } from "../../ExplorerLink";
@@ -16,53 +17,53 @@ const baseTextStyle: TextProps = {
 };
 
 const baseContainerStyle: FlexProps = {
+  alignItems: { bases: "start", sm: "center" },
   direction: { base: "column", sm: "row" },
   gap: { base: 0, sm: 2 },
-  alignItems: { bases: "start", sm: "center" },
 };
 
 interface WasmVerifyRequestInfoProps {
   codeHash: string;
-  verificationInfo: WasmVerifyInfoBase;
   relatedVerifiedCodes: number[];
+  verificationInfo: WasmVerifyInfoBase;
 }
 
 export const WasmVerifyRequestInfo = ({
   codeHash,
-  verificationInfo,
   relatedVerifiedCodes,
+  verificationInfo,
 }: WasmVerifyRequestInfoProps) => {
   const wasmVerifyStatus = getWasmVerifyStatus({
-    verificationInfo,
-    schema: null,
     relatedVerifiedCodes,
+    schema: null,
+    verificationInfo,
   });
 
   const gitUrlWithCommit = `${verificationInfo.gitUrl}/tree/${verificationInfo.commit}`;
   return (
     <>
       <Flex direction={{ base: "column", sm: "row" }} gap={{ base: 2, sm: 6 }}>
-        <Flex gap={2} alignItems="center">
+        <Flex alignItems="center" gap={2}>
           <Text {...baseTextStyle}>Code ID:</Text>
           <ExplorerLink
-            type="code_id"
-            value={verificationInfo.codeId.toString()}
             openNewTab
             showCopyOnHover
+            type="code_id"
+            value={verificationInfo.codeId.toString()}
           />
           <WasmVerifyBadge
-            status={wasmVerifyStatus}
             relatedVerifiedCodes={relatedVerifiedCodes}
+            status={wasmVerifyStatus}
           />
         </Flex>
-        <Flex gap={2} alignItems="center">
+        <Flex alignItems="center" gap={2}>
           <Text {...baseTextStyle}>Code hash:</Text>
           <CopyLink
-            type="code_hash"
             amptrackSection="code_hash"
-            value={codeHash.toUpperCase()}
             isTruncate
             showCopyOnHover
+            type="code_hash"
+            value={codeHash.toUpperCase()}
           />
         </Flex>
       </Flex>
@@ -71,11 +72,10 @@ export const WasmVerifyRequestInfo = ({
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Source code:</Text>
           <Flex
-            overflow="hidden"
-            gap={1}
             alignItems="center"
+            gap={1}
+            overflow="hidden"
             sx={{
-              cursor: "pointer",
               "&:hover": {
                 "> *": {
                   color: "primary.light",
@@ -85,13 +85,14 @@ export const WasmVerifyRequestInfo = ({
                   transitionTimingFunction: "ease-in-out",
                 },
               },
+              cursor: "pointer",
             }}
           >
             <Text className="ellipsis" color="primary.main" variant="body2">
               <Link
                 href={gitUrlWithCommit}
-                target="_blank"
                 rel="noopener noreferrer"
+                target="_blank"
               >
                 {gitUrlWithCommit}
               </Link>

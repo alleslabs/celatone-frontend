@@ -1,11 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { pickBy } from "lodash";
+import type { AssetInfo, AssetInfos, Option } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import { useCelatoneApp } from "lib/app-provider";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import { useBaseApiRoute } from "lib/app-provider/hooks/useBaseApiRoute";
 import { getAssetInfos } from "lib/services/asset";
-import type { AssetInfo, AssetInfos, Option } from "lib/types";
+import { pickBy } from "lodash";
 
 export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
   const assetsApiRoute = useBaseApiRoute("assets");
@@ -53,14 +53,14 @@ export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
 
         return assetsMap;
       }),
-    { enabled: Boolean(assetsApiRoute), retry: 1, refetchOnWindowFocus: false }
+    { enabled: Boolean(assetsApiRoute), refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
 export const useAssetInfosByType = ({
   assetType,
 }: {
-  assetType: "all" | "native" | "cw20";
+  assetType: "all" | "cw20" | "native";
 }) => {
   const { data, ...rest } = useAssetInfos({ withPrices: true });
 

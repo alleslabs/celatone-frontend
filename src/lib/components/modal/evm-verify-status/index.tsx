@@ -1,3 +1,6 @@
+import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
+import type { ReactNode } from "react";
+
 import {
   Button,
   Divider,
@@ -11,13 +14,11 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import type { ReactNode } from "react";
 
-import type { HexAddr20, Option, EvmVerifyInfo } from "lib/types";
+import { CustomIcon } from "../../icon";
 import { EvmVerifyFailed } from "./EvmVerifyFailed";
 import { EvmVerifyProcess } from "./EvmVerifyProcess";
 import { EvmVerifyRequestInfo } from "./EvmVerifyRequestInfo";
-import { CustomIcon } from "../../icon";
 
 interface EvmVerifyStatusModalProps {
   contractAddress: HexAddr20;
@@ -33,17 +34,17 @@ export const EvmVerifyStatusModal = ({
   onClose,
 }: EvmVerifyStatusModalProps) => (
   <Modal
-    isOpen={isOpen}
-    onClose={onClose}
     isCentered
+    isOpen={isOpen}
     returnFocusOnClose={false}
+    onClose={onClose}
   >
     <ModalOverlay />
-    <ModalContent w={{ base: "full", md: "645px" }} bg="gray.800" maxW="100vw">
+    <ModalContent bg="gray.800" maxW="100vw" w={{ base: "full", md: "645px" }}>
       <ModalHeader pb={0}>
-        <Flex w="full" direction="row" alignItems="center" gap={2}>
-          <CustomIcon name="verification-solid" boxSize={6} color="gray.600" />
-          <Heading variant={{ base: "h6", md: "h5" }} as="h5">
+        <Flex alignItems="center" direction="row" gap={2} w="full">
+          <CustomIcon boxSize={6} color="gray.600" name="verification-solid" />
+          <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
             Contract verification status
           </Heading>
         </Flex>
@@ -65,7 +66,7 @@ export const EvmVerifyStatusModal = ({
               </>
             )
           ) : null}
-          <Button onClick={onClose} variant="outline-primary" mt={2}>
+          <Button mt={2} variant="outline-primary" onClick={onClose}>
             Close
           </Button>
         </Flex>
@@ -80,9 +81,9 @@ interface EvmVerifyStatusModalTriggerProps
 }
 
 export const EvmVerifyStatusModalWithTrigger = ({
-  triggerElement,
   contractAddress,
   evmVerifyInfo,
+  triggerElement,
 }: EvmVerifyStatusModalTriggerProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 

@@ -1,13 +1,13 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Flex, Grid, Text } from "@chakra-ui/react";
 import type Big from "big.js";
+import type { PoolData, Ratio, TokenWithValue, USD } from "lib/types";
 
+import { Flex, Grid, Text } from "@chakra-ui/react";
 import { Copier } from "lib/components/copy";
 import { TableRow } from "lib/components/table";
 import { TokenImageRender } from "lib/components/token";
 import { TooltipInfo } from "lib/components/Tooltip";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
-import type { PoolData, Ratio, TokenWithValue, USD } from "lib/types";
 import { PoolType } from "lib/types";
 import {
   divWithDefault,
@@ -19,19 +19,19 @@ import {
 } from "lib/utils";
 
 interface PoolAssetsTableRowProps {
-  pool: PoolData;
-  token: TokenWithValue;
-  templateColumns: GridProps["templateColumns"];
-  totalLiquidity: USD<Big>;
   liquidityIndex: number;
+  pool: PoolData;
+  templateColumns: GridProps["templateColumns"];
+  token: TokenWithValue;
+  totalLiquidity: USD<Big>;
 }
 
 export const PoolAssetsTableRow = ({
-  pool: { type: poolType, weight, scalingFactors, isSupported },
-  token,
-  templateColumns,
-  totalLiquidity,
   liquidityIndex,
+  pool: { isSupported, scalingFactors, type: poolType, weight },
+  templateColumns,
+  token,
+  totalLiquidity,
 }: PoolAssetsTableRowProps) => {
   const allocation = token.value
     ? formatRatio(divWithDefault(token.value, totalLiquidity, 0) as Ratio<Big>)
@@ -46,11 +46,11 @@ export const PoolAssetsTableRow = ({
     <Grid templateColumns={templateColumns}>
       <TableRow>
         <Flex
-          alignItems="center"
-          gap={2}
           _hover={{
             "& .widget": { display: "flex" },
           }}
+          alignItems="center"
+          gap={2}
         >
           <TokenImageRender
             boxSize={7}
@@ -58,25 +58,25 @@ export const PoolAssetsTableRow = ({
           />
           <Flex flexDirection="column">
             <Flex align="center" gap={1}>
-              <Text variant="body2" fontWeight={600} color="text.main">
+              <Text color="text.main" fontWeight={600} variant="body2">
                 {getTokenLabel(token.denom, token.symbol)}
               </Text>
-              <Flex className="widget" display="none" align="center" gap={1}>
+              <Flex className="widget" align="center" display="none" gap={1}>
                 <TooltipInfo
-                  label={`Token ID: ${token.denom}`}
                   className="copier"
+                  label={`Token ID: ${token.denom}`}
                 />
                 <Copier
-                  type="token_denom"
-                  value={token.denom}
+                  amptrackSection="pool_assets"
                   copyLabel="Token ID copied!"
                   ml={0}
-                  amptrackSection="pool_assets"
+                  type="token_denom"
+                  value={token.denom}
                 />
               </Flex>
             </Flex>
             {isSupported && token.price && (
-              <Text variant="body3" color="text.dark">
+              <Text color="text.dark" variant="body3">
                 {formatPrice(token.price)}
               </Text>
             )}
@@ -93,7 +93,7 @@ export const PoolAssetsTableRow = ({
       </TableRow>
       <TableRow justifyContent="flex-end">
         <Flex direction="column" textAlign="end">
-          <Text variant="body2" fontWeight={700} color="text.main">
+          <Text color="text.main" fontWeight={700} variant="body2">
             {formatUTokenWithPrecision(
               token.amount,
               token.precision ?? 0,
@@ -101,7 +101,7 @@ export const PoolAssetsTableRow = ({
             )}
           </Text>
           {isSupported && token.value && (
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               ({formatPrice(token.value)})
             </Text>
           )}

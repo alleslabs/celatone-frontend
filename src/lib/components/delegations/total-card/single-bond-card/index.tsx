@@ -1,37 +1,37 @@
-import { Flex, Heading } from "@chakra-ui/react";
-
 import type { BechAddr, Option, TokenWithValue } from "lib/types";
 
-import { SingleBondCardBody } from "./SingleBondCardBody";
+import { Flex, Heading } from "@chakra-ui/react";
+
 import { TotalCardTop } from "../TotalCardTop";
+import { SingleBondCardBody } from "./SingleBondCardBody";
 
 interface SingleBondCardProps {
-  title: string;
-  message: string;
   address: BechAddr;
   bondDenom: TokenWithValue;
+  message: string;
+  title: string;
   tokens: Option<Record<string, TokenWithValue>>;
 }
 
 export const SingleBondCard = ({
-  title,
-  message,
   address,
   bondDenom,
+  message,
+  title,
   tokens,
 }: SingleBondCardProps) => (
-  <Flex direction="column" minW="233px" gap={1}>
-    <TotalCardTop title={title} message={message} fontWeight={600} />
+  <Flex direction="column" gap={1} minW="233px">
+    <TotalCardTop fontWeight={600} message={message} title={title} />
     {!tokens ? (
-      <Heading variant="h6" as="h6">
+      <Heading as="h6" variant="h6">
         N/A
       </Heading>
     ) : (
       <SingleBondCardBody
-        title={title}
-        message={message}
         address={address}
         bondDenom={bondDenom}
+        message={message}
+        title={title}
         tokens={tokens}
       />
     )}

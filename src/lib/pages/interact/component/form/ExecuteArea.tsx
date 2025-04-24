@@ -1,10 +1,9 @@
-import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
-import { MsgExecute as MsgExecuteModule } from "@initia/initia.js";
-import dynamic from "next/dynamic";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
 
+import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
+import { MsgExecute as MsgExecuteModule } from "@initia/initia.js";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCurrentChain,
@@ -18,8 +17,9 @@ import { CustomIcon } from "lib/components/icon";
 import { AbiForm } from "lib/components/move-abi";
 import { useTxBroadcast } from "lib/hooks";
 import { useSimulateFeeQuery } from "lib/services/tx";
-import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
 import { getAbiInitialData, serializeAbiData, toEncodeObject } from "lib/utils";
+import dynamic from "next/dynamic";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const MoveCodeSnippet = dynamic(
   () => import("lib/components/modal/MoveCodeSnippet"),
@@ -29,13 +29,13 @@ const MoveCodeSnippet = dynamic(
 );
 
 export const ExecuteArea = ({
+  fn,
   moduleAddress,
   moduleName,
-  fn,
 }: {
+  fn: ExposedFunction;
   moduleAddress: HexAddr;
   moduleName: string;
-  fn: ExposedFunction;
 }) => {
   // Remove `signer` or `&signer` field from the params
   // as they are auto-filled by the chain
@@ -51,8 +51,8 @@ export const ExecuteArea = ({
   const { broadcast } = useTxBroadcast();
 
   const [data, setData] = useState<AbiFormData>({
-    typeArgs: getAbiInitialData(executeFn.generic_type_params.length),
     args: getAbiInitialData(executeFn.params.length),
+    typeArgs: getAbiInitialData(executeFn.generic_type_params.length),
   });
   const [abiErrors, setAbiErrors] = useState<[string, string][]>([
     ["form", "initial"],
@@ -74,28 +74,28 @@ export const ExecuteArea = ({
   const { isFetching } = useSimulateFeeQuery({
     enabled: enableExecute,
     messages: composedTxMsgs,
+    onError: (e) => {
+      setSimulateFeeError(e.message);
+      setFee(undefined);
+    },
     onSuccess: (gasRes) => {
       setSimulateFeeError(undefined);
       if (gasRes) setFee(fabricateFee(gasRes));
       else setFee(undefined);
     },
-    onError: (e) => {
-      setSimulateFeeError(e.message);
-      setFee(undefined);
-    },
   });
 
   const proceed = useCallback(async () => {
-    const { typeArgs, args } = serializeAbiData(executeFn, data);
+    const { args, typeArgs } = serializeAbiData(executeFn, data);
     const stream = await executeModuleTx({
-      moduleAddress,
-      moduleName,
-      functionName: executeFn.name,
-      typeArgs,
       args,
       estimatedFee: fee,
-      onTxSucceed: () => setProcessing(false),
+      functionName: executeFn.name,
+      moduleAddress,
+      moduleName,
       onTxFailed: () => setProcessing(false),
+      onTxSucceed: () => setProcessing(false),
+      typeArgs,
     });
     if (stream) {
       setProcessing(true);
@@ -113,7 +113,7 @@ export const ExecuteArea = ({
 
   useEffect(() => {
     if (enableExecute) {
-      const { typeArgs, args } = serializeAbiData(executeFn, data);
+      const { args, typeArgs } = serializeAbiData(executeFn, data);
 
       const composedMsgs = toEncodeObject([
         new MsgExecuteModule(
@@ -142,15 +142,15 @@ export const ExecuteArea = ({
     <Flex direction="column">
       {fn.is_entry ? (
         <ConnectWalletAlert
-          subtitle="You need to connect your wallet to perform this action"
           mb={8}
+          subtitle="You need to connect your wallet to perform this action"
         />
       ) : (
-        <Alert variant="warning" mb={8} alignItems="center" gap={4}>
+        <Alert alignItems="center" gap={4} mb={8} variant="warning">
           <CustomIcon
-            name="alert-triangle-solid"
             boxSize={4}
             color="warning.main"
+            name="alert-triangle-solid"
           />
           <AlertDescription wordBreak="break-word">
             Title This function cannot be executed through this page. Only
@@ -167,7 +167,7 @@ export const ExecuteArea = ({
         propsOnErrors={setAbiErrors}
       />
       {simulateFeeError && (
-        <Alert variant="error" mt={4} alignItems="center">
+        <Alert alignItems="center" mt={4} variant="error">
           <AlertDescription wordBreak="break-word">
             {simulateFeeError}
           </AlertDescription>
@@ -175,25 +175,25 @@ export const ExecuteArea = ({
       )}
       <Flex alignItems="center" justify="space-between" mt={6}>
         <MoveCodeSnippet
+          abiData={data}
+          fn={fn}
           moduleAddress={moduleAddress}
           moduleName={moduleName}
-          fn={fn}
-          abiData={data}
           type="execute"
         />
-        <Flex direction="row" align="center" gap={2}>
-          <Flex fontSize="14px" color="text.dark" alignItems="center">
+        <Flex align="center" direction="row" gap={2}>
+          <Flex alignItems="center" color="text.dark" fontSize="14px">
             Transaction fee:{" "}
             <EstimatedFeeRender estimatedFee={fee} loading={isFetching} />
           </Flex>
           <SubmitButton
-            text="Execute"
+            isDisabled={isButtonDisabled}
             isLoading={processing}
+            text="Execute"
             onSubmit={() => {
               track(AmpEvent.ACTION_MOVE_EXECUTE);
               proceed();
             }}
-            isDisabled={isButtonDisabled}
           />
         </Flex>
       </Flex>

@@ -1,19 +1,19 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
-import { z } from "zod";
-
 import type { Event } from "lib/services/types";
 import type { BechAddr, Option, Pubkey } from "lib/types";
 
+import { z } from "zod";
+
 export enum ActionMsgType {
-  SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
   MULTIPLE_ACTION_MSG = "MULTIPLE_ACTION_MSG",
   OTHER_ACTION_MSG = "OTHER_ACTION_MSG",
+  SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
 }
 
 export enum MsgFurtherAction {
+  NONE = "NONE",
   REDO = "REDO",
   RESEND = "RESEND",
-  NONE = "NONE",
 }
 
 export interface Message {
@@ -23,25 +23,25 @@ export interface Message {
 }
 
 export interface Msg {
-  msg: object[];
   contract: string;
+  msg: object[];
 }
 
 export interface Transaction {
+  actionMsgType: ActionMsgType;
+  created: Date;
+  events?: Event[];
+  furtherAction: MsgFurtherAction;
   hash: string;
+  height: number;
+  isEvm: boolean;
+  isIbc: boolean;
+  isInstantiate: boolean;
+  isOpinit: boolean;
+  isSigner: boolean;
   messages: Message[];
   sender: BechAddr;
-  isSigner: boolean;
-  height: number;
-  created: Date;
   success: boolean;
-  actionMsgType: ActionMsgType;
-  furtherAction: MsgFurtherAction;
-  isIbc: boolean;
-  isOpinit: boolean;
-  isEvm: boolean;
-  isInstantiate: boolean;
-  events?: Event[];
 }
 
 export type TransactionWithSignerPubkey = Omit<Transaction, "sender"> & {
@@ -54,40 +54,40 @@ export interface InitiaTxFilters {
 }
 
 export interface BaseTxFilters {
-  isSend: boolean;
   isIbc: boolean;
+  isSend: boolean;
 }
 export interface WasmTxFilters {
-  isStoreCode: boolean;
-  isInstantiate: boolean;
-  isExecute: boolean;
-  isMigrate: boolean;
-  isUpdateAdmin: boolean;
   isClearAdmin: boolean;
+  isExecute: boolean;
+  isInstantiate: boolean;
+  isMigrate: boolean;
+  isStoreCode: boolean;
+  isUpdateAdmin: boolean;
 }
 
 export interface MoveTxFilters {
-  isMovePublish: boolean;
-  isMoveUpgrade: boolean;
   isMoveExecute: boolean;
+  isMovePublish: boolean;
   isMoveScript: boolean;
+  isMoveUpgrade: boolean;
 }
 
 export interface TxFilters
   extends BaseTxFilters,
-    WasmTxFilters,
+    InitiaTxFilters,
     MoveTxFilters,
-    InitiaTxFilters {}
+    WasmTxFilters {}
 
 export type PoolTxFilter =
   | "is_all"
-  | "is_swap"
-  | "is_lp"
   | "is_bond"
-  | "is_superfluid"
   | "is_clp"
   | "is_collect"
-  | "is_migrate";
+  | "is_lp"
+  | "is_migrate"
+  | "is_superfluid"
+  | "is_swap";
 
 export const zRemarkType = z.enum(["genesis", "governance", "transaction"]);
 export type RemarkType = z.infer<typeof zRemarkType>;

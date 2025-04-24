@@ -1,77 +1,77 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Badge, Flex, Text } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
-
 import type { TokenWithValue } from "lib/types";
+
+import { Badge, Flex, Text } from "@chakra-ui/react";
 import {
   formatPrice,
   formatUTokenWithPrecision,
   getTokenLabel,
   isSupportedToken,
 } from "lib/utils";
+import { isUndefined } from "lodash";
 
-import { TokenImageRender } from "./TokenImageRender";
 import { Copier } from "../copy";
 import { Tooltip } from "../Tooltip";
+import { TokenImageRender } from "./TokenImageRender";
 
 interface TokenCardProps extends FlexProps {
-  token: TokenWithValue;
   amptrackSection?: string;
+  token: TokenWithValue;
 }
 
 export const TokenCard = ({
-  token,
   amptrackSection,
+  token,
   ...cardProps
 }: TokenCardProps) => (
   <Tooltip
+    disableClickCapture
     label={`Token ID: ${token.denom}`}
     textAlign="center"
-    disableClickCapture
   >
     <Flex
       className="copier-wrapper"
-      direction="column"
-      minH="101px"
-      gap={2}
-      p={3}
       background="gray.900"
       borderRadius="8px"
+      direction="column"
+      gap={2}
+      minH="101px"
+      p={3}
       {...cardProps}
     >
-      <Flex gap={1} alignItems="center">
+      <Flex alignItems="center" gap={1}>
         <TokenImageRender
-          logo={token.logo}
           alt={getTokenLabel(token.denom, token.symbol)}
           boxSize={6}
+          logo={token.logo}
         />
-        <Text variant="body2" className="ellipsis" maxW="91" fontWeight="bold">
+        <Text className="ellipsis" fontWeight="bold" maxW="91" variant="body2">
           {token.symbol}
         </Text>
-        <Badge variant="gray" ml={2}>
+        <Badge ml={2} variant="gray">
           {!isUndefined(token.price) ? formatPrice(token.price) : "N/A"}
         </Badge>
         <Copier
+          amptrackSection={amptrackSection}
+          copyLabel="Token ID copied!"
+          display={{ base: "flex", md: "none" }}
+          ml={1}
           type={
             isSupportedToken(token) ? "supported_asset" : "unsupported_asset"
           }
           value={token.denom}
-          copyLabel="Token ID copied!"
-          display={{ base: "flex", md: "none" }}
-          ml={1}
-          amptrackSection={amptrackSection}
         />
       </Flex>
       <Flex
-        direction="column"
-        borderTop="1px solid"
         borderTopColor="gray.700"
+        borderTopWidth="1px"
+        direction="column"
         pt={2}
       >
         <Text fontWeight={700} variant="body2">
           {formatUTokenWithPrecision(token.amount, token.precision ?? 0, false)}
         </Text>
-        <Text variant="body3" color="text.dark">
+        <Text color="text.dark" variant="body3">
           {!isUndefined(token.value) ? `(${formatPrice(token.value)})` : "N/A"}
         </Text>
       </Flex>

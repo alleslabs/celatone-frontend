@@ -2,9 +2,9 @@ import { defineStyleConfig } from "@chakra-ui/react";
 
 export const Kbd = defineStyleConfig({
   baseStyle: {
-    borderRadius: "4px",
-    borderColor: "gray.700",
     backgroundColor: "gray.800",
+    borderColor: "gray.700",
+    borderRadius: "4px",
     padding: "2px 6px",
   },
 });

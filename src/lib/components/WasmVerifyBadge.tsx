@@ -1,5 +1,4 @@
 import { Flex, Text } from "@chakra-ui/react";
-
 import { useWasmVerifyInfos } from "lib/services/verification/wasm";
 import { WasmVerifyStatus } from "lib/types";
 import { formatRelatedVerifiedCodes, getWasmVerifyStatus } from "lib/utils";
@@ -31,19 +30,19 @@ const getTooltipText = (
 ) => {
   if (!linkedCodeId) {
     switch (badgeStatus) {
-      case BadgeStatus.VERIFIED:
-        return "This code has been verified.";
       case BadgeStatus.INDIRECTLY_VERIFIED:
         return `This code’s hash matches the verified codes of ${formatRelatedVerifiedCodes(relatedVerifyCodes)}.`;
+      case BadgeStatus.VERIFIED:
+        return "This code has been verified.";
       default:
         return undefined;
     }
   } else {
     switch (badgeStatus) {
-      case BadgeStatus.VERIFIED:
-        return `This contract has been verified using code ${linkedCodeId}, which is confirmed as verified.`;
       case BadgeStatus.INDIRECTLY_VERIFIED:
         return `This contract is verified as its base code, ${linkedCodeId}, has a code hash that matches other verified codes.`;
+      case BadgeStatus.VERIFIED:
+        return `This contract has been verified using code ${linkedCodeId}, which is confirmed as verified.`;
       default:
         return undefined;
     }
@@ -53,16 +52,16 @@ const getTooltipText = (
 const getTextProperties = (badgeStatus: BadgeStatus) => {
   switch (badgeStatus) {
     case BadgeStatus.IN_PROGRESS:
-      return { label: "In progress", color: "text.dark" };
-    case BadgeStatus.VERIFIED:
-      return {
-        label: "Verified",
-        color: "secondary.main",
-      };
+      return { color: "text.dark", label: "In progress" };
     case BadgeStatus.INDIRECTLY_VERIFIED:
       return {
-        label: "Indirectly verified",
         color: "secondary.main",
+        label: "Indirectly verified",
+      };
+    case BadgeStatus.VERIFIED:
+      return {
+        color: "secondary.main",
+        label: "Verified",
       };
     default:
       return null;
@@ -72,30 +71,30 @@ const getTextProperties = (badgeStatus: BadgeStatus) => {
 const WasmVerifyIcon = ({ badgeStatus }: { badgeStatus: BadgeStatus }) => {
   switch (badgeStatus) {
     case BadgeStatus.IN_PROGRESS:
-      return <CustomIcon name="hourglass" color="text.dark" mx={0} />;
+      return <CustomIcon color="text.dark" mx={0} name="hourglass" />;
+    case BadgeStatus.INDIRECTLY_VERIFIED:
+      return <CustomIcon color="secondary.main" mx={0} name="verification" />;
     case BadgeStatus.VERIFIED:
       return (
-        <CustomIcon name="verification-solid" color="secondary.main" mx={0} />
+        <CustomIcon color="secondary.main" mx={0} name="verification-solid" />
       );
-    case BadgeStatus.INDIRECTLY_VERIFIED:
-      return <CustomIcon name="verification" color="secondary.main" mx={0} />;
     default:
       return undefined;
   }
 };
 
 interface WasmVerifyBadgeProps {
-  status: WasmVerifyStatus;
-  relatedVerifiedCodes?: number[];
   hasText?: boolean;
   linkedCodeId?: number;
+  relatedVerifiedCodes?: number[];
+  status: WasmVerifyStatus;
 }
 
 export const WasmVerifyBadge = ({
-  status,
-  relatedVerifiedCodes = [],
   hasText = false,
   linkedCodeId,
+  relatedVerifiedCodes = [],
+  status,
 }: WasmVerifyBadgeProps) => {
   const badgeStatus = getBadgeStatus(status, relatedVerifiedCodes);
 
@@ -110,10 +109,10 @@ export const WasmVerifyBadge = ({
 
   return (
     <Tooltip label={tooltipText}>
-      <Flex as="span" gap={1} alignItems="center">
+      <Flex alignItems="center" as="span" gap={1}>
         <WasmVerifyIcon badgeStatus={badgeStatus} />
         {hasText && textProperties && (
-          <Text variant="body2" color={textProperties.color}>
+          <Text color={textProperties.color} variant="body2">
             {textProperties.label}
           </Text>
         )}
@@ -134,10 +133,10 @@ export const WasmVerifyBadgeById = ({
 
   return (
     <WasmVerifyBadge
-      status={getWasmVerifyStatus(wasmVerifyInfo)}
-      relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
       hasText={hasText}
       linkedCodeId={linkedCodeId}
+      relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+      status={getWasmVerifyStatus(wasmVerifyInfo)}
     />
   );
 };

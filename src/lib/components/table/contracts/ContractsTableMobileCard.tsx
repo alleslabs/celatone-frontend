@@ -1,7 +1,3 @@
-import { Flex, Text } from "@chakra-ui/react";
-
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import type {
   BechAddr32,
   ContractHistoryRemark,
@@ -10,12 +6,16 @@ import type {
   Option,
   WasmVerifyInfo,
 } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import { RemarkOperation } from "lib/types";
 import { dateFromNow, formatUTC, getWasmVerifyStatus } from "lib/utils";
 
-import { ContractInstantiatorCell } from "./ContractInstantiatorCell";
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
+import { ContractInstantiatorCell } from "./ContractInstantiatorCell";
 
 interface ContractsTableMobileCardProps {
   contractInfo: ContractInfo;
@@ -53,34 +53,25 @@ export const ContractsTableMobileCard = ({
   wasmVerifyInfo,
 }: ContractsTableMobileCardProps) => (
   <MobileCardTemplate
-    onClick={() => onRowSelect(contractInfo.contractAddress)}
-    topContent={
-      <Flex gap={2} align="center">
-        <MobileLabel variant="body2" label="Contract address" />
-        <ExplorerLink
-          value={contractInfo.contractAddress}
-          type="contract_address"
-          rightIcon={
-            contractInfo.codeId ? (
-              <WasmVerifyBadge
-                status={getWasmVerifyStatus(wasmVerifyInfo)}
-                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
-                linkedCodeId={contractInfo.codeId}
-              />
-            ) : undefined
-          }
-        />
-      </Flex>
+    bottomContent={
+      contractInfo.latestUpdated ? (
+        <div>
+          <Text variant="body3">{formatUTC(contractInfo.latestUpdated)}</Text>
+          <Text color="text.dark" variant="body3">
+            {`(${dateFromNow(contractInfo.latestUpdated)})`}
+          </Text>
+        </div>
+      ) : null
     }
     middleContent={
       showLastUpdate && (
-        <Flex gap={3} direction="column" w="full">
+        <Flex direction="column" gap={3} w="full">
           <div>
             <MobileLabel label="Contract name" />
             <Text
-              variant="body2"
-              maxW="full"
               color="text.main"
+              maxW="full"
+              variant="body2"
               wordBreak="break-all"
             >
               {contractInfo.name ?? contractInfo.label}
@@ -96,15 +87,24 @@ export const ContractsTableMobileCard = ({
         </Flex>
       )
     }
-    bottomContent={
-      contractInfo.latestUpdated ? (
-        <div>
-          <Text variant="body3">{formatUTC(contractInfo.latestUpdated)}</Text>
-          <Text variant="body3" color="text.dark">
-            {`(${dateFromNow(contractInfo.latestUpdated)})`}
-          </Text>
-        </div>
-      ) : null
+    topContent={
+      <Flex align="center" gap={2}>
+        <MobileLabel label="Contract address" variant="body2" />
+        <ExplorerLink
+          rightIcon={
+            contractInfo.codeId ? (
+              <WasmVerifyBadge
+                linkedCodeId={contractInfo.codeId}
+                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                status={getWasmVerifyStatus(wasmVerifyInfo)}
+              />
+            ) : undefined
+          }
+          type="contract_address"
+          value={contractInfo.contractAddress}
+        />
+      </Flex>
     }
+    onClick={() => onRowSelect(contractInfo.contractAddress)}
   />
 );

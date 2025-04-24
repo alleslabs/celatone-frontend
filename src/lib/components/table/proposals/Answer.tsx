@@ -1,23 +1,23 @@
-import { Box, Flex, HStack, Text } from "@chakra-ui/react";
-
-import { TooltipInfo } from "lib/components/Tooltip";
 import type { Ratio } from "lib/types";
+
+import { Box, Flex, HStack, Text } from "@chakra-ui/react";
+import { TooltipInfo } from "lib/components/Tooltip";
 import { formatRatio } from "lib/utils";
 
 interface AnswerProps {
+  abstain: number;
   isVoteWeighted: boolean;
-  yes: number;
   no: number;
   noWithVeto: number;
-  abstain: number;
+  yes: number;
 }
 
 const resolveVote = ({
+  abstain,
   isVoteWeighted,
-  yes,
   no,
   noWithVeto,
-  abstain,
+  yes,
 }: AnswerProps): [string, string] => {
   if (isVoteWeighted) {
     return ["primary.light", "Weighted"];
@@ -38,27 +38,27 @@ const resolveVote = ({
 };
 
 export const Answer = ({
+  abstain,
   isVoteWeighted,
-  yes,
   no,
   noWithVeto,
-  abstain,
+  yes,
 }: AnswerProps) => {
   const [color, text] = resolveVote({
+    abstain,
     isVoteWeighted,
-    yes,
     no,
     noWithVeto,
-    abstain,
+    yes,
   });
 
   return (
     <HStack spacing={2}>
       <Box
+        backgroundColor={color}
+        borderRadius="50%"
         boxSize="12px"
         minW="12px"
-        borderRadius="50%"
-        backgroundColor={color}
       />
       <Text fontWeight={700}>{text}</Text>
       {isVoteWeighted && (
@@ -69,7 +69,7 @@ export const Answer = ({
             ["No with veto", noWithVeto],
             ["Abstain", abstain],
           ].map(([label, value]) => (
-            <Flex gap={1} key={label}>
+            <Flex key={label} gap={1}>
               <Text>{label}:</Text>
               <Text fontWeight={700}>
                 {formatRatio(value as Ratio<number>)}

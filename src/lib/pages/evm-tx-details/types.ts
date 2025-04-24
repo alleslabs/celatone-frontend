@@ -1,6 +1,5 @@
-import { z } from "zod";
-
 import { zHex } from "lib/types";
+import { z } from "zod";
 
 export enum EvmEventBoxTabs {
   Decoded = "decoded",

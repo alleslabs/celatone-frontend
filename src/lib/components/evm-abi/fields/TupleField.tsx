@@ -1,11 +1,14 @@
-import { Flex } from "@chakra-ui/react";
 import type { JsonFragmentType } from "ethers";
 import type { FieldPath, FieldValues } from "react-hook-form";
+
+import { Flex } from "@chakra-ui/react";
 import { useWatch } from "react-hook-form";
+
+import type { FieldProps } from "./types";
+
+import { getTypeDimensions } from "../utils";
 import { FieldTemplate } from "./FieldTemplate";
 import { TypeLabel } from "./TypeLabel";
-import type { FieldProps } from "./types";
-import { getTypeDimensions } from "../utils";
 
 interface TupleFieldProps<T extends FieldValues> extends FieldProps<T> {
   components: ReadonlyArray<JsonFragmentType>;
@@ -13,10 +16,10 @@ interface TupleFieldProps<T extends FieldValues> extends FieldProps<T> {
 }
 
 export const TupleField = <T extends FieldValues>({
-  name,
-  control,
   components,
+  control,
   isDisabled,
+  name,
   withoutBorder,
 }: TupleFieldProps<T>) => {
   const values = useWatch<T>({
@@ -30,9 +33,9 @@ export const TupleField = <T extends FieldValues>({
       gap={2}
       w="full"
       {...(!withoutBorder && {
-        p: 4,
         border: "1px solid var(--chakra-colors-gray-700)",
         borderRadius: "8px",
+        p: 4,
       })}
     >
       {(values as unknown[]).map((_, index) => {
@@ -45,17 +48,17 @@ export const TupleField = <T extends FieldValues>({
         return (
           <TypeLabel
             key={`${subfieldType}-${index}`}
+            isRequired={!isDisabled}
             label={subfieldLabel}
             type={subfieldType}
-            isRequired={!isDisabled}
           >
             <FieldTemplate
-              name={`${name}.${index}` as FieldPath<T>}
               control={control}
-              type={subfieldType}
-              label={subfieldLabel}
               dimensions={getTypeDimensions(subfieldType)}
               isDisabled={isDisabled}
+              label={subfieldLabel}
+              name={`${name}.${index}` as FieldPath<T>}
+              type={subfieldType}
               {...rest}
             />
           </TypeLabel>

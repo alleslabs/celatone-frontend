@@ -1,7 +1,7 @@
-import { Flex, Heading } from "@chakra-ui/react";
-
-import { ValidatorImage } from "lib/components/ValidatorImage";
 import type { ValidatorData } from "lib/types";
+
+import { Flex, Heading } from "@chakra-ui/react";
+import { ValidatorImage } from "lib/components/ValidatorImage";
 
 import { ValidatorStatusTag } from "./ValidatorStatusTag";
 import { WebsiteButton } from "./WebsiteButton";
@@ -11,34 +11,34 @@ interface ValidatorTitleProps {
 }
 
 export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
-  <Flex gap={4} alignItems={{ base: "center", md: "auto" }}>
+  <Flex alignItems={{ base: "center", md: "auto" }} gap={4}>
     <Flex display={{ base: "flex", md: "none" }}>
-      <ValidatorImage validator={info} boxSize={16} />
+      <ValidatorImage boxSize={16} validator={info} />
     </Flex>
     <Flex
-      w="full"
+      alignItems={{ base: "start", md: "center" }}
       direction={{ base: "column", md: "row" }}
       justifyContent={{ md: "space-between" }}
-      alignItems={{ base: "start", md: "center" }}
+      w="full"
     >
       <Flex align="center" gap={2}>
         {info.rank && (
           <Heading
             as="h5"
-            mt={{ base: 1, md: 0 }}
-            ml={{ base: 1, md: 0 }}
-            variant={{ base: "h6", md: "h5" }}
             color="primary.main"
+            ml={{ base: 1, md: 0 }}
+            mt={{ base: 1, md: 0 }}
+            variant={{ base: "h6", md: "h5" }}
           >
             #{info.rank}
           </Heading>
         )}
         <Heading
           as="h5"
-          variant="h5"
-          wordBreak="break-word"
           color={info.moniker.length ? "text.main" : "text.disabled"}
           display={{ base: "none", md: "flex" }}
+          variant="h5"
+          wordBreak="break-word"
         >
           {info.moniker || "Untitled validator"}
         </Heading>
@@ -46,17 +46,17 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
       </Flex>
       <Heading
         as="h6"
-        variant="h6"
-        mt={1}
-        wordBreak="break-word"
         color={info.moniker.length ? "text.main" : "text.disabled"}
         display={{ base: "flex", md: "none" }}
+        mt={1}
+        variant="h6"
+        wordBreak="break-word"
       >
         {info.moniker || "Untitled validator"}
       </Heading>
       <WebsiteButton
-        href={info.website}
         display={{ base: "none", md: "flex" }}
+        href={info.website}
       />
     </Flex>
   </Flex>

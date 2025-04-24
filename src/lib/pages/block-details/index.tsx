@@ -1,10 +1,9 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { TierSwitcher } from "lib/components/TierSwitcher";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { InvalidBlock } from "./components/InvalidBlock";
 import { BlockDetailsFull } from "./full";
@@ -21,8 +20,8 @@ const BlockDetailsBody = ({ height }: BlockDetailsBodyProps) => (
     <CelatoneSeo pageName={`Block #${height.toString()}`} />
     <TierSwitcher
       full={<BlockDetailsFull height={height} />}
-      sequencer={<BlockDetailsSequencer height={height} />}
       lite={<BlockDetailsLite height={height} />}
+      sequencer={<BlockDetailsSequencer height={height} />}
     />
   </>
 );

@@ -1,6 +1,6 @@
-import { z } from "zod";
 import { zHexAddr20 } from "lib/types";
 import { isHex20Bytes } from "lib/utils";
+import { z } from "zod";
 
 // MARK - Query Params
 export const zEvmContractVerifyQueryParams = z.object({

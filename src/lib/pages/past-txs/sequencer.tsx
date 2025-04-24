@@ -1,6 +1,4 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-
 import { useCurrentChain } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { LoadNext } from "lib/components/LoadNext";
@@ -11,15 +9,16 @@ import { TransactionsTableWithWallet } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useDebounce } from "lib/hooks";
 import { useTxsByAddressSequencer } from "lib/services/tx";
+import { useEffect, useState } from "react";
 
 interface PastTxsSequencerTransactionsTableWithWalletEmptyStateProps {
-  search: string;
   error: unknown;
+  search: string;
 }
 
 const PastTxsSequencerTransactionsTableWithWalletEmptyState = ({
-  search,
   error,
+  search,
 }: PastTxsSequencerTransactionsTableWithWalletEmptyStateProps) => {
   if (search.trim().length > 0)
     return (
@@ -52,8 +51,8 @@ export const PastTxsSequencer = () => {
     error,
     fetchNextPage,
     hasNextPage,
-    isLoading,
     isFetchingNextPage,
+    isLoading,
   } = useTxsByAddressSequencer(address, debouncedSearch);
 
   useEffect(() => {
@@ -63,44 +62,44 @@ export const PastTxsSequencer = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Past transactions" />
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex alignItems="center" justifyContent="space-between">
         <Heading
-          variant="h5"
-          as="h5"
-          minH="36px"
-          display="flex"
           alignItems="center"
+          as="h5"
+          display="flex"
+          minH="36px"
+          variant="h5"
         >
           Past transactions
         </Heading>
-        <UserDocsLink isButton href="general/transactions/past-txs" />
+        <UserDocsLink href="general/transactions/past-txs" isButton />
       </Flex>
       <Flex my={8}>
         <InputWithIcon
+          amptrackSection="past-txs-search"
           placeholder="Search with transaction hash"
+          size={{ base: "md", md: "lg" }}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          size={{ base: "md", md: "lg" }}
-          amptrackSection="past-txs-search"
         />
       </Flex>
       <TransactionsTableWithWallet
-        transactions={data}
-        isLoading={isLoading}
         emptyState={
           <PastTxsSequencerTransactionsTableWithWalletEmptyState
-            search={search}
             error={error}
+            search={search}
           />
         }
+        isLoading={isLoading}
         showActions={false}
         showRelations
+        transactions={data}
       />
       {hasNextPage && (
         <LoadNext
-          text="Load more 10 transactions"
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          text="Load more 10 transactions"
         />
       )}
     </PageContainer>

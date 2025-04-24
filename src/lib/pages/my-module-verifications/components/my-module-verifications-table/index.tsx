@@ -1,20 +1,19 @@
-/* eslint-disable react/button-has-type */
-import { Box, Button, Grid, Stack } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useMemo, useState } from "react";
+import type { MoveVerifyTaskStatus } from "lib/services/types";
 
+import { Box, Button, Grid, Stack } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { TableContainer } from "lib/components/table";
-import type { MoveVerifyTaskStatus } from "lib/services/types";
+import { observer } from "mobx-react-lite";
+import { useMemo, useState } from "react";
 
-import { MyModuleVerificationsTableHeader } from "./MyModuleVerificationsHeader";
-import { MyModuleVerificationsRow } from "./MyModuleVerificationsRow";
 import { useMyModuleVerifications } from "../../data";
 import { MoveVerifyTaskStatusFilter } from "../MoveVerifyTaskStatusFilter";
+import { MyModuleVerificationsTableHeader } from "./MyModuleVerificationsHeader";
+import { MyModuleVerificationsRow } from "./MyModuleVerificationsRow";
 
 export const MyModuleVerificationsTable = observer(() => {
   const navigate = useInternalNavigate();
@@ -43,20 +42,20 @@ export const MyModuleVerificationsTable = observer(() => {
 
   return (
     <Box>
-      <Grid templateColumns="3fr 1.2fr" columnGap={4} my={6}>
+      <Grid columnGap={4} my={6} templateColumns="3fr 1.2fr">
         <InputWithIcon
+          amptrackSection="my-published-modules-search"
           placeholder="Search with request ID"
+          size="lg"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          amptrackSection="my-published-modules-search"
-          size="lg"
         />
         <MoveVerifyTaskStatusFilter
+          isMulti
           label="Filter by status"
+          placeholder="All status"
           result={statuses}
           setResult={setStatuses}
-          placeholder="All status"
-          isMulti
         />
       </Grid>
 
@@ -64,7 +63,6 @@ export const MyModuleVerificationsTable = observer(() => {
         <Stack alignItems="center">
           <EmptyState
             imageVariant={isFiltering ? "not-found" : "empty"}
-            withBorder
             message={
               isFiltering
                 ? `No past verification requests found.
@@ -72,10 +70,11 @@ Please submit a new verification request.`
                 : `Your past submission for module verifications will display here`
             }
             py={10}
+            withBorder
           >
             <Button
-              onClick={() => navigate({ pathname: "/modules/verify" })}
               leftIcon={<CustomIcon name="plus" />}
+              onClick={() => navigate({ pathname: "/modules/verify" })}
             >
               Submit verification
             </Button>
@@ -87,8 +86,8 @@ Please submit a new verification request.`
           {filteredTasks.map((task) => (
             <MyModuleVerificationsRow
               key={task.taskId}
-              templateColumns={templateColumns}
               task={task}
+              templateColumns={templateColumns}
             />
           ))}
         </TableContainer>

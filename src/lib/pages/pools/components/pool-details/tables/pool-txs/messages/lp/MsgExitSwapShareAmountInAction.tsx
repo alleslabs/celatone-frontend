@@ -1,25 +1,26 @@
-import { Flex } from "@chakra-ui/react";
+import type { AssetInfos, Option, PoolData } from "lib/types";
+import type { MsgExitSwapShareAmountInDetails } from "lib/utils/tx/types";
 
+import { Flex } from "@chakra-ui/react";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import { CustomIcon } from "lib/components/icon";
-import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
-import type { MsgExitSwapShareAmountInDetails } from "lib/utils/tx/types";
+
 import { PoolLogoLink } from "../components";
 import { getPoolDenom } from "../utils";
 
 interface MsgExitSwapShareAmountInActionProps {
+  ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
   msg: MsgExitSwapShareAmountInDetails;
   pool: PoolData;
-  assetInfos: Option<AssetInfos>;
-  ampCopierSection?: string;
 }
 
 export const MsgExitSwapShareAmountInAction = ({
+  ampCopierSection,
+  assetInfos,
   msg,
   pool,
-  assetInfos,
-  ampCopierSection,
 }: MsgExitSwapShareAmountInActionProps) => {
   const poolDenom = getPoolDenom(msg.pool_id);
   const poolToken = coinToTokenWithValue(
@@ -33,21 +34,21 @@ export const MsgExitSwapShareAmountInAction = ({
     assetInfos
   );
   return (
-    <Flex gap={1} alignItems="center" flexWrap="wrap">
+    <Flex alignItems="center" flexWrap="wrap" gap={1}>
       Burned
       <MsgToken
-        token={poolToken}
-        fontWeight={700}
         ampCopierSection={ampCopierSection}
+        fontWeight={700}
+        token={poolToken}
       />
       to
-      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
-      <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
+      <PoolLogoLink ampCopierSection={ampCopierSection} pool={pool} />
+      <CustomIcon boxSize={4} color="primary.main" name="arrow-right" />
       at least
       <MsgToken
-        token={outToken}
-        fontWeight={400}
         ampCopierSection={ampCopierSection}
+        fontWeight={400}
+        token={outToken}
       />
     </Flex>
   );

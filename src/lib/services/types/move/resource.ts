@@ -1,7 +1,6 @@
-import { z } from "zod";
-
 import { zHexAddr, zPagination } from "lib/types";
 import { snakeToCamel } from "lib/utils";
+import { z } from "zod";
 
 const zResourcesResponseItem = z
   .object({
@@ -14,8 +13,8 @@ const zResourcesResponseItem = z
 export type ResourceResponseItem = z.infer<typeof zResourcesResponseItem>;
 
 export const zResourcesResponseRest = z.object({
-  resources: z.array(zResourcesResponseItem),
   pagination: zPagination,
+  resources: z.array(zResourcesResponseItem),
 });
 
 export const zResourcesResponse = z.object({

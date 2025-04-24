@@ -3,16 +3,16 @@ import type { Option } from "lib/types";
 export const EXTENSION_LIB = ["sol", "vy"];
 
 export interface FilePath {
-  path: string;
   code: string;
+  path: string;
 }
 
 export interface SourceTreeNode extends FilePath {
-  name: string;
-  isOpen: boolean;
+  children: SourceTreeNode[];
   isFolder: boolean;
   isLib: boolean;
-  treeLevel: number;
-  children: SourceTreeNode[];
+  isOpen: boolean;
   language: Option<string>;
+  name: string;
+  treeLevel: number;
 }

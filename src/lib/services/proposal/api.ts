@@ -1,14 +1,3 @@
-import axios from "axios";
-
-import {
-  zProposalAnswerCountsResponse,
-  zProposalDataResponse,
-  zProposalParamsResponse,
-  zProposalsResponse,
-  zProposalVotesInfoResponse,
-  zProposalVotesResponse,
-  zRelatedProposalsResponse,
-} from "lib/services/types";
 import type {
   ProposalAnswerCountsResponse,
   ProposalDataResponse,
@@ -17,7 +6,6 @@ import type {
   ProposalVotesResponse,
   RelatedProposalsResponse,
 } from "lib/services/types";
-import { zProposalType } from "lib/types";
 import type {
   BechAddr,
   BechAddr20,
@@ -31,6 +19,18 @@ import type {
   ProposalVotesInfo,
   ProposalVoteType,
 } from "lib/types";
+
+import axios from "axios";
+import {
+  zProposalAnswerCountsResponse,
+  zProposalDataResponse,
+  zProposalParamsResponse,
+  zProposalsResponse,
+  zProposalVotesInfoResponse,
+  zProposalVotesResponse,
+  zRelatedProposalsResponse,
+} from "lib/services/types";
+import { zProposalType } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getProposalParams = async (
@@ -60,9 +60,9 @@ export const getProposals = async (
         limit,
         offset,
         proposer,
+        search,
         statuses: statuses.join(","),
         types: types.join(","),
-        search,
       },
     })
     .then(({ data }) => parseWithError(zProposalsResponse, data));
@@ -144,9 +144,9 @@ export const getProposalValidatorVotes = async (
   axios
     .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`, {
       params: {
+        answer,
         limit,
         offset,
-        answer,
         search,
       },
     })

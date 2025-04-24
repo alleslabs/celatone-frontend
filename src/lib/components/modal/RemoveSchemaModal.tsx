@@ -1,6 +1,6 @@
-import { Text, useToast } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
+import { Text, useToast } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { useSchemaStore } from "lib/providers/store";
@@ -8,14 +8,14 @@ import { useSchemaStore } from "lib/providers/store";
 import { ActionModal } from "./ActionModal";
 
 interface RemoveSchemaModalProps {
-  codeId: number;
   codeHash: string;
+  codeId: number;
   trigger: ReactNode;
 }
 
 export function RemoveSchemaModal({
-  codeId,
   codeHash,
+  codeId,
   trigger,
 }: RemoveSchemaModalProps) {
   const { deleteSchema } = useSchemaStore();
@@ -27,26 +27,26 @@ export function RemoveSchemaModal({
 
     setTimeout(() => {
       toast({
-        title: `Removed JSON schema`,
-        status: "success",
         duration: 5000,
+        icon: <CustomIcon color="success.main" name="check-circle-solid" />,
         isClosable: false,
         position: "bottom-right",
-        icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+        status: "success",
+        title: `Removed JSON schema`,
       });
     }, 1000);
   };
 
   return (
     <ActionModal
-      title={`Removed JSON schema for code '${codeId}'?`}
       icon="delete"
       iconColor="error.light"
-      trigger={trigger}
+      mainAction={handleRemove}
       mainBtnTitle="Yes, remove JSON schema"
       mainVariant="error"
-      mainAction={handleRemove}
       otherBtnTitle="No, keep it"
+      title={`Removed JSON schema for code '${codeId}'?`}
+      trigger={trigger}
     >
       <Text>
         This action will remove JSON schema for code `{codeId}` and other codes

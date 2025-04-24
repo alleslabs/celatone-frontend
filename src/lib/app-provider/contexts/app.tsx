@@ -1,7 +1,13 @@
 import type { ChainConfig } from "@alleslabs/shared";
-import { useModalTheme } from "@cosmos-kit/react";
-import { observer } from "mobx-react-lite";
+import type { ProjectConstants } from "config/project";
+import type { ThemeConfig } from "config/theme/types";
 import type { ReactNode } from "react";
+
+import { useModalTheme } from "@cosmos-kit/react";
+import { PROJECT_CONSTANTS } from "config/project";
+import { FALLBACK_THEME, getTheme } from "config/theme";
+import { changeFavicon } from "lib/utils";
+import { observer } from "mobx-react-lite";
 import {
   createContext,
   useCallback,
@@ -10,36 +16,30 @@ import {
   useState,
 } from "react";
 
-import type { ProjectConstants } from "config/project";
-import { PROJECT_CONSTANTS } from "config/project";
-import { FALLBACK_THEME, getTheme } from "config/theme";
-import type { ThemeConfig } from "config/theme/types";
-import { changeFavicon } from "lib/utils";
-
-import { DEFAULT_CHAIN_CONFIG } from "./default";
 import { useChainConfigs } from "../hooks/useChainConfigs";
 import { useNetworkChange } from "../hooks/useNetworkChange";
+import { DEFAULT_CHAIN_CONFIG } from "./default";
 
 interface AppProviderProps {
   children: ReactNode;
 }
 
 interface AppContextInterface {
-  isHydrated: boolean;
-  currentChainId: string;
   chainConfig: ChainConfig;
   constants: ProjectConstants;
-  theme: ThemeConfig;
+  currentChainId: string;
+  isHydrated: boolean;
   setTheme: (newTheme: ThemeConfig) => void;
+  theme: ThemeConfig;
 }
 
 const DEFAULT_STATES: AppContextInterface = {
-  isHydrated: false,
-  currentChainId: "",
   chainConfig: DEFAULT_CHAIN_CONFIG,
   constants: PROJECT_CONSTANTS,
-  theme: FALLBACK_THEME,
+  currentChainId: "",
+  isHydrated: false,
   setTheme: () => {},
+  theme: FALLBACK_THEME,
 };
 
 const AppContext = createContext<AppContextInterface>(DEFAULT_STATES);
@@ -69,13 +69,13 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
       changeFavicon(theme.branding.favicon);
 
       setStates({
-        isHydrated: true,
-        currentChainId: newChainId,
         chainConfig,
         constants: PROJECT_CONSTANTS,
-        theme,
+        currentChainId: newChainId,
+        isHydrated: true,
         setTheme: (newTheme: ThemeConfig) =>
           setStates((prev) => ({ ...prev, theme: newTheme })),
+        theme,
       });
     },
     [chainConfigs]

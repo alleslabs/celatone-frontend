@@ -1,5 +1,6 @@
-import { TableContainer } from "@chakra-ui/react";
+import type { BechAddr32, Option } from "lib/types";
 
+import { TableContainer } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
@@ -8,7 +9,6 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer } from "lib/components/table";
 import { useMigrationHistories } from "lib/pages/contract-details/data";
 import { useWasmVerifyInfos } from "lib/services/verification/wasm";
-import type { BechAddr32, Option } from "lib/types";
 
 import { MigrationHeader } from "./MigrationHeader";
 import { MigrationMobileCard } from "./MigrationMobileCard";
@@ -16,35 +16,35 @@ import { MigrationRow } from "./MigrationRow";
 
 interface MigrationTableFullProps {
   contractAddress: BechAddr32;
+  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
-  refetchCount: () => void;
 }
 
 export const MigrationTableFull = ({
   contractAddress,
+  refetchCount,
   scrollComponentId,
   totalData,
-  refetchCount,
 }: MigrationTableFullProps) => {
   const isMobile = useMobile();
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: totalData,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: totalData,
   });
 
-  const { data, isLoading, error } = useMigrationHistories(
+  const { data, error, isLoading } = useMigrationHistories(
     contractAddress,
     offset,
     pageSize
@@ -98,11 +98,11 @@ export const MigrationTableFull = ({
       {!!totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalData}
-          scrollComponentId={scrollComponentId}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          scrollComponentId={scrollComponentId}
+          totalData={totalData}
           onPageChange={(nextPage) => {
             setCurrentPage(nextPage);
             refetchCount();

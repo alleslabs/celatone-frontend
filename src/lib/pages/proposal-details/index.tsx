@@ -1,7 +1,4 @@
 import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useCallback, useEffect } from "react";
-
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useGovConfig, useInternalNavigate, useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
@@ -11,6 +8,10 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useDerivedProposalParams } from "lib/model/proposal";
+import { useRouter } from "next/router";
+import { useCallback, useEffect } from "react";
+
+import type { ProposalDetailsQueryParams } from "./types";
 
 import {
   InvalidProposal,
@@ -19,7 +20,6 @@ import {
   VoteDetails,
 } from "./components";
 import { useDerivedProposalData, useDerivedProposalVotesInfo } from "./data";
-import type { ProposalDetailsQueryParams } from "./types";
 import { TabIndex, zProposalDetailsQueryParams } from "./types";
 
 const ProposalDetailsBody = ({
@@ -30,7 +30,7 @@ const ProposalDetailsBody = ({
 
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
-  const { data, isLoading, isDepositsLoading } =
+  const { data, isDepositsLoading, isLoading } =
     useDerivedProposalData(proposalId);
   const { data: votesInfo, isLoading: isVotesInfoLoading } =
     useDerivedProposalVotesInfo(proposalId, data, isLoading);
@@ -42,13 +42,13 @@ const ProposalDetailsBody = ({
       if (nextTab === tab) return;
       trackUseTab(nextTab);
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: "/proposals/[proposalId]/[tab]",
         query: {
           proposalId,
           tab: nextTab,
-        },
-        options: {
-          shallow: true,
         },
       });
     },
@@ -73,7 +73,7 @@ const ProposalDetailsBody = ({
         lazyBehavior="keepMounted"
       >
         <TabList
-          borderBottom="1px solid"
+          borderBottomWidth="1px"
           borderColor="gray.700"
           overflowX="scroll"
         >
@@ -87,30 +87,30 @@ const ProposalDetailsBody = ({
         <TabPanels>
           <TabPanel p={0}>
             <ProposalOverview
+              isDepositsLoading={isDepositsLoading}
+              isLoading={isVotesInfoLoading || isParamsLoading}
+              params={params}
               proposalData={info}
               votesInfo={votesInfo}
-              params={params}
-              isLoading={isVotesInfoLoading || isParamsLoading}
-              isDepositsLoading={isDepositsLoading}
             />
             <UserDocsLink
-              title="What is a Proposal?"
               cta="Read more about Proposal Details"
               href="general/proposals/detail-page"
+              title="What is a Proposal?"
             />
           </TabPanel>
           <TabPanel p={0}>
             <VoteDetails
+              isDepositsLoading={isDepositsLoading}
+              isLoading={isVotesInfoLoading || isParamsLoading}
+              params={params}
               proposalData={info}
               votesInfo={votesInfo}
-              params={params}
-              isLoading={isVotesInfoLoading || isParamsLoading}
-              isDepositsLoading={isDepositsLoading}
             />
             <UserDocsLink
-              title="What is the CosmWasm proposal vote progress?"
               cta="Read more about Vote Details"
               href="general/proposals/detail-page#proposal-vote-details"
+              title="What is the CosmWasm proposal vote progress?"
             />
           </TabPanel>
         </TabPanels>

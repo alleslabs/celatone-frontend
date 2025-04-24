@@ -1,20 +1,20 @@
-import { useCallback } from "react";
+import type { Nullable } from "lib/types";
 
 import {
   useCurrentChain,
   useExampleAddresses,
   useValidateAddress,
 } from "lib/app-provider";
-import type { Nullable } from "lib/types";
 import {
   isHexModuleAddress,
   isHexWalletAddress,
   splitModulePath,
   truncate,
 } from "lib/utils";
+import { useCallback } from "react";
 
 export const useValidateModuleInput = () => {
-  const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const { validateContractAddress, validateUserAddress } = useValidateAddress();
   const { bech32Prefix } = useCurrentChain();
 
   const { user } = useExampleAddresses();

@@ -1,14 +1,17 @@
+import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
+
 import { Flex, Stack } from "@chakra-ui/react";
-import { useState } from "react";
 import { EvmVerifySection } from "lib/components/evm-verify-section";
 import { TypeSwitch } from "lib/components/TypeSwitch";
-import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
-import { ContractAbi } from "./ContractAbi";
+import { useState } from "react";
+
 import type { ContractByteCodeProps } from "./ContractByteCode";
+
+import { EvmContractDetailsContractInfoTabs } from "../../types";
+import { ContractAbi } from "./ContractAbi";
 import { ContractByteCode } from "./ContractByteCode";
 import { ContractCode } from "./ContractCode";
 import { ContractCompiler } from "./ContractCompiler";
-import { EvmContractDetailsContractInfoTabs } from "../../types";
 
 interface EvmContractDetailsContractInfoProps extends ContractByteCodeProps {
   contractAddress: HexAddr20;
@@ -16,8 +19,8 @@ interface EvmContractDetailsContractInfoProps extends ContractByteCodeProps {
 }
 
 export const EvmContractDetailsContractInfo = ({
-  contractAddress,
   byteCode,
+  contractAddress,
   deployedByteCode,
   evmVerifyInfo,
 }: EvmContractDetailsContractInfoProps) => {
@@ -40,18 +43,18 @@ export const EvmContractDetailsContractInfo = ({
         <>
           <Flex>
             <TypeSwitch
+              currentTab={currentTab}
               tabs={Object.values(EvmContractDetailsContractInfoTabs)}
               onTabChange={setCurrentTab}
-              currentTab={currentTab}
             />
           </Flex>
           {currentTab === EvmContractDetailsContractInfoTabs.Code && (
             <ContractCode
-              sourceFiles={evmVerifyInfo.sourceFiles}
-              contractPath={evmVerifyInfo.contractPath ?? ""}
-              constructorArguments={evmVerifyInfo.constructorArguments}
               abi={evmVerifyInfo.abi}
+              constructorArguments={evmVerifyInfo.constructorArguments}
+              contractPath={evmVerifyInfo.contractPath ?? ""}
               libraries={evmVerifyInfo.libraries}
+              sourceFiles={evmVerifyInfo.sourceFiles}
             />
           )}
           {currentTab === EvmContractDetailsContractInfoTabs.Compiler && (

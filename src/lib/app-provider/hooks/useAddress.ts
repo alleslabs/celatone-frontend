@@ -1,18 +1,18 @@
-import { fromBech32 } from "@cosmjs/encoding";
-import { useCallback, useMemo } from "react";
-
 import type { Option } from "lib/types";
+
+import { fromBech32 } from "@cosmjs/encoding";
 import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
+import { useCallback, useMemo } from "react";
 
 import { useEvmConfig, useMoveConfig } from "./useConfig";
 import { useCurrentChain } from "./useCurrentChain";
 import { useExampleAddresses } from "./useExampleAddresses";
 
 export type AddressReturnType =
-  | "user_address"
   | "contract_address"
-  | "validator_address"
-  | "invalid_address";
+  | "invalid_address"
+  | "user_address"
+  | "validator_address";
 
 export const useGetAddressTypeByLength = () => {
   const exampleAddresses = useExampleAddresses();
@@ -136,9 +136,6 @@ export const useValidateAddress = () => {
   );
 
   return {
-    validateContractAddress,
-    validateUserAddress,
-    validateValidatorAddress,
     isSomeValidAddress: useCallback(
       (address: string) => {
         const errUser = validateUserAddress(address);
@@ -150,5 +147,8 @@ export const useValidateAddress = () => {
       },
       [hasHexAddr, validateContractAddress, validateUserAddress]
     ),
+    validateContractAddress,
+    validateUserAddress,
+    validateValidatorAddress,
   };
 };

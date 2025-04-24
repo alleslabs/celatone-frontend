@@ -1,9 +1,9 @@
-import { Input, Textarea } from "@chakra-ui/react";
+import type { BechAddr20, Nullable } from "lib/types";
 import type { ControllerRenderProps } from "react-hook-form";
 
+import { Input, Textarea } from "@chakra-ui/react";
 import { useCurrentChain, useExampleAddresses } from "lib/app-provider";
 import { SelectInput } from "lib/components/forms";
-import type { BechAddr20, Nullable } from "lib/types";
 
 import {
   DECIMAL_TYPES,
@@ -52,15 +52,15 @@ const boolOptions = [
 ];
 
 interface ArgFieldWidgetProps {
+  onChange: ControllerRenderProps["onChange"];
   type: string;
   value: Nullable<string>;
-  onChange: ControllerRenderProps["onChange"];
 }
 
 export const ArgFieldWidget = ({
+  onChange,
   type,
   value,
-  onChange,
 }: ArgFieldWidgetProps) => {
   const { bech32Prefix } = useCurrentChain();
   const { user: exampleAddress } = useExampleAddresses();
@@ -75,8 +75,8 @@ export const ArgFieldWidget = ({
   )
     return (
       <Input
-        size="md"
         placeholder={getInputPlaceholder(type, value === null, bech32Prefix)}
+        size="md"
         value={value ?? ""}
         onChange={onChange}
       />
@@ -86,21 +86,21 @@ export const ArgFieldWidget = ({
     return (
       <SelectInput
         classNamePrefix="chakra-react-select"
-        size="md"
+        menuPortalTarget={document.body}
         options={boolOptions}
         placeholder=""
+        size="md"
         value={boolOptions.find(
           ({ value: optionValue }) => optionValue === value
         )}
         onChange={(newValue) => onChange(newValue?.value)}
-        menuPortalTarget={document.body}
       />
     );
 
   return (
     <Textarea
-      minH="112px"
       h="fit-content"
+      minH="112px"
       placeholder={
         type.startsWith("vector")
           ? getVectorPlaceholder(type, value === null, exampleAddress)

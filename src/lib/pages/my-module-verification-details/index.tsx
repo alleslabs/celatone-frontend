@@ -1,7 +1,4 @@
 import { Box, ListItem, Stack, Text, UnorderedList } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
-
 import { useIsApiChain, useMoveConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -11,6 +8,8 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useMoveVerifyTaskStore } from "lib/providers/store";
 import { MoveVerifyTaskStatus } from "lib/services/types";
 import { useMoveVerifyTaskInfo } from "lib/services/verification/move";
+import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
 
 import {
   MyModuleVerificationDetailsAlert,
@@ -22,7 +21,7 @@ import {
 import { zMyModuleVerificationDetailsQueryParams } from "./types";
 
 const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
-  const { data, isLoading, error } = useMoveVerifyTaskInfo(taskId, !!taskId);
+  const { data, error, isLoading } = useMoveVerifyTaskInfo(taskId, !!taskId);
   const { getMoveVerifyTask } = useMoveVerifyTaskStore();
   const verifyModuleTask = getMoveVerifyTask(taskId);
   useIsApiChain({ shouldRedirect: true });
@@ -32,8 +31,8 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
   if (!data || error)
     return (
       <EmptyState
-        imageVariant="not-found"
         heading="Task ID not found"
+        imageVariant="not-found"
         message="Please double-check your input and make sure you have selected the correct network."
         withBorder
       />
@@ -42,10 +41,10 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
   if (data.task.status === MoveVerifyTaskStatus.NotFound && !verifyModuleTask)
     return (
       <EmptyState
-        imageVariant="not-found"
         heading="Verification Details is Unavailable"
-        withBorder
+        imageVariant="not-found"
         message=""
+        withBorder
       >
         <Box>
           <Text color="text.dark">
@@ -67,13 +66,13 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
     <>
       <Stack gap={8}>
         <MyModuleVerificationDetailsTop
-          taskId={taskId}
           requestNote={verifyModuleTask?.requestNote}
+          taskId={taskId}
         />
         <Stack gap={10}>
           <MyModuleVerificationDetailsInfo
-            verifyTaskLocalInfo={verifyModuleTask}
             verifyTaskInfo={data}
+            verifyTaskLocalInfo={verifyModuleTask}
           />
           <MyModuleVerificationDetailsAlert status={data.task.status} />
           {verifyModuleTask && (
@@ -106,8 +105,8 @@ export const MyModuleVerificationDetails = observer(() => {
       <CelatoneSeo pageName="My module verification details" />
       {!validated.success ? (
         <EmptyState
-          imageVariant="not-found"
           heading="Task ID not found"
+          imageVariant="not-found"
           message="Please double-check your input and make sure you have selected the correct network."
           withBorder
         />

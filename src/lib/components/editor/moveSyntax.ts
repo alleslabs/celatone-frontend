@@ -1,4 +1,4 @@
-/* eslint-disable sonarjs/no-duplicate-string */
+/* eslint-disable perfectionist/sort-objects */
 /* eslint-disable no-useless-escape */
 import type { languages } from "monaco-editor";
 

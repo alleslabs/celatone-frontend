@@ -1,10 +1,11 @@
+import type { BechAddr32 } from "lib/types";
+
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
 import { useMigrationHistoriesRest } from "lib/pages/contract-details/data";
 import { useWasmVerifyInfos } from "lib/services/verification/wasm";
-import type { BechAddr32 } from "lib/types";
 
 import { MigrationHeader } from "./MigrationHeader";
 import { MigrationMobileCard } from "./MigrationMobileCard";

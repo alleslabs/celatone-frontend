@@ -1,15 +1,4 @@
 import type { UseQueryResult } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { useCallback } from "react";
-
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useMoveConfig,
-  usePublicProjectConfig,
-  useWasmConfig,
-} from "lib/app-provider";
 import type {
   Option,
   PublicCode,
@@ -21,7 +10,18 @@ import type {
   RawPublicContract,
   RawPublicProjectInfo,
 } from "lib/types";
+
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useMoveConfig,
+  usePublicProjectConfig,
+  useWasmConfig,
+} from "lib/app-provider";
 import { isId } from "lib/utils";
+import { useCallback } from "react";
 
 const parseContract = (raw: RawPublicContract): PublicContract => ({
   contractAddress: raw.address,
@@ -54,8 +54,8 @@ export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
     queryFn,
     {
       enabled: projectConfig.enabled,
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -108,8 +108,8 @@ export const usePublicProjectByCodeId = (
     queryFn,
     {
       enabled: isId(codeId) && projectConfig.enabled && wasmConfig.enabled,
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -138,8 +138,8 @@ export const usePublicProjectByAccountAddress = (
     queryFn,
     {
       enabled: Boolean(accountAddress) && projectConfig.enabled,
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -172,8 +172,8 @@ export const usePublicProjectByModulePath = (
     queryFn,
     {
       enabled: Boolean(address) && projectConfig.enabled && moveConfig.enabled,
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };

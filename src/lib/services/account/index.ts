@@ -1,7 +1,7 @@
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
-import { useCallback } from "react";
+import type { AccountType, BechAddr, Option } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -10,7 +10,13 @@ import {
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
-import type { AccountType, BechAddr, Option } from "lib/types";
+import { useCallback } from "react";
+
+import type {
+  AccountBech32RestResponse,
+  AccountData,
+  AccountTableCounts,
+} from "../types";
 
 import { getAccountData, getAccountTableCounts, getAccountType } from "./api";
 import {
@@ -18,11 +24,6 @@ import {
   getAccountDataRest,
   getAccountTypeRest,
 } from "./rest";
-import type {
-  AccountBech32RestResponse,
-  AccountData,
-  AccountTableCounts,
-} from "../types";
 
 export const useAccountData = (
   address: BechAddr
@@ -40,7 +41,7 @@ export const useAccountData = (
       isFullTier
         ? getAccountData(endpoint, address)
         : getAccountDataRest(endpoint, address),
-    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
+    { enabled: !!address, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -61,7 +62,7 @@ export const useAccountTableCounts = (
       isWasm,
     ],
     async () => getAccountTableCounts(endpoint, address, isGov, isWasm),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { refetchOnWindowFocus: false, retry: 1, ...options }
   );
 };
 
@@ -69,7 +70,7 @@ export const useAccountType = (
   address: Option<BechAddr>,
   options: Pick<
     UseQueryOptions<AccountType, Error>,
-    "enabled" | "onSuccess" | "onError"
+    "enabled" | "onError" | "onSuccess"
   > = {}
 ): UseQueryResult<AccountType> => {
   const { isFullTier } = useTierConfig();
@@ -94,8 +95,8 @@ export const useAccountType = (
     queryFn,
     {
       ...options,
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -107,7 +108,7 @@ export const useAccountBech32 = (
     [CELATONE_QUERY_KEYS.ACCOUNT_BECH_32_REST, endpoint],
     async () => getAccountBech32Rest(endpoint),
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );

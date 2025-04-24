@@ -1,5 +1,6 @@
 import type Big from "big.js";
-import { useMemo } from "react";
+import type { TxData, TxDataJsonRpc } from "lib/services/types";
+import type { Option, Ratio, TokenWithValue } from "lib/types";
 
 import { useAssetInfos } from "lib/services/assetService";
 import { useBlockDataJsonRpc } from "lib/services/block";
@@ -9,30 +10,29 @@ import {
   useEvmTxDataJsonRpc,
   useTxData,
 } from "lib/services/tx";
-import type { TxData, TxDataJsonRpc } from "lib/services/types";
-import type { Option, Ratio, TokenWithValue } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
+import { useMemo } from "react";
 
 export interface GasInfo {
-  isEIP1559: boolean;
-  txFee: TokenWithValue;
-  gasPrice: TokenWithValue;
-  gasUsed: Big;
-  gasLimit: Big;
-  gasRefundRatio: Ratio<number>;
   // eip-1559
   baseFee: TokenWithValue;
+  gasLimit: Big;
+  gasPrice: TokenWithValue;
+  gasRefundRatio: Ratio<number>;
+  gasUsed: Big;
+  isEIP1559: boolean;
   maxFee: TokenWithValue;
   maxPriorityFee: TokenWithValue;
+  txFee: TokenWithValue;
 }
 
 interface EvmTxDetailsData {
-  isLoading: boolean;
   cosmosTxData: Option<TxData>;
-  evmTxData: Option<TxDataJsonRpc>;
   evmDenom: Option<string>;
+  evmTxData: Option<TxDataJsonRpc>;
   evmTxValue: Option<TokenWithValue>;
   gasInfo: Option<GasInfo>;
+  isLoading: boolean;
 }
 
 export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
@@ -100,28 +100,28 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
     );
 
     return {
-      isEIP1559: evmTxData.tx.type === "0x2",
-      txFee,
-      gasPrice,
-      gasUsed: evmTxData.txReceipt.gasUsed,
-      gasLimit: evmTxData.tx.gas,
-      gasRefundRatio,
       baseFee,
+      gasLimit: evmTxData.tx.gas,
+      gasPrice,
+      gasRefundRatio,
+      gasUsed: evmTxData.txReceipt.gasUsed,
+      isEIP1559: evmTxData.tx.type === "0x2",
       maxFee,
       maxPriorityFee,
+      txFee,
     };
   }, [assetInfos, blockData, evmDenom, evmTxData, gasRefundRatio]);
 
   return {
+    cosmosTxData,
+    evmDenom,
+    evmTxData,
+    evmTxValue,
+    gasInfo,
     isLoading:
       isLoadingEvmTxData ||
       isLoadingCosmosTxData ||
       isEvmParamsLoading ||
       isLoadingBlockData,
-    cosmosTxData,
-    evmTxData,
-    evmDenom,
-    evmTxValue,
-    gasInfo,
   };
 };

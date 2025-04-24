@@ -1,11 +1,11 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Badge, Flex, Image, Text } from "@chakra-ui/react";
+import type { AssetInfo, Option, Token, U, USD } from "lib/types";
 
+import { Badge, Flex, Image, Text } from "@chakra-ui/react";
 import { Copier } from "lib/components/copy";
 import { Tooltip } from "lib/components/Tooltip";
 import { NAToken } from "lib/icon";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
-import type { AssetInfo, Option, Token, U, USD } from "lib/types";
 import {
   calculateAssetValue,
   formatPrice,
@@ -16,16 +16,16 @@ import {
 
 interface AssetCardProps extends FlexProps {
   amount: string;
-  denom: string;
-  assetInfo: Option<AssetInfo>;
   ampCopierSection?: string;
+  assetInfo: Option<AssetInfo>;
+  denom: string;
 }
 
 export const AssetCard = ({
   amount,
-  denom,
-  assetInfo,
   ampCopierSection,
+  assetInfo,
+  denom,
   ...cardProps
 }: AssetCardProps) => {
   const symbol = getTokenLabel(denom, assetInfo?.symbol, false);
@@ -33,44 +33,44 @@ export const AssetCard = ({
     <Tooltip label={`Token ID: ${denom}`} maxW="240px" textAlign="center">
       <Flex
         className="copier-wrapper"
-        direction="column"
-        w="full"
-        minH="100px"
-        gap={2}
-        p={3}
         background="gray.800"
         borderRadius="8px"
+        direction="column"
+        gap={2}
+        minH="100px"
+        p={3}
+        w="full"
         {...cardProps}
       >
         <Flex
-          gap={1}
           alignItems="center"
-          borderBottom="1px solid"
           borderBottomColor="gray.700"
+          borderBottomWidth="1px"
+          gap={1}
           pb={2}
         >
           <Image
-            boxSize={6}
-            src={assetInfo?.logo ?? getUndefinedTokenIcon(denom)}
             alt={symbol}
+            boxSize={6}
             fallback={<NAToken />}
             fallbackStrategy="beforeLoadOrError"
+            src={assetInfo?.logo ?? getUndefinedTokenIcon(denom)}
           />
-          <Text variant="body2" className="ellipsis" fontWeight="bold">
+          <Text className="ellipsis" fontWeight="bold" variant="body2">
             {symbol}
           </Text>
           {assetInfo && (
-            <Badge variant="gray" ml="6px">
+            <Badge ml="6px" variant="gray">
               {formatPrice(assetInfo.price as USD<number>)}
             </Badge>
           )}
           <Copier
-            type={assetInfo?.price ? "supported_asset" : "unsupported_asset"}
-            value={denom}
+            amptrackSection={ampCopierSection}
             copyLabel="Token ID copied!"
             display="none"
             ml="1px"
-            amptrackSection={ampCopierSection}
+            type={assetInfo?.price ? "supported_asset" : "unsupported_asset"}
+            value={denom}
           />
         </Flex>
 
@@ -83,7 +83,7 @@ export const AssetCard = ({
             )}
           </Text>
           {assetInfo && (
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               {formatPrice(
                 calculateAssetValue(
                   toToken(amount as U<Token>, assetInfo.precision),

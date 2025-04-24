@@ -1,20 +1,20 @@
 import type { QueryFunction, UseQueryResult } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
+import type { Addr, ResourceGroup, ResourceGroupByAccount } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
   useMoveConfig,
 } from "lib/app-provider";
-import type { Addr, ResourceGroup, ResourceGroupByAccount } from "lib/types";
 import { zHexAddr } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { getAccountResourcesRest } from "./rest";
 
 export interface ResourcesByAddressReturn {
-  groupedByOwner: ResourceGroupByAccount[];
   groupedByName: ResourceGroup[];
+  groupedByOwner: ResourceGroupByAccount[];
   totalCount: number;
 }
 
@@ -39,9 +39,9 @@ export const useResourcesByAddressRest = (
         );
         if (groupResourcesIndex === -1)
           ownerResources.push({
-            group: groupName,
             account: zHexAddr.parse(ownerName),
             displayName: `${truncate(ownerName)}::${groupName}`,
+            group: groupName,
             items: [resource],
           });
         else ownerResources[groupResourcesIndex].items.push(resource);
@@ -68,8 +68,8 @@ export const useResourcesByAddressRest = (
         return {
           ...acc,
           [resourceKey]: {
-            displayName: `${truncate(accountName)}::${groupName}`,
             account: zHexAddr.parse(accountName),
+            displayName: `${truncate(accountName)}::${groupName}`,
             group: groupName,
             items,
           },
@@ -77,9 +77,9 @@ export const useResourcesByAddressRest = (
       }, {});
 
       return {
-        totalCount: resources.total,
-        groupedByOwner: Object.values(groupedByOwner),
         groupedByName: Object.values(groupedByName),
+        groupedByOwner: Object.values(groupedByOwner),
+        totalCount: resources.total,
       };
     });
   return useQuery(

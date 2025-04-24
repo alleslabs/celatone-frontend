@@ -1,25 +1,26 @@
-import { Flex } from "@chakra-ui/react";
+import type { AssetInfos, Option, PoolData } from "lib/types";
+import type { MsgExitPoolDetails } from "lib/utils/tx/types";
 
+import { Flex } from "@chakra-ui/react";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import { CustomIcon } from "lib/components/icon";
-import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
-import type { MsgExitPoolDetails } from "lib/utils/tx/types";
+
 import { PoolLogoLink } from "../components";
 import { getPoolDenom } from "../utils";
 
 interface MsgExitPoolActionProps {
+  ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
   msg: MsgExitPoolDetails;
   pool: PoolData;
-  assetInfos: Option<AssetInfos>;
-  ampCopierSection?: string;
 }
 
 export const MsgExitPoolAction = ({
+  ampCopierSection,
+  assetInfos,
   msg,
   pool,
-  assetInfos,
-  ampCopierSection,
 }: MsgExitPoolActionProps) => {
   const poolDenom = getPoolDenom(msg.pool_id);
   const poolToken = coinToTokenWithValue(
@@ -28,30 +29,30 @@ export const MsgExitPoolAction = ({
     assetInfos
   );
   return (
-    <Flex gap={1} alignItems="center" flexWrap="wrap">
+    <Flex alignItems="center" flexWrap="wrap" gap={1}>
       Burned
       <MsgToken
-        token={poolToken}
-        fontWeight={700}
         ampCopierSection={ampCopierSection}
+        fontWeight={700}
+        token={poolToken}
       />
       from
-      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
+      <PoolLogoLink ampCopierSection={ampCopierSection} pool={pool} />
       {msg.token_out_mins && (
-        <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
+        <CustomIcon boxSize={4} color="primary.main" name="arrow-right" />
       )}
       {(msg.token_out_mins ?? []).map((coin, index) => {
         const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
         return (
-          <Flex key={token.denom} gap={1} alignItems="center">
+          <Flex key={token.denom} alignItems="center" gap={1}>
             {index > 0 && (
-              <CustomIcon name="plus" boxSize={4} color="primary.main" />
+              <CustomIcon boxSize={4} color="primary.main" name="plus" />
             )}
             at least
             <MsgToken
-              token={token}
-              fontWeight={400}
               ampCopierSection={ampCopierSection}
+              fontWeight={400}
+              token={token}
             />
           </Flex>
         );

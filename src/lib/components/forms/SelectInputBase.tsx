@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import {
   Flex,
   Input,
@@ -9,74 +11,74 @@ import {
   PopoverTrigger,
   useDisclosure,
 } from "@chakra-ui/react";
-import type { MutableRefObject, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import type { IconKeys } from "../icon";
+
 import { CustomIcon } from "../icon";
 
 const ITEM_HEIGHT = 56;
 
 interface SelectInputProps<T extends string> {
+  disableMaxH?: boolean;
   formLabel?: string;
+  hasDivider?: boolean;
+  helperTextComponent?: ReactNode;
+  initialSelected?: string;
+  isRequired?: boolean;
+  labelBgColor?: string;
+  onChange: (newVal: T) => void;
   options: {
-    label: string;
-    value: T;
     disabled: boolean;
     icon?: IconKeys;
     iconColor?: string;
     image?: JSX.Element;
+    label: string;
+    value: T;
   }[];
-  onChange: (newVal: T) => void;
   placeholder?: string;
-  initialSelected?: string;
-  hasDivider?: boolean;
-  helperTextComponent?: ReactNode;
-  labelBgColor?: string;
   popoverBgColor?: string;
-  size?: string | object;
-  disableMaxH?: boolean;
-  isRequired?: boolean;
+  size?: object | string;
 }
 
 interface SelectItemProps {
   children: NonNullable<ReactNode>;
-  onSelect?: () => void;
   disabled: boolean;
+  onSelect?: () => void;
 }
 
-const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
+const SelectItem = ({ children, disabled, onSelect }: SelectItemProps) => (
   <Flex
-    px={4}
-    py={2}
-    onClick={onSelect}
+    _disabled={{ opacity: 0.4, pointerEvents: "none" }}
+    _hover={{ bg: "gray.800" }}
+    aria-disabled={disabled}
     color="text.main"
     cursor="pointer"
     gap={2}
-    aria-disabled={disabled}
-    _hover={{ bg: "gray.800" }}
+    px={4}
+    py={2}
     transition="all 0.25s ease-in-out"
-    _disabled={{ opacity: 0.4, pointerEvents: "none" }}
+    onClick={onSelect}
   >
     {children}
   </Flex>
 );
 
 export const SelectInputBase = <T extends string>({
+  disableMaxH = false,
   formLabel,
-  options,
-  onChange,
-  placeholder = "",
-  initialSelected,
   hasDivider = false,
   helperTextComponent,
+  initialSelected,
+  isRequired,
   labelBgColor = "background.main",
+  onChange,
+  options,
+  placeholder = "",
   popoverBgColor = "gray.900",
   size = "lg",
-  disableMaxH = false,
-  isRequired,
 }: SelectInputProps<T>) => {
-  const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
+  const inputRef = useRef<HTMLInputElement>(null);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [selected, setSelected] = useState("");
 
@@ -92,111 +94,111 @@ export const SelectInputBase = <T extends string>({
 
   return (
     <Popover
-      placement="bottom-start"
-      strategy="fixed"
       isOpen={isOpen}
-      onOpen={onOpen}
-      onClose={onClose}
+      placement="bottom-start"
       returnFocusOnClose={false}
+      strategy="fixed"
+      onClose={onClose}
+      onOpen={onOpen}
     >
       <PopoverTrigger>
         <InputGroup
           sx={{
+            "& .form-label": {
+              "::after": {
+                color: "error.main",
+                content: isRequired ? '"* (Required)"' : '""',
+                ml: 1,
+              },
+              bg: labelBgColor,
+              color: "text.dark",
+              fontSize: "12px",
+              letterSpacing: "0.15px",
+              ml: 3,
+              position: "absolute",
+              px: 1,
+              top: -2,
+
+              zIndex: 2,
+            },
             "&[aria-expanded=true]": {
               "> input": {
                 border: "2px solid",
                 borderColor: "primary.dark",
               },
             },
-            "& .form-label": {
-              fontSize: "12px",
-              color: "text.dark",
-              letterSpacing: "0.15px",
-              position: "absolute",
-              ml: 3,
-              px: 1,
-              zIndex: 2,
-              bg: labelBgColor,
-              top: -2,
-
-              "::after": {
-                content: isRequired ? '"* (Required)"' : '""',
-                color: "error.main",
-                ml: 1,
-              },
-            },
           }}
         >
           {formLabel && <div className="form-label">{formLabel}</div>}
           {selectedOption?.image && (
-            <InputLeftElement pointerEvents="none" h="full" ml={1}>
+            <InputLeftElement h="full" ml={1} pointerEvents="none">
               {selectedOption.image}
             </InputLeftElement>
           )}
           {selectedOption?.icon && (
-            <InputLeftElement pointerEvents="none" h="full" ml={1}>
+            <InputLeftElement h="full" ml={1} pointerEvents="none">
               <CustomIcon
-                name={selectedOption.icon}
                 color={selectedOption.iconColor}
+                name={selectedOption.icon}
               />
             </InputLeftElement>
           )}
           <Input
-            ref={inputRef}
+            color={selected ? "text.main" : "text.dark"}
+            fontSize="14px"
+            pl={selectedOption?.icon || selectedOption?.image ? 10 : 4}
             size={size}
             textAlign="start"
             type="button"
             value={selected || placeholder}
-            fontSize="14px"
-            color={selected ? "text.main" : "text.dark"}
-            pl={selectedOption?.icon || selectedOption?.image ? 10 : 4}
+            ref={inputRef}
           />
-          <InputRightElement pointerEvents="none" h="full">
-            <CustomIcon name="chevron-down" color="gray.600" />
+          <InputRightElement h="full" pointerEvents="none">
+            <CustomIcon color="gray.600" name="chevron-down" />
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>
       <PopoverContent
-        border="unset"
-        bg={popoverBgColor}
-        w={inputRef.current?.clientWidth}
-        maxH={disableMaxH ? undefined : `${ITEM_HEIGHT * 4}px`}
-        borderRadius="8px"
         _focusVisible={{
           outline: "none",
         }}
+        bg={popoverBgColor}
+        border="unset"
+        borderRadius="8px"
+        maxH={disableMaxH ? undefined : `${ITEM_HEIGHT * 4}px`}
+        overflow="scroll"
         sx={{
           "> div:not(:last-of-type)": {
             borderBottom: hasDivider && "1px solid",
             borderBottomColor: hasDivider && "gray.700",
           },
         }}
-        overflow="scroll"
+        w={inputRef.current?.clientWidth}
       >
-        {options.map(({ label, value, disabled, icon, iconColor, image }) => (
+        {options.map(({ disabled, icon, iconColor, image, label, value }) => (
           <SelectItem
             key={value}
+            disabled={disabled}
             onSelect={() => {
               setSelected(label);
               onChange(value);
               onClose();
             }}
-            disabled={disabled}
           >
             <Flex alignItems="center" gap={2}>
               <Flex alignItems="center">{image}</Flex>
-              {icon && <CustomIcon name={icon} color={iconColor} />}
+              {icon && <CustomIcon color={iconColor} name={icon} />}
               {label}
             </Flex>
           </SelectItem>
         ))}
         {helperTextComponent && (
           <Flex
-            px={4}
-            h={`${ITEM_HEIGHT}px`}
             align="center"
-            borderTop={!hasDivider ? "1px solid" : "none"}
             borderTopColor="gray.700"
+            borderTopWidth={!hasDivider ? "1px" : "none"}
+            h={`${ITEM_HEIGHT}px`}
+            px={4}
           >
             {helperTextComponent}
           </Flex>

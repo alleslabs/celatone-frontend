@@ -1,3 +1,3 @@
 import type { SvgIconKeys } from "./SvgIcon";
 
-export type IconKeys = SvgIconKeys | "circle";
+export type IconKeys = "circle" | SvgIconKeys;

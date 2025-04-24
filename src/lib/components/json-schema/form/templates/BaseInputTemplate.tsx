@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable complexity */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// import { fromBase64, fromUtf8, toBase64, toUtf8 } from "@cosmjs/encoding";
+import type {
+  BaseInputTemplateProps,
+  FormContextType,
+  RJSFSchema,
+  StrictRJSFSchema,
+} from "@rjsf/utils";
+import type { ChangeEvent, FocusEvent } from "react";
+
 import {
   Box,
   Checkbox,
@@ -11,13 +20,6 @@ import {
   InputGroup,
   Text,
 } from "@chakra-ui/react";
-// import { fromBase64, fromUtf8, toBase64, toUtf8 } from "@cosmjs/encoding";
-import type {
-  BaseInputTemplateProps,
-  FormContextType,
-  RJSFSchema,
-  StrictRJSFSchema,
-} from "@rjsf/utils";
 import {
   ariaDescribedByIds,
   descriptionId,
@@ -26,10 +28,9 @@ import {
   getTemplate,
 } from "@rjsf/utils";
 import { useCallback } from "react";
-import type { ChangeEvent, FocusEvent } from "react";
 
-import { FieldTypeTag } from "./FieldTypeTag";
 import { isSchemaTypeString } from "../utils";
+import { FieldTypeTag } from "./FieldTypeTag";
 
 // const PLACEHOLDERS = {
 //   addr: "cosmos1...",
@@ -99,28 +100,28 @@ export default function BaseInputTemplate<
   F extends FormContextType = any,
 >(props: BaseInputTemplateProps<T, S, F>) {
   const {
-    id,
-    name, // remove this from ...rest
-    value,
-    label,
-    readonly,
-    disabled,
     autofocus,
+    disabled,
+    formContext,
+    hideError, // remove this from ...rest
+    hideLabel, // remove this from ...rest
+    id,
+    label,
+    name, // remove this from ...rest
     onBlur,
-    onFocus,
     onChange,
     onChangeOverride,
+    onFocus,
     options,
+    placeholder,
+    rawErrors,
+    readonly,
+    registry,
     required = false,
     schema,
-    uiSchema,
-    formContext,
-    registry,
-    rawErrors,
     type,
-    hideLabel, // remove this from ...rest
-    hideError, // remove this from ...rest
-    placeholder,
+    uiSchema,
+    value,
     ...rest
   } = props;
   const DescriptionFieldTemplate = getTemplate<
@@ -179,34 +180,33 @@ export default function BaseInputTemplate<
     <FormControl
       className="form-control"
       isDisabled={disabled || readonly}
-      isRequired={required && !readonly}
-      isReadOnly={readonly}
       isInvalid={rawErrors && rawErrors.length > 0}
+      isReadOnly={readonly}
+      isRequired={required && !readonly}
     >
       {displayLabel && (
         <Flex gap={2}>
           <FormLabel
-            htmlFor={id}
             id={`${id}-label`}
-            fontSize="12px"
-            fontWeight={700}
-            marginInlineEnd={1}
             _disabled={{
               color: "text.main",
             }}
+            fontSize="12px"
+            fontWeight={700}
+            htmlFor={id}
+            marginInlineEnd={1}
           >
             {label}
           </FormLabel>
-          <FieldTypeTag type={schema.type} format={schema.format} />
+          <FieldTypeTag format={schema.format} type={schema.type} />
         </Flex>
       )}
       <Flex direction="column" gap={2} mb={4}>
         <InputGroup>
           <Input
             id={id}
-            name={id}
-            value={inputValue}
             autoFocus={autofocus}
+            name={id}
             placeholder={
               placeholder ||
               getBaseInputPlaceholder(
@@ -219,29 +219,30 @@ export default function BaseInputTemplate<
               //   label.includes(key)
               // )?.[1]
             }
+            value={inputValue}
             {...inputProps}
-            list={schema.examples ? examplesId<T>(id) : undefined}
-            onChange={handleOnChange}
-            onBlur={handleOnBlur}
-            onFocus={handleOnFocus}
-            aria-describedby={ariaDescribedByIds<T>(id, !!schema.examples)}
             _disabled={{
-              color: "text.main",
-              cursor: "not-allowed",
-              _hover: {
-                borderColor: "gray.700",
-              },
               _active: {
                 border: "1px solid var(--chakra-colors-gray-700)",
               },
+              _hover: {
+                borderColor: "gray.700",
+              },
+              color: "text.main",
+              cursor: "not-allowed",
             }}
+            aria-describedby={ariaDescribedByIds<T>(id, !!schema.examples)}
+            list={schema.examples ? examplesId<T>(id) : undefined}
+            onBlur={handleOnBlur}
+            onChange={handleOnChange}
+            onFocus={handleOnFocus}
           />
           {/* {rightAddon && <InputRightAddon>{rightAddon}</InputRightAddon>} */}
         </InputGroup>
         {!readonly && isStringType && (
           <Checkbox
-            pl={2}
             isChecked={value === ""}
+            pl={2}
             onChange={(e) => {
               if (e.target.checked) onChange("" as T);
               else onChange(undefined as T);
@@ -261,7 +262,7 @@ export default function BaseInputTemplate<
             )
             .map((example: any) => {
               return (
-                <option key={example} value={example} aria-label={example} />
+                <option key={example} aria-label={example} value={example} />
               );
             })}
         </datalist>
@@ -271,8 +272,8 @@ export default function BaseInputTemplate<
           <DescriptionFieldTemplate
             id={descriptionId<T>(id)}
             description={schema.description}
-            schema={schema}
             registry={registry}
+            schema={schema}
           />
         </Box>
       )}

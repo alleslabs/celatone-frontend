@@ -1,11 +1,11 @@
+import type { ReactNode } from "react";
+
 import { Spinner } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { getCurrentDate } from "lib/utils";
 import { useRouter } from "next/router";
 import plur from "plur";
-import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
-
-import { getCurrentDate } from "lib/utils";
 
 const formatNumber = (num: number) =>
   num.toLocaleString("en-US", {

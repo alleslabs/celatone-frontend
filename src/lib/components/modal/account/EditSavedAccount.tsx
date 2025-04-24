@@ -1,16 +1,17 @@
-import { Flex } from "@chakra-ui/react";
-import { useCallback, useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import type { AccountLocalInfo } from "lib/stores/account";
 
+import { Flex } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
-import type { AccountLocalInfo } from "lib/stores/account";
+import { useCallback, useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
 
-import { SavedAccountModalHeader } from "./SavedAccountModalHeader";
 import type { SaveAccountDetail } from "./SaveNewAccount";
+
 import { ActionModal } from "../ActionModal";
+import { SavedAccountModalHeader } from "./SavedAccountModalHeader";
 
 interface EditSavedAccountModalProps {
   accountLocalInfo: AccountLocalInfo;
@@ -26,8 +27,8 @@ export const EditSavedAccountModal = ({
   const defaultValues = useMemo(() => {
     return {
       address: accountLocalInfo.address,
-      name: accountLocalInfo.name ?? "",
       description: accountLocalInfo.description ?? "",
+      name: accountLocalInfo.name ?? "",
     };
   }, [
     accountLocalInfo.address,
@@ -37,9 +38,9 @@ export const EditSavedAccountModal = ({
 
   const {
     control,
-    watch,
-    reset,
     formState: { errors },
+    reset,
+    watch,
   } = useForm<SaveAccountDetail>({
     defaultValues,
     mode: "all",
@@ -59,61 +60,61 @@ export const EditSavedAccountModal = ({
   }, [resetForm]);
 
   const handleSave = useHandleAccountSave({
-    title: `Updated saved account!`,
-    address: addressState,
-    name: nameState,
-    description: descriptionState,
     actions: () => {},
+    address: addressState,
+    description: descriptionState,
+    name: nameState,
+    title: `Updated saved account!`,
   });
 
   return (
     <ActionModal
-      title="Edit account"
-      icon="edit"
+      closeOnOverlayClick={false}
+      disabledMain={!!errors.name || !!errors.description}
       headerContent={
         <SavedAccountModalHeader address={accountLocalInfo.address} />
       }
-      trigger={triggerElement}
-      mainBtnTitle="Save"
+      icon="edit"
       mainAction={() => {
         track(AmpEvent.ACCOUNT_EDIT);
         handleSave();
       }}
-      disabledMain={!!errors.name || !!errors.description}
-      otherBtnTitle="Cancel"
+      mainBtnTitle="Save"
       otherAction={resetForm}
-      closeOnOverlayClick={false}
+      otherBtnTitle="Cancel"
+      title="Edit account"
+      trigger={triggerElement}
     >
       <Flex direction="column" gap={6}>
         <ControllerInput
-          name="name"
+          autoFocus
           control={control}
-          label="Account name"
-          variant="fixed-floating"
-          placeholder="ex. Scan Account 1"
-          labelBgColor="gray.900"
-          rules={{
-            maxLength: constants.maxAccountNameLength,
-          }}
           error={
             errors.name && getMaxLengthError(nameState.length, "account_name")
           }
-          autoFocus
+          label="Account name"
+          labelBgColor="gray.900"
+          name="name"
+          placeholder="ex. Scan Account 1"
+          rules={{
+            maxLength: constants.maxAccountNameLength,
+          }}
+          variant="fixed-floating"
         />
         <ControllerTextarea
-          name="description"
           control={control}
-          label="Account description"
-          placeholder="Help understanding what this account does ..."
-          variant="fixed-floating"
-          labelBgColor="gray.900"
-          rules={{
-            maxLength: constants.maxAccountDescriptionLength,
-          }}
           error={
             errors.description &&
             getMaxLengthError(descriptionState.length, "account_desc")
           }
+          label="Account description"
+          labelBgColor="gray.900"
+          name="description"
+          placeholder="Help understanding what this account does ..."
+          rules={{
+            maxLength: constants.maxAccountDescriptionLength,
+          }}
+          variant="fixed-floating"
         />
       </Flex>
     </ActionModal>

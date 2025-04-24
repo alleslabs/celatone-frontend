@@ -1,58 +1,56 @@
-import { Button } from "@chakra-ui/react";
 import type { BoxProps, ButtonProps } from "@chakra-ui/react";
 
+import { Button } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 
-import { CopyTemplate } from "./CopyTemplate";
 import { CustomIcon } from "../icon";
+import { CopyTemplate } from "./CopyTemplate";
 
 interface CopyButtonProps extends ButtonProps {
-  isDisable?: boolean;
-  value: string;
-  copyLabel?: string;
-  hasIcon?: boolean;
-  buttonText?: string;
+  amptrackInfo?: string;
   amptrackSection?: string;
   amptrackSubSection?: string;
-  amptrackInfo?: string;
+  buttonText?: string;
+  copyLabel?: string;
+  hasIcon?: boolean;
   iconGap?: number;
+  isDisable?: boolean;
+  value: string;
   w?: BoxProps["width"];
 }
 
 export const CopyButton = ({
-  isDisable,
-  value,
-  size = "sm",
-  copyLabel,
-  hasIcon = true,
-  variant = "outline-white",
-  buttonText = "Copy",
+  amptrackInfo,
   amptrackSection,
   amptrackSubSection,
-  amptrackInfo,
-  ml,
-  w,
+  buttonText = "Copy",
+  copyLabel,
+  hasIcon = true,
   iconGap,
+  isDisable,
+  ml,
+  size = "sm",
+  value,
+  variant = "outline-white",
+  w,
   ...buttonProps
 }: CopyButtonProps) => (
   <CopyTemplate
-    value={value}
     copyLabel={copyLabel}
     isDisabled={isDisable}
     ml={ml}
-    w={w}
     triggerElement={
       <Button
-        w={w}
-        isDisabled={isDisable}
-        variant={variant}
-        size={size}
         float="right"
+        isDisabled={isDisable}
+        size={size}
+        variant={variant}
+        w={w}
         onClick={() =>
           track(AmpEvent.USE_COPY_BUTTON, {
+            info: amptrackInfo,
             section: amptrackSection,
             subSection: amptrackSubSection,
-            info: amptrackInfo,
           })
         }
         {...buttonProps}
@@ -60,13 +58,15 @@ export const CopyButton = ({
       >
         {hasIcon && (
           <CustomIcon
-            name="copy"
             boxSize={size === "xs" ? 3 : 4}
             mr={iconGap}
+            name="copy"
           />
         )}
         {buttonText}
       </Button>
     }
+    value={value}
+    w={w}
   />
 );
