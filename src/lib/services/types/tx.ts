@@ -223,6 +223,15 @@ export type TxsByAddressResponseRest = z.infer<
   typeof zTxsByAddressResponseRest
 >;
 
+export const zTxsCountResponseSequencer = z
+  .object({
+    count: z.coerce.number(),
+  })
+  .transform((val) => val.count);
+export type TxsCountResponseSequencer = z.infer<
+  typeof zTxsCountResponseSequencer
+>;
+
 export const zTxsResponseSequencer = z
   .object({
     pagination: zPagination,
