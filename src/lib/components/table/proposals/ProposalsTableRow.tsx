@@ -70,6 +70,7 @@ export const ProposalsTableRow = ({
       >
         <ProposalTextCell
           isDepositOrVoting={isDepositOrVoting}
+          isEmergency={proposal.isEmergency}
           isExpedited={proposal.isExpedited}
           title={proposal.title}
           types={proposal.types}

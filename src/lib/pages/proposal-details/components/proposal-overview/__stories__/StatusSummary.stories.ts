@@ -38,6 +38,7 @@ const data: Omit<
     yes: Big(0),
   },
   id: 999,
+  isEmergency: false,
   isExpedited: false,
   messages: null,
   metadata: "metadata",

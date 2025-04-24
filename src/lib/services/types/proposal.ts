@@ -53,6 +53,7 @@ export const zProposalParamsResponseRest = z.object({
 export const zProposal = z.object({
   deposit_end_time: zUtcDate,
   id: z.number().nonnegative(),
+  is_emergency: z.boolean().optional().default(false),
   is_expedited: z.boolean(),
   proposer: zBechAddr,
   resolved_height: z.number().nullable(),
@@ -256,6 +257,7 @@ export const zProposalDataResponseRest = z
       totalVotingPower: null,
       yes: val.final_tally_result.yes_count,
     },
+    isEmergency: false,
     isExpedited: val.expedited,
     proposalDeposits: [],
     resolvedHeight: null,

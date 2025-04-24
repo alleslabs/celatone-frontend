@@ -18,7 +18,7 @@ const EvmContractVerifyOptionsVyper = () => (
       w="full"
       width="fit-content"
     >
-      Upload File
+      Upload file
     </Radio>
     <Radio
       overflow="hidden"
@@ -27,7 +27,7 @@ const EvmContractVerifyOptionsVyper = () => (
       w="full"
       width="fit-content"
     >
-      Contract Code
+      Contract code
     </Radio>
     <Radio
       overflow="hidden"
@@ -36,7 +36,7 @@ const EvmContractVerifyOptionsVyper = () => (
       w="full"
       width="fit-content"
     >
-      JSON Input
+      JSON input
     </Radio>
   </>
 );
@@ -50,7 +50,7 @@ const EvmContractVerifyOptionsSolidity = () => (
       w="full"
       width="fit-content"
     >
-      Upload File(s)
+      Upload file(s)
     </Radio>
     <Radio
       overflow="hidden"
@@ -59,7 +59,7 @@ const EvmContractVerifyOptionsSolidity = () => (
       w="full"
       width="fit-content"
     >
-      Contract Code
+      Contract code
     </Radio>
     <Radio
       overflow="hidden"
@@ -68,7 +68,7 @@ const EvmContractVerifyOptionsSolidity = () => (
       w="full"
       width="fit-content"
     >
-      JSON Input
+      JSON input
     </Radio>
     <Radio
       overflow="hidden"
@@ -107,7 +107,7 @@ export const EvmContractVerifyOptions = ({
   return (
     <Stack spacing={6}>
       <Heading as="h6" variant="h6">
-        Select Verification Option
+        Select verification option
       </Heading>
       <RadioGroup value={field.value} onChange={(val) => field.onChange(val)}>
         <Grid gap={4} gridTemplateColumns="repeat(3, 1fr)">

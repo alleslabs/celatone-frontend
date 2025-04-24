@@ -48,7 +48,7 @@ export const ModuleVerifySuccessModal = ({
             color="success.main"
             name="check-circle-solid"
           />
-          <Heading variant="h5">Submitted Verification!</Heading>
+          <Heading variant="h5">Submitted verification!</Heading>
         </Stack>
       </ModalHeader>
       <ModalBody overflow="overlay">
@@ -69,7 +69,7 @@ export const ModuleVerifySuccessModal = ({
                 {taskId}
               </AppLink>
               <Text color="text.dark" fontWeight={500} variant="body2">
-                Request Note
+                Request note
               </Text>
               <Text variant="body2">{requestNote ?? "-"}</Text>
             </Grid>
@@ -100,7 +100,7 @@ export const ModuleVerifySuccessModal = ({
           w="full"
           onClick={() => navigate({ pathname: "/my-module-verifications" })}
         >
-          See My Past Verifications
+          See my past verifications
         </Button>
       </ModalFooter>
     </>

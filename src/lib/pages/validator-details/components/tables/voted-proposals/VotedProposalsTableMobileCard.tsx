@@ -38,6 +38,7 @@ export const VotedProposalsTableMobileCard = ({
         <Flex direction="column" gap={3}>
           <ProposalTextCell
             isDepositOrVoting={isDepositOrVoting}
+            isEmergency={votedProposal.isEmergency}
             isExpedited={votedProposal.isExpedited}
             title={votedProposal.title}
             types={votedProposal.types}

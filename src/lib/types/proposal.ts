@@ -69,6 +69,7 @@ export type ProposalType = z.infer<typeof zProposalType>;
 export interface Proposal {
   depositEndTime: Date;
   id: number;
+  isEmergency: boolean;
   isExpedited: boolean;
   proposer: Option<BechAddr>;
   resolvedHeight: Nullable<number>;

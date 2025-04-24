@@ -4,6 +4,7 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { DotSeparator } from "lib/components/DotSeparator";
+import { Emergency } from "lib/components/Emergency";
 import { Expedited } from "lib/components/Expedited";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -54,7 +55,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                 #{proposalData.id}
               </span>{" "}
               - {proposalData.title ? proposalData.title : "No title"}
-              {proposalData.isExpedited && (
+              {(proposalData.isExpedited || proposalData.isEmergency) && (
                 <span
                   style={{
                     display: "inline-block",
@@ -62,7 +63,10 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                     verticalAlign: "middle",
                   }}
                 >
-                  <Expedited isActiveExpedited={isDepositOrVoting} />
+                  {proposalData.isExpedited && (
+                    <Expedited isActiveExpedited={isDepositOrVoting} />
+                  )}
+                  {proposalData.isEmergency && <Emergency />}
                 </span>
               )}
             </Heading>
