@@ -12,7 +12,7 @@ export const EvmContractVerifyLoadingModal = () => (
     <ModalHeader w="full">
       <Stack alignItems="center" gap={4} w="100%">
         <Spinner h={16} thickness="4px" w={16} />
-        <Heading variant="h5">Submitting Verification...</Heading>
+        <Heading variant="h5">Submitting verification...</Heading>
       </Stack>
     </ModalHeader>
     <ModalBody maxH="400px" overflow="overlay">

@@ -16,7 +16,6 @@ const EvmContractVerifyOptionsVyper = () => (
       value={EvmVerifyOptions.VyperUploadFile}
       variant="gray-card"
       w="full"
-      width="fit-content"
     >
       Upload file
     </Radio>
@@ -25,7 +24,6 @@ const EvmContractVerifyOptionsVyper = () => (
       value={EvmVerifyOptions.VyperContractCode}
       variant="gray-card"
       w="full"
-      width="fit-content"
     >
       Contract code
     </Radio>
@@ -34,7 +32,6 @@ const EvmContractVerifyOptionsVyper = () => (
       value={EvmVerifyOptions.VyperJsonInput}
       variant="gray-card"
       w="full"
-      width="fit-content"
     >
       JSON input
     </Radio>
@@ -48,7 +45,6 @@ const EvmContractVerifyOptionsSolidity = () => (
       value={EvmVerifyOptions.SolidityUploadFiles}
       variant="gray-card"
       w="full"
-      width="fit-content"
     >
       Upload file(s)
     </Radio>
@@ -57,7 +53,6 @@ const EvmContractVerifyOptionsSolidity = () => (
       value={EvmVerifyOptions.SolidityContractCode}
       variant="gray-card"
       w="full"
-      width="fit-content"
     >
       Contract code
     </Radio>
@@ -66,7 +61,6 @@ const EvmContractVerifyOptionsSolidity = () => (
       value={EvmVerifyOptions.SolidityJsonInput}
       variant="gray-card"
       w="full"
-      width="fit-content"
     >
       JSON input
     </Radio>
@@ -75,7 +69,6 @@ const EvmContractVerifyOptionsSolidity = () => (
       value={EvmVerifyOptions.SolidityHardhat}
       variant="gray-card"
       w="full"
-      width="fit-content"
     >
       Hardhat
     </Radio>
@@ -84,7 +77,6 @@ const EvmContractVerifyOptionsSolidity = () => (
       value={EvmVerifyOptions.SolidityFoundry}
       variant="gray-card"
       w="full"
-      width="fit-content"
     >
       Foundry
     </Radio>

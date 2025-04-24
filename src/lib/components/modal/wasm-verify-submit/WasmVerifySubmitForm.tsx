@@ -102,7 +102,7 @@ export const WasmVerifySubmitForm = ({
         <Flex alignItems="center" direction="row" gap={2} w="full">
           <CustomIcon boxSize={6} color="gray.600" name="verification-solid" />
           <Heading as="h5" variant="h5">
-            Verify & Publish source code
+            Verify & publish source code
           </Heading>
         </Flex>
       </ModalHeader>
@@ -177,7 +177,7 @@ export const WasmVerifySubmitForm = ({
               control={control}
               error={errors.gitUrl?.message}
               isRequired
-              label="GitHub Repository URL:"
+              label="GitHub repository URL:"
               labelBgColor="gray.800"
               name="gitUrl"
               placeholder="e.g. https://github.com/username/repository"
@@ -222,7 +222,7 @@ export const WasmVerifySubmitForm = ({
               });
             })}
           >
-            Verify & Publish
+            Verify & publish
           </Button>
           <Text color="text.dark" textAlign="center" variant="body2">
             The verification process could take several hours depending on code
