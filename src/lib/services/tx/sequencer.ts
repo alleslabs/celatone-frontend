@@ -11,22 +11,15 @@ import { parseWithError } from "lib/utils";
 import {
   zBlockTxsResponseSequencer,
   zTxsByHashResponseSequencer,
+  zTxsCountResponseSequencer,
   zTxsResponseSequencer,
 } from "../types";
 import { queryWithArchivalFallback } from "../utils";
 
-// NOTE: Replace with new txs count endpoint
 export const getTxsCountSequencer = (endpoint: string) =>
   axios
-    .get(`${endpoint}/indexer/tx/v1/txs`, {
-      params: {
-        "pagination.count_total": true,
-        "pagination.limit": 1,
-      },
-    })
-    .then(
-      ({ data }) => parseWithError(zTxsResponseSequencer, data).pagination.total
-    );
+    .get(`${endpoint}/indexer/tx/v1/txs/count`)
+    .then(({ data }) => parseWithError(zTxsCountResponseSequencer, data));
 
 export const getTxsSequencer = (
   endpoint: string,
