@@ -1,17 +1,18 @@
-import axios from "axios";
-
 import type {
   ValidatorDelegatorsResponse,
   ValidatorInfoRest,
 } from "lib/services/types";
+import type { Nullable, ValidatorAddr } from "lib/types";
+
+import axios from "axios";
 import {
   zValidatorDelegatorsResponse,
   zValidatorResponseRest,
   zValidatorsResponseRest,
 } from "lib/services/types";
 import { big } from "lib/types";
-import type { Nullable, ValidatorAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
+
 import {
   getAnnualProvisionsRest,
   getDistributionParamsRest,
@@ -103,8 +104,8 @@ export const getValidatorDelegatorsRest = async (
   return axios
     .get(`${endpoint}/${route}/${encodeURI(validatorAddress)}/delegations`, {
       params: {
-        "pagination.limit": "1",
         "pagination.count_total": "true",
+        "pagination.limit": "1",
       },
     })
     .then(({ data }) =>

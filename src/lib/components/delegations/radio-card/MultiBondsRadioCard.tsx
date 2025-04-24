@@ -1,44 +1,44 @@
-import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import type Big from "big.js";
-
-import { big } from "lib/types";
 import type { Option, TokenWithValue, USD } from "lib/types";
+
+import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
+import { big } from "lib/types";
 import { formatPrice, totalValueTokenWithValue } from "lib/utils";
 
 interface MultiBondsRadioCardProps {
-  value: string;
-  tokens: Option<Record<string, TokenWithValue>>;
   isLoading: boolean;
+  tokens: Option<Record<string, TokenWithValue>>;
+  value: string;
 }
 
 const MultiBondsRadioCardBody = ({
-  tokens,
   isLoading,
+  tokens,
 }: Omit<MultiBondsRadioCardProps, "value">) => {
-  if (isLoading) return <Spinner mt={2} alignSelf="center" size="xl" />;
+  if (isLoading) return <Spinner alignSelf="center" mt={2} size="xl" />;
   if (!tokens)
     return (
-      <Heading variant="h6" as="h6">
+      <Heading as="h6" variant="h6">
         N/A
       </Heading>
     );
 
   return (
-    <Heading variant="h6" as="h6">
+    <Heading as="h6" variant="h6">
       {formatPrice(totalValueTokenWithValue(tokens, big(0) as USD<Big>))}
     </Heading>
   );
 };
 
 export const MultiBondsRadioCard = ({
-  value,
-  tokens,
   isLoading,
+  tokens,
+  value,
 }: MultiBondsRadioCardProps) => (
-  <Flex direction="column" gap={1} w="full" alignItems="flex-start">
-    <Text variant="body2" textColor="gray.400" fontWeight={600}>
+  <Flex alignItems="flex-start" direction="column" gap={1} w="full">
+    <Text fontWeight={600} textColor="gray.400" variant="body2">
       {value}
     </Text>
-    <MultiBondsRadioCardBody tokens={tokens} isLoading={isLoading} />
+    <MultiBondsRadioCardBody isLoading={isLoading} tokens={tokens} />
   </Flex>
 );

@@ -1,25 +1,26 @@
+import type { Activity } from "lib/services/types";
+import type { HexAddr32, Option } from "lib/types";
+
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import type { Activity } from "lib/services/types";
-import type { HexAddr32, Option } from "lib/types";
 
 import { ActivitiesTableHeader } from "./ActivitiesTableHeader";
 import { ActivitiesTableMobileCard } from "./ActivitiesTableMobileCard";
 import { ActivitiesTableRow } from "./ActivitiesTableRow";
 
 interface ActivitiesTableProps {
-  collectionAddress: HexAddr32;
   activities: Option<Activity[]>;
-  isLoading: boolean;
+  collectionAddress: HexAddr32;
   emptyState: JSX.Element;
+  isLoading: boolean;
 }
 
 export const ActivitiesTable = ({
-  collectionAddress,
   activities,
-  isLoading,
+  collectionAddress,
   emptyState,
+  isLoading,
 }: ActivitiesTableProps) => {
   const isMobile = useMobile();
 
@@ -33,8 +34,8 @@ export const ActivitiesTable = ({
       {activities.map((activity, index) => (
         <ActivitiesTableMobileCard
           key={activity.txhash + index.toString()}
-          collectionAddress={collectionAddress}
           activity={activity}
+          collectionAddress={collectionAddress}
         />
       ))}
     </MobileTableContainer>
@@ -44,8 +45,8 @@ export const ActivitiesTable = ({
       {activities.map((activity, index) => (
         <ActivitiesTableRow
           key={activity.txhash + index.toString()}
-          collectionAddress={collectionAddress}
           activity={activity}
+          collectionAddress={collectionAddress}
           templateColumns={templateColumns}
         />
       ))}

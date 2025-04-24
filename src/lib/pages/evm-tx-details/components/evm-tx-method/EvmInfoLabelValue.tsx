@@ -1,5 +1,6 @@
-import { Flex, Text } from "@chakra-ui/react";
 import type { ReactNode } from "react";
+
+import { Flex, Text } from "@chakra-ui/react";
 
 interface EvmInfoLabelValueProps {
   label: string;
@@ -7,15 +8,15 @@ interface EvmInfoLabelValueProps {
 }
 
 export const EvmInfoLabelValue = ({ label, value }: EvmInfoLabelValueProps) => (
-  <Flex w="full" direction={{ base: "column", md: "row" }} gap={1}>
+  <Flex direction={{ base: "column", md: "row" }} gap={1} w="full">
     <Text
-      variant="body2"
-      mb={{ base: 1, md: 0 }}
-      whiteSpace="nowrap"
-      w="full"
-      fontWeight={500}
-      flex={1}
       color="text.dark"
+      flex={1}
+      fontWeight={500}
+      mb={{ base: 1, md: 0 }}
+      variant="body2"
+      w="full"
+      whiteSpace="nowrap"
     >
       {label}
     </Text>

@@ -1,39 +1,40 @@
-import { Flex, Text } from "@chakra-ui/react";
-
 import type { ProposalVotesInfo, Ratio } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
 import { formatPrettyPercent } from "lib/utils";
+
 import { normalizeVotesInfo } from "../utils";
 
 interface BarSectionProps {
-  percent: string;
   color: string;
-  option: string;
-  textColor: string;
   isCompact: boolean;
+  option: string;
+  percent: string;
+  textColor: string;
 }
 
 const BarSection = ({
-  percent,
   color,
-  option,
-  textColor,
   isCompact,
+  option,
+  percent,
+  textColor,
 }: BarSectionProps) => (
   <Flex
-    minW={percent}
-    maxW={percent}
+    alignItems="center"
     bgColor={color}
+    gap={2}
+    maxW={percent}
+    minW={percent}
     overflow="hidden"
     whiteSpace="nowrap"
-    alignItems="center"
-    gap={2}
   >
     {!isCompact && (
       <>
-        <Text variant="body2" fontWeight={700} color={textColor} ml={2}>
+        <Text color={textColor} fontWeight={700} ml={2} variant="body2">
           {percent}
         </Text>
-        <Text variant="body2" color={textColor}>
+        <Text color={textColor} variant="body2">
           {option}
         </Text>
       </>
@@ -42,34 +43,34 @@ const BarSection = ({
 );
 
 interface VoteThresholdBarProps {
+  isCompact: boolean;
   threshold: number;
   votesInfo: ProposalVotesInfo;
-  isCompact: boolean;
 }
 
 export const VoteThresholdBar = ({
+  isCompact,
   threshold,
   votesInfo,
-  isCompact,
 }: VoteThresholdBarProps) => {
-  const { yesNonRatio, noNonRatio, noWithVetoNonRatio } =
+  const { noNonRatio, noWithVetoNonRatio, yesNonRatio } =
     normalizeVotesInfo(votesInfo);
 
   const thresholdPercent = formatPrettyPercent(threshold as Ratio<number>);
   return (
     <Flex direction={isCompact ? "column-reverse" : "column"} w="full">
       <Flex
-        direction={isCompact ? "row" : "column"}
         alignItems="center"
+        direction={isCompact ? "row" : "column"}
         justifyContent="center"
-        w="fit-content"
         ml={thresholdPercent}
         transform="translate(-50%)"
+        w="fit-content"
       >
-        <Text variant="body3" color="text.main" whiteSpace="preserve">
+        <Text color="text.main" variant="body3" whiteSpace="preserve">
           Threshold{isCompact && ": "}
         </Text>
-        <Text variant="body3" color="text.main" fontWeight={700}>
+        <Text color="text.main" fontWeight={700} variant="body3">
           {thresholdPercent}
         </Text>
       </Flex>
@@ -79,40 +80,40 @@ export const VoteThresholdBar = ({
         position="relative"
       >
         <Flex
+          bgColor="gray.800"
+          borderRadius={100}
           h={isCompact ? 5 : 7}
           overflow="hidden"
-          borderRadius={100}
-          bgColor="gray.800"
         >
           <BarSection
-            percent={formatPrettyPercent(yesNonRatio)}
             color="success.main"
+            isCompact={isCompact}
             option="Yes"
+            percent={formatPrettyPercent(yesNonRatio)}
             textColor="background.main"
-            isCompact={isCompact}
           />
           <BarSection
-            percent={formatPrettyPercent(noNonRatio)}
             color="error.main"
-            option="No"
-            textColor="background.main"
             isCompact={isCompact}
+            option="No"
+            percent={formatPrettyPercent(noNonRatio)}
+            textColor="background.main"
           />
           <BarSection
-            percent={formatPrettyPercent(noWithVetoNonRatio)}
             color="error.dark"
-            option="No with veto"
-            textColor="text.main"
             isCompact={isCompact}
+            option="No with veto"
+            percent={formatPrettyPercent(noWithVetoNonRatio)}
+            textColor="text.main"
           />
         </Flex>
         <Flex
-          position="absolute"
-          w="4px"
-          ml={thresholdPercent}
-          transform="translate(-50%)"
           bgColor="text.main"
           h="full"
+          ml={thresholdPercent}
+          position="absolute"
+          transform="translate(-50%)"
+          w="4px"
         />
       </Flex>
     </Flex>

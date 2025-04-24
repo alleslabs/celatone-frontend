@@ -1,32 +1,33 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Box, Button, useToast } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import type { FormStatus } from "lib/components/forms";
 import type { ReactNode } from "react";
 
+import { Box, Button, useToast } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider";
-import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { shortenName } from "lib/utils";
+import { useCallback, useEffect, useState } from "react";
+
 import { ActionModal } from "../ActionModal";
 
 interface CreateNewListModalProps {
   buttonProps?: ButtonProps;
-  trigger?: ReactNode;
-  onCreate?: (listName: string) => void;
-  onClose?: () => void;
   inputValue?: string;
+  onClose?: () => void;
+  onCreate?: (listName: string) => void;
+  trigger?: ReactNode;
 }
 
 export function CreateNewListModal({
   buttonProps,
-  trigger,
   inputValue,
-  onCreate,
   onClose,
+  onCreate,
+  trigger,
 }: CreateNewListModalProps) {
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
@@ -48,11 +49,11 @@ export function CreateNewListModal({
       setStatus({ state: "init" });
     } else if (trimedListName.length > constants.maxListNameLength)
       setStatus({
-        state: "error",
         message: getMaxLengthError(trimedListName.length, "list_name"),
+        state: "error",
       });
     else if (isContractListExist(trimedListName))
-      setStatus({ state: "error", message: "Already existed" });
+      setStatus({ message: "Already existed", state: "error" });
     else setStatus({ state: "success" });
   }, [
     constants.maxListNameLength,
@@ -72,12 +73,12 @@ export function CreateNewListModal({
     track(AmpEvent.LIST_CREATE);
 
     toast({
-      title: `Create ${shortenName(listName)} successfully`,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      status: "success",
+      title: `Create ${shortenName(listName)} successfully`,
     });
   }, [createNewList, listName, resetListName, onCreate, onClose, toast]);
 
@@ -87,23 +88,23 @@ export function CreateNewListModal({
 
   return (
     <ActionModal
-      title="Create a new list"
-      icon="add-new"
-      trigger={trigger || <Button {...buttonProps} as="button" />}
-      mainBtnTitle="Create"
-      mainAction={handleCreate}
       disabledMain={status.state !== "success"}
-      otherBtnTitle="Cancel"
+      icon="add-new"
+      mainAction={handleCreate}
+      mainBtnTitle="Create"
       otherAction={resetListName}
+      otherBtnTitle="Cancel"
+      title="Create a new list"
+      trigger={trigger || <Button {...buttonProps} as="button" />}
     >
       <Box py={4}>
         <TextInput
-          variant="fixed-floating"
-          value={listName}
-          setInputState={setListName}
-          labelBgColor="gray.900"
-          status={status}
           label="List name"
+          labelBgColor="gray.900"
+          setInputState={setListName}
+          status={status}
+          value={listName}
+          variant="fixed-floating"
         />
       </Box>
     </ActionModal>

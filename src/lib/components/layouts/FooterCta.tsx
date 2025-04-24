@@ -1,49 +1,50 @@
 import type { ButtonProps, SystemStyleObject } from "@chakra-ui/react";
+
 import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
 
 interface FooterCtaProps {
-  loading?: boolean;
-  cancelButton: ButtonProps;
-  cancelLabel?: string;
   actionButton: ButtonProps;
   actionLabel?: string;
+  cancelButton: ButtonProps;
+  cancelLabel?: string;
   helperText?: string;
+  loading?: boolean;
   sx?: SystemStyleObject;
 }
 
 export const FooterCta = ({
-  loading = false,
-  cancelButton,
-  cancelLabel = "Previous",
   actionButton,
   actionLabel = "Submit",
+  cancelButton,
+  cancelLabel = "Previous",
   helperText,
+  loading = false,
   sx,
 }: FooterCtaProps) => (
   <Flex
+    id="footer-cta"
+    bg="gray.900"
+    borderColor="gray.900"
+    borderTopWidth="1px"
+    bottom="0"
     direction="column"
     gap={2}
-    w="full"
-    bg="gray.900"
-    borderTop="1px solid"
-    borderColor="gray.900"
-    py={4}
-    bottom="0"
     position="sticky"
-    zIndex={2}
-    id="footer-cta"
+    py={4}
     sx={sx}
+    w="full"
+    zIndex={2}
   >
-    <Flex align="center" justify="space-between" w="540px" h="full" mx="auto">
+    <Flex align="center" h="full" justify="space-between" mx="auto" w="540px">
       <Button variant="outline-gray" w="128px" {...cancelButton}>
         {cancelLabel}
       </Button>
-      <Button variant="primary" minW="128px" {...actionButton}>
+      <Button minW="128px" variant="primary" {...actionButton}>
         {loading ? <Spinner size="md" variant="light" /> : actionLabel}
       </Button>
     </Flex>
     {helperText && (
-      <Text variant="body2" color="text.dark" textAlign="center">
+      <Text color="text.dark" textAlign="center" variant="body2">
         {helperText}
       </Text>
     )}

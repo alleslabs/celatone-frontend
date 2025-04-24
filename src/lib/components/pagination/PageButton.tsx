@@ -1,29 +1,29 @@
 import { Button } from "@chakra-ui/react";
 
 interface PageButtonProps {
-  pageNumber: number;
   currentPage: number;
   onPageChange: (pageNumber: number) => void;
+  pageNumber: number;
 }
 
 export const PageButton = ({
-  pageNumber,
   currentPage,
   onPageChange,
+  pageNumber,
 }: PageButtonProps) => {
   const isCurrentPage = pageNumber === currentPage;
   return (
     <Button
-      variant={isCurrentPage ? "primary" : "outline-gray"}
-      onClick={isCurrentPage ? undefined : () => onPageChange(pageNumber)}
+      _active={isCurrentPage ? {} : { background: "gray.600" }}
       _hover={
         isCurrentPage ? { cursor: "default" } : { background: "gray.700" }
       }
-      _active={isCurrentPage ? {} : { background: "gray.600" }}
       minH={10}
       minW={10}
-      w="fit-content"
       size="sm"
+      variant={isCurrentPage ? "primary" : "outline-gray"}
+      w="fit-content"
+      onClick={isCurrentPage ? undefined : () => onPageChange(pageNumber)}
     >
       {pageNumber}
     </Button>

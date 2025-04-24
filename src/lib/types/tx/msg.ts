@@ -4,70 +4,70 @@ import type { MsgSubmitProposal } from "cosmjs-types/cosmos/gov/v1beta1/tx";
 import type { BechAddr, BechAddr32 } from "../addrs";
 
 export enum MsgType {
-  STORE_CODE = "STORE_CODE",
-  INSTANTIATE = "INSTANTIATE",
   EXECUTE = "EXECUTE",
+  INSTANTIATE = "INSTANTIATE",
   MIGRATE = "MIGRATE",
-  UPDATE_ADMIN = "UPDATE_ADMIN",
+  STORE_CODE = "STORE_CODE",
   SUBMIT_PROPOSAL = "SUBMIT_PROPOSAL",
+  UPDATE_ADMIN = "UPDATE_ADMIN",
 }
 
 export enum AccessType {
-  ACCESS_TYPE_UNSPECIFIED = 0,
+  ACCESS_TYPE_ANY_OF_ADDRESSES = 4,
+  ACCESS_TYPE_EVERYBODY = 3,
   ACCESS_TYPE_NOBODY = 1,
   ACCESS_TYPE_ONLY_ADDRESS = 2,
-  ACCESS_TYPE_EVERYBODY = 3,
-  ACCESS_TYPE_ANY_OF_ADDRESSES = 4,
+  ACCESS_TYPE_UNSPECIFIED = 0,
   UNRECOGNIZED = -1,
 }
 
 export interface AccessConfig {
-  permission: AccessType;
   address: BechAddr;
   addresses?: BechAddr[];
+  permission: AccessType;
 }
 
 export interface MsgStoreCode {
+  instantiatePermission?: AccessConfig;
   sender: BechAddr;
   wasmByteCode: Uint8Array;
-  instantiatePermission?: AccessConfig;
 }
 
 export interface MsgInstantiateContract {
-  sender: BechAddr;
   admin: BechAddr;
   codeId: Long;
+  funds: Coin[];
   label: string;
   msg: Uint8Array;
-  funds: Coin[];
+  sender: BechAddr;
 }
 
 export interface MsgExecuteContract {
-  sender: BechAddr;
   contract: BechAddr32;
-  msg: Uint8Array;
   funds: Coin[];
+  msg: Uint8Array;
+  sender: BechAddr;
 }
 
 export interface MsgMigrateContract {
-  sender: BechAddr;
-  contract: BechAddr32;
   codeId: Long;
+  contract: BechAddr32;
   msg: Uint8Array;
+  sender: BechAddr;
 }
 export interface MsgUpdateAdmin {
-  sender: BechAddr;
-  newAdmin: BechAddr;
   contract: BechAddr32;
+  newAdmin: BechAddr;
+  sender: BechAddr;
 }
 
 export type TxMessage =
-  | MsgStoreCode
-  | MsgInstantiateContract
   | MsgExecuteContract
+  | MsgInstantiateContract
   | MsgMigrateContract
-  | MsgUpdateAdmin
-  | MsgSubmitProposal;
+  | MsgStoreCode
+  | MsgSubmitProposal
+  | MsgUpdateAdmin;
 
 export interface ComposedMsg {
   typeUrl: string;

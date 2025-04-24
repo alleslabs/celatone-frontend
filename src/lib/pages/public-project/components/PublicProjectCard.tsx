@@ -1,10 +1,10 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useClampText } from "use-clamp-text";
+import type { PublicProjectInfo } from "lib/types";
 
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { UNDEFINED_ICON_LIST } from "lib/data";
-import type { PublicProjectInfo } from "lib/types";
+import { observer } from "mobx-react-lite";
+import { useClampText } from "use-clamp-text";
 
 import { BookmarkButton } from "./BookmarkButton";
 import { SocialMedia } from "./SocialMedia";
@@ -22,65 +22,65 @@ export const PublicProjectCard = observer(
     };
 
     const [ref, { clampedText }] = useClampText({
-      text: item?.description || "",
       ellipsis: "...",
       lines: 3,
+      text: item?.description || "",
     });
 
     return (
       <Flex
-        px={4}
-        pt={4}
-        pb={2}
+        _hover={{ bg: "gray.700" }}
         alignItems="center"
         bg="gray.800"
-        _hover={{ bg: "gray.700" }}
-        transition="all 0.25s ease-in-out"
         borderRadius="8px"
-        gap={4}
-        minH={48}
-        height="full"
-        onClick={handleOnClick}
         cursor="pointer"
+        gap={4}
+        height="full"
+        minH={48}
+        pb={2}
+        pt={4}
+        px={4}
+        transition="all 0.25s ease-in-out"
+        onClick={handleOnClick}
       >
         <Flex
           flexDirection="column"
           gap={3}
-          w="full"
           height="full"
           justifyContent="space-between"
+          w="full"
         >
           <Box>
             <Flex
+              alignItems="flex-start"
               justifyContent="space-between"
               w="full"
-              alignItems="flex-start"
             >
               <Flex gap={2} pr={1}>
                 <Image
-                  src={item.logo ?? UNDEFINED_ICON_LIST[0]}
-                  borderRadius="full"
                   alt="Scan"
-                  width={7}
+                  borderRadius="full"
                   height={7}
+                  src={item.logo ?? UNDEFINED_ICON_LIST[0]}
+                  width={7}
                 />
                 <Text
-                  variant="body1"
                   fontWeight={700}
-                  textOverflow="ellipsis"
-                  overflow="hidden"
                   mt={1}
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                  variant="body1"
                 >
                   {item.name}
                 </Text>
               </Flex>
-              <BookmarkButton hasText={false} details={item} slug={slug} />
+              <BookmarkButton details={item} hasText={false} slug={slug} />
             </Flex>
             <Text
-              ref={ref as React.MutableRefObject<HTMLParagraphElement>}
-              variant="body2"
               color="text.dark"
               pt={3}
+              variant="body2"
+              ref={ref as React.MutableRefObject<HTMLParagraphElement>}
             >
               {clampedText}
             </Text>

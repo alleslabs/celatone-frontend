@@ -1,12 +1,6 @@
-import router from "next/router";
-
 import type { GetAddressTypeByLengthFn } from "lib/app-provider";
-import { useGetAddressTypeByLength, useTierConfig } from "lib/app-provider";
 import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
-import { useContractStore } from "lib/providers/store";
-import { useAssetInfos } from "lib/services/assetService";
-import { useMovePoolInfos } from "lib/services/move/poolService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   AssetInfos,
@@ -22,11 +16,17 @@ import type {
   MovePoolInfos,
   Option,
 } from "lib/types";
+
+import { useGetAddressTypeByLength, useTierConfig } from "lib/app-provider";
+import { useContractStore } from "lib/providers/store";
+import { useAssetInfos } from "lib/services/assetService";
+import { useMovePoolInfos } from "lib/services/move/poolService";
 import {
   coinToTokenWithValue,
   getExecuteMsgTags,
   getFirstQueryParam,
 } from "lib/utils";
+import router from "next/router";
 
 /**
  * Returns messages variations for MsgInstantiateContract and MsgInstantiateContract2.
@@ -68,40 +68,40 @@ const instantiateSingleMsgProps = (
   if (messages.length > 1) {
     return isSuccess
       ? {
-          type,
           length: messages.length,
           text2: "contracts",
+          type,
         }
       : {
-          type: "Failed",
-          text1: `to ${type}`,
           length: messages.length,
+          text1: `to ${type}`,
           text2: "contracts",
+          type: "Failed",
         };
   }
 
   return isSuccess
     ? {
-        type,
-        text1: "contract",
         link1: {
+          copyValue: contractAddress,
           type: getAddressTypeByLength(contractAddress),
           value: contractLocalInfo?.name || contractAddress,
-          copyValue: contractAddress,
         },
-        text3: "from Code ID",
         link2: {
           type: "code_id" as LinkType,
           value: detail.codeId.toString(),
         },
+        text1: "contract",
+        text3: "from Code ID",
+        type,
       }
     : {
-        type: "Failed",
-        text1: `to ${type} contract from Code ID`,
         link1: {
           type: "code_id" as LinkType,
           value: detail.codeId.toString(),
         },
+        text1: `to ${type} contract from Code ID`,
+        type: "Failed",
       };
 };
 
@@ -148,61 +148,61 @@ const executeSingleMsgProps = (
     ) {
       return isSuccess
         ? {
-            type: "Execute",
             length: messages.length,
             text2: "messages",
+            type: "Execute",
           }
         : {
-            type: "Failed",
-            // eslint-disable-next-line sonarjs/no-duplicate-string
-            text1: "to execute",
             length: messages.length,
+
+            text1: "to execute",
             text2: "messages",
+            type: "Failed",
           };
     }
     return isSuccess
       ? {
-          type: "Execute",
           length: messages.length,
-          text2: "messages on",
           link2: {
+            copyValue: detail.contract,
             type: getAddressTypeByLength(detail.contract),
             value: contractLocalInfo?.name || detail.contract,
-            copyValue: detail.contract,
           },
+          text2: "messages on",
+          type: "Execute",
         }
       : {
-          type: "Failed",
-          text1: "to execute",
           length: messages.length,
-          text2: "messages on",
           link2: {
+            copyValue: detail.contract,
             type: getAddressTypeByLength(detail.contract),
             value: contractLocalInfo?.name || detail.contract,
-            copyValue: detail.contract,
           },
+          text1: "to execute",
+          text2: "messages on",
+          type: "Failed",
         };
   }
 
   return isSuccess
     ? {
-        type: "Execute",
+        link2: {
+          copyValue: detail.contract,
+          type: getAddressTypeByLength(detail.contract),
+          value: contractLocalInfo?.name || detail.contract,
+        },
         tags: getExecuteMsgTags(messages, singleMsg ? 1 : 2),
         text2: "on",
-        link2: {
-          type: getAddressTypeByLength(detail.contract),
-          value: contractLocalInfo?.name || detail.contract,
-          copyValue: detail.contract,
-        },
+        type: "Execute",
       }
     : {
-        type: "Failed",
-        text1: "to execute message from",
         link1: {
+          copyValue: detail.contract,
           type: getAddressTypeByLength(detail.contract),
           value: contractLocalInfo?.name || detail.contract,
-          copyValue: detail.contract,
         },
+        text1: "to execute message from",
+        type: "Failed",
       };
 };
 
@@ -258,56 +258,56 @@ const sendSingleMsgProps = (
     if (uniqueAddressLength > 1) {
       return isSuccess
         ? {
-            type: "Send ",
-            text1: "assets to",
             length: uniqueAddressLength,
+            text1: "assets to",
             text2: "addresses",
+            type: "Send ",
           }
         : {
-            type: "Failed",
-            // eslint-disable-next-line sonarjs/no-duplicate-string
-            text1: "to send assets to",
             length: uniqueAddressLength,
+
+            text1: "to send assets to",
             text2: "addresses",
+            type: "Failed",
           };
     }
     return isSuccess
       ? {
-          type: "Send",
-          text1: "assets to",
           link2: {
+            copyValue: detail.toAddress,
             type: getAddressTypeByLength(detail.toAddress),
             value: contractLocalInfo?.name || detail.toAddress,
-            copyValue: detail.toAddress,
           },
+          text1: "assets to",
+          type: "Send",
         }
       : {
-          type: "Failed",
-          text1: "to send assets to",
           link2: {
+            copyValue: detail.toAddress,
             type: getAddressTypeByLength(detail.toAddress),
             value: contractLocalInfo?.name || detail.toAddress,
-            copyValue: detail.toAddress,
           },
+          text1: "to send assets to",
+          type: "Failed",
         };
   }
   return isSuccess
     ? {
-        type: "Send",
-        tokens,
-        text2: "to",
         link1: {
           type: getAddressTypeByLength(detail.toAddress),
           value: detail.toAddress,
         },
+        text2: "to",
+        tokens,
+        type: "Send",
       }
     : {
-        type: "Failed",
-        text1: "to send assets to",
         link1: {
           type: getAddressTypeByLength(detail.toAddress),
           value: detail.toAddress,
         },
+        text1: "to send assets to",
+        type: "Failed",
       };
 };
 
@@ -341,38 +341,38 @@ const migrateSingleMsgProps = (
   if (messages.length > 1) {
     return isSuccess
       ? {
-          type: "Migrate",
           length: messages.length,
           text2: "contracts",
+          type: "Migrate",
         }
       : {
-          type: "Failed",
-          text1: "to migrate",
           length: messages.length,
+          text1: "to migrate",
           text2: "contracts",
+          type: "Failed",
         };
   }
   return isSuccess
     ? {
-        type: "Migrate",
         link1: {
+          copyValue: detail.contract,
           type: getAddressTypeByLength(detail.contract),
           value: contractLocalInfo?.name || detail.contract,
-          copyValue: detail.contract,
         },
-        text3: "to Code ID",
         link2: {
           type: "code_id" as LinkType,
           value: detail.codeId.toString(),
         },
+        text3: "to Code ID",
+        type: "Migrate",
       }
     : {
-        type: "Failed",
-        text1: "to migrate from code ID",
         link1: {
           type: "code_id" as LinkType,
           value: detail.codeId.toString(),
         },
+        text1: "to migrate from code ID",
+        type: "Failed",
       };
 };
 
@@ -409,45 +409,45 @@ const updateAdminSingleMsgProps = (
   if (messages.length > 1) {
     return isSuccess
       ? {
-          type: "Update",
           length: messages.length,
           text2: "admins",
+          type: "Update",
         }
       : {
-          type: "Failed",
-          text1: "to update",
           length: messages.length,
+          text1: "to update",
           text2: "admins",
+          type: "Failed",
         };
   }
   return isSuccess
     ? {
-        type: "Update admin",
-        text1: "on",
         link1: {
+          copyValue: detail.contract,
           type: getAddressTypeByLength(detail.contract),
           value: contractLocalInfo?.name || detail.contract,
-          copyValue: detail.contract,
         },
-        text3: "to",
         link2: {
           type: getAddressTypeByLength(detail.newAdmin),
           value: adminLocalInfo?.name || detail.newAdmin,
         },
+        text1: "on",
+        text3: "to",
+        type: "Update admin",
       }
     : {
-        type: "Failed",
-        text1: "to update admin on",
         link1: {
+          copyValue: detail.contract,
           type: getAddressTypeByLength(detail.contract),
           value: contractLocalInfo?.name || detail.contract,
-          copyValue: detail.contract,
         },
-        text3: "to",
         link2: {
           type: getAddressTypeByLength(detail.newAdmin),
           value: adminLocalInfo?.name || detail.newAdmin,
         },
+        text1: "to update admin on",
+        text3: "to",
+        type: "Failed",
       };
 };
 
@@ -481,36 +481,36 @@ const clearAdminSingleMsgProps = (
   if (messages.length > 1) {
     return isSuccess
       ? {
-          type: "Clear admins",
-          text1: "on",
           length: messages.length,
+          text1: "on",
           text2: "contracts",
+          type: "Clear admins",
         }
       : {
-          type: "Failed",
-          text1: "to clear admin on",
           length: messages.length,
+          text1: "to clear admin on",
           text2: "contracts",
+          type: "Failed",
         };
   }
   return isSuccess
     ? {
-        type: "Clear admin",
-        text1: "on",
         link1: {
+          copyValue: detail.contract,
           type: getAddressTypeByLength(detail.contract),
           value: contractLocalInfo?.name || detail.contract,
-          copyValue: detail.contract,
         },
+        text1: "on",
+        type: "Clear admin",
       }
     : {
-        type: "Failed",
-        text1: "to clear admin on",
         link1: {
+          copyValue: detail.contract,
           type: getAddressTypeByLength(detail.contract),
           value: contractLocalInfo?.name || detail.contract,
-          copyValue: detail.contract,
         },
+        text1: "to clear admin on",
+        type: "Failed",
       };
 };
 
@@ -535,33 +535,33 @@ const storeCodeSingleMsgProps = (isSuccess: boolean, messages: Message[]) => {
   if (messages.length > 1) {
     return isSuccess
       ? {
-          type: "Upload",
           length: messages.length,
           text2: "Wasm files",
+          type: "Upload",
         }
       : {
-          type: "Failed",
-          text1: "to upload",
           length: messages.length,
+          text1: "to upload",
           text2: "Wasm files",
+          type: "Failed",
         };
   }
   return isSuccess
     ? {
-        type: "Upload",
-        text1: "Wasm to Code ID",
         link1: {
           type: "code_id" as LinkType,
           value: detail.id ? detail.id.toString() : "",
         },
+        text1: "Wasm to Code ID",
+        type: "Upload",
       }
     : {
-        type: "Failed",
-        text1: "to upload Wasm to Code ID",
         link1: {
           type: "code_id" as LinkType,
           value: detail.id ? detail.id.toString() : "",
         },
+        text1: "to upload Wasm to Code ID",
+        type: "Failed",
       };
 };
 
@@ -573,23 +573,23 @@ const otherMessageSingleMsgProps = (
   if (messages.length > 1) {
     return isSuccess
       ? {
-          type: "Messages",
           length: messages.length,
+          type: "Messages",
         }
       : {
-          type: "Failed",
-          text1: "messages",
           length: messages.length,
+          text1: "messages",
+          type: "Failed",
         };
   }
   return isSuccess
     ? {
-        type: "Message",
         tags: [type],
+        type: "Message",
       }
     : {
-        type: "Failed message",
         tags: [type],
+        type: "Failed message",
       };
 };
 
@@ -610,27 +610,18 @@ export const useSingleActionMsgProps = (
   if (!isFullTier) return otherMessageSingleMsgProps(isSuccess, messages, type);
 
   switch (type) {
+    case "MsgClearAdmin":
+      return clearAdminSingleMsgProps(
+        isSuccess,
+        messages,
+        getContractLocalInfo,
+        getAddressTypeByLength
+      );
     case "MsgExecuteContract":
       return executeSingleMsgProps(
         isSuccess,
         messages,
         singleMsg,
-        getContractLocalInfo,
-        getAddressTypeByLength
-      );
-    case "MsgSend":
-      return sendSingleMsgProps(
-        isSuccess,
-        messages,
-        assetInfos,
-        movePoolInfos,
-        getContractLocalInfo,
-        getAddressTypeByLength
-      );
-    case "MsgMigrateContract":
-      return migrateSingleMsgProps(
-        isSuccess,
-        messages,
         getContractLocalInfo,
         getAddressTypeByLength
       );
@@ -650,6 +641,24 @@ export const useSingleActionMsgProps = (
         true,
         getAddressTypeByLength
       );
+    case "MsgMigrateContract":
+      return migrateSingleMsgProps(
+        isSuccess,
+        messages,
+        getContractLocalInfo,
+        getAddressTypeByLength
+      );
+    case "MsgSend":
+      return sendSingleMsgProps(
+        isSuccess,
+        messages,
+        assetInfos,
+        movePoolInfos,
+        getContractLocalInfo,
+        getAddressTypeByLength
+      );
+    case "MsgStoreCode":
+      return storeCodeSingleMsgProps(isSuccess, messages);
     case "MsgUpdateAdmin":
       return updateAdminSingleMsgProps(
         isSuccess,
@@ -657,15 +666,6 @@ export const useSingleActionMsgProps = (
         getContractLocalInfo,
         getAddressTypeByLength
       );
-    case "MsgClearAdmin":
-      return clearAdminSingleMsgProps(
-        isSuccess,
-        messages,
-        getContractLocalInfo,
-        getAddressTypeByLength
-      );
-    case "MsgStoreCode":
-      return storeCodeSingleMsgProps(isSuccess, messages);
     default:
       return otherMessageSingleMsgProps(isSuccess, messages, type);
   }

@@ -1,19 +1,20 @@
 import type { TextProps } from "@chakra-ui/react";
-import { Button, Flex, Text } from "@chakra-ui/react";
-import { isNull } from "lodash";
-import Link from "next/link";
-
-import { Copier } from "lib/components/copy";
-import { WasmVerifyStatusModal } from "lib/components/modal";
-import { StatusMessageBox } from "lib/components/StatusMessageBox";
-import { WasmVerifyStatus } from "lib/types";
 import type {
   BechAddr32,
   JsonDataType,
   Nullish,
   WasmVerifyInfoBase,
 } from "lib/types";
+
+import { Button, Flex, Text } from "@chakra-ui/react";
+import { Copier } from "lib/components/copy";
+import { WasmVerifyStatusModal } from "lib/components/modal";
+import { StatusMessageBox } from "lib/components/StatusMessageBox";
+import { WasmVerifyStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
+import { isNull } from "lodash";
+import Link from "next/link";
+
 import { ExplorerLink } from "../ExplorerLink";
 import { WasmVerifyBadge } from "../WasmVerifyBadge";
 
@@ -24,43 +25,43 @@ const baseTextStyle: TextProps = {
 
 interface VerifyDetailsProps {
   codeHash: string;
-  verificationInfo: WasmVerifyInfoBase;
-  schema: Nullish<JsonDataType>;
-  relatedVerifiedCodes: number[];
   contractAddress?: BechAddr32;
+  relatedVerifiedCodes: number[];
+  schema: Nullish<JsonDataType>;
+  verificationInfo: WasmVerifyInfoBase;
 }
 
 export const VerifiedDetails = ({
   codeHash,
-  verificationInfo,
-  schema,
-  relatedVerifiedCodes,
   contractAddress,
+  relatedVerifiedCodes,
+  schema,
+  verificationInfo,
 }: VerifyDetailsProps) => {
   const gitUrlWithCommit = `${verificationInfo.gitUrl}/tree/${verificationInfo.commit}`;
   return contractAddress ? (
     <>
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         This contract is an instance of code ID{" "}
-        <Flex as="span" display="inline-flex" align="center">
+        <Flex align="center" as="span" display="inline-flex">
           <ExplorerLink
-            type="code_id"
-            value={verificationInfo.codeId.toString()}
             rightIcon={<WasmVerifyBadge status={WasmVerifyStatus.VERIFIED} />}
             showCopyOnHover
+            type="code_id"
+            value={verificationInfo.codeId.toString()}
           />
         </Flex>{" "}
         which has been verified.
       </Text>
       <WasmVerifyStatusModal
         codeHash={codeHash}
-        verificationInfo={verificationInfo}
         relatedVerifiedCodes={relatedVerifiedCodes}
         triggerElement={
-          <Button variant="ghost-primary" size="sm">
+          <Button size="sm" variant="ghost-primary">
             View details
           </Button>
         }
+        verificationInfo={verificationInfo}
       />
     </>
   ) : (
@@ -68,11 +69,10 @@ export const VerifiedDetails = ({
       <Flex direction="column" gap={1}>
         <Text {...baseTextStyle}>Source code:</Text>
         <Flex
-          overflow="hidden"
-          gap={1}
           alignItems="center"
+          gap={1}
+          overflow="hidden"
           sx={{
-            cursor: "pointer",
             "&:hover": {
               "> *": {
                 color: "primary.light",
@@ -82,13 +82,14 @@ export const VerifiedDetails = ({
                 transitionTimingFunction: "ease-in-out",
               },
             },
+            cursor: "pointer",
           }}
         >
-          <Text color="primary.main" variant="body2" className="ellipsis">
+          <Text className="ellipsis" color="primary.main" variant="body2">
             <Link
               href={gitUrlWithCommit}
-              target="_blank"
               rel="noopener noreferrer"
+              target="_blank"
             >
               {gitUrlWithCommit}
             </Link>
@@ -96,7 +97,7 @@ export const VerifiedDetails = ({
           <Copier ml={1} type="source_code" value={gitUrlWithCommit} />
         </Flex>
       </Flex>
-      <Flex gap={{ base: 6, md: 12 }} direction={{ base: "column", md: "row" }}>
+      <Flex direction={{ base: "column", md: "row" }} gap={{ base: 6, md: 12 }}>
         <Flex direction="column" gap={1}>
           <Text {...baseTextStyle}>Compiler version</Text>
           <Text color="text.main" variant="body2">
@@ -115,14 +116,12 @@ export const VerifiedDetails = ({
           <Text {...baseTextStyle}>Verification details</Text>
           <WasmVerifyStatusModal
             codeHash={codeHash}
-            verificationInfo={verificationInfo}
             relatedVerifiedCodes={relatedVerifiedCodes}
             triggerElement={
               <Flex
-                gap={1}
                 alignItems="center"
+                gap={1}
                 sx={{
-                  cursor: "pointer",
                   "&:hover": {
                     "> *": {
                       color: "primary.light",
@@ -132,13 +131,15 @@ export const VerifiedDetails = ({
                       transitionTimingFunction: "ease-in-out",
                     },
                   },
+                  cursor: "pointer",
                 }}
               >
-                <Text color="primary.main" variant="body2" fontWeight={600}>
+                <Text color="primary.main" fontWeight={600} variant="body2">
                   View details
                 </Text>
               </Flex>
             }
+            verificationInfo={verificationInfo}
           />
         </Flex>
       </Flex>

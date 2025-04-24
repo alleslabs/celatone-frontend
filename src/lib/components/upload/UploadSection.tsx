@@ -1,3 +1,12 @@
+import type { StdFee } from "@cosmjs/stargate";
+import type {
+  BechAddr,
+  Option,
+  SimulateStatus,
+  UploadSectionState,
+} from "lib/types";
+import type { UseFormReturn } from "react-hook-form";
+
 import {
   Alert,
   AlertDescription,
@@ -6,52 +15,43 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import type { StdFee } from "@cosmjs/stargate";
-import { useCallback, useEffect, useState } from "react";
-import type { UseFormReturn } from "react-hook-form";
-
 import { useCelatoneApp, useCurrentChain, useInitia } from "lib/app-provider";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useUploadAccessParamsRest } from "lib/services/wasm/code";
 import { AccessConfigPermission, WasmVerifyStatus } from "lib/types";
-import type {
-  BechAddr,
-  Option,
-  SimulateStatus,
-  UploadSectionState,
-} from "lib/types";
 import { getCodeHash, getWasmVerifyStatus } from "lib/utils";
+import { useCallback, useEffect, useState } from "react";
 
+import { DropZone } from "../dropzone";
+import { ControllerInput } from "../forms";
+import { CustomIcon } from "../icon";
+import { PermissionChip } from "../PermissionChip";
 import { CodeHashBox } from "./CodeHashBox";
 import { IndirectlyVerifiedAlert } from "./IndirectlyVerifiedAlert";
 import { InstantiatePermissionRadio } from "./InstantiatePermissionRadio";
 import { SimulateMessageRender } from "./SimulateMessageRender";
 import { UploadCard } from "./UploadCard";
-import { DropZone } from "../dropzone";
-import { ControllerInput } from "../forms";
-import { CustomIcon } from "../icon";
-import { PermissionChip } from "../PermissionChip";
 
 interface UploadSectionProps {
-  formData: UseFormReturn<UploadSectionState>;
   estimatedFee: Option<StdFee>;
-  setEstimatedFee: (fee: StdFee | undefined) => void;
+  formData: UseFormReturn<UploadSectionState>;
+  isSimulating: boolean;
   setDefaultBehavior: () => void;
+  setEstimatedFee: (fee: StdFee | undefined) => void;
   shouldNotSimulate: boolean;
   simulateStatus: SimulateStatus;
-  isSimulating: boolean;
 }
 
 export const UploadSection = ({
-  formData,
   estimatedFee,
-  setEstimatedFee,
+  formData,
+  isSimulating,
   setDefaultBehavior,
+  setEstimatedFee,
   shouldNotSimulate,
   simulateStatus,
-  isSimulating,
 }: UploadSectionProps) => {
   const isInitia = useInitia();
   const { data: uploadAccessParams } = useUploadAccessParamsRest();
@@ -66,12 +66,12 @@ export const UploadSection = ({
 
   const {
     control,
-    setValue,
-    watch,
     formState: { errors },
+    setValue,
     trigger,
+    watch,
   } = formData;
-  const { wasmFile, codeName, permission } = watch();
+  const { codeName, permission, wasmFile } = watch();
 
   // Generate hash value from wasm file
   const setHashValue = useCallback(async () => {
@@ -105,31 +105,31 @@ export const UploadSection = ({
     <Flex direction="column" gap={8} maxW="550px">
       {wasmFile ? (
         <UploadCard
-          file={wasmFile}
           deleteFile={() => {
             setValue("wasmFile", undefined);
             setEstimatedFee(undefined);
           }}
+          file={wasmFile}
         />
       ) : (
         <DropZone
-          setFiles={(files) => setValue("wasmFile", files[0])}
           fileType={["wasm"]}
+          setFiles={(files) => setValue("wasmFile", files[0])}
         />
       )}
       <CodeHashBox codeHash={codeHash} />
       <ControllerInput
-        name="codeName"
         control={control}
-        label="Code name (optional)"
-        placeholder="Untitled name"
-        helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
-        rules={{
-          maxLength: constants.maxCodeNameLength,
-        }}
         error={
           errors.codeName && getMaxLengthError(codeName.length, "code_name")
         }
+        helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
+        label="Code name (optional)"
+        name="codeName"
+        placeholder="Untitled name"
+        rules={{
+          maxLength: constants.maxCodeNameLength,
+        }}
         variant="fixed-floating"
       />
       {wasmVerifyStatus === WasmVerifyStatus.INDIRECTLY_VERIFIED && (
@@ -140,7 +140,7 @@ export const UploadSection = ({
       {isInitia ? (
         <Box>
           <Flex alignItems="center" gap={2}>
-            <Heading as="h6" variant="h6" fontWeight={600} my={2}>
+            <Heading as="h6" fontWeight={600} my={2} variant="h6">
               Instantiate permission:
             </Heading>
             <PermissionChip
@@ -151,8 +151,8 @@ export const UploadSection = ({
               permissionAddresses={[]}
             />
           </Flex>
-          <Alert variant="primary" mt={3} alignItems="center" gap={3}>
-            <CustomIcon name="info-circle" boxSize={4} color="primary.main" />
+          <Alert alignItems="center" gap={3} mt={3} variant="primary">
+            <CustomIcon boxSize={4} color="primary.main" name="info-circle" />
             <AlertDescription>
               The CosmWasm instantiate permission is set to the default when
               deploying through Initia Scan. To customize permissions, deploy
@@ -162,10 +162,10 @@ export const UploadSection = ({
         </Box>
       ) : (
         <Flex direction="column">
-          <Heading as="h6" variant="h6" fontWeight={600} my={2}>
+          <Heading as="h6" fontWeight={600} my={2} variant="h6">
             Instantiate permission
           </Heading>
-          <Text color="text.dark" variant="body2" mb={4}>
+          <Text color="text.dark" mb={4} variant="body2">
             Specify who has the authority to instantiate the contract using this
             code
           </Text>
@@ -179,22 +179,22 @@ export const UploadSection = ({
       <Box width="full">
         {(simulateStatus.status !== "default" || isSimulating) && (
           <SimulateMessageRender
+            isLoading={isSimulating}
+            isSuccess={simulateStatus.status === "succeeded"}
+            mb={2}
             value={
               isSimulating
                 ? "Checking Wasm and permission validity"
                 : simulateStatus.message
             }
-            isLoading={isSimulating}
-            mb={2}
-            isSuccess={simulateStatus.status === "succeeded"}
           />
         )}
         <Flex
-          fontSize="14px"
-          color="text.dark"
-          alignSelf="flex-start"
           alignItems="center"
+          alignSelf="flex-start"
+          color="text.dark"
           display="flex"
+          fontSize="14px"
           gap={1}
         >
           <p>Transaction fee:</p>

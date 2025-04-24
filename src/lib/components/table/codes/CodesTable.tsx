@@ -1,32 +1,33 @@
+import type { CodeInfo, Option } from "lib/types";
+
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useWasmVerifyInfos } from "lib/services/verification/wasm";
-import type { CodeInfo, Option } from "lib/types";
 
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { CodesTableHeader } from "./CodesTableHeader";
 import { CodesTableMobileCard } from "./CodesTableMobileCard";
 import { CodesTableRow } from "./CodesTableRow";
-import { MobileTableContainer, TableContainer } from "../tableComponents";
 
 interface CodesTableProps {
   codes: Option<CodeInfo[]>;
-  isLoading: boolean;
-  emptyState: JSX.Element;
-  onRowSelect: (codeId: number) => void;
-  isReadOnly?: boolean;
-  showCw2andContracts?: boolean;
   disablePermission?: boolean;
+  emptyState: JSX.Element;
+  isLoading: boolean;
+  isReadOnly?: boolean;
+  onRowSelect: (codeId: number) => void;
+  showCw2andContracts?: boolean;
 }
 
 export const CodesTable = ({
   codes,
-  isLoading,
-  emptyState,
-  onRowSelect,
-  isReadOnly = false,
-  showCw2andContracts = true,
   disablePermission = false,
+  emptyState,
+  isLoading,
+  isReadOnly = false,
+  onRowSelect,
+  showCw2andContracts = true,
 }: CodesTableProps) => {
   const isMobile = useMobile();
   const { data: wasmVerifyInfos, isLoading: isWasmVerifyInfosLoading } =
@@ -52,21 +53,21 @@ export const CodesTable = ({
   ) : (
     <TableContainer pb={6}>
       <CodesTableHeader
-        templateColumns={templateColumns}
+        disablePermission={disablePermission}
         isReadOnly={isReadOnly}
         showCw2andContracts={showCw2andContracts}
-        disablePermission={disablePermission}
+        templateColumns={templateColumns}
       />
       {codes.map((code) => (
         <CodesTableRow
           key={code.id + code.uploader + code.name}
           codeInfo={code}
-          templateColumns={templateColumns}
-          onRowSelect={onRowSelect}
+          disablePermission={disablePermission}
           isReadOnly={isReadOnly}
           showCw2andContracts={showCw2andContracts}
-          disablePermission={disablePermission}
+          templateColumns={templateColumns}
           wasmVerifyInfo={wasmVerifyInfos?.[code.id]}
+          onRowSelect={onRowSelect}
         />
       ))}
     </TableContainer>

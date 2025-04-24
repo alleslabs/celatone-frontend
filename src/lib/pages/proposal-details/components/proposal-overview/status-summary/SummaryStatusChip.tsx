@@ -1,36 +1,37 @@
 import { Skeleton, Text } from "@chakra-ui/react";
-import { isNull } from "lodash";
-
 import { StatusChip } from "lib/components/table";
 import {
   extractParams,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
+import { isNull } from "lodash";
+
 import type { ProposalOverviewProps } from "..";
 
 export const SummaryStatusChip = ({
-  proposalData,
-  params,
-  votesInfo,
   isLoading,
+  params,
+  proposalData,
+  votesInfo,
 }: ProposalOverviewProps) => {
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
-    return <StatusChip status={ProposalStatus.DEPOSIT_FAILED} isTransparent />;
+    return <StatusChip isTransparent status={ProposalStatus.DEPOSIT_FAILED} />;
 
   if (proposalData.status === ProposalStatus.VOTING_PERIOD) {
-    if (isLoading) return <Skeleton h={5} w={12} borderRadius={90} />;
+    if (isLoading) return <Skeleton borderRadius={90} h={5} w={12} />;
     if (params && votesInfo) {
       const { quorum, threshold, vetoThreshold } = extractParams(
         params,
         proposalData.isExpedited
       );
-      const { totalRatio, yesNonRatio, noWithVetoTotalRatio } =
+      const { noWithVetoTotalRatio, totalRatio, yesNonRatio } =
         normalizeVotesInfo(votesInfo);
 
       if (!isNull(totalRatio))
         return (
           <StatusChip
+            isTransparent
             status={
               totalRatio >= quorum &&
               noWithVetoTotalRatio < vetoThreshold &&
@@ -38,12 +39,11 @@ export const SummaryStatusChip = ({
                 ? ProposalStatus.PASSED
                 : ProposalStatus.REJECTED
             }
-            isTransparent
           />
         );
     }
     return (
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         N/A
       </Text>
     );

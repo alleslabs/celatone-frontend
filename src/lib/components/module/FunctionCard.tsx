@@ -1,20 +1,21 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Flex, Text } from "@chakra-ui/react";
+import type { ExposedFunction } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Tooltip } from "lib/components/Tooltip";
-import type { ExposedFunction } from "lib/types";
 import { checkAvailability, getVisibilityIcon } from "lib/utils";
+
 import { DotSeparator } from "../DotSeparator";
 import { CustomIcon } from "../icon";
 
-type CardVariant = "common" | "disabled" | "selected" | "readonly";
+type CardVariant = "common" | "disabled" | "readonly" | "selected";
 
 interface FunctionCardProps {
-  variant?: CardVariant;
-  isReadOnly?: boolean;
   exposedFn: ExposedFunction;
+  isReadOnly?: boolean;
   onFunctionSelect: (fn: ExposedFunction) => void;
+  variant?: CardVariant;
 }
 
 interface FunctionCardBodyProps extends FunctionCardProps {
@@ -23,63 +24,63 @@ interface FunctionCardBodyProps extends FunctionCardProps {
 
 const cardStyles: { [key in CardVariant]: FlexProps } = {
   common: {
-    bgColor: "gray.800",
     _hover: { bg: "gray.700" },
-    cursor: "pointer",
+    bgColor: "gray.800",
     borderColor: "transparent",
+    cursor: "pointer",
   },
   disabled: {
-    bgColor: "gray.900",
     _hover: { bg: "gray.900" },
-    cursor: "not-allowed",
+    bgColor: "gray.900",
     borderColor: "gray.700",
-  },
-  selected: {
-    bgColor: "gray.700",
-    _hover: { bg: "gray.700" },
-    cursor: "pointer",
-    borderColor: "gray.600",
+    cursor: "not-allowed",
   },
   readonly: {
     bgColor: "gray.800",
     borderColor: "transparent",
   },
+  selected: {
+    _hover: { bg: "gray.700" },
+    bgColor: "gray.700",
+    borderColor: "gray.600",
+    cursor: "pointer",
+  },
 };
 
 const FunctionCardBody = ({
-  variant = "common",
-  onFunctionSelect,
-  isReadOnly,
   disabled,
   exposedFn,
+  isReadOnly,
+  onFunctionSelect,
+  variant = "common",
 }: FunctionCardBodyProps) => {
-  const { is_view: isView, visibility, name } = exposedFn;
+  const { is_view: isView, name, visibility } = exposedFn;
 
   return (
     <Flex
-      w="full"
+      border="1px solid"
       borderRadius={8}
-      py={2}
-      px={3}
-      transition="all .25s ease-in-out"
       flexDirection="column"
       gap={1}
-      border="1px solid"
+      px={3}
+      py={2}
+      transition="all .25s ease-in-out"
+      w="full"
       onClick={() =>
         disabled || isReadOnly ? null : onFunctionSelect(exposedFn)
       }
       {...cardStyles[disabled ? "disabled" : variant]}
     >
       <Flex gap={1} justifyContent="space-between" w="full">
-        <Flex gap={1} alignItems="center">
+        <Flex alignItems="center" gap={1}>
           <CustomIcon
-            name="query"
-            color={isView ? "primary.main" : "secondary.dark"}
             boxSize={3}
+            color={isView ? "primary.main" : "secondary.dark"}
+            name="query"
           />
           <Text
-            variant="body3"
             color={isView ? "primary.main" : "secondary.dark"}
+            variant="body3"
           >
             {isView ? "View" : "Execute"}
           </Text>
@@ -90,9 +91,9 @@ const FunctionCardBody = ({
               <Tooltip label={`is_entry: ${exposedFn.is_entry}`}>
                 <Flex pointerEvents="auto" onClick={(e) => e.stopPropagation()}>
                   {disabled ? (
-                    <CustomIcon name="close" color="gray.600" boxSize={3} />
+                    <CustomIcon boxSize={3} color="gray.600" name="close" />
                   ) : (
-                    <CustomIcon name="check" color="success.main" boxSize={3} />
+                    <CustomIcon boxSize={3} color="success.main" name="check" />
                   )}
                 </Flex>
               </Tooltip>
@@ -101,17 +102,17 @@ const FunctionCardBody = ({
           )}
           <Flex alignItems="center" gap={1}>
             <CustomIcon
-              name={getVisibilityIcon(visibility)}
-              color="gray.600"
               boxSize={3}
+              color="gray.600"
+              name={getVisibilityIcon(visibility)}
             />
-            <Text variant="body3" color="text.dark" textTransform="capitalize">
+            <Text color="text.dark" textTransform="capitalize" variant="body3">
               {visibility}
             </Text>
           </Flex>
         </Flex>
       </Flex>
-      <Text variant="body2" color={disabled ? "text.disabled" : "text.main"}>
+      <Text color={disabled ? "text.disabled" : "text.main"} variant="body2">
         {name}
       </Text>
     </Flex>
@@ -119,33 +120,33 @@ const FunctionCardBody = ({
 };
 
 export const FunctionCard = ({
-  variant = "common",
   exposedFn,
-  onFunctionSelect,
   isReadOnly = false,
+  onFunctionSelect,
+  variant = "common",
 }: FunctionCardProps) => {
   const isMobile = useMobile();
   const disabled = !checkAvailability(exposedFn);
 
   return isMobile ? (
     <FunctionCardBody
-      variant={variant}
-      exposedFn={exposedFn}
-      onFunctionSelect={onFunctionSelect}
-      isReadOnly={isReadOnly}
       disabled={disabled}
+      exposedFn={exposedFn}
+      isReadOnly={isReadOnly}
+      variant={variant}
+      onFunctionSelect={onFunctionSelect}
     />
   ) : (
     <Tooltip
-      label="Only functions with “is_entry: true” are able to interacted through Scan’s module interactions."
       hidden={!disabled}
+      label="Only functions with “is_entry: true” are able to interacted through Scan’s module interactions."
     >
       <FunctionCardBody
-        variant={variant}
-        exposedFn={exposedFn}
-        onFunctionSelect={onFunctionSelect}
-        isReadOnly={isReadOnly}
         disabled={disabled}
+        exposedFn={exposedFn}
+        isReadOnly={isReadOnly}
+        variant={variant}
+        onFunctionSelect={onFunctionSelect}
       />
     </Tooltip>
   );

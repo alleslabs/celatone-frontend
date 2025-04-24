@@ -1,37 +1,39 @@
-import { Badge, Flex, Image, Text } from "@chakra-ui/react";
+import type { Option } from "lib/types";
 
+import { Badge, Flex, Image, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
-import type { Option } from "lib/types";
 
 interface FilterItemProps {
   collectionName: Option<string>;
   count: number;
-  onClick: () => void;
-  uri?: string;
   isActive?: boolean;
   isDefault?: boolean;
+  onClick: () => void;
+  uri?: string;
 }
 
 export const FilterItem = ({
   collectionName,
   count,
-  onClick,
-  uri,
   isActive,
   isDefault = false,
+  onClick,
+  uri,
 }: FilterItemProps) => {
   const { data: metadata } = useMetadata(uri ?? "");
 
   return (
     <Flex
-      p="12px"
+      _hover={{ bg: "gray.800" }}
+      align="center"
       bg={isActive ? "gray.800" : "gray.900"}
       borderRadius="8px"
-      _hover={{ bg: "gray.800" }}
       cursor="pointer"
+      justify="space-between"
+      p="12px"
       onClick={() => {
         track(AmpEvent.USE_SELECT_NFT_COLLECTION_GROUP, {
           collectionName,
@@ -39,31 +41,29 @@ export const FilterItem = ({
         });
         onClick();
       }}
-      align="center"
-      justify="space-between"
     >
-      <Flex gap="8px" align="center">
+      <Flex align="center" gap="8px">
         {isDefault ? (
           <Flex
-            width="32px"
-            height="32px"
-            p={1}
             background="gray.800"
             borderRadius="4px"
+            height="32px"
+            p={1}
+            width="32px"
           >
             <CustomIcon name="collection" />
           </Flex>
         ) : (
           <Image
-            width="32px"
-            height="32px"
             borderRadius="4px"
-            src={metadata?.image}
             fallbackSrc={NFT_IMAGE_PLACEHOLDER}
             fallbackStrategy="beforeLoadOrError"
+            height="32px"
+            src={metadata?.image}
+            width="32px"
           />
         )}
-        <Text fontSize="14px" width="150px" className="ellipsis">
+        <Text className="ellipsis" fontSize="14px" width="150px">
           {collectionName}
         </Text>
       </Flex>

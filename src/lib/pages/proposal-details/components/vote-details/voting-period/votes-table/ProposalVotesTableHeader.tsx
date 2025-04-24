@@ -1,30 +1,30 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Grid } from "@chakra-ui/react";
 
+import { Grid } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { TableHeader } from "lib/components/table";
 
 interface ProposalVotesTableHeaderProps {
-  templateColumns: GridProps["templateColumns"];
   fullVersion: boolean;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const ProposalVotesTableHeader = ({
-  templateColumns,
   fullVersion,
+  templateColumns,
 }: ProposalVotesTableHeaderProps) => {
   const isMobile = useMobile();
 
   if (isMobile)
     return (
-      <Grid templateColumns={templateColumns} minW="min-content">
+      <Grid minW="min-content" templateColumns={templateColumns}>
         <TableHeader pl={0}>Address (Vote answer)</TableHeader>
         <TableHeader />
       </Grid>
     );
 
   return (
-    <Grid templateColumns={templateColumns} minW="min-content">
+    <Grid minW="min-content" templateColumns={templateColumns}>
       <TableHeader>Voters</TableHeader>
       <TableHeader>Answer</TableHeader>
       {fullVersion && (

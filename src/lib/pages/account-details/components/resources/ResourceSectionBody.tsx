@@ -1,3 +1,5 @@
+import type { BechAddr, Option, ResourceGroupByAccount } from "lib/types";
+
 import {
   Accordion,
   Badge,
@@ -7,8 +9,6 @@ import {
   GridItem,
   Heading,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-
 import { trackUseExpandAll } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
@@ -16,22 +16,22 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { ResourceDetailCard } from "lib/components/resource";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import type { BechAddr, Option, ResourceGroupByAccount } from "lib/types";
+import { useEffect, useState } from "react";
 
 import { ResourceLeftPanel } from "./ResourceLeftPanel";
 
 interface ResourceSectionBodyProps {
   address: BechAddr;
-  resourcesByOwner: Option<ResourceGroupByAccount[]>;
   isLoading: boolean;
+  resourcesByOwner: Option<ResourceGroupByAccount[]>;
   selectedAccountParam: Option<string>;
   selectedGroupNameParam: Option<string>;
 }
 
 export const ResourceSectionBody = ({
   address,
-  resourcesByOwner,
   isLoading,
+  resourcesByOwner,
   selectedAccountParam,
   selectedGroupNameParam,
 }: ResourceSectionBodyProps) => {
@@ -68,36 +68,36 @@ export const ResourceSectionBody = ({
       {selectedResource && (
         <GridItem>
           <Flex
-            justifyContent="space-between"
             alignItems={{ base: "start", md: "center" }}
             direction={{ base: "column", md: "row" }}
-            pb={{ base: 4, md: 6 }}
             gap={4}
+            justifyContent="space-between"
+            pb={{ base: 4, md: 6 }}
           >
-            <Flex alignItems="center" w="full" className="copier-wrapper">
+            <Flex className="copier-wrapper" alignItems="center" w="full">
               <Heading as="h6" variant="h6" wordBreak="break-word">
                 {selectedResource.account}::{selectedResource.group}
               </Heading>
-              <Badge variant="primary" ml={2}>
+              <Badge ml={2} variant="primary">
                 {selectedResource.items.length}
               </Badge>
               <Copier
+                copyLabel="Copied!"
                 display={!isMobile ? "none" : "inline"}
                 type="resource"
                 value={`${selectedResource.account}::${selectedResource.group}`}
-                copyLabel="Copied!"
               />
             </Flex>
             <Button
-              variant={{ base: "ghost-primary", md: "outline-primary" }}
               minW={{ base: "auto", md: 32 }}
-              size="sm"
               rightIcon={
                 <CustomIcon
-                  name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
                   boxSize={3}
+                  name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
                 />
               }
+              size="sm"
+              variant={{ base: "ghost-primary", md: "outline-primary" }}
               onClick={() => {
                 trackUseExpandAll(
                   expandedIndexes.length ? "collapse" : "expand",
@@ -115,8 +115,8 @@ export const ResourceSectionBody = ({
           </Flex>
           <Accordion
             allowMultiple
-            width="full"
             index={expandedIndexes}
+            width="full"
             onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
           >
             {selectedResource.items.map((item) => (

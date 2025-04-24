@@ -1,7 +1,7 @@
-import { Tag } from "@chakra-ui/react";
 import type { TagProps } from "@chakra-ui/react";
 import type { HexAddr20, Nullable } from "lib/types";
 
+import { Tag } from "@chakra-ui/react";
 import { getEvmMethod } from "lib/utils";
 
 interface EvmMethodChipProps {
@@ -15,7 +15,7 @@ export const EvmMethodChip = ({
   txTo,
   width = "144px",
 }: EvmMethodChipProps) => (
-  <Tag width={width} height="17px" variant="gray" justifyContent="center">
+  <Tag height="17px" justifyContent="center" variant="gray" width={width}>
     {getEvmMethod(txInput, txTo)}
   </Tag>
 );

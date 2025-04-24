@@ -1,41 +1,41 @@
-import { Flex } from "@chakra-ui/react";
-import { useEffect, useMemo } from "react";
+import type { ContractState } from "lib/types";
 import type { ChangeEvent } from "react";
 
+import { Flex } from "@chakra-ui/react";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import type { ContractState } from "lib/types";
+import { useEffect, useMemo } from "react";
 
 import { StateCard } from "./StateCard";
 
 interface StateListProps {
-  totalData: number;
-  states: ContractState[];
   isLoading: boolean;
   isSearching: boolean;
+  states: ContractState[];
+  totalData: number;
 }
 
 export const StateList = ({
-  totalData,
-  states,
   isLoading,
   isSearching,
+  states,
+  totalData,
 }: StateListProps) => {
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: totalData,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: totalData,
   });
 
   const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -64,7 +64,7 @@ export const StateList = ({
 
   return (
     <>
-      <Flex direction="column" gap={4} flexWrap="wrap">
+      <Flex direction="column" flexWrap="wrap" gap={4}>
         {displayStates.map((state) => (
           <StateCard key={state.rawKey} state={state} />
         ))}
@@ -72,10 +72,10 @@ export const StateList = ({
       {!isLoading && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalData}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={totalData}
           onPageChange={setCurrentPage}
           onPageSizeChange={onPageSizeChange}
         />

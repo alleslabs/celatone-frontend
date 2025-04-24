@@ -1,6 +1,6 @@
-import { Text } from "@chakra-ui/react";
-
 import type { ProposalData } from "lib/types";
+
+import { Text } from "@chakra-ui/react";
 import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
 
@@ -12,10 +12,10 @@ interface StatusTimeProps {
 
 const getResolvedPrefix = (status: ProposalStatus) => {
   switch (status) {
-    case ProposalStatus.DEPOSIT_FAILED:
-      return "Failed";
     case ProposalStatus.CANCELLED:
       return "Cancelled";
+    case ProposalStatus.DEPOSIT_FAILED:
+      return "Failed";
     default:
       return "Voting ended";
   }
@@ -45,7 +45,7 @@ export const SummaryStatusTime = ({ proposalData }: StatusTimeProps) => {
     );
 
   return (
-    <Text variant="body2" color="text.dark">
+    <Text color="text.dark" variant="body2">
       {getResolvedPrefix(proposalData.status)}
       {" at "}
       {endTime ? formatUTC(endTime) : "N/A"}

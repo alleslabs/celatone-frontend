@@ -1,7 +1,7 @@
-import { createContext, useContext } from "react";
 import type { ReactNode } from "react";
 
 import { RootStore } from "lib/stores/root";
+import { createContext, useContext } from "react";
 
 let store: RootStore;
 export const StoreContext = createContext<RootStore | undefined>(undefined);

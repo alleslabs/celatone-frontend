@@ -1,76 +1,76 @@
+import type { ProposalVotesInfo } from "lib/types";
+
 import { Divider, Flex, Text } from "@chakra-ui/react";
+import { LegendText } from "lib/components/LegendText";
+import { d0Formatter, formatPrettyPercent } from "lib/utils";
 import { Fragment } from "react";
 
-import { LegendText } from "lib/components/LegendText";
-import type { ProposalVotesInfo } from "lib/types";
-import { d0Formatter, formatPrettyPercent } from "lib/utils";
-
-import { VpPercentCard } from "./VpPercentCard";
 import { normalizeVotesInfo } from "../utils";
+import { VpPercentCard } from "./VpPercentCard";
 
 interface VpPercentThresholdProps {
-  votesInfo: ProposalVotesInfo;
   isCompact: boolean;
+  votesInfo: ProposalVotesInfo;
 }
 
 export const VpPercentThreshold = ({
-  votesInfo,
   isCompact,
+  votesInfo,
 }: VpPercentThresholdProps) => {
-  const { yesNonRatio, noNonRatio, noWithVetoNonRatio } =
+  const { noNonRatio, noWithVetoNonRatio, yesNonRatio } =
     normalizeVotesInfo(votesInfo);
 
   const options = [
     {
+      color: "success.main",
       option: "Yes",
       ratio: yesNonRatio,
       votingPower: votesInfo.yes,
-      color: "success.main",
     },
     {
+      color: "error.main",
       option: "No",
       ratio: noNonRatio,
       votingPower: votesInfo.no,
-      color: "error.main",
     },
     {
+      color: "error.dark",
       option: "No with veto",
       ratio: noWithVetoNonRatio,
       votingPower: votesInfo.noWithVeto,
-      color: "error.dark",
     },
   ];
 
   return isCompact ? (
     <div>
       <Flex justifyContent="space-between">
-        <Text variant="body2" color="text.dark" fontWeight={500}>
+        <Text color="text.dark" fontWeight={500} variant="body2">
           Options
         </Text>
-        <Text variant="body2" color="text.dark" fontWeight={500}>
+        <Text color="text.dark" fontWeight={500} variant="body2">
           % (Voting Power)
         </Text>
       </Flex>
-      {options.map(({ option, ratio, votingPower, color }) => (
+      {options.map(({ color, option, ratio, votingPower }) => (
         <Flex
           key={option}
-          justifyContent="space-between"
-          borderBottom="1px solid"
           borderBottomColor="gray.700"
+          borderBottomWidth="1px"
+          justifyContent="space-between"
           py={2}
         >
           <LegendText
+            color="text.main"
+            fontWeight={700}
             label={option}
             legendColor={color}
             variant="body2"
-            color="text.main"
-            fontWeight={700}
           />
-          <Flex direction="column" align="end">
-            <Text variant="body2" color="text.main">
+          <Flex align="end" direction="column">
+            <Text color="text.main" variant="body2">
               {formatPrettyPercent(ratio, 2, true)}
             </Text>
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               ({d0Formatter(votingPower, "0")})
             </Text>
           </Flex>
@@ -79,21 +79,21 @@ export const VpPercentThreshold = ({
     </div>
   ) : (
     <Flex direction="row" gap={6}>
-      {options.map(({ option, ratio, votingPower, color }, idx) => (
+      {options.map(({ color, option, ratio, votingPower }, idx) => (
         <Fragment key={option}>
           <VpPercentCard
-            name={option}
-            ratio={ratio}
-            power={votingPower}
             color={color}
             isCompact={false}
+            name={option}
+            power={votingPower}
+            ratio={ratio}
           />
           {idx === 0 && (
             <Divider
-              orientation="vertical"
-              h="auto"
               color="gray.700"
               display={{ base: "none", lg: "flex" }}
+              h="auto"
+              orientation="vertical"
             />
           )}
         </Fragment>

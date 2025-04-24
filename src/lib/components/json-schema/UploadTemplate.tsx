@@ -1,3 +1,7 @@
+import type { ResponseState } from "lib/components/forms";
+import type { Nullable } from "lib/types";
+import type { Dispatch } from "react";
+
 import {
   Button,
   Flex,
@@ -7,48 +11,45 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import type { Dispatch } from "react";
-import { useCallback, useMemo, useReducer, useState } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { DropZone } from "lib/components/dropzone";
-import type { ResponseState } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
 import { UploadCard } from "lib/components/upload/UploadCard";
 import { useSchemaStore } from "lib/providers/store";
-import type { Nullable } from "lib/types";
 import { jsonValidate } from "lib/utils";
+import { useCallback, useMemo, useReducer, useState } from "react";
+
 import { CustomIcon } from "../icon";
 
 enum Method {
-  UPLOAD_FILE = "upload-file",
-  LOAD_URL = "load-url",
   FILL_MANUALLY = "fill-manually",
+  LOAD_URL = "load-url",
+  UPLOAD_FILE = "upload-file",
 }
 
 type JsonState = Record<
   Method,
-  { schemaString: string; error: Nullable<string> }
+  { error: Nullable<string>; schemaString: string }
 >;
 
 enum ActionType {
-  SET_SCHEMA = "set-schema",
-  SET_ERROR = "set-error",
   RESET = "reset",
+  SET_ERROR = "set-error",
+  SET_SCHEMA = "set-schema",
 }
 
 type Action = {
-  type: ActionType;
+  error?: Nullable<string>;
   method: Method;
   schemaString?: string;
-  error?: Nullable<string>;
+  type: ActionType;
 };
 
 const initialJsonState: JsonState = {
-  [Method.UPLOAD_FILE]: { schemaString: "", error: null },
-  [Method.LOAD_URL]: { schemaString: "", error: null },
-  [Method.FILL_MANUALLY]: { schemaString: "", error: null },
+  [Method.FILL_MANUALLY]: { error: null, schemaString: "" },
+  [Method.LOAD_URL]: { error: null, schemaString: "" },
+  [Method.UPLOAD_FILE]: { error: null, schemaString: "" },
 };
 
 const reducer = (state: JsonState, action: Action): JsonState => {
@@ -57,14 +58,14 @@ const reducer = (state: JsonState, action: Action): JsonState => {
       return {
         ...state,
         [action.method]: {
-          schemaString: state[action.method].schemaString,
           error: action.error,
+          schemaString: state[action.method].schemaString,
         },
       };
     case ActionType.SET_SCHEMA:
       return {
         ...state,
-        [action.method]: { schemaString: action.schemaString, error: null },
+        [action.method]: { error: null, schemaString: action.schemaString },
       };
     case ActionType.RESET:
     default:
@@ -82,35 +83,81 @@ const validateSchema = (schemaString: string): Nullable<string> => {
 };
 
 const MethodRender = ({
+  dispatch,
   method,
   state,
   urlLoading,
-  dispatch,
 }: {
+  dispatch: Dispatch<Action>;
   method: Method;
   state: JsonState;
   urlLoading: boolean;
-  dispatch: Dispatch<Action>;
 }) => {
   const [jsonFile, setJsonFile] = useState<File>();
   const { error, schemaString } = state[method];
   switch (method) {
+    case Method.FILL_MANUALLY:
+      return (
+        <>
+          <Heading as="h6" mb={4} variant="h6">
+            Contract schema
+          </Heading>
+          <JsonInput
+            maxLines={12}
+            setText={(value: string) =>
+              dispatch({
+                method,
+                schemaString: value,
+                type: ActionType.SET_SCHEMA,
+              })
+            }
+            text={schemaString}
+            validateFn={validateSchema}
+          />
+        </>
+      );
+    case Method.LOAD_URL: {
+      let status: ResponseState = "init";
+      if (urlLoading) status = "loading";
+      else if (error) status = "error";
+      return (
+        <>
+          <Heading as="h6" mb={4} variant="h6">
+            Fill in URL to load JSON schema
+          </Heading>
+          <TextInput
+            setInputState={(url: string) =>
+              dispatch({
+                method,
+                schemaString: url,
+                type: ActionType.SET_SCHEMA,
+              })
+            }
+            status={{
+              message: error,
+              state: status,
+            }}
+            value={schemaString}
+          />
+        </>
+      );
+    }
     case Method.UPLOAD_FILE:
       return jsonFile ? (
         <UploadCard
-          theme="gray"
-          file={jsonFile}
           deleteFile={() => {
             setJsonFile(undefined);
             dispatch({
-              type: ActionType.SET_SCHEMA,
               method,
               schemaString: "",
+              type: ActionType.SET_SCHEMA,
             });
           }}
+          file={jsonFile}
           // TODO: change to discriminated union pattern later
           status={error ? "error" : undefined}
           statusText={error}
+          theme="gray"
         />
       ) : (
         <DropZone
@@ -121,9 +168,9 @@ const MethodRender = ({
             reader.onload = () => {
               const content = reader.result as string;
               dispatch({
-                type: ActionType.SET_SCHEMA,
                 method,
                 schemaString: content,
+                type: ActionType.SET_SCHEMA,
               });
             };
             try {
@@ -135,70 +182,24 @@ const MethodRender = ({
           }}
         />
       );
-    case Method.LOAD_URL: {
-      let status: ResponseState = "init";
-      if (urlLoading) status = "loading";
-      else if (error) status = "error";
-      return (
-        <>
-          <Heading as="h6" variant="h6" mb={4}>
-            Fill in URL to load JSON schema
-          </Heading>
-          <TextInput
-            status={{
-              state: status,
-              message: error,
-            }}
-            value={schemaString}
-            setInputState={(url: string) =>
-              dispatch({
-                type: ActionType.SET_SCHEMA,
-                method,
-                schemaString: url,
-              })
-            }
-          />
-        </>
-      );
-    }
-    case Method.FILL_MANUALLY:
-      return (
-        <>
-          <Heading as="h6" variant="h6" mb={4}>
-            Contract schema
-          </Heading>
-          <JsonInput
-            text={schemaString}
-            setText={(value: string) =>
-              dispatch({
-                type: ActionType.SET_SCHEMA,
-                method,
-                schemaString: value,
-              })
-            }
-            validateFn={validateSchema}
-            maxLines={12}
-          />
-        </>
-      );
     default:
       return null;
   }
 };
 
 interface UploadTemplateInterface {
+  closeDrawer: () => void;
   codeHash: string;
   codeId: number;
   isReattach: boolean;
-  closeDrawer: () => void;
   onSchemaSave?: () => void;
 }
 
 export const UploadTemplate = ({
+  closeDrawer,
   codeHash,
   codeId,
   isReattach,
-  closeDrawer,
   onSchemaSave,
 }: UploadTemplateInterface) => {
   const { saveNewSchema } = useSchemaStore();
@@ -211,9 +212,9 @@ export const UploadTemplate = ({
     let { schemaString } = jsonState[method];
     if (!schemaString)
       return dispatchJsonState({
-        type: ActionType.SET_ERROR,
-        method,
         error: "Empty schema input",
+        method,
+        type: ActionType.SET_ERROR,
       });
 
     // Retrieve schemaString from url
@@ -224,19 +225,19 @@ export const UploadTemplate = ({
         if (!response.ok) {
           setUrlLoading(false);
           return dispatchJsonState({
-            type: ActionType.SET_ERROR,
-            method,
             error:
               response.status === 404 ? "404 not found" : response.statusText,
+            method,
+            type: ActionType.SET_ERROR,
           });
         }
         schemaString = JSON.stringify(await response.json());
       } catch (err) {
         setUrlLoading(false);
         return dispatchJsonState({
-          type: ActionType.SET_ERROR,
-          method,
           error: (err as Error).message,
+          method,
+          type: ActionType.SET_ERROR,
         });
       }
     }
@@ -245,26 +246,26 @@ export const UploadTemplate = ({
     if (schemaValidateError) {
       setUrlLoading(false);
       return dispatchJsonState({
-        type: ActionType.SET_ERROR,
-        method,
         error: schemaValidateError,
+        method,
+        type: ActionType.SET_ERROR,
       });
     }
     saveNewSchema(codeHash, codeId.toString(), JSON.parse(schemaString));
-    track(AmpEvent.ACTION_ATTACH_JSON, { method, isReattach });
+    track(AmpEvent.ACTION_ATTACH_JSON, { isReattach, method });
     toast({
-      title: `Attached JSON schema`,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      status: "success",
+      title: `Attached JSON schema`,
     });
 
     setUrlLoading(false);
     onSchemaSave?.();
     closeDrawer();
-    return dispatchJsonState({ type: ActionType.RESET, method });
+    return dispatchJsonState({ method, type: ActionType.RESET });
   }, [
     closeDrawer,
     codeHash,
@@ -280,12 +281,12 @@ export const UploadTemplate = ({
   const disabledState = useMemo(() => {
     const methodSchemaString = jsonState[method].schemaString;
     switch (method) {
-      case Method.UPLOAD_FILE:
-        return !methodSchemaString;
-      case Method.LOAD_URL:
-        return !methodSchemaString || urlLoading;
       case Method.FILL_MANUALLY:
         return Boolean(validateSchema(methodSchemaString));
+      case Method.LOAD_URL:
+        return !methodSchemaString || urlLoading;
+      case Method.UPLOAD_FILE:
+        return !methodSchemaString;
       default:
         return false;
     }
@@ -293,17 +294,17 @@ export const UploadTemplate = ({
 
   return (
     <Flex
+      borderColor="gray.700"
+      borderTopWidth="1px"
       direction="column"
-      px={6}
       mt={6}
       pt={6}
-      borderTop="1px solid"
-      borderColor="gray.700"
+      px={6}
     >
       <RadioGroup
-        onChange={(nextVal) => setMethod(nextVal as Method)}
-        value={method}
         mb={6}
+        value={method}
+        onChange={(nextVal) => setMethod(nextVal as Method)}
       >
         <Flex gap="64px">
           <Radio value={Method.UPLOAD_FILE}>Upload file</Radio>
@@ -312,21 +313,21 @@ export const UploadTemplate = ({
         </Flex>
       </RadioGroup>
       <MethodRender
+        dispatch={dispatchJsonState}
         method={method}
         state={jsonState}
         urlLoading={urlLoading}
-        dispatch={dispatchJsonState}
       />
       <Button
-        w="400px"
         alignSelf="center"
-        mt={6}
-        onClick={handleSave}
         isDisabled={disabledState}
+        mt={6}
+        w="400px"
+        onClick={handleSave}
       >
         Save JSON schema
       </Button>
-      <Text variant="body2" color="text.dark" alignSelf="center" my={3}>
+      <Text alignSelf="center" color="text.dark" my={3} variant="body2">
         Your JSON schema will be{" "}
         <span style={{ fontWeight: 600 }}>stored locally on your device</span>
       </Text>

@@ -1,40 +1,40 @@
+import type { IconKeys } from "lib/components/icon";
+
 import { Flex, Heading, Text } from "@chakra-ui/react";
+import { AmpEvent, track } from "lib/amplitude";
+import { CustomIcon } from "lib/components/icon";
 import { isUndefined } from "lodash";
 
-import { AmpEvent, track } from "lib/amplitude";
-import type { IconKeys } from "lib/components/icon";
-import { CustomIcon } from "lib/components/icon";
-
 interface InfoCardProps {
-  title: string;
-  icon: IconKeys;
   content?: number;
-  onClick: () => void;
+  icon: IconKeys;
   isDisabled: boolean;
+  onClick: () => void;
+  title: string;
 }
 
 export const InfoCard = ({
-  title,
-  icon,
   content,
-  onClick,
+  icon,
   isDisabled,
+  onClick,
+  title,
 }: InfoCardProps) => (
   <Flex
+    alignItems="center"
+    borderRadius={8}
+    justifyContent="space-between"
     p={4}
     transition="all .25s ease-in-out"
-    borderRadius={8}
     w="full"
-    alignItems="center"
-    justifyContent="space-between"
     {...(isDisabled
       ? {
           bg: "gray.900",
           cursor: "not-allowed",
         }
       : {
-          bg: "gray.800",
           _hover: { bg: "gray.700" },
+          bg: "gray.800",
           cursor: "pointer",
           onClick: () => {
             track(AmpEvent.USE_NFT_COLLECTION_INFO_CARD, { label: title });
@@ -42,19 +42,19 @@ export const InfoCard = ({
           },
         })}
   >
-    <Flex gap={3} alignItems="center">
-      <CustomIcon name={icon} boxSize={6} color="gray.600" />
+    <Flex alignItems="center" gap={3}>
+      <CustomIcon boxSize={6} color="gray.600" name={icon} />
       <Flex flexDirection="column">
-        <Text variant="body1" color="text.dark" fontWeight={600}>
+        <Text color="text.dark" fontWeight={600} variant="body1">
           {title}
         </Text>
         {!isUndefined(content) && (
-          <Heading as="h6" variant="h6" fontWeight={600}>
+          <Heading as="h6" fontWeight={600} variant="h6">
             {content}
           </Heading>
         )}
       </Flex>
     </Flex>
-    <CustomIcon name="chevron-right" color="gray.600" />
+    <CustomIcon color="gray.600" name="chevron-right" />
   </Flex>
 );

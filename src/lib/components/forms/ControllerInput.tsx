@@ -1,3 +1,12 @@
+import type { RestrictedNumberInputParams } from "lib/app-provider";
+import type { ReactNode } from "react";
+import type {
+  Control,
+  FieldPath,
+  FieldValues,
+  UseControllerProps,
+} from "react-hook-form";
+
 import {
   Flex,
   FormControl,
@@ -9,74 +18,66 @@ import {
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
-import type { ReactNode } from "react";
-import type {
-  Control,
-  FieldPath,
-  FieldValues,
-  UseControllerProps,
-} from "react-hook-form";
+import { useRestrictedNumberInput } from "lib/app-provider";
 import { useController, useWatch } from "react-hook-form";
 
-import type { RestrictedNumberInputParams } from "lib/app-provider";
-import { useRestrictedNumberInput } from "lib/app-provider";
-
 import type { FormStatus } from "./FormStatus";
-import { getResponseMsg, getStatusIcon } from "./FormStatus";
 import type { TextInputProps } from "./TextInput";
 
+import { getResponseMsg, getStatusIcon } from "./FormStatus";
+
 export interface ControllerInputProps<T extends FieldValues>
-  extends Omit<TextInputProps, "value" | "setInputState" | "type"> {
-  name: FieldPath<T>;
+  extends Omit<TextInputProps, "setInputState" | "type" | "value"> {
   control: Control<T>;
-  type?: "text" | "number" | "decimal";
-  rules?: UseControllerProps<T>["rules"];
-  status?: FormStatus;
-  maxLength?: number;
-  helperAction?: ReactNode;
-  textAlign?: "left" | "right";
   cta?: {
     label: string;
     onClick: (changeValue?: (...event: string[]) => void) => void;
   };
+  helperAction?: ReactNode;
+  maxLength?: number;
+  name: FieldPath<T>;
   restrictedNumberInputParams?: Pick<
     RestrictedNumberInputParams,
     "maxDecimalPoints" | "maxIntegerPoints"
   >;
+  rules?: UseControllerProps<T>["rules"];
+  status?: FormStatus;
+  textAlign?: "left" | "right";
+  type?: "decimal" | "number" | "text";
 }
 
 export const ControllerInput = <T extends FieldValues>({
-  name,
+  autoFocus,
   control,
+  cta,
+  cursor,
+  error,
+  helperAction,
+  helperText,
   label,
   labelBgColor = "background.main",
-  helperText,
-  placeholder = " ",
-  error,
-  size = "lg",
-  type = "text",
-  rules = {},
-  status,
   maxLength,
-  autoFocus,
-  cursor,
-  helperAction,
-  textAlign = "left",
-  cta,
+  name,
+  placeholder = " ",
   restrictedNumberInputParams,
+  rules = {},
+  size = "lg",
+  status,
+  textAlign = "left",
+  type = "text",
   ...componentProps
 }: ControllerInputProps<T>) => {
   const watcher = useWatch({
-    name,
     control,
+    name,
   });
 
   const {
     field,
-    fieldState: { isTouched, isDirty },
+    fieldState: { isDirty, isTouched },
   } = useController<T>({
-    name,
     control,
+    name,
     rules,
   });
 
@@ -99,23 +100,23 @@ export const ControllerInput = <T extends FieldValues>({
   };
 
   const decimalHandlers = useRestrictedNumberInput({
-    type: "decimal",
     onChange: field.onChange,
+    type: "decimal",
     ...restrictedNumberInputParams,
   });
 
   const numberHandlers = useRestrictedNumberInput({
-    type: "integer",
-    maxIntegerPoints: 7,
     maxDecimalPoints: 0,
+    maxIntegerPoints: 7,
     onChange: field.onChange,
+    type: "integer",
   });
 
   return (
     <FormControl
-      size={size}
       isInvalid={isError || status?.state === "error"}
       isRequired={isRequired}
+      size={size}
       {...componentProps}
       {...field}
     >
@@ -123,26 +124,26 @@ export const ControllerInput = <T extends FieldValues>({
         <FormLabel
           className={`${size}-label`}
           bgColor={labelBgColor}
-          whiteSpace="nowrap"
           requiredIndicator={
             <Text as="span" color="error.main" pl={1}>
               * (Required)
             </Text>
           }
+          whiteSpace="nowrap"
         >
           {label}
         </FormLabel>
       )}
       <InputGroup>
         <Input
-          size={size}
-          placeholder={placeholder}
-          value={watcher}
-          type="text"
-          maxLength={maxLength}
           autoFocus={autoFocus}
           cursor={cursor}
+          maxLength={maxLength}
+          placeholder={placeholder}
           pr={inputPaddingRight()}
+          size={size}
+          type="text"
+          value={watcher}
           onBlur={field.onBlur}
           onChange={field.onChange}
           {...(type === "decimal" && decimalHandlers)}
@@ -151,24 +152,24 @@ export const ControllerInput = <T extends FieldValues>({
         />
         <InputRightElement
           h="full"
-          w={status || cta ? "2.5rem" : 0}
           pr={cta ? 3 : 0}
+          w={status || cta ? "2.5rem" : 0}
         >
           {status && getStatusIcon(status.state)}
           {cta && (
             <Text
               bg="background.main"
-              variant="body2"
               color="primary.main"
-              onClick={() => cta.onClick(field.onChange)}
               cursor="pointer"
+              variant="body2"
+              onClick={() => cta.onClick(field.onChange)}
             >
               {cta.label}
             </Text>
           )}
         </InputRightElement>
       </InputGroup>
-      <Flex gap={1} alignItems="center" mt={1} justifyContent="space-between">
+      <Flex alignItems="center" gap={1} justifyContent="space-between" mt={1}>
         <Flex direction="column" gap={1}>
           {isError && (
             <FormErrorMessage className="error-text">{error}</FormErrorMessage>

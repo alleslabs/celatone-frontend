@@ -1,43 +1,44 @@
+import type { ProposalData } from "lib/types";
+import type { ReactNode } from "react";
+
 import {
   AccordionButton,
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
 } from "@chakra-ui/react";
-import type { ReactNode } from "react";
 
-import type { ProposalData } from "lib/types";
 import { ProposalStepper } from "../proposal-stepper";
 
 interface VoteDetailsAccordionItemProps {
-  step: number;
-  proposalData: ProposalData;
   children: ReactNode;
   isDisabled?: boolean;
+  proposalData: ProposalData;
+  step: number;
 }
 
 export const VoteDetailsAccordionItem = ({
-  step,
-  proposalData,
   children,
   isDisabled,
+  proposalData,
+  step,
 }: VoteDetailsAccordionItemProps) => (
   <AccordionItem
-    borderTop="1px solid"
     borderColor="gray.700"
+    borderTopWidth="1px"
     isDisabled={isDisabled}
   >
-    <AccordionButton py={3} px={0}>
-      <ProposalStepper step={step} proposalData={proposalData} />
+    <AccordionButton px={0} py={3}>
+      <ProposalStepper proposalData={proposalData} step={step} />
       <AccordionIcon color="gray.600" ml="auto" />
     </AccordionButton>
     <AccordionPanel
       bg="transparent"
-      p={0}
-      pt={3}
-      pb={step === 1 ? 0 : 4}
-      borderTop="1px solid"
       borderColor="gray.700"
+      borderTopWidth="1px"
+      p={0}
+      pb={step === 1 ? 0 : 4}
+      pt={3}
     >
       {children}
     </AccordionPanel>

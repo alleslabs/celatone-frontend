@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import {
   Alert,
   AlertDescription,
@@ -7,9 +9,6 @@ import {
   GridItem,
   useDisclosure,
 } from "@chakra-ui/react";
-import { isNull } from "lodash";
-import type { ReactNode } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig, useMobile, useTierConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
@@ -17,17 +16,19 @@ import { TableTitle } from "lib/components/table";
 import { useProposalAnswerCounts } from "lib/services/proposal";
 import { ProposalStatus } from "lib/types";
 import { scrollToComponent, scrollYPosition } from "lib/utils";
+import { isNull } from "lodash";
 
+import type { VoteDetailsProps } from "..";
+
+import { NoVotingPeriodTallyAlert } from "../../NoVotingPeriodTally";
 import { ProposalVotesPanel } from "./ProposalVotesPanel";
 import { ValidatorVotesTable } from "./validator-votes-table";
 import { ValidatorVotesPanel } from "./ValidatorVotesPanel";
 import { ProposalVotesTable } from "./votes-table";
 import { VotingQuorum } from "./VotingQuorum";
 import { VotingThreshold } from "./VotingThreshold";
-import type { VoteDetailsProps } from "..";
-import { NoVotingPeriodTallyAlert } from "../../NoVotingPeriodTally";
 
-type VoterVariant = "validator" | "all";
+type VoterVariant = "all" | "validator";
 
 const ContentContainer = ({
   children,
@@ -37,13 +38,13 @@ const ContentContainer = ({
   transparent?: boolean;
 }) => (
   <Flex
-    direction="column"
     background={transparent ? "transparent" : "gray.900"}
     border="1px solid"
     borderColor={transparent ? "transparent" : "gray.700"}
     borderRadius="8px"
-    p={{ base: 4, md: 6 }}
+    direction="column"
     gap={4}
+    p={{ base: 4, md: 6 }}
   >
     {children}
   </Flex>
@@ -92,28 +93,28 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
   return (
     <Flex
       id={scrollComponentId}
-      position="relative"
       overflowX="hidden"
+      position="relative"
       width="full"
     >
       <Flex
         direction="column"
-        w="full"
-        position={
-          validatorVoteDisclosure.isOpen || allVoteDisclosure.isOpen
-            ? "absolute"
-            : "relative"
-        }
-        opacity={
-          validatorVoteDisclosure.isOpen || allVoteDisclosure.isOpen ? 0 : 1
-        }
+        gap={4}
         left={
           validatorVoteDisclosure.isOpen || allVoteDisclosure.isOpen
             ? "-100%"
             : "0"
         }
+        opacity={
+          validatorVoteDisclosure.isOpen || allVoteDisclosure.isOpen ? 0 : 1
+        }
+        position={
+          validatorVoteDisclosure.isOpen || allVoteDisclosure.isOpen
+            ? "absolute"
+            : "relative"
+        }
         transition="all 0.25s ease-in-out"
-        gap={4}
+        w="full"
       >
         {proposalData.status === ProposalStatus.VOTING_PERIOD &&
         disableVotingPeriodTally ? (
@@ -131,31 +132,31 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
           </>
         )}
         {isFullTier && (
-          <Grid gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"} gridGap={4}>
+          <Grid gridGap={4} gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"}>
             {/* Validator Votes */}
             <GridItem>
               <ContentContainer>
                 <Flex alignItems="center" justifyContent="space-between">
                   <TableTitle
-                    title="Validator votes"
-                    mb={0}
                     count={answers?.validator.totalValidators}
+                    mb={0}
+                    title="Validator votes"
                   />
                   <Button
+                    isDisabled={!answers?.validator.totalValidators}
+                    rightIcon={<CustomIcon boxSize={3} name="chevron-right" />}
                     variant="ghost-primary"
                     onClick={() => toggleDisclosure("validator")}
-                    rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
-                    isDisabled={!answers?.validator.totalValidators}
                   >
                     {isMobile ? "View" : "View details"}
                   </Button>
                 </Flex>
                 {isProposalResolved && (
-                  <Alert variant="primary" mb={4} alignItems="center" gap={3}>
+                  <Alert alignItems="center" gap={3} mb={4} variant="primary">
                     <CustomIcon
-                      name="alert-triangle-solid"
                       boxSize={4}
                       color="primary.main"
+                      name="alert-triangle-solid"
                     />
                     <AlertDescription>
                       Please note that the displayed ranking is in real-time and
@@ -180,15 +181,15 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
               <ContentContainer>
                 <Flex alignItems="center" justifyContent="space-between">
                   <TableTitle
-                    title="Recent votes"
-                    mb={0}
                     count={answers?.all.total}
+                    mb={0}
+                    title="Recent votes"
                   />
                   <Button
+                    isDisabled={!answers?.all.total}
+                    rightIcon={<CustomIcon boxSize={3} name="chevron-right" />}
                     variant="ghost-primary"
                     onClick={() => toggleDisclosure("all")}
-                    rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
-                    isDisabled={!answers?.all.total}
                   >
                     {isMobile ? "View" : "View details"}
                   </Button>
@@ -207,16 +208,16 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
         )}
       </Flex>
       <ValidatorVotesPanel
+        id={proposalData.id}
         answers={answers?.validator}
         isOpen={validatorVoteDisclosure.isOpen}
-        id={proposalData.id}
-        onBack={validatorVoteDisclosure.onClose}
         isProposalResolved={isProposalResolved}
+        onBack={validatorVoteDisclosure.onClose}
       />
       <ProposalVotesPanel
+        id={proposalData.id}
         answers={answers?.all}
         isOpen={allVoteDisclosure.isOpen}
-        id={proposalData.id}
         onBack={allVoteDisclosure.onClose}
       />
     </Flex>

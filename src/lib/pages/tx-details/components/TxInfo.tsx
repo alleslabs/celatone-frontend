@@ -1,13 +1,13 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { chakra, Flex, Text } from "@chakra-ui/react";
+import type { TxData } from "lib/services/types";
+import type { Option, Ratio } from "lib/types";
 
+import { chakra, Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
-import type { TxData } from "lib/services/types";
-import type { Option, Ratio } from "lib/types";
 import {
   computeCosmosFee,
   formatInteger,
@@ -16,22 +16,22 @@ import {
 } from "lib/utils";
 
 interface TxInfoProps extends FlexProps {
-  txData: TxData;
   gasRefundRatio: Option<Ratio<number>>;
+  txData: TxData;
 }
 
 const Container = chakra(Flex, {
   baseStyle: {
     flexDir: "column",
     gap: 6,
-    w: "250px",
     minW: "180px",
+    w: "250px",
   },
 });
 
 export const TxInfo = ({
-  txData,
   gasRefundRatio,
+  txData,
   ...flexProps
 }: TxInfoProps) => {
   const { data: assetInfos } = useAssetInfos({
@@ -55,17 +55,17 @@ export const TxInfo = ({
       <LabelText label="Network">{txData.chainId}</LabelText>
       <LabelText label="Block height">
         <ExplorerLink
-          value={txData.height}
-          type="block_height"
-          showCopyOnHover
           ampCopierSection="tx_page_block_height"
+          showCopyOnHover
+          type="block_height"
+          value={txData.height}
         />
       </LabelText>
       <LabelText label="Transaction fee">
         {feeToken ? (
           formatTokenWithValue(feeToken)
         ) : (
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             No fee
           </Text>
         )}
@@ -80,7 +80,7 @@ export const TxInfo = ({
       )}
       <LabelText label="Memo">
         {txData.tx.body.memo || (
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             No memo
           </Text>
         )}

@@ -1,20 +1,20 @@
-import { Text } from "@chakra-ui/react";
-
 import type { EvmToAddress, Option } from "lib/types";
+
+import { Text } from "@chakra-ui/react";
 import { EvmMethodName } from "lib/types";
 
-import { EvmToCellCreate } from "./evm-to-cell-create";
 import { ExplorerLink } from "../ExplorerLink";
+import { EvmToCellCreate } from "./evm-to-cell-create";
 
 interface EvmToCellProps {
-  toAddress: Option<EvmToAddress>;
   isCompact?: boolean;
+  toAddress: Option<EvmToAddress>;
 }
 
-export const EvmToCell = ({ toAddress, isCompact }: EvmToCellProps) => {
+export const EvmToCell = ({ isCompact, toAddress }: EvmToCellProps) => {
   if (!toAddress)
     return (
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         -
       </Text>
     );
@@ -33,9 +33,9 @@ export const EvmToCell = ({ toAddress, isCompact }: EvmToCellProps) => {
 
   return (
     <ExplorerLink
-      value={toAddress.address}
-      type="user_address"
       showCopyOnHover
+      type="user_address"
+      value={toAddress.address}
     />
   );
 };

@@ -1,8 +1,8 @@
-import { Button } from "@chakra-ui/react";
+import type { HexAddr32 } from "lib/types";
 
+import { Button } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
-import type { HexAddr32 } from "lib/types";
 
 interface ViewResourceButtonProps {
   nftAddress: HexAddr32;
@@ -13,11 +13,11 @@ export const ViewResourceButton = ({ nftAddress }: ViewResourceButtonProps) => {
 
   return (
     <Button
-      variant="outline-primary"
-      w={{ base: "full", md: "auto" }}
+      mb={{ base: 4, md: 0 }}
       minW="140px !important"
       size={{ base: "sm", md: "md" }}
-      mb={{ base: 4, md: 0 }}
+      variant="outline-primary"
+      w={{ base: "full", md: "auto" }}
       onClick={() => {
         track(AmpEvent.USE_NFT_VIEW_RESOURCE_CTA, {
           amptrackSection: "nft-details",

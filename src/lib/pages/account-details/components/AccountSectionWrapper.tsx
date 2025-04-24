@@ -1,31 +1,31 @@
+import type { Option } from "lib/types";
 import type { ReactNode } from "react";
 
 import { TableTitle } from "lib/components/table";
-import type { Option } from "lib/types";
 
 interface AccountSectionWrapperProps {
   children: ReactNode;
+  hasHelperText?: boolean;
+  helperText?: string;
+  showCount?: boolean;
   title: string;
   totalData?: Option<number>;
-  helperText?: string;
-  hasHelperText?: boolean;
-  showCount?: boolean;
 }
 const AccountSectionWrapper = ({
   children,
+  hasHelperText,
+  helperText,
+  showCount = true,
   title,
   totalData,
-  helperText,
-  hasHelperText,
-  showCount = true,
 }: AccountSectionWrapperProps) => (
   <>
     <TableTitle
-      title={title}
       count={totalData}
-      mb={2}
       helperText={hasHelperText ? helperText : undefined}
+      mb={2}
       showCount={showCount}
+      title={title}
     />
     {children}
   </>

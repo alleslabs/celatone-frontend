@@ -1,23 +1,23 @@
 import { Flex, Image } from "@chakra-ui/react";
-
 import { InitiaAppMenu } from "@initia/react-app-shell";
 import { SUPPORTED_NETWORK_TYPES } from "env";
 import { useCelatoneApp, useInitia } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import { NavDrawer } from "./NavDrawer";
+
 import { SearchComponent } from "../search";
 import { SectionWrapper } from "../SectionWrapper";
+import { NavDrawer } from "./NavDrawer";
 
 const MobileHeader = () => {
   const { theme } = useCelatoneApp();
   const isInitia = useInitia();
   return (
     <Flex
-      as="header"
-      width="100vw"
-      height="full"
       align="center"
+      as="header"
+      height="full"
       justifyContent="space-between"
+      width="100vw"
     >
       {isInitia && (
         <SectionWrapper minW="64px">
@@ -31,24 +31,24 @@ const MobileHeader = () => {
           />
         </SectionWrapper>
       )}
-      <SectionWrapper minW="64px" w="full" justifyContent="start">
+      <SectionWrapper justifyContent="start" minW="64px" w="full">
         <AppLink href="/">
           <Image
+            _hover={{ cursor: "pointer", opacity: 0.85 }}
             alt="Scan"
+            backgroundPosition="left"
+            maxHeight={isInitia ? "24px" : "auto"}
+            maxWidth="128px"
+            minWidth={isInitia ? "auto" : "128px"}
+            mx={4}
+            objectFit="contain"
             src={
               isInitia
                 ? "https://assets.alleslabs.dev/integrations/initia/logo_mobile.png"
                 : theme.branding.logo
             }
-            maxHeight={isInitia ? "24px" : "auto"}
-            minWidth={isInitia ? "auto" : "128px"}
-            width={isInitia ? "auto" : "128px"}
-            maxWidth="128px"
-            mx={4}
-            objectFit="contain"
-            backgroundPosition="left"
             transition="all 0.25s ease-in-out"
-            _hover={{ cursor: "pointer", opacity: 0.85 }}
+            width={isInitia ? "auto" : "128px"}
           />
         </AppLink>
       </SectionWrapper>

@@ -1,11 +1,11 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
 import type Big from "big.js";
-import { useMemo } from "react";
-
 import type { HistoricalPowersResponse } from "lib/services/types";
-import { big } from "lib/types";
 import type { AssetInfo, Option, Token, U } from "lib/types";
+
+import { Flex, Heading, Text } from "@chakra-ui/react";
+import { big } from "lib/types";
 import { formatUTokenWithPrecision, getTokenLabel } from "lib/utils";
+import { useMemo } from "react";
 
 const formatArithmetic = (value: Big) => {
   if (value.gt(0)) return "+";
@@ -20,15 +20,15 @@ const formatColor = (value: Big) => {
 };
 
 interface VotingPowerChartDetailsProps {
+  assetInfo: Option<AssetInfo>;
   historicalPowers: HistoricalPowersResponse;
   singleStakingDenom: Option<string>;
-  assetInfo: Option<AssetInfo>;
 }
 
 export const VotingPowerChartDetails = ({
+  assetInfo,
   historicalPowers,
   singleStakingDenom,
-  assetInfo,
 }: VotingPowerChartDetailsProps) => {
   const currency = singleStakingDenom
     ? `${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`
@@ -68,18 +68,18 @@ export const VotingPowerChartDetails = ({
   )}`;
 
   return (
-    <Flex gap={2} direction="column" px={{ base: 0, md: 2 }}>
+    <Flex direction="column" gap={2} px={{ base: 0, md: 2 }}>
       <Heading variant="h6">
         {singleStakingDenom ? "Current bonded token" : "Current voting powers"}
       </Heading>
-      <Heading variant="h5" fontWeight={600}>
+      <Heading fontWeight={600} variant="h5">
         {currentVotingPower} {currency}
       </Heading>
       <Text variant="body1">
         <Text
           as="span"
-          fontWeight={700}
           color={formatColor(compareVotingPower)}
+          fontWeight={700}
         >
           {formattedVotingPower}
         </Text>

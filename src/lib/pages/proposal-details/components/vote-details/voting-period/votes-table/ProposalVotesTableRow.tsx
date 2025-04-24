@@ -1,23 +1,24 @@
-import { Button, Flex, Grid, Text } from "@chakra-ui/react";
+import type { ProposalVote } from "lib/types";
 
+import { Button, Flex, Grid, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Answer, TableRow } from "lib/components/table";
 import { useOpenTxTab } from "lib/hooks";
-import type { ProposalVote } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
+
 import { Voter } from "../table/Voter";
 
 interface ProposalVotesTableRowProps {
+  fullVersion: boolean;
   proposalVote: ProposalVote;
   templateColumns: string;
-  fullVersion: boolean;
 }
 
 export const ProposalVotesTableRow = ({
+  fullVersion,
   proposalVote,
   templateColumns,
-  fullVersion,
 }: ProposalVotesTableRowProps) => {
   const isMobile = useMobile();
   const openTxTab = useOpenTxTab("tx-page");
@@ -26,16 +27,16 @@ export const ProposalVotesTableRow = ({
     return (
       <Grid
         className="copier-wrapper"
-        templateColumns={templateColumns}
         minW="min-content"
+        templateColumns={templateColumns}
       >
         <TableRow pl={0}>
           <Voter proposalVote={proposalVote} />
         </TableRow>
         <TableRow justifyContent="flex-end" pr={0}>
-          <Flex direction="column" alignItems="flex-end">
+          <Flex alignItems="flex-end" direction="column">
             {proposalVote.timestamp ? (
-              <Text variant="body3" color="gray.500" textColor="text.dark">
+              <Text color="gray.500" textColor="text.dark" variant="body3">
                 {dateFromNow(proposalVote.timestamp)}
               </Text>
             ) : (
@@ -43,11 +44,11 @@ export const ProposalVotesTableRow = ({
             )}
             {proposalVote.txHash ? (
               <Button
-                variant="unstyled"
+                color="primary.main"
+                disabled={!proposalVote.txHash}
                 minW="unset"
                 size="sm"
-                disabled={!proposalVote.txHash}
-                color="primary.main"
+                variant="unstyled"
                 onClick={() =>
                   proposalVote.txHash && openTxTab(proposalVote.txHash)
                 }
@@ -63,17 +64,17 @@ export const ProposalVotesTableRow = ({
     );
 
   return (
-    <Grid templateColumns={templateColumns} minW="min-content">
+    <Grid minW="min-content" templateColumns={templateColumns}>
       <TableRow>
         <Voter proposalVote={proposalVote} />
       </TableRow>
       <TableRow>
         <Answer
+          abstain={proposalVote.abstain}
           isVoteWeighted={proposalVote.isVoteWeighted}
-          yes={proposalVote.yes}
           no={proposalVote.no}
           noWithVeto={proposalVote.noWithVeto}
-          abstain={proposalVote.abstain}
+          yes={proposalVote.yes}
         />
       </TableRow>
       {fullVersion && (
@@ -82,7 +83,7 @@ export const ProposalVotesTableRow = ({
             {proposalVote.timestamp ? (
               <Flex direction="column">
                 <Text variant="body3">{formatUTC(proposalVote.timestamp)}</Text>
-                <Text variant="body3" color="text.dark" mt="2px">
+                <Text color="text.dark" mt="2px" variant="body3">
                   ({dateFromNow(proposalVote.timestamp)})
                 </Text>
               </Flex>
@@ -93,9 +94,9 @@ export const ProposalVotesTableRow = ({
           <TableRow>
             {proposalVote.txHash ? (
               <ExplorerLink
+                showCopyOnHover
                 type="tx_hash"
                 value={proposalVote.txHash.toUpperCase()}
-                showCopyOnHover
               />
             ) : (
               <Text variant="body2">N/A</Text>

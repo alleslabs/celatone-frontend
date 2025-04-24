@@ -1,47 +1,48 @@
-import { Box } from "@chakra-ui/react";
+import type { BechAddr, Option } from "lib/types";
 import type { ChangeEvent } from "react";
 
+import { Box } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ErrorFetching } from "lib/components/state";
 import { MobileTitle, ProposalsTable, ViewMore } from "lib/components/table";
 import { useProposalsByAddress } from "lib/services/proposal";
-import type { BechAddr, Option } from "lib/types";
+
 import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
 
 interface OpenedProposalsTableProps {
   address: BechAddr;
+  onViewMore?: () => void;
+  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
-  refetchCount: () => void;
-  onViewMore?: () => void;
 }
 
 export const OpenedProposalsTable = ({
   address,
+  onViewMore,
+  refetchCount,
   scrollComponentId,
   totalData,
-  refetchCount,
-  onViewMore,
 }: OpenedProposalsTableProps) => {
   const isMobile = useMobile();
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: totalData,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: totalData,
   });
 
   const { data: proposals, isLoading } = useProposalsByAddress(
@@ -67,27 +68,27 @@ export const OpenedProposalsTable = ({
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
         <MobileTitle
-          title="Opened proposals"
           count={totalData}
+          title="Opened proposals"
           onViewMore={onViewMore}
         />
       ) : (
         <AccountSectionWrapper title="Opened proposals" totalData={totalData}>
           <ProposalsTable
-            proposals={proposals?.items}
-            isLoading={isLoading}
             emptyState={
               !proposals ? (
                 <ErrorFetching
                   dataName="proposals"
-                  withBorder
-                  my={2}
                   hasBorderTop={false}
+                  my={2}
+                  withBorder
                 />
               ) : (
                 <AccountDetailsEmptyState message="No proposals have been opened by this account before." />
               )
             }
+            isLoading={isLoading}
+            proposals={proposals?.items}
           />
         </AccountSectionWrapper>
       )}
@@ -97,11 +98,11 @@ export const OpenedProposalsTable = ({
           : totalData > 10 && (
               <Pagination
                 currentPage={currentPage}
-                pagesQuantity={pagesQuantity}
                 offset={offset}
-                totalData={totalData}
-                scrollComponentId={scrollComponentId}
                 pageSize={pageSize}
+                pagesQuantity={pagesQuantity}
+                scrollComponentId={scrollComponentId}
+                totalData={totalData}
                 onPageChange={onPageChange}
                 onPageSizeChange={onPageSizeChange}
               />

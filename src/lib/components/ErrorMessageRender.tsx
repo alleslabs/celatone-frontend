@@ -1,4 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
+
 import { Flex, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "./icon";
@@ -12,8 +13,8 @@ export const ErrorMessageRender = ({
   ...restProps
 }: ErrorMessageRenderProps) => (
   <Flex gap={2} {...restProps}>
-    <CustomIcon name="alert-triangle-solid" color="error.main" boxSize={3} />
-    <Text variant="body3" color="error.main">
+    <CustomIcon boxSize={3} color="error.main" name="alert-triangle-solid" />
+    <Text color="error.main" variant="body3">
       {error}
     </Text>
   </Flex>

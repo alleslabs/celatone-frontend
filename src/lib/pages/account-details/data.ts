@@ -1,3 +1,11 @@
+import type {
+  BechAddr,
+  CodeInfo,
+  ContractInfo,
+  Nullish,
+  Option,
+} from "lib/types";
+
 import { useTierConfig } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAccountTableCounts } from "lib/services/account";
@@ -8,29 +16,22 @@ import {
   useInstantiatedContractsByAddress,
   useInstantiatedContractsByAddressRest,
 } from "lib/services/wasm/contract";
-import type {
-  BechAddr,
-  CodeInfo,
-  ContractInfo,
-  Nullish,
-  Option,
-} from "lib/types";
 
 // ------------------------------------------//
 // ---------------TABLE COUNTS---------------//
 // ------------------------------------------//
 
 interface AccountDetailsTableCounts {
+  isLoading: boolean;
+  refetchCounts: () => void;
   tableCounts: {
+    assetsCount: Option<number>;
     codesCount: Nullish<number>;
     contractsAdminCount: Nullish<number>;
     contractsCount: Nullish<number>;
-    txsCount: Nullish<number>;
     proposalsCount: Nullish<number>;
-    assetsCount: Option<number>;
+    txsCount: Nullish<number>;
   };
-  isLoading: boolean;
-  refetchCounts: () => void;
 }
 
 export const useAccountDetailsTableCounts = (
@@ -39,37 +40,37 @@ export const useAccountDetailsTableCounts = (
   const { isFullTier } = useTierConfig();
   const {
     data,
-    refetch,
     isLoading: isLoadingAccountTableCounts,
+    refetch,
   } = useAccountTableCounts(address, { enabled: isFullTier });
   const { data: balances, isLoading: isBalancesLoading } = useBalances(address);
 
   if (!isFullTier) {
     return {
+      isLoading: isBalancesLoading,
+      refetchCounts: refetch,
       tableCounts: {
+        assetsCount: balances?.length,
         codesCount: undefined,
         contractsAdminCount: undefined,
         contractsCount: undefined,
-        txsCount: undefined,
         proposalsCount: undefined,
-        assetsCount: balances?.length,
+        txsCount: undefined,
       },
-      isLoading: isBalancesLoading,
-      refetchCounts: refetch,
     };
   }
 
   return {
+    isLoading: isLoadingAccountTableCounts || isBalancesLoading,
+    refetchCounts: refetch,
     tableCounts: {
+      assetsCount: balances?.length,
       codesCount: data?.code,
       contractsAdminCount: data?.contractByAdmin,
       contractsCount: data?.instantiated,
-      txsCount: data?.tx,
       proposalsCount: data?.proposal,
-      assetsCount: balances?.length,
+      txsCount: data?.tx,
     },
-    isLoading: isLoadingAccountTableCounts || isBalancesLoading,
-    refetchCounts: refetch,
   };
 };
 
@@ -98,10 +99,10 @@ export const useAccountContracts = (
 
     return {
       ...contract,
-      name: localInfo?.name,
       description: localInfo?.description,
-      tags: localInfo?.tags,
       lists: localInfo?.lists,
+      name: localInfo?.name,
+      tags: localInfo?.tags,
     };
   });
   return {
@@ -123,14 +124,14 @@ export const useAccountContractsRest = (
 
     return {
       ...contract,
-      name: localInfo?.name,
-      description: localInfo?.description,
-      tags: localInfo?.tags,
-      lists: localInfo?.lists,
       admin: undefined,
+      description: localInfo?.description,
       latestUpdated: undefined,
       latestUpdater: undefined,
+      lists: localInfo?.lists,
+      name: localInfo?.name,
       remark: undefined,
+      tags: localInfo?.tags,
     };
   });
   return {
@@ -156,10 +157,10 @@ export const useAccountAdminContracts = (
 
     return {
       ...contractAdmin,
-      name: localInfo?.name,
       description: localInfo?.description,
-      tags: localInfo?.tags,
       lists: localInfo?.lists,
+      name: localInfo?.name,
+      tags: localInfo?.tags,
     };
   });
 
@@ -189,8 +190,8 @@ export const useAccountCodes = (
 
   const data = codes?.items?.map<CodeInfo>((code) => ({
     ...code,
-    name: getCodeLocalInfo(code.id)?.name,
     isSaved: isCodeIdSaved(code.id),
+    name: getCodeLocalInfo(code.id)?.name,
   }));
 
   return {

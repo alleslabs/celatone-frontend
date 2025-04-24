@@ -1,78 +1,80 @@
-import { Flex, FormLabel, Input } from "@chakra-ui/react";
+import type { Nullable } from "lib/types";
 import type { Dispatch, ForwardedRef, RefObject, SetStateAction } from "react";
 
+import { Flex, FormLabel, Input } from "@chakra-ui/react";
 import { mergeRefs } from "lib/utils";
+
 import { DropdownChevron } from "../DropdownChevron";
 
 interface FilterInputProps {
-  keyword: string;
-  result: string[];
-  isDropdown: boolean;
   chipContainerComponent: JSX.Element;
-  inputRef: RefObject<HTMLInputElement>;
+  inputRef: RefObject<Nullable<HTMLInputElement>>;
+  isDropdown: boolean;
+  keyword: string;
+  label?: string;
   mainRef: ForwardedRef<HTMLInputElement>;
   placeholder?: string;
-  label?: string;
+  result: string[];
   setIsDropdown: Dispatch<SetStateAction<boolean>>;
   setKeyword: Dispatch<SetStateAction<string>>;
 }
 export const FilterInput = ({
+  chipContainerComponent,
+  inputRef,
+  isDropdown,
   keyword,
+  label,
+  mainRef,
   placeholder,
   result,
-  isDropdown,
-  label,
-  inputRef,
-  mainRef,
   setIsDropdown,
   setKeyword,
-  chipContainerComponent,
 }: FilterInputProps) => (
   <>
     <Flex
-      w="full"
-      color="text.main"
+      alignItems="center"
       background="none"
-      borderRadius="8px"
       border="1px solid"
       borderColor="gray.700"
+      borderRadius="8px"
+      color="text.main"
       overflowX="scroll"
-      alignItems="center"
+      w="full"
     >
       {chipContainerComponent}
       <Input
-        value={keyword}
-        w="full"
+        style={{ border: 0, maxHeight: "54px" }}
         autoComplete="off"
-        size="lg"
+        maxLength={36}
         minW="150px"
         placeholder={result.length > 0 ? "" : placeholder}
-        ref={mergeRefs([inputRef, mainRef])}
-        maxLength={36}
-        style={{ border: 0, maxHeight: "54px" }}
-        onFocus={() => setIsDropdown(true)}
+        size="lg"
+        value={keyword}
+        w="full"
         onChange={(e) => setKeyword(e.currentTarget.value)}
         onClick={() => setIsDropdown(true)}
+        onFocus={() => setIsDropdown(true)}
+        ref={mergeRefs([inputRef, mainRef])}
       />
       <DropdownChevron
-        isOpen={isDropdown}
         // input max height 54px + border top and bottom 2px
         height="56px"
+        isOpen={isDropdown}
         onClick={() => setIsDropdown((prev) => !prev)}
       />
     </Flex>
 
     <FormLabel
-      position="absolute"
-      top={0}
-      left={0}
-      fontWeight={400}
-      color="text.dark"
       bgColor="background.main"
-      pointerEvents="none"
-      px={1}
-      my={2}
+      color="text.dark"
+      fontWeight={400}
+      left={0}
       lineHeight="1.2"
+      my={2}
+      pointerEvents="none"
+      position="absolute"
+      px={1}
+      top={0}
       transform="scale(0.75) translateY(-24px) translateX(0px)"
     >
       {label}

@@ -1,18 +1,18 @@
 import { chakra, IconButton, Text, useToast } from "@chakra-ui/react";
-import { useCallback } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
 import { getNameAndDescriptionDefault, shortenName } from "lib/utils";
+import { useCallback } from "react";
+
 import { ActionModal } from "../ActionModal";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "22px",
     borderRadius: "36px",
+    display: "flex",
+    fontSize: "22px",
   },
 });
 
@@ -42,30 +42,30 @@ export function RemoveCodeModal({
     removeSavedCode(codeId);
 
     toast({
+      duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+      isClosable: false,
+      position: "bottom-right",
+      status: "success",
       title: `Removed \u2018${
         shortenName(getNameAndDescriptionDefault(name), 20) || codeId
       }\u2019 from Saved Codes`,
-      status: "success",
-      duration: 5000,
-      isClosable: false,
-      position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   }, [codeId, name, removeSavedCode, toast]);
 
   return (
     <ActionModal
+      icon="delete"
+      iconColor="error.light"
+      mainAction={handleRemove}
+      mainBtnTitle="Yes, remove it"
+      mainVariant="error"
+      otherBtnTitle="No, keep it"
       title={
         name
           ? `Remove \u2018${shortenName(name, 20)}\u2019?`
           : `Remove code ID: ${codeId} ?`
       }
-      icon="delete"
-      iconColor="error.light"
-      mainVariant="error"
-      mainBtnTitle="Yes, remove it"
-      mainAction={handleRemove}
-      otherBtnTitle="No, keep it"
       trigger={trigger}
     >
       <Text>

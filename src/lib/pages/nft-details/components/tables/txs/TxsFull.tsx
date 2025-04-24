@@ -1,10 +1,10 @@
-import { Box } from "@chakra-ui/react";
+import type { HexAddr32 } from "lib/types";
 
+import { Box } from "@chakra-ui/react";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useNftTransactions } from "lib/services/nft";
-import type { HexAddr32 } from "lib/types";
 
 import { TxsTable } from "./TxsTable";
 
@@ -14,18 +14,18 @@ interface TxsFullProps {
 
 export const TxsFull = ({ nftAddress }: TxsFullProps) => {
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
     setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
@@ -39,19 +39,19 @@ export const TxsFull = ({ nftAddress }: TxsFullProps) => {
   return (
     <Box>
       <TxsTable
-        txs={transactions?.items}
-        isLoading={isLoading}
         emptyState={
           <EmptyState imageVariant="empty" message="Transactions not found." />
         }
+        isLoading={isLoading}
+        txs={transactions?.items}
       />
       {transactions && transactions?.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={transactions.total}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={transactions.total}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

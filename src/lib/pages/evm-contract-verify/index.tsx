@@ -1,3 +1,10 @@
+import type {
+  EvmContractVerifyForm,
+  EvmVerifyConfig,
+  HexAddr20,
+  Option,
+} from "lib/types";
+
 import { track } from "@amplitude/analytics-browser";
 import {
   Divider,
@@ -10,17 +17,14 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
 import { AmpEvent } from "lib/amplitude";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
   useEvmConfig,
   useExampleAddresses,
-  useMobile,
   useIsApiChain,
+  useMobile,
 } from "lib/app-provider";
 import { ControllerInput, SelectInput } from "lib/components/forms";
 import { Loading } from "lib/components/Loading";
@@ -46,13 +50,11 @@ import {
   zEvmContractVerifyVyperOptionJsonInputForm,
   zEvmContractVerifyVyperOptionUploadFileForm,
 } from "lib/types";
-import type {
-  EvmContractVerifyForm,
-  EvmVerifyConfig,
-  HexAddr20,
-  Option,
-} from "lib/types";
 import { bech32AddressToHex, isHex20Bytes, truncate } from "lib/utils";
+import { useRouter } from "next/router";
+import { useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
+
 import { ContractLicenseInfoAccordion } from "./components/ContractLicenseInfoAccordion";
 import { EvmContractVerifyModal } from "./components/evm-contract-verify-modal";
 import { EvmContractFooter } from "./components/EvmContractVerifyFooter";
@@ -85,42 +87,41 @@ export const EvmContractVerifyBody = ({
   const queryClient = useQueryClient();
   const { currentChainId } = useCelatoneApp();
   const { user: exampleBechAddress } = useExampleAddresses();
-  const { mutate, isLoading, isError } = useSubmitEvmVerify();
+  const { isError, isLoading, mutate } = useSubmitEvmVerify();
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_EVM_CONTRACT_VERIFY);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
   const {
     control,
-    watch,
-    setValue,
     formState: { errors },
+    setValue,
+    watch,
   } = useForm<EvmContractVerifyForm>({
-    resolver: zodResolver(zEvmContractVerifyForm),
-    mode: "all",
-    reValidateMode: "onChange",
     defaultValues: getEvmContractVerifyFormDefaultValue(
       contractAddressQueryParam
     ),
+    mode: "all",
+    resolver: zodResolver(zEvmContractVerifyForm),
+    reValidateMode: "onChange",
   });
   const {
-    licenseType,
+    compilerVersion,
     contractAddress,
     language,
-    compilerVersion,
+    licenseType,
     option,
     verifyForm,
   } = watch();
 
-  const { licenseTypeOptions, compilerVersionOptions } = useMemo(
+  const { compilerVersionOptions, licenseTypeOptions } = useMemo(
     () => ({
-      licenseTypeOptions: getLicenseTypeOptions(evmVerifyConfig),
       compilerVersionOptions:
         language === EvmProgrammingLanguage.Solidity
           ? formatEvmOptions(evmVerifyConfig.solidityCompilerVersions)
           : formatEvmOptions(evmVerifyConfig.vyperCompilerVersions),
+      licenseTypeOptions: getLicenseTypeOptions(evmVerifyConfig),
     }),
     [evmVerifyConfig, language]
   );
@@ -129,7 +130,7 @@ export const EvmContractVerifyBody = ({
   const evmVerifyInfo =
     evmVerifyInfos?.[contractAddress.toLowerCase()] ?? undefined;
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const isVerifyByExternals =
     option === EvmVerifyOptions.SolidityFoundry ||
     option === EvmVerifyOptions.SolidityHardhat;
@@ -137,10 +138,10 @@ export const EvmContractVerifyBody = ({
   const isFormDisabled = () => {
     const isEvmContractVerifyBaseSuccess =
       zEvmContractVerifyBase.safeParse({
-        contractAddress,
-        licenseType,
-        language,
         compilerVersion,
+        contractAddress,
+        language,
+        licenseType,
         option,
       }).success &&
       language !== undefined &&
@@ -205,12 +206,12 @@ export const EvmContractVerifyBody = ({
     if (!option || !language || !licenseType) return;
     mutate(
       {
+        chainId: currentChainId,
+        compilerVersion,
+        contractAddress,
+        licenseType,
         option,
         verifyForm,
-        contractAddress,
-        compilerVersion,
-        licenseType,
-        chainId: currentChainId,
       },
       {
         onSuccess: () => {
@@ -229,20 +230,20 @@ export const EvmContractVerifyBody = ({
         <NoMobile />
       ) : (
         <>
-          <PageContainer px={12} pt={9} pb={40} p={0}>
+          <PageContainer p={0} pb={40} pt={9} px={12}>
             <Grid
-              w="100%"
-              templateColumns="6fr 4fr"
               columnGap="32px"
-              rowGap="48px"
               maxW="1080px"
               mx="auto"
+              rowGap="48px"
+              templateColumns="6fr 4fr"
+              w="100%"
             >
               <GridItem colSpan={1}>
                 <EvmContractVerifyTop />
               </GridItem>
               <GridItem colSpan={2}>
-                <Grid templateColumns="6fr 4fr" columnGap="32px" rowGap="24px">
+                <Grid columnGap="32px" rowGap="24px" templateColumns="6fr 4fr">
                   <GridItem colSpan={2}>
                     <Heading as="h6" variant="h6">
                       Contract address & license
@@ -250,41 +251,41 @@ export const EvmContractVerifyBody = ({
                   </GridItem>
                   <GridItem colSpan={1}>
                     <ControllerInput
-                      label="Contract address"
-                      isRequired
-                      placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechAddress))}`}
-                      name="contractAddress"
                       control={control}
-                      variant="fixed-floating"
-                      status={{
-                        state: isHex20Bytes(contractAddress)
-                          ? "success"
-                          : "init",
-                      }}
                       error={
                         evmVerifyInfo?.isVerified
                           ? "Contract is already verified"
                           : errors.contractAddress?.message
                       }
+                      isRequired
+                      label="Contract address"
+                      name="contractAddress"
+                      placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechAddress))}`}
                       rules={{
                         required: "",
                       }}
+                      status={{
+                        state: isHex20Bytes(contractAddress)
+                          ? "success"
+                          : "init",
+                      }}
+                      variant="fixed-floating"
                     />
                   </GridItem>
                   <GridItem colSpan={1} colStart={1}>
                     <SelectInput
+                      isRequired
                       label="License type"
                       menuPortalTarget={document.body}
-                      isRequired
-                      placeholder="Select license type"
                       options={licenseTypeOptions}
+                      placeholder="Select license type"
+                      value={licenseTypeOptions.find(
+                        (option) => option.value === licenseType
+                      )}
                       onChange={(selectedOption) => {
                         if (!selectedOption) return;
                         setValue("licenseType", selectedOption.value);
                       }}
-                      value={licenseTypeOptions.find(
-                        (option) => option.value === licenseType
-                      )}
                     />
                   </GridItem>
                   <GridItem maxHeight={0}>
@@ -298,17 +299,21 @@ export const EvmContractVerifyBody = ({
                     <Heading as="h6" variant="h6">
                       Verification method
                     </Heading>
-                    <Text variant="body2" color="text.dark">
+                    <Text color="text.dark" variant="body2">
                       Please ensure the setting is the matching with the created
                       contract
                     </Text>
                   </Stack>
-                  <Grid templateColumns="repeat(2, 1fr)" columnGap="24px">
+                  <Grid columnGap="24px" templateColumns="repeat(2, 1fr)">
                     <SelectInput
-                      label="Language"
                       isRequired
-                      placeholder="Select language"
+                      label="Language"
+                      menuPortalTarget={document.body}
                       options={PROGRAMMING_LANGUAGE_OPTIONS}
+                      placeholder="Select language"
+                      value={PROGRAMMING_LANGUAGE_OPTIONS.find(
+                        (option) => option.value === language
+                      )}
                       onChange={(selectedOption) => {
                         if (!selectedOption) return;
                         setValue("language", selectedOption.value);
@@ -321,25 +326,21 @@ export const EvmContractVerifyBody = ({
                             : EvmVerifyOptions.VyperUploadFile
                         );
                       }}
-                      value={PROGRAMMING_LANGUAGE_OPTIONS.find(
-                        (option) => option.value === language
-                      )}
-                      menuPortalTarget={document.body}
                     />
                     <SelectInput
-                      label="Compiler version"
+                      isDisabled={!language}
                       isRequired
-                      placeholder="Select compiler version"
+                      label="Compiler version"
+                      menuPortalTarget={document.body}
                       options={compilerVersionOptions}
+                      placeholder="Select compiler version"
+                      value={compilerVersionOptions.find(
+                        (option) => option.value === compilerVersion
+                      )}
                       onChange={(selectedOption) => {
                         if (!selectedOption) return;
                         setValue("compilerVersion", selectedOption.value);
                       }}
-                      value={compilerVersionOptions.find(
-                        (option) => option.value === compilerVersion
-                      )}
-                      menuPortalTarget={document.body}
-                      isDisabled={!language}
                     />
                   </Grid>
                 </Stack>
@@ -347,9 +348,9 @@ export const EvmContractVerifyBody = ({
               {language && (
                 <GridItem colSpan={2} colStart={1}>
                   <Grid
-                    templateColumns="6fr 4fr"
                     columnGap="32px"
                     rowGap="24px"
+                    templateColumns="6fr 4fr"
                   >
                     <Stack gap={12}>
                       <EvmContractVerifyOptions control={control} />
@@ -392,11 +393,11 @@ export const EvmContractVerifyBody = ({
             />
           ) : (
             <EvmContractVerifyModal
-              isOpen={isOpen}
-              onClose={onClose}
+              control={control}
               isError={isError}
               isLoading={isLoading}
-              control={control}
+              isOpen={isOpen}
+              onClose={onClose}
             />
           )}
         </>

@@ -1,9 +1,11 @@
-import { Heading, Stack } from "@chakra-ui/react";
+import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
 import type { Control } from "react-hook-form";
-import { useController } from "react-hook-form";
+
+import { Heading, Stack } from "@chakra-ui/react";
 import { ControllerTextarea } from "lib/components/forms";
 import { EvmVerifyOptions } from "lib/types";
-import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import { useController } from "react-hook-form";
+
 import { ConstructorArgs } from "../ConstructorArgs";
 import { ContractLibraries } from "../ContractLibraries";
 import { EvmContractVerifyAlert } from "../EvmContractVerifyAlert";
@@ -34,14 +36,14 @@ export const EvmContractVerifySolidityContractCode = ({
           Provide Contract Code
         </Heading>
         <ControllerTextarea
-          label="Contract code"
-          placeholder="Provide contract source code here"
-          name="verifyForm.solidityContractCode.contractCode"
-          isRequired
           control={control}
-          variant="fixed-floating"
           error={error?.message}
           height="400px"
+          isRequired
+          label="Contract code"
+          name="verifyForm.solidityContractCode.contractCode"
+          placeholder="Provide contract source code here"
+          variant="fixed-floating"
         />
       </Stack>
       <ConstructorArgs<EvmContractVerifyForm>
@@ -50,8 +52,8 @@ export const EvmContractVerifySolidityContractCode = ({
       />
       <EvmVersionToTarget<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityContractCode.evmVersion"
         evmVerifyConfig={evmVerifyConfig}
+        name="verifyForm.solidityContractCode.evmVersion"
       />
       <OptimizerConfiguration<EvmContractVerifyForm>
         control={control}

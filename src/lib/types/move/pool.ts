@@ -8,21 +8,21 @@ export type MovePoolInfos = Record<
   string,
   {
     coinA: {
-      metadata: HexAddr;
-      denom: string;
       amountAPerShare: U<Token<Big>>;
+      denom: string;
+      metadata: HexAddr;
       precision: Option<number>;
       symbol: Option<string>;
     };
     coinB: {
-      metadata: HexAddr;
-      denom: string;
       amountBPerShare: U<Token<Big>>;
+      denom: string;
+      metadata: HexAddr;
       precision: Option<number>;
       symbol: Option<string>;
     };
+    logo: Option<string>[];
     lpPricePerPShare: Option<USD<Big>>;
     precision: number;
-    logo: Option<string>[];
   }
 >;

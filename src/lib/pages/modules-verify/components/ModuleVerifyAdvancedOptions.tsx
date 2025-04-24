@@ -1,3 +1,6 @@
+import type { MoveVerifyConfig } from "lib/types";
+import type { Control, UseFormSetValue } from "react-hook-form";
+
 import {
   Accordion,
   AccordionButton,
@@ -8,24 +11,24 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { SelectInput } from "lib/components/forms";
 import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
-import type { Control, UseFormSetValue } from "react-hook-form";
-import { SelectInput } from "lib/components/forms";
-import type { MoveVerifyConfig } from "lib/types";
-import { formatMoveOptions } from "../helpers";
+
 import type { ModuleVerifyForm } from "../types";
+
+import { formatMoveOptions } from "../helpers";
 
 interface ModuleVerifyAdvancedOptionsProps {
   control: Control<ModuleVerifyForm>;
-  setValue: UseFormSetValue<ModuleVerifyForm>;
   moveVerifyConfig: MoveVerifyConfig;
+  setValue: UseFormSetValue<ModuleVerifyForm>;
 }
 
 export const ModuleVerifyAdvancedOptions = ({
   control,
-  setValue,
   moveVerifyConfig,
+  setValue,
 }: ModuleVerifyAdvancedOptionsProps) => {
   const [bytecodeVersion, compilerVersion, languageVersion] = useWatch({
     control,
@@ -33,19 +36,19 @@ export const ModuleVerifyAdvancedOptions = ({
   });
 
   const {
-    languageVersionOptions,
-    compilerVersionOptions,
     bytecodeVersionOptions,
+    compilerVersionOptions,
+    languageVersionOptions,
   } = useMemo(() => {
     return {
-      languageVersionOptions: formatMoveOptions(
-        moveVerifyConfig.enableLanguageVersions
+      bytecodeVersionOptions: formatMoveOptions(
+        moveVerifyConfig.enableBytecodeVersions
       ),
       compilerVersionOptions: formatMoveOptions(
         moveVerifyConfig.enableCompilerVersions
       ),
-      bytecodeVersionOptions: formatMoveOptions(
-        moveVerifyConfig.enableBytecodeVersions
+      languageVersionOptions: formatMoveOptions(
+        moveVerifyConfig.enableLanguageVersions
       ),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,14 +59,14 @@ export const ModuleVerifyAdvancedOptions = ({
       <AccordionItem>
         <AccordionButton>
           <Flex
-            p={4}
-            justifyContent="space-between"
-            w="full"
             alignItems="center"
+            justifyContent="space-between"
+            p={4}
+            w="full"
           >
-            <Flex direction="column" gap={1} alignItems="flex-start">
+            <Flex alignItems="flex-start" direction="column" gap={1}>
               <Text>Advanced options</Text>
-              <Text variant="body3" color="text.dark" textAlign="left">
+              <Text color="text.dark" textAlign="left" variant="body3">
                 Skip this section if you built your module with default
                 settings. Otherwise, ensure your specified versions match here
                 to prevent verification errors.
@@ -76,45 +79,45 @@ export const ModuleVerifyAdvancedOptions = ({
           <Stack gap={6}>
             <SelectInput
               label="Language version"
+              labelBg="gray.900"
               menuPortalTarget={document.body}
-              placeholder="Select language version"
               options={languageVersionOptions}
+              placeholder="Select language version"
+              value={languageVersionOptions.find(
+                (option) => option.value === languageVersion
+              )}
               onChange={(selectedOption) => {
                 if (!selectedOption) return;
                 setValue("languageVersion", selectedOption.value);
               }}
-              value={languageVersionOptions.find(
-                (option) => option.value === languageVersion
-              )}
-              labelBg="gray.900"
             />
             <SelectInput
               label="Compiler version"
+              labelBg="gray.900"
               menuPortalTarget={document.body}
-              placeholder="Select compiler version"
               options={compilerVersionOptions}
+              placeholder="Select compiler version"
+              value={compilerVersionOptions.find(
+                (option) => option.value === compilerVersion
+              )}
               onChange={(selectedOption) => {
                 if (!selectedOption) return;
                 setValue("compilerVersion", selectedOption.value);
               }}
-              value={compilerVersionOptions.find(
-                (option) => option.value === compilerVersion
-              )}
-              labelBg="gray.900"
             />
             <SelectInput
               label="Bytecode version"
+              labelBg="gray.900"
               menuPortalTarget={document.body}
-              placeholder="Select bytecode version"
               options={bytecodeVersionOptions}
+              placeholder="Select bytecode version"
+              value={bytecodeVersionOptions.find(
+                (option) => option.value === bytecodeVersion
+              )}
               onChange={(selectedOption) => {
                 if (!selectedOption) return;
                 setValue("bytecodeVersion", selectedOption.value);
               }}
-              value={bytecodeVersionOptions.find(
-                (option) => option.value === bytecodeVersion
-              )}
-              labelBg="gray.900"
             />
           </Stack>
         </AccordionPanel>

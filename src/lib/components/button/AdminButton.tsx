@@ -1,17 +1,18 @@
-import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-
-import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import type { BechAddr, BechAddr32, Nullable } from "lib/types";
+
+import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
+
 import { CustomIcon } from "../icon";
 import { ClearAdminModal } from "../modal/contract/ClearAdmin";
 import { Tooltip } from "../Tooltip";
 
 interface AdminButtonProps {
-  contractAddress: BechAddr32;
   admin: Nullable<BechAddr>;
+  contractAddress: BechAddr32;
 }
 
-export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
+export const AdminButton = ({ admin, contractAddress }: AdminButtonProps) => {
   const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
 
@@ -19,22 +20,22 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
   return (
     <Menu>
       <Tooltip
-        label="You don't have admin access to this contract."
         hidden={isAdmin}
+        label="You don't have admin access to this contract."
       >
         <MenuButton
-          variant="outline-gray"
-          size={{ base: "sm", md: "md" }}
           as={Button}
           isDisabled={!isAdmin}
           rightIcon={<CustomIcon name="chevron-down" />}
+          size={{ base: "sm", md: "md" }}
+          variant="outline-gray"
         >
           Admin
         </MenuButton>
       </Tooltip>
       <MenuList>
         <MenuItem
-          icon={<CustomIcon name="migrate" color="gray.600" />}
+          icon={<CustomIcon color="gray.600" name="migrate" />}
           onClick={() => {
             navigate({
               pathname: "/migrate",
@@ -45,7 +46,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
           Migrate
         </MenuItem>
         <MenuItem
-          icon={<CustomIcon name="admin" color="gray.600" />}
+          icon={<CustomIcon color="gray.600" name="admin" />}
           onClick={() => {
             navigate({
               pathname: "/admin",
@@ -58,7 +59,7 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
         <ClearAdminModal
           contractAddress={contractAddress}
           triggerElement={
-            <MenuItem icon={<CustomIcon name="admin-clear" color="gray.600" />}>
+            <MenuItem icon={<CustomIcon color="gray.600" name="admin-clear" />}>
               Clear admin
             </MenuItem>
           }

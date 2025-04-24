@@ -1,25 +1,25 @@
-import { TableContainer } from "@chakra-ui/react";
+import type { ModuleHistory } from "lib/services/types";
+import type { Option } from "lib/types";
 
+import { TableContainer } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { MobileTableContainer } from "lib/components/table";
-import type { ModuleHistory } from "lib/services/types";
-import type { Option } from "lib/types";
 
 import { PublishedEventsTableHeader } from "./PublishedEventsTableHeader";
 import { PublishedEventsTableMobileCard } from "./PublishedEventsTableMobileCard";
 import { PublishedEventsTableRow } from "./PublishedEventsTableRow";
 
 interface PublishedEventsTableProps {
-  moduleHistories: Option<ModuleHistory[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
+  isLoading: boolean;
+  moduleHistories: Option<ModuleHistory[]>;
 }
 
 export const PublishedEventsTable = ({
-  moduleHistories,
-  isLoading,
   emptyState,
+  isLoading,
+  moduleHistories,
 }: PublishedEventsTableProps) => {
   const isMobile = useMobile();
 
@@ -43,8 +43,8 @@ export const PublishedEventsTable = ({
       {moduleHistories.map((history) => (
         <PublishedEventsTableRow
           key={JSON.stringify(history)}
-          templateColumns={templateColumns}
           history={history}
+          templateColumns={templateColumns}
         />
       ))}
     </TableContainer>

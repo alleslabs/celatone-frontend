@@ -1,5 +1,7 @@
-import { CHAIN } from "env";
 import type { Option } from "lib/types";
+
+import { CHAIN } from "env";
+
 import { DEFAULT_THEME } from "./default";
 import { INITIA_THEME } from "./initia";
 import { SEI_THEME } from "./sei";

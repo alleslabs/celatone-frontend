@@ -1,6 +1,4 @@
 import { Box, Button, Divider, Flex, SimpleGrid } from "@chakra-ui/react";
-import { useState } from "react";
-
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { MotionBox } from "lib/components/MotionBox";
@@ -10,6 +8,8 @@ import {
   formatPrettyPercent,
   formatTokenWithValue,
 } from "lib/utils";
+import { useState } from "react";
+
 import type { GasInfo } from "../data";
 
 interface EvmTxGasReceiptProps {
@@ -25,8 +25,8 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
       <SimpleGrid columns={{ base: 2, md: 1 }} gap={4}>
         <LabelText flex={1} label="Transaction fee">
           <TokenImageWithAmount
-            token={gasInfo.txFee}
             hasTrailingZeros={false}
+            token={gasInfo.txFee}
           />
         </LabelText>
         <LabelText label="Gas price">
@@ -42,24 +42,24 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
       {gasInfo.isEIP1559 && (
         <Box>
           <MotionBox
-            border="1px solid"
-            backgroundColor={expand ? "gray.900" : "transparent"}
-            borderRadius="8px"
-            borderColor="gray.800"
-            variants={{
-              expanded: {
-                opacity: 1,
-                height: "auto",
-                marginBottom: "16px",
-              },
-              collapsed: { opacity: 0, height: 0, marginBottom: 0 },
-            }}
-            overflow="hidden"
-            initial="collapsed"
             animate={expand ? "expanded" : "collapsed"}
+            backgroundColor={expand ? "gray.900" : "transparent"}
+            border="1px solid"
+            borderColor="gray.800"
+            borderRadius="8px"
+            initial="collapsed"
+            overflow="hidden"
             transition={{
               duration: "0.25",
               ease: "easeInOut",
+            }}
+            variants={{
+              collapsed: { height: 0, marginBottom: 0, opacity: 0 },
+              expanded: {
+                height: "auto",
+                marginBottom: "16px",
+                opacity: 1,
+              },
             }}
           >
             <Flex direction="column" gap={6} m={4}>
@@ -75,15 +75,15 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
             </Flex>
           </MotionBox>
           <Button
-            variant="ghost-primary"
-            w="fit-content"
-            size="sm"
             rightIcon={
               <CustomIcon
-                name={expand ? "chevron-up" : "chevron-down"}
                 boxSize={3}
+                name={expand ? "chevron-up" : "chevron-down"}
               />
             }
+            size="sm"
+            variant="ghost-primary"
+            w="fit-content"
             onClick={() => setExpand(!expand)}
           >
             {expand ? "Hide gas info" : "See more gas info"}

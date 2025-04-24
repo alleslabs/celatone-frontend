@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { ProposalStatus } from "lib/types";
+
 import { StatusChip } from "../StatusChip";
 
 const meta: Meta<typeof StatusChip> = {
@@ -22,14 +23,14 @@ export const NormalChip: Story = {
 
 export const TransparentChip: Story = {
   args: {
-    status: ProposalStatus.DEPOSIT_PERIOD,
     isTransparent: true,
+    status: ProposalStatus.DEPOSIT_PERIOD,
   },
 };
 
 export const FilterChip: Story = {
   args: {
-    status: ProposalStatus.DEPOSIT_PERIOD,
     hasCloseBtn: true,
+    status: ProposalStatus.DEPOSIT_PERIOD,
   },
 };

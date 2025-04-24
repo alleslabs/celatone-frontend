@@ -1,7 +1,7 @@
-import { MAINNET, TESTNET } from "@initia/react-wallet-widget/ssr";
 import type { WidgetWallet } from "@initia/utils";
-import { SUPPORTED_NETWORK_TYPES } from "env";
 
+import { MAINNET, TESTNET } from "@initia/react-wallet-widget/ssr";
+import { SUPPORTED_NETWORK_TYPES } from "env";
 import { useCelatoneApp } from "lib/app-provider";
 import { zHexAddr32 } from "lib/types";
 

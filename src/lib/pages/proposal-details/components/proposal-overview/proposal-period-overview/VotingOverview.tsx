@@ -1,5 +1,4 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-
 import { useGovConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -7,17 +6,18 @@ import { TabIndex } from "lib/pages/proposal-details/types";
 import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
 
-import { VotingOverviewQuorum } from "./VotingOverviewQuorum";
-import { VotingOverviewThreshold } from "./VotingOverviewThreshold";
 import type { ProposalOverviewProps } from "..";
+
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import { NoVotingPeriodTallyAlert } from "../../NoVotingPeriodTally";
+import { VotingOverviewQuorum } from "./VotingOverviewQuorum";
+import { VotingOverviewThreshold } from "./VotingOverviewThreshold";
 
 const VotingOverviewBody = ({
-  proposalData,
-  params,
-  votesInfo,
   isLoading,
+  params,
+  proposalData,
+  votesInfo,
 }: ProposalOverviewProps) => {
   const navigate = useInternalNavigate();
 
@@ -32,20 +32,20 @@ const VotingOverviewBody = ({
 
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
     return (
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         The proposal will progress to voting period after meet the minimum
         required deposit.
       </Text>
     );
   if (proposalData.status === ProposalStatus.DEPOSIT_FAILED)
     return (
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         The proposal is rejected as it did not meet the required deposit.
       </Text>
     );
   if (proposalData.status === ProposalStatus.CANCELLED)
     return (
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         The proposal was cancelled during the{" "}
         {proposalData.votingTime ? "voting" : "deposit"} period at{" "}
         {proposalData.resolvedTimestamp
@@ -60,27 +60,27 @@ const VotingOverviewBody = ({
   return (
     <>
       <VotingOverviewQuorum
-        proposalData={proposalData}
         params={params}
+        proposalData={proposalData}
         votesInfo={votesInfo}
       />
       <VotingOverviewThreshold
-        proposalData={proposalData}
         params={params}
+        proposalData={proposalData}
         votesInfo={votesInfo}
       />
       <Button
-        variant="ghost-primary"
         rightIcon={<CustomIcon name="chevron-right" />}
+        variant="ghost-primary"
         onClick={() =>
           navigate({
+            options: {
+              shallow: true,
+            },
             pathname: "/proposals/[proposalId]/[tab]",
             query: {
               proposalId: proposalData.id,
               tab: TabIndex.Vote,
-            },
-            options: {
-              shallow: true,
             },
           })
         }

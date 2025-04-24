@@ -10,18 +10,18 @@ export const RecentBlocksTableFull = ({
   isViewMore,
 }: RecentBlocksTableProps) => {
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: isViewMore ? 5 : 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: isViewMore ? 5 : 10,
     },
   });
   const { data, isLoading } = useBlocks(pageSize, offset, {
@@ -32,7 +32,6 @@ export const RecentBlocksTableFull = ({
     <>
       <BlocksTable
         blocks={data?.items}
-        isLoading={isLoading}
         emptyState={
           <EmptyState
             imageVariant="empty"
@@ -40,14 +39,15 @@ export const RecentBlocksTableFull = ({
             withBorder
           />
         }
+        isLoading={isLoading}
       />
       {!isViewMore && data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={data.total}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={data.total}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

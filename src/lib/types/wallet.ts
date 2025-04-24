@@ -1,19 +1,19 @@
 import type { MouseEventHandler } from "react";
 
 export enum WalletStatus {
-  NotInit = "NotInit",
-  Loading = "Loading",
   Loaded = "Loaded",
+  Loading = "Loading",
   NotExist = "NotExist",
+  NotInit = "NotInit",
   Rejected = "Rejected",
 }
 
 export interface ConnectWalletType {
   buttonText?: string;
-  isLoading?: boolean;
-  isDisabled?: boolean;
-  iconColor?: string;
-  variant?: string;
   hasIcon?: boolean;
+  iconColor?: string;
+  isDisabled?: boolean;
+  isLoading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  variant?: string;
 }

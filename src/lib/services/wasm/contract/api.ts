@@ -1,9 +1,10 @@
-import axios from "axios";
-
 import type {
   ContractsResponse,
   ContractTableCounts,
 } from "lib/services/types/";
+import type { BechAddr, BechAddr32, Dict } from "lib/types";
+
+import axios from "axios";
 import {
   zAllAdminContractsResponse,
   zContractAdminsResponse,
@@ -12,7 +13,6 @@ import {
   zContractTableCounts,
   zMigrationHistoriesResponse,
 } from "lib/services/types/";
-import type { BechAddr, BechAddr32, Dict } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getContracts = async (

@@ -1,26 +1,26 @@
-import { Box } from "@chakra-ui/react";
-
-import { useMobile } from "lib/app-provider";
-import { MobileTitle } from "lib/components/table";
 import type { BechAddr, Option, ResourceGroup } from "lib/types";
 
-import { ResourceOverviewBody } from "./ResourceOverviewBody";
+import { Box } from "@chakra-ui/react";
+import { useMobile } from "lib/app-provider";
+import { MobileTitle } from "lib/components/table";
+
 import AccountSectionWrapper from "../AccountSectionWrapper";
+import { ResourceOverviewBody } from "./ResourceOverviewBody";
 
 interface ResourceOverviewProps {
   address: BechAddr;
-  totalCount: Option<number>;
-  resourcesByName: Option<ResourceGroup[]>;
   isLoading: boolean;
   onViewMore: () => void;
+  resourcesByName: Option<ResourceGroup[]>;
+  totalCount: Option<number>;
 }
 
 export const ResourceOverview = ({
   address,
-  totalCount,
-  resourcesByName,
   isLoading,
   onViewMore,
+  resourcesByName,
+  totalCount,
 }: ResourceOverviewProps) => {
   const isMobile = useMobile();
 
@@ -28,21 +28,21 @@ export const ResourceOverview = ({
     <Box mt={{ base: 4, md: 8 }}>
       {isMobile ? (
         <MobileTitle
-          title="Resources"
           count={totalCount}
+          title="Resources"
           onViewMore={onViewMore}
         />
       ) : (
         <AccountSectionWrapper
-          title="Resources"
-          showCount={false}
-          helperText="This account stored the following resources"
           hasHelperText={!!resourcesByName?.length}
+          helperText="This account stored the following resources"
+          showCount={false}
+          title="Resources"
         >
           <ResourceOverviewBody
             address={address}
-            resourcesByName={resourcesByName}
             isLoading={isLoading}
+            resourcesByName={resourcesByName}
             onViewMore={onViewMore}
           />
         </AccountSectionWrapper>

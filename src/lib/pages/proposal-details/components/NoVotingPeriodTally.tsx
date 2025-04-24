@@ -1,5 +1,4 @@
 import { Alert, AlertDescription } from "@chakra-ui/react";
-
 import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 
@@ -15,8 +14,8 @@ export const NoVotingPeriodTallyExplanation = () => {
 };
 
 export const NoVotingPeriodTallyAlert = () => (
-  <Alert variant="warning" gap={3}>
-    <CustomIcon name="alert-triangle-solid" boxSize={4} color="warning.main" />
+  <Alert gap={3} variant="warning">
+    <CustomIcon boxSize={4} color="warning.main" name="alert-triangle-solid" />
     <AlertDescription>
       <NoVotingPeriodTallyExplanation />
     </AlertDescription>

@@ -1,26 +1,27 @@
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
-import { Coins, MsgInstantiateContract } from "@initia/initia.js";
-import { useCallback } from "react";
+import type { BechAddr32, Coin } from "lib/types";
 
+import { Coins, MsgInstantiateContract } from "@initia/initia.js";
 import { trackTxSucceed } from "lib/amplitude";
 import { instantiateContractTx } from "lib/app-fns/tx/instantiate";
-import type { BechAddr32, Coin } from "lib/types";
 import { libEncode, toEncodeObject } from "lib/utils";
+import { useCallback } from "react";
+
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface InstantiateStreamParams {
-  estimatedFee: StdFee | undefined;
+  admin: string;
   codeId: number;
+  estimatedFee: StdFee | undefined;
+  funds: Coin[];
   initMsg: object;
   label: string;
-  admin: string;
-  funds: Coin[];
+  onTxFailed?: () => void;
   onTxSucceed?: (
     txResult: DeliverTxResponse,
     contractLabel: string,
     contractAddress: BechAddr32
   ) => void;
-  onTxFailed?: () => void;
 }
 
 export const useInstantiateContractTx = () => {
@@ -29,14 +30,14 @@ export const useInstantiateContractTx = () => {
 
   return useCallback(
     async ({
-      estimatedFee,
+      admin,
       codeId,
+      estimatedFee,
+      funds,
       initMsg,
       label,
-      admin,
-      funds,
-      onTxSucceed,
       onTxFailed,
+      onTxSucceed,
     }: InstantiateStreamParams) => {
       if (!address)
         throw new Error("No address provided (useInstantiatetContractTx)");
@@ -55,15 +56,15 @@ export const useInstantiateContractTx = () => {
 
       return instantiateContractTx({
         address,
-        messages,
-        label,
         fee: estimatedFee,
-        signAndBroadcast,
+        label,
+        messages,
+        onTxFailed,
         onTxSucceed: (txResult, contractLabel, contractAddress) => {
           trackTxSucceed();
           onTxSucceed?.(txResult, contractLabel, contractAddress);
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

@@ -1,3 +1,6 @@
+import type { Active } from "@dnd-kit/core";
+import type { Nullable, Option } from "lib/types";
+
 import {
   AccordionButton,
   AccordionIcon,
@@ -6,7 +9,6 @@ import {
   Flex,
   Heading,
 } from "@chakra-ui/react";
-import type { Active } from "@dnd-kit/core";
 import {
   closestCenter,
   defaultDropAnimationSideEffects,
@@ -22,28 +24,26 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { useNetworkStore } from "lib/providers/store";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { useNetworkStore } from "lib/providers/store";
-import type { Nullable, Option } from "lib/types";
-
 import { NetworkCardDraggable } from "./network-card";
 
 interface NetworkAccodionPinnedProps {
-  pinnedNetworks: string[];
   cursor: Option<number>;
-  setCursor: (index: Option<number>) => void;
   onClose: () => void;
+  pinnedNetworks: string[];
+  setCursor: (index: Option<number>) => void;
 }
 
 export const NetworkAccodionPinned = observer(
   ({
-    pinnedNetworks,
     cursor,
-    setCursor,
     onClose,
+    pinnedNetworks,
+    setCursor,
   }: NetworkAccodionPinnedProps) => {
     const { setPinnedNetworks } = useNetworkStore();
     const [dndActive, setDndActive] = useState<Nullable<Active>>(null);
@@ -80,12 +80,12 @@ export const NetworkAccodionPinned = observer(
               <AccordionIcon color="gray.600" />
             </Flex>
           </AccordionButton>
-          <AccordionPanel p={0} mb={2}>
+          <AccordionPanel mb={2} p={0}>
             <DndContext
-              sensors={sensors}
               collisionDetection={closestCenter}
-              onDragStart={({ active }) => {
-                setDndActive(active);
+              sensors={sensors}
+              onDragCancel={() => {
+                setDndActive(null);
               }}
               onDragEnd={({ active, over }) => {
                 if (over && active.id !== over.id) {
@@ -99,8 +99,8 @@ export const NetworkAccodionPinned = observer(
                 }
                 setDndActive(null);
               }}
-              onDragCancel={() => {
-                setDndActive(null);
+              onDragStart={({ active }) => {
+                setDndActive(active);
               }}
             >
               <SortableContext
@@ -111,8 +111,8 @@ export const NetworkAccodionPinned = observer(
                   <NetworkCardDraggable
                     key={item}
                     chainId={item}
-                    index={index}
                     cursor={cursor}
+                    index={index}
                     setCursor={setCursor}
                     onClose={onClose}
                   />

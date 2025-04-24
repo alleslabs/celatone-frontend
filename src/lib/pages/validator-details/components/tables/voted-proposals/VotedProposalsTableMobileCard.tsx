@@ -1,5 +1,6 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import type { ValidatorVotedProposalsResponseItem } from "lib/services/types";
 
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import {
@@ -9,7 +10,6 @@ import {
   StatusChip,
 } from "lib/components/table";
 import { ProposalTextCell } from "lib/components/table/proposals/ProposalTextCell";
-import type { ValidatorVotedProposalsResponseItem } from "lib/services/types";
 import { ProposalStatus } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -34,63 +34,63 @@ export const VotedProposalsTableMobileCard = ({
 
   return (
     <MobileCardTemplate
-      onClick={() => onRowSelect(votedProposal.proposalId)}
-      topContent={
-        <>
-          <Flex gap={2} alignItems="center">
-            <MobileLabel label="Proposal ID" variant="body2" />
-            <ExplorerLink
-              type="proposal_id"
-              value={votedProposal.proposalId.toString()}
-              showCopyOnHover
-              ampCopierSection="proposal-list"
-            />
-          </Flex>
-          <StatusChip status={votedProposal.status} />
-        </>
-      }
       middleContent={
         <Flex direction="column" gap={3}>
           <ProposalTextCell
+            isDepositOrVoting={isDepositOrVoting}
+            isEmergency={votedProposal.isEmergency}
+            isExpedited={votedProposal.isExpedited}
             title={votedProposal.title}
             types={votedProposal.types}
-            isExpedited={votedProposal.isExpedited}
-            isEmergency={votedProposal.isEmergency}
-            isDepositOrVoting={isDepositOrVoting}
           />
           <Box>
             <Flex alignItems="center" gap={3}>
-              <Text variant="body2" color="text.dark">
+              <Text color="text.dark" variant="body2">
                 Voted
               </Text>
               <Answer
+                abstain={votedProposal.abstain}
                 isVoteWeighted={votedProposal.isVoteWeighted}
-                yes={votedProposal.yes}
                 no={votedProposal.no}
                 noWithVeto={votedProposal.noWithVeto}
-                abstain={votedProposal.abstain}
+                yes={votedProposal.yes}
               />
-              <Text variant="body2" color="text.dark">
+              <Text color="text.dark" variant="body2">
                 On
               </Text>
             </Flex>
             {votedProposal.timestamp ? (
               <Box>
-                <Text variant="body2" color="text.dark">
+                <Text color="text.dark" variant="body2">
                   {formatUTC(votedProposal.timestamp)}
                 </Text>
-                <Text variant="body3" color="text.disabled">
+                <Text color="text.disabled" variant="body3">
                   {`(${dateFromNow(votedProposal.timestamp)})`}
                 </Text>
               </Box>
             ) : (
-              <Text variant="body2" color="text.dark">
+              <Text color="text.dark" variant="body2">
                 -
               </Text>
             )}
           </Box>
         </Flex>
       }
+      topContent={
+        <>
+          <Flex alignItems="center" gap={2}>
+            <MobileLabel label="Proposal ID" variant="body2" />
+            <ExplorerLink
+              ampCopierSection="proposal-list"
+              showCopyOnHover
+              type="proposal_id"
+              value={votedProposal.proposalId.toString()}
+            />
+          </Flex>
+          <StatusChip status={votedProposal.status} />
+        </>
+      }
+      onClick={() => onRowSelect(votedProposal.proposalId)}
     />
   );
 };

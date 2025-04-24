@@ -1,7 +1,8 @@
-import axios from "axios";
-
 import type { BechAddr, Coin, Nullable } from "lib/types";
+
+import axios from "axios";
 import { parseWithError } from "lib/utils";
+
 import { zBalancesReponseRest } from "../types";
 
 export const getBalancesRest = async (
@@ -15,7 +16,7 @@ export const getBalancesRest = async (
       .get(`${endpoint}/cosmos/bank/v1beta1/balances/${encodeURI(address)}`, {
         params: {
           "pagination.key": paginationKey,
-          "pagination.limit": "500",
+          "pagination.limit": "100",
         },
       })
       .then(({ data }) => parseWithError(zBalancesReponseRest, data));

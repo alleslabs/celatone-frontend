@@ -1,21 +1,21 @@
-import { Flex, Grid, Text } from "@chakra-ui/react";
-
-import { LabelText } from "lib/components/LabelText";
 import type { MoveVerifyByTaskIdResponse } from "lib/services/types";
 import type { MoveVerifyTaskLocalInfo } from "lib/stores/verify-module";
 import type { Option } from "lib/types";
+
+import { Flex, Grid, Text } from "@chakra-ui/react";
+import { LabelText } from "lib/components/LabelText";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { MyModuleVerificationDetailsStatusBadge } from "./MyModuleVerificationDetailsStatusBadge";
 
 interface MyModuleVerificationDetailsInfoProps {
-  verifyTaskLocalInfo: Option<MoveVerifyTaskLocalInfo>;
   verifyTaskInfo: MoveVerifyByTaskIdResponse;
+  verifyTaskLocalInfo: Option<MoveVerifyTaskLocalInfo>;
 }
 
 export const MyModuleVerificationDetailsInfo = ({
-  verifyTaskLocalInfo,
   verifyTaskInfo,
+  verifyTaskLocalInfo,
 }: MyModuleVerificationDetailsInfoProps) => {
   const chainId =
     verifyTaskLocalInfo?.chainId ?? verifyTaskInfo.result?.chainId;
@@ -28,14 +28,14 @@ export const MyModuleVerificationDetailsInfo = ({
 
   return (
     <Grid
-      display="flex"
-      columnGap={8}
-      rowGap={2}
-      flexWrap="wrap"
       border="1px"
       borderColor="gray.700"
-      rounded={8}
+      columnGap={8}
+      display="flex"
+      flexWrap="wrap"
       p={4}
+      rounded={8}
+      rowGap={2}
     >
       {chainId && <LabelText label="Network">{chainId}</LabelText>}
       <LabelText label="Status">
@@ -46,10 +46,10 @@ export const MyModuleVerificationDetailsInfo = ({
       {verifiedAt && (
         <LabelText label="Verified at">
           <Flex direction="column">
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               {formatUTC(verifiedAt)}
             </Text>
-            <Text variant="body3" color="text.disabled">
+            <Text color="text.disabled" variant="body3">
               ({dateFromNow(verifiedAt)})
             </Text>
           </Flex>

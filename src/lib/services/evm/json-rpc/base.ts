@@ -1,11 +1,12 @@
 import axios from "axios";
+import { parseWithError } from "lib/utils";
 import * as uuid from "uuid";
 
-import { parseWithError } from "lib/utils";
 import type { JsonRpcResponse } from "../../types/evm";
+
 import { zBatchJsonRpcResponse, zJsonRpcResponse } from "../../types/evm";
 
-export type JsonRpcParams = object | string | boolean;
+export type JsonRpcParams = boolean | object | string;
 
 export const requestJsonRpc = (
   endpoint: string,
@@ -16,8 +17,8 @@ export const requestJsonRpc = (
     .post(
       endpoint,
       {
-        jsonrpc: "2.0",
         id: uuid.v4(),
+        jsonrpc: "2.0",
         method,
         params,
       },
@@ -47,8 +48,8 @@ export const requestBatchJsonRpc = (
     .post(
       endpoint,
       requests.map(({ method, params }, index) => ({
-        jsonrpc: "2.0",
         id: index,
+        jsonrpc: "2.0",
         method,
         params,
       })),

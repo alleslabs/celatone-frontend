@@ -1,7 +1,15 @@
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
+import type {
+  Nullable,
+  Option,
+  ProposalVoteType,
+  Validator,
+  ValidatorAddr,
+  ValidatorData,
+} from "lib/types";
+
 import { useToken } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -11,15 +19,17 @@ import {
   useTierConfig,
 } from "lib/app-provider";
 import { createQueryFnWithTimeout } from "lib/services/utils";
-import type {
-  Nullable,
-  Option,
-  ProposalVoteType,
-  Validator,
-  ValidatorAddr,
-  ValidatorData,
-} from "lib/types";
 import { convertConsensusPubkeyToConsensusAddr } from "lib/utils";
+
+import type {
+  BlocksResponse,
+  StakingProvisionsResponse,
+  ValidatorDataResponse,
+  ValidatorDelegationRelatedTxsResponse,
+  ValidatorsResponse,
+  ValidatorUptimeResponse,
+  ValidatorVotedProposalsResponse,
+} from "../types";
 
 import {
   getHistoricalPowers,
@@ -39,15 +49,6 @@ import {
   getValidatorStakingProvisionsRest,
 } from "./rest";
 import { resolveValIdentity } from "./utils";
-import type {
-  BlocksResponse,
-  StakingProvisionsResponse,
-  ValidatorDataResponse,
-  ValidatorDelegationRelatedTxsResponse,
-  ValidatorsResponse,
-  ValidatorUptimeResponse,
-  ValidatorVotedProposalsResponse,
-} from "../types";
 
 export const useValidators = (
   limit: number,
@@ -74,9 +75,9 @@ export const useValidators = (
     async () =>
       getValidators(endpoint, limit, offset, isActive, sortBy, isDesc, search),
     {
-      retry: 1,
       keepPreviousData: true,
       refetchOnWindowFocus: false,
+      retry: 1,
       ...options,
     }
   );
@@ -102,9 +103,9 @@ export const useValidatorsRest = (enabled = true) => {
     },
     {
       enabled,
-      retry: 1,
       keepPreviousData: true,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -119,8 +120,8 @@ export const useValidatorData = (
     [CELATONE_QUERY_KEYS.VALIDATOR_DATA, endpoint, validatorAddress],
     async () => getValidatorData(endpoint, validatorAddress),
     {
-      retry: 1,
       enabled,
+      retry: 1,
     }
   );
 };
@@ -148,8 +149,8 @@ export const useValidatorDataRest = (
     },
     {
       enabled: enabled && Boolean(validatorAddr),
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -196,7 +197,8 @@ export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
       isInitia,
     ],
     createQueryFnWithTimeout(queryFn, 10000),
-    { retry: false }
+    // TODO: Remove this once we have a way to get the delegators count in initia
+    { enabled: !isInitia, retry: false }
   );
 };
 
@@ -263,8 +265,8 @@ export const useValidatorUptime = (
     [CELATONE_QUERY_KEYS.VALIDATOR_UPTIME, endpoint, validatorAddress, blocks],
     async () => getValidatorUptime(endpoint, validatorAddress, blocks),
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -298,8 +300,8 @@ export const useValidatorHistoricalPowers = (validatorAddr: ValidatorAddr) => {
     [CELATONE_QUERY_KEYS.VALIDATOR_HISTORICAL_POWERS, endpoint, validatorAddr],
     async () => getHistoricalPowers(endpoint, validatorAddr),
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -341,6 +343,11 @@ export const useValidatorImage = (
   const [primaryDark] = useToken("colors", ["primary.dark"]);
 
   return useQuery({
+    enabled: Boolean(validator),
+    queryFn: async () => {
+      if (!validator) return "";
+      return resolveValIdentity(chainName, validator, primaryDark);
+    },
     queryKey: [
       CELATONE_QUERY_KEYS.VALIDATOR_IDENTITY,
       chainName,
@@ -348,12 +355,7 @@ export const useValidatorImage = (
       validator?.identity,
       validator?.moniker,
     ],
-    queryFn: async () => {
-      if (!validator) return "";
-      return resolveValIdentity(chainName, validator, primaryDark);
-    },
-    retry: false,
     refetchOnWindowFocus: false,
-    enabled: Boolean(validator),
+    retry: false,
   });
 };

@@ -1,5 +1,6 @@
-import { Flex, Text } from "@chakra-ui/react";
 import type { ReactNode } from "react";
+
+import { Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text/lib";
@@ -8,54 +9,54 @@ import { ShowMoreButton } from "./button";
 
 interface PublicDescriptionProps {
   description: string;
-  title: string;
-  textLine: number;
   icon?: ReactNode;
+  textLine: number;
+  title: string;
 }
 
 export const PublicDescription = ({
   description,
-  title,
-  textLine,
   icon,
+  textLine,
+  title,
 }: PublicDescriptionProps) => {
   const [showMore, setShowMore] = useState(false);
 
-  const [ref, { noClamp, clampedText, key }] = useClampText({
-    text: description,
+  const [ref, { clampedText, key, noClamp }] = useClampText({
     ellipsis: "...",
     lines: textLine,
+    text: description,
   });
 
   return (
     <Flex
-      direction="column"
       bg="gray.900"
-      maxW="100%"
       borderRadius="8px"
-      p={4}
+      direction="column"
       flex={1}
+      maxW="100%"
+      p={4}
     >
       <Flex align="center" gap={1} h="32px">
         {icon}
-        <Text variant="body2" fontWeight={500} color="text.dark">
+        <Text color="text.dark" fontWeight={500} variant="body2">
           {title}
         </Text>
       </Flex>
       <Text
+        key={key}
         variant="body2"
         whiteSpace="pre-wrap"
-        key={key}
         ref={ref as React.MutableRefObject<HTMLParagraphElement>}
       >
         <Linkify>{showMore ? description : clampedText}</Linkify>
       </Text>
       {!noClamp && (
         <ShowMoreButton
-          showMoreText="View full description"
-          showLessText="View less description"
-          toggleShowMore={showMore}
           setToggleShowMore={() => setShowMore(!showMore)}
+          showLessText="View less description"
+          showMoreText="View full description"
+          toggleShowMore={showMore}
         />
       )}
     </Flex>

@@ -1,23 +1,23 @@
-import { Flex, Heading, Text, useDisclosure } from "@chakra-ui/react";
+import type { CodeSchema, Nullish, Option, WasmVerifyInfo } from "lib/types";
 
+import { Flex, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import { EditSchemaButtons, JsonSchemaModal } from "lib/components/json-schema";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { WasmVerifyStatus } from "lib/types";
-import type { CodeSchema, Nullish, Option, WasmVerifyInfo } from "lib/types";
 import { getWasmVerifyStatus } from "lib/utils";
 
 import { CodeSchemaTabs } from "./CodeSchemaTabs";
 
 interface CodeSchemaSectionProps {
-  codeId: number;
   codeHash: string;
+  codeId: number;
   localSchema: Option<CodeSchema>;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const CodeSchemaSection = ({
-  codeId,
   codeHash,
+  codeId,
   localSchema,
   wasmVerifyInfo,
 }: CodeSchemaSectionProps) => {
@@ -28,50 +28,50 @@ export const CodeSchemaSection = ({
   const attachedLocalSchema = Boolean(localSchema);
   return (
     <>
-      <Flex mt={8} mb={3} alignItems="center" gap={2}>
+      <Flex alignItems="center" gap={2} mb={3} mt={8}>
         <Heading as="h6" variant="h6">
           JSON schema
         </Heading>
         {!hasVerifiedSchema && attachedLocalSchema && (
           <EditSchemaButtons
-            codeId={codeId}
             codeHash={codeHash}
+            codeId={codeId}
             openModal={onOpen}
           />
         )}
       </Flex>
       <Text
-        variant="body2"
-        px={4}
-        py={3}
-        textColor="text.dark"
         bgColor="gray.800"
         border="1px solid var(--chakra-colors-gray-700)"
         borderRadius="8px"
+        px={4}
+        py={3}
+        textColor="text.dark"
+        variant="body2"
       >
         {hasVerifiedSchema
           ? `The schema is provided as the code has been ${wasmVerifyStatus !== WasmVerifyStatus.VERIFIED ? "indirectly" : ""} verified.`
           : "Uploaded JSON schemas are stored locally on your device."}
       </Text>
       <CodeSchemaTabs
-        codeId={codeId}
         codeHash={codeHash}
-        verifiedSchema={wasmVerifyInfo?.schema}
+        codeId={codeId}
         localSchema={localSchema}
+        verifiedSchema={wasmVerifyInfo?.schema}
       />
       {!hasVerifiedSchema && (
         <>
           <UserDocsLink
-            title="How to attached and use JSON schema?"
             cta="Read more about JSON schema"
             href="cosmwasm/codes/attach-json-schema"
+            title="How to attached and use JSON schema?"
           />
           <JsonSchemaModal
-            isOpen={isOpen}
-            onClose={onClose}
-            codeId={codeId}
             codeHash={codeHash}
+            codeId={codeId}
+            isOpen={isOpen}
             isReattach={attachedLocalSchema}
+            onClose={onClose}
           />
         </>
       )}

@@ -1,36 +1,38 @@
-import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/react";
-import type { Control } from "react-hook-form";
 import type { EvmContractVerifyForm } from "lib/types";
+import type { Control } from "react-hook-form";
+
+import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/react";
+
 import { EvmContractVerifyModalBody } from "./EvmContractVerifyModalBody";
 
 interface EvmContractVerifyModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  control: Control<EvmContractVerifyForm>;
   isError: boolean;
   isLoading: boolean;
-  control: Control<EvmContractVerifyForm>;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export const EvmContractVerifyModal = ({
-  isOpen,
-  onClose,
+  control,
   isError,
   isLoading,
-  control,
+  isOpen,
+  onClose,
 }: EvmContractVerifyModalProps) => (
   <Modal
+    closeOnOverlayClick={false}
+    isCentered
     isOpen={isOpen}
     onClose={onClose}
-    isCentered
-    closeOnOverlayClick={false}
   >
     <ModalOverlay />
-    <ModalContent w="645px" bg="gray.800" maxW="100vw" py={10}>
+    <ModalContent bg="gray.800" maxW="100vw" py={10} w="645px">
       <EvmContractVerifyModalBody
+        control={control}
         isError={isError}
         isLoading={isLoading}
         onClose={onClose}
-        control={control}
       />
     </ModalContent>
   </Modal>

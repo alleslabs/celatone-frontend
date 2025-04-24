@@ -2,42 +2,42 @@ import type { IconProps, LayoutProps } from "@chakra-ui/react";
 
 import { trackUseCopier } from "lib/amplitude";
 
-import { CopyTemplate } from "./CopyTemplate";
 import { CustomIcon } from "../icon";
+import { CopyTemplate } from "./CopyTemplate";
 
 interface CopierProps {
-  type: string;
-  value: string;
+  amptrackSection?: string;
   copyLabel?: string;
   display?: LayoutProps["display"];
   ml?: IconProps["ml"];
-  amptrackSection?: string;
+  type: string;
+  value: string;
 }
 
 export const Copier = ({
-  type,
-  value,
+  amptrackSection,
   copyLabel,
   display = "inline",
   ml = 2,
-  amptrackSection,
+  type,
+  value,
 }: CopierProps) => (
   <CopyTemplate
-    value={value}
     copyLabel={copyLabel}
     triggerElement={
       <CustomIcon
         id={type}
         className="copier"
-        display={display}
-        cursor="pointer"
-        m={0}
-        marginLeft={ml}
-        onClick={() => trackUseCopier(type, amptrackSection)}
-        name="copy"
         boxSize={3}
         color="gray.600"
+        cursor="pointer"
+        display={display}
+        m={0}
+        marginLeft={ml}
+        name="copy"
+        onClick={() => trackUseCopier(type, amptrackSection)}
       />
     }
+    value={value}
   />
 );

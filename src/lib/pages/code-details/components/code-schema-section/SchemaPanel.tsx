@@ -1,30 +1,30 @@
+import type { Nullable, Option } from "lib/types";
+
 import { Flex } from "@chakra-ui/react";
+import { UploadSchemaSection } from "lib/components/json-schema";
+import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import { EmptyState } from "lib/components/state";
+import { jsonPrettify } from "lib/utils";
 import { capitalize } from "lodash";
 
-import JsonReadOnly from "lib/components/json/JsonReadOnly";
-import { UploadSchemaSection } from "lib/components/json-schema";
-import { EmptyState } from "lib/components/state";
-import type { Nullable, Option } from "lib/types";
-import { jsonPrettify } from "lib/utils";
-
 interface SchemaPanelProps {
-  codeId: number;
   codeHash: string;
-  jsonSchema: Option<Nullable<object>>;
+  codeId: number;
   hasSchema: boolean;
+  jsonSchema: Option<Nullable<object>>;
   schemaProperty?: string;
 }
 
 export const SchemaPanel = ({
-  codeId,
   codeHash,
-  jsonSchema,
+  codeId,
   hasSchema,
+  jsonSchema,
   schemaProperty,
 }: SchemaPanelProps) => {
   if (jsonSchema === undefined)
     return hasSchema ? (
-      <Flex w="full" h="full" bgColor="gray.900" borderRadius="8px">
+      <Flex bgColor="gray.900" borderRadius="8px" h="full" w="full">
         <EmptyState
           imageVariant="empty"
           message={`Schema for ${capitalize(schemaProperty)}Msg doesn't exist`}
@@ -32,14 +32,14 @@ export const SchemaPanel = ({
         />
       </Flex>
     ) : (
-      <UploadSchemaSection codeId={codeId} codeHash={codeHash} />
+      <UploadSchemaSection codeHash={codeHash} codeId={codeId} />
     );
 
   return (
     <JsonReadOnly
-      text={jsonSchema ? jsonPrettify(JSON.stringify(jsonSchema)) : "null"}
       canCopy
       showLines={28}
+      text={jsonSchema ? jsonPrettify(JSON.stringify(jsonSchema)) : "null"}
     />
   );
 };

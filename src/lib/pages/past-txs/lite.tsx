@@ -1,7 +1,6 @@
-import { Flex, Heading } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useEffect, useState } from "react";
 
+import { Flex, Heading } from "@chakra-ui/react";
 import { useCurrentChain } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
@@ -13,15 +12,16 @@ import { TransactionsTableWithWallet } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useDebounce } from "lib/hooks";
 import { useTxsByAddressRest } from "lib/services/tx";
+import { useEffect, useState } from "react";
 
 interface PastTxsLiteTransactionsTableWithWalletEmptyStateProps {
-  search: string;
   error: unknown;
+  search: string;
 }
 
 const PastTxsLiteTransactionsTableWithWalletEmptyState = ({
-  search,
   error,
+  search,
 }: PastTxsLiteTransactionsTableWithWalletEmptyStateProps) => {
   if (search.trim().length > 0)
     return (
@@ -50,22 +50,22 @@ export const PastTxsLite = () => {
   const debouncedSearch = useDebounce(search);
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
-  const { data, isLoading, error } = useTxsByAddressRest(
+  const { data, error, isLoading } = useTxsByAddressRest(
     address,
     debouncedSearch,
     pageSize,
@@ -91,46 +91,46 @@ export const PastTxsLite = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Past transactions" />
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex alignItems="center" justifyContent="space-between">
         <Heading
-          variant="h5"
-          as="h5"
-          minH="36px"
-          display="flex"
           alignItems="center"
+          as="h5"
+          display="flex"
+          minH="36px"
+          variant="h5"
         >
           Past transactions
         </Heading>
-        <UserDocsLink isButton href="general/transactions/past-txs" />
+        <UserDocsLink href="general/transactions/past-txs" isButton />
       </Flex>
       <Flex my={8}>
         <InputWithIcon
+          amptrackSection="past-txs-search"
           placeholder="Search with transaction hash"
+          size={{ base: "md", md: "lg" }}
           value={search}
           onChange={handleOnSearchChange}
-          size={{ base: "md", md: "lg" }}
-          amptrackSection="past-txs-search"
         />
       </Flex>
       <TransactionsTableWithWallet
-        transactions={data?.items}
-        isLoading={isLoading}
         emptyState={
           <PastTxsLiteTransactionsTableWithWalletEmptyState
-            search={search}
             error={error}
+            search={search}
           />
         }
+        isLoading={isLoading}
         showActions={false}
         showRelations={false}
+        transactions={data?.items}
       />
       {!!data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={data.total}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={data.total}
           onPageChange={(nextPage) => setCurrentPage(nextPage)}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

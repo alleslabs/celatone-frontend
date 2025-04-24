@@ -1,3 +1,5 @@
+import type { Nullish, WasmVerifyInfo } from "lib/types";
+
 import {
   Box,
   Button,
@@ -7,7 +9,6 @@ import {
   IconButton,
   Text,
 } from "@chakra-ui/react";
-
 import {
   useGetAddressTypeByLength,
   useInternalNavigate,
@@ -22,31 +23,30 @@ import {
 import { TableRow } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
-import type { Nullish, WasmVerifyInfo } from "lib/types";
 import { ContractInteractionTabs } from "lib/types";
 import { getWasmVerifyStatus } from "lib/utils";
 
 import type { PublicContractInfo } from ".";
 
 interface ContractTableRowProps {
-  templateColumns: string;
   publicContractInfo: PublicContractInfo;
+  templateColumns: string;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 // TODO - Revisit this style (exist in multiple places)
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "22px",
     borderRadius: "36px",
+    display: "flex",
+    fontSize: "22px",
   },
 });
 
 export const PublicProjectContractRow = ({
-  templateColumns,
   publicContractInfo,
+  templateColumns,
   wasmVerifyInfo,
 }: ContractTableRowProps) => {
   const navigate = useInternalNavigate();
@@ -60,27 +60,27 @@ export const PublicProjectContractRow = ({
 
   return (
     <Grid
-      templateColumns={templateColumns}
-      onClick={goToContractDetails}
       _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
       minW="min-content"
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
+      onClick={goToContractDetails}
     >
       <TableRow>
         <ExplorerLink
-          value={publicContractInfo.publicInfo.contractAddress}
-          type={getAddressTypeByLength(
-            publicContractInfo.publicInfo.contractAddress
-          )}
           rightIcon={
             <WasmVerifyBadge
-              status={getWasmVerifyStatus(wasmVerifyInfo)}
-              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
               linkedCodeId={publicContractInfo.publicInfo.code}
+              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              status={getWasmVerifyStatus(wasmVerifyInfo)}
             />
           }
           showCopyOnHover
+          type={getAddressTypeByLength(
+            publicContractInfo.publicInfo.contractAddress
+          )}
+          value={publicContractInfo.publicInfo.contractAddress}
         />
       </TableRow>
       <TableRow gap={1}>
@@ -88,38 +88,38 @@ export const PublicProjectContractRow = ({
         {publicContractInfo.publicInfo.description && (
           <Tooltip label={publicContractInfo.publicInfo.description}>
             <Flex cursor="pointer">
-              <CustomIcon name="info-circle" boxSize="12px" color="gray.600" />
+              <CustomIcon boxSize="12px" color="gray.600" name="info-circle" />
             </Flex>
           </Tooltip>
         )}
       </TableRow>
       <TableRow>
         <ExplorerLink
-          value={publicContractInfo.publicInfo.instantiator}
+          showCopyOnHover
           type={getAddressTypeByLength(
             publicContractInfo.publicInfo.instantiator
           )}
-          showCopyOnHover
+          value={publicContractInfo.publicInfo.instantiator}
         />
       </TableRow>
       <TableRow justifyContent="end">
         <Flex
-          gap={3}
           alignItems="center"
+          gap={3}
           justifyContent="center"
           onClick={(e) => e.stopPropagation()}
         >
           <AppLink
             href={`/interact-contract?selectedType=${ContractInteractionTabs.Execute}contract=${publicContractInfo.publicInfo.contractAddress}`}
           >
-            <Button variant="outline-gray" size="sm">
+            <Button size="sm" variant="outline-gray">
               Execute
             </Button>
           </AppLink>
           <AppLink
             href={`/interact-contract?selectedType=${ContractInteractionTabs.Query}&contract=${publicContractInfo.publicInfo.contractAddress}`}
           >
-            <Button variant="outline-gray" size="sm">
+            <Button size="sm" variant="outline-gray">
               Query
             </Button>
           </AppLink>

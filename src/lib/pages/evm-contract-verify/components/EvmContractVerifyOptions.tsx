@@ -1,8 +1,9 @@
-import { Grid, Heading, Radio, RadioGroup, Stack } from "@chakra-ui/react";
-import type { Control } from "react-hook-form";
-import { useController, useWatch } from "react-hook-form";
 import type { EvmContractVerifyForm } from "lib/types";
+import type { Control } from "react-hook-form";
+
+import { Grid, Heading, Radio, RadioGroup, Stack } from "@chakra-ui/react";
 import { EvmProgrammingLanguage, EvmVerifyOptions } from "lib/types";
+import { useController, useWatch } from "react-hook-form";
 
 interface EvmContractVerifyVyperProps {
   control: Control<EvmContractVerifyForm>;
@@ -11,29 +12,29 @@ interface EvmContractVerifyVyperProps {
 const EvmContractVerifyOptionsVyper = () => (
   <>
     <Radio
-      variant="gray-card"
-      width="fit-content"
-      value={EvmVerifyOptions.VyperUploadFile}
       overflow="hidden"
+      value={EvmVerifyOptions.VyperUploadFile}
+      variant="gray-card"
       w="full"
+      width="fit-content"
     >
       Upload file
     </Radio>
     <Radio
-      variant="gray-card"
-      width="fit-content"
-      value={EvmVerifyOptions.VyperContractCode}
       overflow="hidden"
+      value={EvmVerifyOptions.VyperContractCode}
+      variant="gray-card"
       w="full"
+      width="fit-content"
     >
       Contract code
     </Radio>
     <Radio
-      variant="gray-card"
-      width="fit-content"
-      value={EvmVerifyOptions.VyperJsonInput}
       overflow="hidden"
+      value={EvmVerifyOptions.VyperJsonInput}
+      variant="gray-card"
       w="full"
+      width="fit-content"
     >
       JSON input
     </Radio>
@@ -43,47 +44,47 @@ const EvmContractVerifyOptionsVyper = () => (
 const EvmContractVerifyOptionsSolidity = () => (
   <>
     <Radio
-      variant="gray-card"
-      width="fit-content"
-      value={EvmVerifyOptions.SolidityUploadFiles}
       overflow="hidden"
+      value={EvmVerifyOptions.SolidityUploadFiles}
+      variant="gray-card"
       w="full"
+      width="fit-content"
     >
       Upload file(s)
     </Radio>
     <Radio
-      variant="gray-card"
-      width="fit-content"
-      value={EvmVerifyOptions.SolidityContractCode}
       overflow="hidden"
+      value={EvmVerifyOptions.SolidityContractCode}
+      variant="gray-card"
       w="full"
+      width="fit-content"
     >
       Contract code
     </Radio>
     <Radio
-      variant="gray-card"
-      width="fit-content"
-      value={EvmVerifyOptions.SolidityJsonInput}
       overflow="hidden"
+      value={EvmVerifyOptions.SolidityJsonInput}
+      variant="gray-card"
       w="full"
+      width="fit-content"
     >
       JSON input
     </Radio>
     <Radio
-      variant="gray-card"
-      width="fit-content"
-      value={EvmVerifyOptions.SolidityHardhat}
       overflow="hidden"
+      value={EvmVerifyOptions.SolidityHardhat}
+      variant="gray-card"
       w="full"
+      width="fit-content"
     >
       Hardhat
     </Radio>
     <Radio
-      variant="gray-card"
-      width="fit-content"
-      value={EvmVerifyOptions.SolidityFoundry}
       overflow="hidden"
+      value={EvmVerifyOptions.SolidityFoundry}
+      variant="gray-card"
       w="full"
+      width="fit-content"
     >
       Foundry
     </Radio>
@@ -108,8 +109,8 @@ export const EvmContractVerifyOptions = ({
       <Heading as="h6" variant="h6">
         Select verification option
       </Heading>
-      <RadioGroup onChange={(val) => field.onChange(val)} value={field.value}>
-        <Grid gridTemplateColumns="repeat(3, 1fr)" gap={4}>
+      <RadioGroup value={field.value} onChange={(val) => field.onChange(val)}>
+        <Grid gap={4} gridTemplateColumns="repeat(3, 1fr)">
           {language === EvmProgrammingLanguage.Vyper && (
             <EvmContractVerifyOptionsVyper />
           )}

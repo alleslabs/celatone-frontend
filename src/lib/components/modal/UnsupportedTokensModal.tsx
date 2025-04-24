@@ -1,4 +1,7 @@
 import type { ButtonProps } from "@chakra-ui/react";
+import type { AddressReturnType } from "lib/app-provider";
+import type { BechAddr, TokenWithValue } from "lib/types";
+
 import {
   Button,
   Flex,
@@ -12,64 +15,63 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-
 import { trackUseUnsupportedToken } from "lib/amplitude";
-import type { AddressReturnType } from "lib/app-provider";
-import type { BechAddr, TokenWithValue } from "lib/types";
-import { ExplorerLink } from "../ExplorerLink";
+
 import type { IconKeys } from "../icon";
+
+import { ExplorerLink } from "../ExplorerLink";
 import { CustomIcon } from "../icon";
 import { UnsupportedToken } from "../token";
 
 interface UnsupportedTokensModalProps {
-  unsupportedAssets: TokenWithValue[];
   address?: BechAddr;
   addressType?: AddressReturnType;
-  buttonProps?: ButtonProps;
   amptrackSection?: string;
+  buttonProps?: ButtonProps;
+  unsupportedAssets: TokenWithValue[];
 }
 
 const unsupportedTokensContent = (
   addressType: AddressReturnType
-): { icon: IconKeys; header: string } => {
+): { header: string; icon: IconKeys } => {
   switch (addressType) {
     case "contract_address": {
       return {
-        icon: "assets-solid",
         header: "Contract address",
+        icon: "assets-solid",
       };
     }
     case "user_address": {
       return {
-        icon: "assets-solid",
         header: "Account address",
+        icon: "assets-solid",
       };
     }
     default:
       return {
-        icon: "alert-triangle-solid",
         header: "Invalid address",
+        icon: "alert-triangle-solid",
       };
   }
 };
 
 export const UnsupportedTokensModal = ({
-  unsupportedAssets,
   address,
   addressType = "invalid_address",
-  buttonProps,
   amptrackSection,
+  buttonProps,
+  unsupportedAssets,
 }: UnsupportedTokensModalProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   if (unsupportedAssets.length === 0) return null;
 
   const content = unsupportedTokensContent(addressType);
   return (
     <>
       <Button
-        variant="ghost-gray"
         mb={1}
         size="sm"
+        variant="ghost-gray"
         {...buttonProps}
         onClick={() => {
           trackUseUnsupportedToken(amptrackSection);
@@ -78,13 +80,13 @@ export const UnsupportedTokensModal = ({
       >
         {`View ${unsupportedAssets.length} unsupported assets`}
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal isCentered isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent w="800px">
           <ModalHeader>
-            <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <CustomIcon name={content.icon} boxSize={5} color="gray.600" />
-              <Heading variant="h5" as="h5">
+            <Flex alignItems="center" direction="row" gap={2} pt={1} w="full">
+              <CustomIcon boxSize={5} color="gray.600" name={content.icon} />
+              <Heading as="h5" variant="h5">
                 Unsupported assets
               </Heading>
             </Flex>
@@ -94,13 +96,13 @@ export const UnsupportedTokensModal = ({
             <Flex direction="column" gap={5}>
               {address && (
                 <Flex direction="row" gap={4}>
-                  <Text variant="body2" fontWeight={700}>
+                  <Text fontWeight={700} variant="body2">
                     {content.header}
                   </Text>
-                  <ExplorerLink value={address} type={addressType} />
+                  <ExplorerLink type={addressType} value={address} />
                 </Flex>
               )}
-              <Flex gap={3} direction="column">
+              <Flex direction="column" gap={3}>
                 {unsupportedAssets.map((asset) => (
                   <UnsupportedToken key={asset.denom} token={asset} />
                 ))}

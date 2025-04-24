@@ -1,3 +1,4 @@
+import type { PoolData, PoolTxFilter } from "lib/types";
 import type { ChangeEvent } from "react";
 
 import { Pagination } from "lib/components/pagination";
@@ -5,47 +6,46 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
 import { useTxsByPoolId } from "lib/services/tx";
-import type { PoolData, PoolTxFilter } from "lib/types";
 
 import { PoolTxsTable } from "./PoolTxsTable";
 
 interface PoolRelatedTxsTableProps {
-  pool: PoolData;
   countTxs: number;
-  type: PoolTxFilter;
+  pool: PoolData;
   scrollComponentId: string;
+  type: PoolTxFilter;
 }
 
 export const PoolRelatedTxsTable = ({
-  pool,
   countTxs,
-  type,
+  pool,
   scrollComponentId,
+  type,
 }: PoolRelatedTxsTableProps) => {
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: countTxs,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: countTxs,
   });
 
   const {
     data: txs,
-    isLoading,
     isError,
+    isLoading,
   } = useTxsByPoolId(pool.id, type, pageSize, offset);
 
   const onPageChange = (nextPage: number) => {
@@ -61,10 +61,7 @@ export const PoolRelatedTxsTable = ({
   return (
     <>
       <PoolTxsTable
-        pool={pool}
-        transactions={txs?.items}
         assetInfos={assetInfos}
-        isLoading={isLoadingAssetInfos || isLoading}
         emptyState={
           isError ? (
             <ErrorFetching dataName="transactions" />
@@ -76,15 +73,18 @@ export const PoolRelatedTxsTable = ({
             />
           )
         }
+        isLoading={isLoadingAssetInfos || isLoading}
+        pool={pool}
+        transactions={txs?.items}
       />
       {countTxs > 0 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={countTxs}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
           scrollComponentId={scrollComponentId}
+          totalData={countTxs}
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
         />

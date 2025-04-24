@@ -16,7 +16,7 @@ export const generateFileMap = (tomlFile: File, moveFiles: File[]) => {
   return JSON.stringify(initializedFileMap);
 };
 
-export const formatMoveOptions = <T extends string | number>(values: T[]) =>
+export const formatMoveOptions = <T extends number | string>(values: T[]) =>
   values.map((value) => ({
     label: String(value),
     value,

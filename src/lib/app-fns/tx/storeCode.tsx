@@ -1,17 +1,17 @@
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
-import { pipe } from "@rx-stream/pipe";
-import type { Observable } from "rxjs";
-
 import type { SignAndBroadcast } from "lib/app-provider/hooks";
-import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon";
 import type {
   BechAddr20,
   ComposedMsg,
   Option,
   TxResultRendering,
 } from "lib/types";
+import type { Observable } from "rxjs";
+
+import { pipe } from "@rx-stream/pipe";
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
 import { feeFromStr, findAttr } from "lib/utils";
 
@@ -21,10 +21,10 @@ import { sendingTx } from "./common/sending";
 
 export interface StoreCodeTxInternalResult {
   codeDisplayName: string;
-  codeId: string;
   codeHash: Option<string>;
-  txHash: string;
+  codeId: string;
   txFee: Option<string>;
+  txHash: string;
 }
 
 export type StoreCodeSucceedCallback = (
@@ -34,28 +34,28 @@ export type StoreCodeSucceedCallback = (
 interface StoreCodeTxParams {
   address: BechAddr20;
   codeName: string;
-  messages: ComposedMsg[];
-  wasmFileName: string;
   fee: StdFee;
   isMigrate: boolean;
-  signAndBroadcast: SignAndBroadcast;
+  messages: ComposedMsg[];
   onTxSucceed: StoreCodeSucceedCallback;
+  signAndBroadcast: SignAndBroadcast;
+  wasmFileName: string;
 }
 
 export const storeCodeTx = ({
   address,
   codeName,
-  messages,
-  wasmFileName,
   fee,
   isMigrate,
-  signAndBroadcast,
+  messages,
   onTxSucceed,
+  signAndBroadcast,
+  wasmFileName,
 }: StoreCodeTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       const codeId = findAttr(txInfo.events, "store_code", "code_id") ?? "0";
@@ -63,50 +63,18 @@ export const storeCodeTx = ({
       const txFee = findAttr(txInfo.events, "tx", "fee");
 
       onTxSucceed({
-        codeId: parseInt(codeId, 10).toString(),
-        codeHash,
         codeDisplayName: codeName || `${wasmFileName}(${codeId})`,
-        txHash: txInfo.transactionHash,
+        codeHash,
+        codeId: parseInt(codeId, 10).toString(),
         txFee,
+        txHash: txInfo.transactionHash,
       });
 
       return isMigrate
         ? ({
-            value: null,
+            actionVariant: "upload-migrate",
             phase: TxStreamPhase.SUCCEED,
-            receipts: [
-              {
-                title: "Code ID",
-                value: codeId,
-                html: (
-                  <div style={{ display: "inline-flex", alignItems: "center" }}>
-                    <ExplorerLink type="code_id" value={codeId} openNewTab />
-                  </div>
-                ),
-              },
-              {
-                title: "Tx hash",
-                value: txInfo.transactionHash,
-                html: (
-                  <ExplorerLink
-                    type="tx_hash"
-                    value={txInfo.transactionHash}
-                    openNewTab
-                  />
-                ),
-              },
-              {
-                title: "Tx fee",
-                html: (
-                  <EstimatedFeeRender
-                    estimatedFee={feeFromStr(txFee)}
-                    loading={false}
-                  />
-                ),
-              },
-            ],
             receiptInfo: {
-              header: "Upload Wasm complete!",
               description: (
                 <>
                   <span style={{ fontWeight: 700 }}>
@@ -115,11 +83,43 @@ export const storeCodeTx = ({
                   is has been uploaded. Would you like to migrate your code now?
                 </>
               ),
+              header: "Upload Wasm complete!",
               headerIcon: (
-                <CustomIcon name="upload-cloud" boxSize={5} color="gray.600" />
+                <CustomIcon boxSize={5} color="gray.600" name="upload-cloud" />
               ),
             },
-            actionVariant: "upload-migrate",
+            receipts: [
+              {
+                html: (
+                  <div style={{ alignItems: "center", display: "inline-flex" }}>
+                    <ExplorerLink openNewTab type="code_id" value={codeId} />
+                  </div>
+                ),
+                title: "Code ID",
+                value: codeId,
+              },
+              {
+                html: (
+                  <ExplorerLink
+                    openNewTab
+                    type="tx_hash"
+                    value={txInfo.transactionHash}
+                  />
+                ),
+                title: "Tx hash",
+                value: txInfo.transactionHash,
+              },
+              {
+                html: (
+                  <EstimatedFeeRender
+                    estimatedFee={feeFromStr(txFee)}
+                    loading={false}
+                  />
+                ),
+                title: "Tx fee",
+              },
+            ],
+            value: null,
           } as TxResultRendering)
         : // TODO: this is type hack
           (null as unknown as TxResultRendering);

@@ -1,39 +1,39 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Flex, Grid, Text } from "@chakra-ui/react";
-import { useMemo } from "react";
-
-import { AmpEvent, track } from "lib/amplitude";
-import { ModuleInteractionMobileStep } from "lib/pages/interact/types";
 import type { MoveVerifyInfoResponse } from "lib/services/types";
 import type { IndexedModule, Option } from "lib/types";
-import { resolveMoveVerifyStatus } from "lib/utils";
 
-import { CountBadge } from "./CountBadge";
+import { Flex, Grid, Text } from "@chakra-ui/react";
+import { AmpEvent, track } from "lib/amplitude";
+import { ModuleInteractionMobileStep } from "lib/pages/interact/types";
+import { resolveMoveVerifyStatus } from "lib/utils";
+import { useMemo } from "react";
+
 import { AppLink } from "../AppLink";
 import { CustomIcon } from "../icon";
 import { MoveVerifyBadge } from "../MoveVerifyBadge";
+import { CountBadge } from "./CountBadge";
 
 interface ModuleCardProps {
   module: IndexedModule;
-  selectedModule: Option<IndexedModule>;
   moveVerifyInfo: Option<MoveVerifyInfoResponse>;
+  readOnly?: boolean;
+  selectedModule: Option<IndexedModule>;
   setSelectedModule?: (module: IndexedModule) => void;
   setStep?: (step: ModuleInteractionMobileStep) => void;
-  readOnly?: boolean;
 }
 
 export const ModuleCard = ({
   module,
   moveVerifyInfo,
+  readOnly = false,
   selectedModule,
   setSelectedModule,
   setStep,
-  readOnly = false,
 }: ModuleCardProps) => {
   const handleModuleClick = (clickedModule: IndexedModule) => {
     track(AmpEvent.USE_MODULE_CARD, {
-      viewCount: clickedModule.viewFunctions.length,
       executeCount: clickedModule.executeFunctions.length,
+      viewCount: clickedModule.viewFunctions.length,
     });
     setSelectedModule?.(clickedModule);
     setStep?.(ModuleInteractionMobileStep.SelectFunction);
@@ -42,23 +42,23 @@ export const ModuleCard = ({
   const card = useMemo(
     () => (
       <Grid
-        borderRadius={8}
+        _hover={{ bg: readOnly ? "unset" : "gray.700" }}
+        alignItems="center"
         bgColor={
           module.moduleName === selectedModule?.moduleName
             ? "gray.700"
             : "gray.800"
         }
-        p={4}
-        alignItems="center"
+        borderRadius={8}
         cursor={readOnly ? "default" : "pointer"}
         gap={1}
+        p={4}
         templateColumns="20px 1fr auto"
-        onClick={() => (readOnly ? null : handleModuleClick(module))}
-        _hover={{ bg: readOnly ? "unset" : "gray.700" }}
         transition=".25s all ease-out"
+        onClick={() => (readOnly ? null : handleModuleClick(module))}
       >
-        <CustomIcon name="contract-address" color="primary.main" boxSize={3} />
-        <Flex align="center" overflow="hidden" gap={1}>
+        <CustomIcon boxSize={3} color="primary.main" name="contract-address" />
+        <Flex align="center" gap={1} overflow="hidden">
           <Text className="ellipsis" variant="body2">
             {module.moduleName}
           </Text>

@@ -1,22 +1,22 @@
 import type { StdFee } from "@cosmjs/stargate";
-import { MsgExecute as MsgExecuteModule } from "@initia/initia.js";
-import { useCallback } from "react";
+import type { HexAddr } from "lib/types";
 
+import { MsgExecute as MsgExecuteModule } from "@initia/initia.js";
 import { trackTxSucceed } from "lib/amplitude";
 import { executeModuleTx } from "lib/app-fns/tx/move/executeModule";
 import { useCurrentChain, useSignAndBroadcast } from "lib/app-provider/hooks";
-import type { HexAddr } from "lib/types";
 import { toEncodeObject } from "lib/utils";
+import { useCallback } from "react";
 
 export interface ExecuteModuleStreamParams {
-  moduleAddress: HexAddr;
-  moduleName: string;
-  functionName: string;
-  typeArgs: string[];
   args: string[];
   estimatedFee?: StdFee;
-  onTxSucceed?: () => void;
+  functionName: string;
+  moduleAddress: HexAddr;
+  moduleName: string;
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  typeArgs: string[];
 }
 
 export const useExecuteModuleTx = () => {
@@ -25,14 +25,14 @@ export const useExecuteModuleTx = () => {
 
   return useCallback(
     async ({
-      moduleAddress,
-      moduleName,
-      functionName,
-      typeArgs,
       args,
       estimatedFee,
-      onTxSucceed,
+      functionName,
+      moduleAddress,
+      moduleName,
       onTxFailed,
+      onTxSucceed,
+      typeArgs,
     }: ExecuteModuleStreamParams) => {
       if (!address) throw new Error("No address provided (useExecuteModuleTx)");
 
@@ -50,14 +50,14 @@ export const useExecuteModuleTx = () => {
       if (!estimatedFee) return null;
       return executeModuleTx({
         address,
-        messages,
         fee: estimatedFee,
-        signAndBroadcast,
+        messages,
+        onTxFailed,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

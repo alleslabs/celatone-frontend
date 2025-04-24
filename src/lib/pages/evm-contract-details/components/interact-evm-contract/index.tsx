@@ -1,17 +1,20 @@
-import { Box, Flex, Heading, Stack, Switch, Text } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
+import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
 import type { ChangeEvent } from "react";
-import { useCallback, useEffect, useState } from "react";
+
+import { Box, Flex, Heading, Stack, Switch, Text } from "@chakra-ui/react";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TypeSwitch } from "lib/components/TypeSwitch";
-import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
+import { isUndefined } from "lodash";
+import { useCallback, useEffect, useState } from "react";
+
+import type { InteractTabsIndex } from "../../types";
+
+import { TabIndex } from "../../types";
+import { getInteractTabsIndex } from "../../utils";
 import { AbiRead } from "./abi-read";
 import { AbiWrite } from "./abi-write";
 import { categorizeAbi } from "./utils";
-import type { InteractTabsIndex } from "../../types";
-import { TabIndex } from "../../types";
-import { getInteractTabsIndex } from "../../utils";
 
 export const EVM_CONTRACT_INTERACT_PATH_NAME =
   "/evm-contracts/[contractAddress]/[tab]";
@@ -25,16 +28,16 @@ interface InteractEvmContractProps {
   contractAddress: HexAddr20;
   evmVerifyInfo: Option<EvmVerifyInfo>;
   proxyTargetEvmVerifyInfo: Option<EvmVerifyInfo>;
-  selectedType: InteractTabsIndex;
   selectedFn?: string;
+  selectedType: InteractTabsIndex;
 }
 
 export const InteractEvmContract = ({
   contractAddress,
   evmVerifyInfo,
   proxyTargetEvmVerifyInfo,
-  selectedType,
   selectedFn,
+  selectedType,
 }: InteractEvmContractProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -62,17 +65,17 @@ export const InteractEvmContract = ({
   const handleSetInteractType = useCallback(
     (newType: InteractType) =>
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: EVM_CONTRACT_INTERACT_PATH_NAME,
         query: {
           contractAddress,
-          tab: TabIndex.ReadWrite,
           selectedType: getInteractTabsIndex(
             newType === InteractType.Read,
             isAsProxy
           ),
-        },
-        options: {
-          shallow: true,
+          tab: TabIndex.ReadWrite,
         },
       }),
     [contractAddress, isAsProxy, navigate]
@@ -81,17 +84,17 @@ export const InteractEvmContract = ({
   const handleSetIsAsProxy = useCallback(
     (e: ChangeEvent<HTMLInputElement>) =>
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: EVM_CONTRACT_INTERACT_PATH_NAME,
         query: {
           contractAddress,
-          tab: TabIndex.ReadWrite,
           selectedType: getInteractTabsIndex(
             interactType === InteractType.Read,
             e.target.checked
           ),
-        },
-        options: {
-          shallow: true,
+          tab: TabIndex.ReadWrite,
         },
       }),
     [contractAddress, interactType, navigate]
@@ -103,35 +106,35 @@ export const InteractEvmContract = ({
 
   return (
     <Box>
-      <Flex gap={2} align="center" mb={8}>
+      <Flex align="center" gap={2} mb={8}>
         <Heading variant="h6">Contract interactions</Heading>
         {!isMobile && (
           <TypeSwitch
-            tabs={Object.values(InteractType)}
             currentTab={interactType}
+            tabs={Object.values(InteractType)}
             onTabChange={handleSetInteractType}
           />
         )}
       </Flex>
       {!!proxyTargetEvmVerifyInfo?.isVerified && (
         <Stack gap={1} mb={8}>
-          <Flex gap={2} align="center">
+          <Flex align="center" gap={2}>
             <Switch
               isChecked={isAsProxy}
-              onChange={handleSetIsAsProxy}
               isDisabled={!evmVerifyInfo?.isVerified}
+              onChange={handleSetIsAsProxy}
             />
             <Text variant="body2">Read/Write as Proxy Contract</Text>
           </Flex>
           <Flex gap={2}>
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               Implementation Address:
             </Text>
             <ExplorerLink
+              showCopyOnHover
+              textFormat={isMobile ? "truncate" : "normal"}
               type="evm_contract_address"
               value={proxyTargetEvmVerifyInfo.address}
-              textFormat={isMobile ? "truncate" : "normal"}
-              showCopyOnHover
             />
           </Flex>
         </Stack>
@@ -168,15 +171,15 @@ export const InteractEvmContract = ({
       >
         <div className="read">
           <AbiRead
-            contractAddress={contractAddress}
             abiRead={abiRead}
+            contractAddress={contractAddress}
             selectedFn={initialSelectedFn}
           />
         </div>
         <div className="write">
           <AbiWrite
-            contractAddress={contractAddress}
             abiWrite={abiWrite}
+            contractAddress={contractAddress}
             selectedFn={initialSelectedFn}
           />
         </div>
@@ -184,15 +187,15 @@ export const InteractEvmContract = ({
           <>
             <div className="read-proxy">
               <AbiRead
-                contractAddress={contractAddress}
                 abiRead={abiReadProxy}
+                contractAddress={contractAddress}
                 selectedFn={initialSelectedFn}
               />
             </div>
             <div className="write-proxy">
               <AbiWrite
-                contractAddress={contractAddress}
                 abiWrite={abiWriteProxy}
+                contractAddress={contractAddress}
                 selectedFn={initialSelectedFn}
               />
             </div>

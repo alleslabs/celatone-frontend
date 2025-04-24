@@ -1,6 +1,5 @@
-import { z } from "zod";
-
 import { zHex, zTxHash } from "lib/types";
+import { z } from "zod";
 
 export const zTxDetailsQueryParams = (evmEnabled: boolean) =>
   z.object({

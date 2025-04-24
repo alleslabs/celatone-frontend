@@ -1,11 +1,11 @@
 import type { IconKeys } from "lib/components/icon";
 
 export interface SubmenuInfo {
+  icon?: IconKeys;
+  isDisable?: boolean;
+  logo?: string;
   name: string;
   slug: string;
-  icon?: IconKeys;
-  logo?: string;
-  isDisable?: boolean;
   tooltipText?: string;
   trackEvent?: () => void;
 }
@@ -23,7 +23,7 @@ export interface MenuInfo {
 }
 
 export interface NavMenuProps {
-  navMenu: MenuInfo[];
   isCurrentPage: (slug: string) => boolean;
+  navMenu: MenuInfo[];
   setIsExpand: (value: boolean) => void;
 }

@@ -10,7 +10,7 @@ export interface SelectedAddress {
   hex: HexAddr;
 }
 
-export type DisplayMode = "input" | "display";
+export type DisplayMode = "display" | "input";
 
 export type ModuleSelectFunction = (
   selectedModule: IndexedModule,

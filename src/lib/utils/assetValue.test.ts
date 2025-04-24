@@ -1,6 +1,4 @@
 import type Big from "big.js";
-
-import { big, zHexAddr } from "lib/types";
 import type {
   AssetInfos,
   MovePoolInfos,
@@ -9,6 +7,8 @@ import type {
   U,
   USD,
 } from "lib/types";
+
+import { big, zHexAddr } from "lib/types";
 
 import {
   addTokenWithValue,
@@ -21,13 +21,13 @@ describe("isSupportedToken", () => {
   test("supported token", () => {
     expect(
       isSupportedToken({
-        isLPToken: false,
-        denom: "denom",
         amount: big(100) as U<Token<Big>>,
-        symbol: "",
+        denom: "denom",
+        isLPToken: false,
         logo: "",
         precision: 6,
         price: big(0) as USD<Big>,
+        symbol: "",
         value: big(0) as USD<Big>,
       })
     ).toEqual(true);
@@ -36,13 +36,13 @@ describe("isSupportedToken", () => {
   test("unsupported token", () => {
     expect(
       isSupportedToken({
-        isLPToken: false,
-        denom: "denom",
         amount: big(100) as U<Token<Big>>,
-        symbol: "",
+        denom: "denom",
+        isLPToken: false,
         logo: "",
         precision: 6,
         price: undefined,
+        symbol: "",
         value: undefined,
       })
     ).toEqual(false);
@@ -51,50 +51,50 @@ describe("isSupportedToken", () => {
 
 describe("filterSupportedTokens", () => {
   const token1: TokenWithValue = {
-    isLPToken: false,
-    denom: "denom1",
     amount: big(100) as U<Token<Big>>,
-    symbol: "",
+    denom: "denom1",
+    isLPToken: false,
     logo: "",
     precision: 6,
     price: undefined,
+    symbol: "",
     value: big(0) as USD<Big>,
   };
 
   const token2: TokenWithValue = {
+    amount: big(0) as U<Token<Big>>,
+    denom: "denom2",
     isLPToken: false,
     logo: undefined,
-    denom: "denom2",
-    amount: big(0) as U<Token<Big>>,
-    symbol: undefined,
     precision: undefined,
     price: big(2) as USD<Big>,
+    symbol: undefined,
     value: undefined,
   };
 
   const token3: TokenWithValue = {
-    isLPToken: true,
-    denom: "denom3",
     amount: big(100) as U<Token<Big>>,
-    symbol: "",
+    denom: "denom3",
+    isLPToken: true,
     logo: ["", ""],
-    precision: 6,
-    price: big(0) as USD<Big>,
-    value: big(3500) as USD<Big>,
     poolInfo: {
       coinA: {
-        denom: "",
         amount: big(0) as U<Token<Big>>,
+        denom: "",
         precision: undefined,
         symbol: undefined,
       },
       coinB: {
-        denom: "",
         amount: big(0) as U<Token<Big>>,
+        denom: "",
         precision: undefined,
         symbol: undefined,
       },
     },
+    precision: 6,
+    price: big(0) as USD<Big>,
+    symbol: "",
+    value: big(3500) as USD<Big>,
   };
 
   test("filter supported tokens undefined", () => {
@@ -114,8 +114,8 @@ describe("filterSupportedTokens", () => {
 
 describe("coinToTokenWithValue", () => {
   const coin = {
-    denom: "uadenom",
     amount: "100",
+    denom: "uadenom",
   };
 
   const assetInfos: AssetInfos = {
@@ -136,34 +136,34 @@ describe("coinToTokenWithValue", () => {
   const movePoolInfos: MovePoolInfos = {
     uadenom: {
       coinA: {
-        metadata: zHexAddr.parse("0x1"),
-        denom: "denom1",
-        precision: 6,
         amountAPerShare: big(1) as U<Token<Big>>,
+        denom: "denom1",
+        metadata: zHexAddr.parse("0x1"),
+        precision: 6,
         symbol: undefined,
       },
       coinB: {
-        metadata: zHexAddr.parse("0x2"),
-        denom: "denom2",
-        precision: 6,
         amountBPerShare: big(1) as U<Token<Big>>,
+        denom: "denom2",
+        metadata: zHexAddr.parse("0x2"),
+        precision: 6,
         symbol: "DENOM_2",
       },
+      logo: ["denom1_logo", "denom2_logo"],
       lpPricePerPShare: big(0.000001) as USD<Big>,
       precision: 6,
-      logo: ["denom1_logo", "denom2_logo"],
     },
   };
 
   const assetInfo = assetInfos.uadenom;
   const tokenAssetInfo: TokenWithValue = {
+    amount: big(coin.amount) as U<Token<Big>>,
+    denom: coin.denom,
     isLPToken: false,
     logo: assetInfo.logo,
-    denom: coin.denom,
-    amount: big(coin.amount) as U<Token<Big>>,
-    symbol: assetInfo.symbol,
     precision: assetInfo.precision,
     price: big(assetInfo.price) as USD<Big>,
+    symbol: assetInfo.symbol,
     value: big(coin.amount)
       .mul(big(assetInfo.price))
       .div(10 ** assetInfo.precision) as USD<Big>,
@@ -171,34 +171,34 @@ describe("coinToTokenWithValue", () => {
 
   const movePoolInfo = movePoolInfos.uadenom;
   const tokenMovePoolInfo: TokenWithValue = {
+    amount: big(coin.amount) as U<Token<Big>>,
+    denom: coin.denom,
     isLPToken: true,
     logo: movePoolInfo.logo,
-    denom: coin.denom,
-    amount: big(coin.amount) as U<Token<Big>>,
-    symbol: `${movePoolInfo.coinA.denom}-${movePoolInfo.coinB.symbol}`,
-    precision: movePoolInfo.precision,
-    price: movePoolInfo.lpPricePerPShare,
-    value: big(coin.amount)
-      .mul(movePoolInfo.lpPricePerPShare ?? big(0))
-      .div(10 ** movePoolInfo.precision) as USD<Big>,
     poolInfo: {
       coinA: {
         amount: movePoolInfo.coinA.amountAPerShare.times(coin.amount) as U<
           Token<Big>
         >,
-        precision: 6,
         denom: movePoolInfo.coinA.denom,
+        precision: 6,
         symbol: movePoolInfo.coinA.symbol,
       },
       coinB: {
         amount: movePoolInfo.coinB.amountBPerShare.times(coin.amount) as U<
           Token<Big>
         >,
-        precision: 6,
         denom: movePoolInfo.coinB.denom,
+        precision: 6,
         symbol: movePoolInfo.coinB.symbol,
       },
     },
+    precision: movePoolInfo.precision,
+    price: movePoolInfo.lpPricePerPShare,
+    symbol: `${movePoolInfo.coinA.denom}-${movePoolInfo.coinB.symbol}`,
+    value: big(coin.amount)
+      .mul(movePoolInfo.lpPricePerPShare ?? big(0))
+      .div(10 ** movePoolInfo.precision) as USD<Big>,
   };
 
   test("coinToToken with only assetInfo", () => {
@@ -222,35 +222,35 @@ describe("coinToTokenWithValue", () => {
 
 describe("addTokenWithValue", () => {
   const tokenWithValue1: TokenWithValue = {
-    isLPToken: false,
-    denom: "uadenom",
     amount: big(100) as U<Token<Big>>,
-    symbol: "",
+    denom: "uadenom",
+    isLPToken: false,
     logo: "",
     precision: 6,
     price: big(35) as USD<Big>,
+    symbol: "",
     value: big(3500) as USD<Big>,
   };
 
   const tokenWithValue2: TokenWithValue = {
-    isLPToken: false,
-    denom: "uadenom",
     amount: big(100) as U<Token<Big>>,
-    symbol: "",
+    denom: "uadenom",
+    isLPToken: false,
     logo: "",
     precision: 6,
     price: big(35) as USD<Big>,
+    symbol: "",
     value: big(3500) as USD<Big>,
   };
 
   const tokenWithValue3: TokenWithValue = {
-    isLPToken: false,
-    denom: "ubdenom",
     amount: big(100) as U<Token<Big>>,
-    symbol: "",
+    denom: "ubdenom",
+    isLPToken: false,
     logo: "",
     precision: 6,
     price: big(2) as USD<Big>,
+    symbol: "",
     value: big(400) as USD<Big>,
   };
 
@@ -262,13 +262,13 @@ describe("addTokenWithValue", () => {
 
   test("old value + new value", () => {
     const expectResult: TokenWithValue = {
-      isLPToken: false,
-      denom: "uadenom",
       amount: big(200) as U<Token<Big>>,
-      symbol: "",
-      precision: 6,
+      denom: "uadenom",
+      isLPToken: false,
       logo: "",
+      precision: 6,
       price: big(35) as USD<Big>,
+      symbol: "",
       value: big(7000) as USD<Big>,
     };
     expect(addTokenWithValue(tokenWithValue1, tokenWithValue2)).toEqual(
@@ -281,23 +281,23 @@ describe("addTokenWithValue", () => {
 
   test("invalid, when denoms are not the same", () => {
     expect(addTokenWithValue(tokenWithValue1, tokenWithValue3)).toEqual({
-      isLPToken: false,
-      denom: "",
       amount: big(0) as U<Token<Big>>,
-      symbol: undefined,
-      precision: undefined,
+      denom: "",
+      isLPToken: false,
       logo: undefined,
+      precision: undefined,
       price: big(0) as USD<Big>,
+      symbol: undefined,
       value: big(0) as USD<Big>,
     });
     expect(addTokenWithValue(tokenWithValue1, tokenWithValue3)).toEqual({
-      isLPToken: false,
-      denom: "",
       amount: big(0) as U<Token<Big>>,
-      symbol: undefined,
-      precision: undefined,
+      denom: "",
+      isLPToken: false,
       logo: undefined,
+      precision: undefined,
       price: big(0) as USD<Big>,
+      symbol: undefined,
       value: big(0) as USD<Big>,
     });
   });

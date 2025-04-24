@@ -1,14 +1,14 @@
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
-import { pipe } from "@rx-stream/pipe";
+import type { SignAndBroadcast } from "lib/app-provider/hooks";
+import type { BechAddr20, TxResultRendering } from "lib/types";
 import type { Observable } from "rxjs";
 
-import type { SignAndBroadcast } from "lib/app-provider/hooks";
+import { pipe } from "@rx-stream/pipe";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
-import type { BechAddr20, TxResultRendering } from "lib/types";
 import { feeFromStr, findAttr } from "lib/utils";
 
 import { catchTxError } from "./common";
@@ -17,62 +17,62 @@ import { sendingTx } from "./common/sending";
 
 interface ClearAdminTxParams {
   address: BechAddr20;
-  messages: EncodeObject[];
   fee: StdFee;
-  signAndBroadcast: SignAndBroadcast;
+  messages: EncodeObject[];
   onTxSucceed?: () => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const clearAdminTx = ({
   address,
-  messages,
   fee,
-  signAndBroadcast,
+  messages,
   onTxSucceed,
+  signAndBroadcast,
 }: ClearAdminTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
       const txFee = findAttr(txInfo.events, "tx", "fee");
       return {
-        value: null,
         phase: TxStreamPhase.SUCCEED,
+        receiptInfo: {
+          header: "Clear admin complete!",
+          headerIcon: (
+            <CustomIcon
+              boxSize={5}
+              color="success.main"
+              name="check-circle-solid"
+            />
+          ),
+        },
         receipts: [
           {
-            title: "Tx hash",
-            value: txInfo.transactionHash,
             html: (
               <ExplorerLink
+                openNewTab
                 type="tx_hash"
                 value={txInfo.transactionHash}
-                openNewTab
               />
             ),
+            title: "Tx hash",
+            value: txInfo.transactionHash,
           },
           {
-            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
+            title: "Tx fee",
           },
         ],
-        receiptInfo: {
-          header: "Clear admin complete!",
-          headerIcon: (
-            <CustomIcon
-              name="check-circle-solid"
-              color="success.main"
-              boxSize={5}
-            />
-          ),
-        },
+        value: null,
       } as TxResultRendering;
     }
   )().pipe(catchTxError());

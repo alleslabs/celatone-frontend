@@ -1,13 +1,12 @@
-import { Flex, Grid, Text } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
+import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
+import type { AssetInfos, Option } from "lib/types";
 
+import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { EvmToCell } from "lib/components/evm-to-cell";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
-import type { AssetInfos, Option } from "lib/types";
 import {
   coinToTokenWithValue,
   dateFromNow,
@@ -19,22 +18,24 @@ import {
   getEvmToAddress,
   getTokenLabel,
 } from "lib/utils";
+import { isUndefined } from "lodash";
+
 import { TableRow } from "../tableComponents";
 
 interface EvmTransactionsTableRowProps {
-  templateColumns: string;
-  evmTransaction: TxDataWithTimeStampJsonRpc;
-  evmDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
+  evmDenom: Option<string>;
+  evmTransaction: TxDataWithTimeStampJsonRpc;
   showTimestamp: boolean;
+  templateColumns: string;
 }
 
 export const EvmTransactionsTableRow = ({
-  templateColumns,
-  evmTransaction,
-  evmDenom,
   assetInfos,
+  evmDenom,
+  evmTransaction,
   showTimestamp,
+  templateColumns,
 }: EvmTransactionsTableRowProps) => {
   const navigate = useInternalNavigate();
   const toAddress = getEvmToAddress(evmTransaction);
@@ -50,25 +51,25 @@ export const EvmTransactionsTableRow = ({
   return (
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
-      onClick={() => onRowSelect(formatEvmTxHash(evmTransaction.tx.hash))}
       _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
+      onClick={() => onRowSelect(formatEvmTxHash(evmTransaction.tx.hash))}
     >
       <TableRow />
       <TableRow pr={1}>
         <ExplorerLink
-          value={formatEvmTxHash(evmTransaction.tx.hash)}
-          type="evm_tx_hash"
           showCopyOnHover
+          type="evm_tx_hash"
+          value={formatEvmTxHash(evmTransaction.tx.hash)}
         />
       </TableRow>
       <TableRow>
         {evmTransaction.txReceipt.status ? (
-          <CustomIcon name="check" color="success.main" />
+          <CustomIcon color="success.main" name="check" />
         ) : (
-          <CustomIcon name="close" color="error.main" />
+          <CustomIcon color="error.main" name="close" />
         )}
       </TableRow>
       <TableRow>
@@ -79,20 +80,20 @@ export const EvmTransactionsTableRow = ({
       </TableRow>
       <TableRow>
         <ExplorerLink
-          value={evmTransaction.tx.from}
-          type="user_address"
           showCopyOnHover
+          type="user_address"
+          value={evmTransaction.tx.from}
         />
       </TableRow>
       <TableRow>
-        <CustomIcon name="arrow-right" boxSize={5} color="gray.600" />
+        <CustomIcon boxSize={5} color="gray.600" name="arrow-right" />
       </TableRow>
       <TableRow>
-        <EvmToCell toAddress={toAddress} isCompact />
+        <EvmToCell isCompact toAddress={toAddress} />
       </TableRow>
       <TableRow
-        flexDirection="column"
         alignItems="start"
+        flexDirection="column"
         justifyContent="center"
       >
         <Text variant="body2">
@@ -107,7 +108,7 @@ export const EvmTransactionsTableRow = ({
           {getTokenLabel(token.denom, token.symbol)}
         </Text>
         {!isUndefined(token.value) && (
-          <Text variant="body3" color="text.dark">
+          <Text color="text.dark" variant="body3">
             ({formatPrice(token.value)})
           </Text>
         )}
@@ -115,10 +116,10 @@ export const EvmTransactionsTableRow = ({
       {showTimestamp && (
         <TableRow>
           <Flex direction="column">
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               {formatUTC(evmTransaction.timestamp)}
             </Text>
-            <Text variant="body3" color="text.disabled">
+            <Text color="text.disabled" variant="body3">
               ({dateFromNow(evmTransaction.timestamp)})
             </Text>
           </Flex>

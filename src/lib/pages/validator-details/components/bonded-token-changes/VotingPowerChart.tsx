@@ -1,7 +1,8 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
 import type { BigSource } from "big.js";
 import type { ScriptableContext, TooltipModel } from "chart.js";
+import type { AssetInfos, Option, Token, U, ValidatorAddr } from "lib/types";
 
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { LineChart } from "lib/components/chart/LineChart";
@@ -9,7 +10,6 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useValidatorHistoricalPowers } from "lib/services/validator";
-import type { AssetInfos, Option, Token, U, ValidatorAddr } from "lib/types";
 import {
   formatMMMDD,
   formatUTC,
@@ -21,17 +21,17 @@ import {
 import { VotingPowerChartDetails } from "./VotingPowerChartDetails";
 
 interface VotingPowerChartProps {
-  validatorAddress: ValidatorAddr;
-  singleStakingDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
   onViewMore?: () => void;
+  singleStakingDenom: Option<string>;
+  validatorAddress: ValidatorAddr;
 }
 
 export const VotingPowerChart = ({
-  validatorAddress,
-  singleStakingDenom,
   assetInfos,
   onViewMore,
+  singleStakingDenom,
+  validatorAddress,
 }: VotingPowerChartProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
@@ -53,8 +53,6 @@ export const VotingPowerChart = ({
   });
 
   const dataset = {
-    data: historicalPowers.items.map((item) => item.votingPower.toNumber()),
-    borderColor: "#4CE2F7",
     backgroundColor: (context: ScriptableContext<"line">) => {
       const { ctx } = context.chart;
 
@@ -65,12 +63,14 @@ export const VotingPowerChart = ({
 
       return gradient;
     },
+    borderColor: "#4CE2F7",
+    data: historicalPowers.items.map((item) => item.votingPower.toNumber()),
     pointHoverBackgroundColor: "#F5F5F5",
     pointHoverBorderColor: "#4CE2F7",
   };
 
   const customizeTooltip = (tooltip: TooltipModel<"line">) => {
-    const { raw, dataIndex } = tooltip.dataPoints[0];
+    const { dataIndex, raw } = tooltip.dataPoints[0];
 
     const formattedAmount = formatUTokenWithPrecision(
       raw as U<Token<BigSource>>,
@@ -99,49 +99,49 @@ export const VotingPowerChart = ({
 
   return isMobileOverview ? (
     <Flex
+      alignItems="center"
       backgroundColor="gray.900"
+      justifyContent="space-between"
       p={4}
       rounded={8}
       w="100%"
-      justifyContent="space-between"
-      alignItems="center"
       onClick={() => {
         trackUseViewMore();
         onViewMore();
       }}
     >
       <VotingPowerChartDetails
+        assetInfo={assetInfo}
         historicalPowers={historicalPowers}
         singleStakingDenom={singleStakingDenom}
-        assetInfo={assetInfo}
       />
-      <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
+      <CustomIcon boxSize={6} color="gray.600" m={0} name="chevron-right" />
     </Flex>
   ) : (
     <Flex
+      backgroundColor="gray.900"
       direction={{
-        lg: "row",
         base: "column",
+        lg: "row",
       }}
       gap={8}
-      backgroundColor="gray.900"
-      py={6}
       px={4}
+      py={6}
       rounded={8}
       w="100%"
     >
-      <Flex gap={6} direction="column" w={280} minW={280}>
+      <Flex direction="column" gap={6} minW={280} w={280}>
         <VotingPowerChartDetails
+          assetInfo={assetInfo}
           historicalPowers={historicalPowers}
           singleStakingDenom={singleStakingDenom}
-          assetInfo={assetInfo}
         />
         {onViewMore && (
           <Button
-            variant="ghost-primary"
             p="unset"
-            size="md"
             pl={2}
+            size="md"
+            variant="ghost-primary"
             w="fit-content"
             onClick={() => {
               trackUseViewMore();
@@ -149,14 +149,12 @@ export const VotingPowerChart = ({
             }}
           >
             See all related transactions
-            <CustomIcon name="chevron-right" boxSize={3} />
+            <CustomIcon boxSize={3} name="chevron-right" />
           </Button>
         )}
       </Flex>
-      <Box w="100%" h="272px" id="voting-power-chart-container">
+      <Box id="voting-power-chart-container" h="272px" w="100%">
         <LineChart
-          labels={labels}
-          dataset={dataset}
           customizeTooltip={customizeTooltip}
           customizeYAxisTicks={(value) =>
             formatUTokenWithPrecision(
@@ -166,6 +164,8 @@ export const VotingPowerChart = ({
               2
             )
           }
+          dataset={dataset}
+          labels={labels}
         />
       </Box>
     </Flex>

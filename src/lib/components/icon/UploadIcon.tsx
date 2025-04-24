@@ -4,7 +4,7 @@ import { CustomIcon } from "./CustomIcon";
 import { SvgIcon } from "./SvgIcon";
 
 interface UploadIconProps {
-  variant?: "primary" | "muted";
+  variant?: "muted" | "primary";
 }
 
 const getVariantStyle = (variant: UploadIconProps["variant"]) => {
@@ -22,13 +22,13 @@ export const UploadIcon = ({ variant = "primary" }: UploadIconProps) => {
   return (
     <Flex
       align="center"
-      justify="center"
-      borderRadius="50%"
-      w="40px"
-      h="40px"
       bgColor={style.bgColor}
+      borderRadius="50%"
+      h="40px"
+      justify="center"
+      w="40px"
     >
-      <SvgIcon name="upload" boxSize="24px" color={style.color} />
+      <SvgIcon boxSize="24px" color={style.color} name="upload" />
     </Flex>
   );
 };
@@ -38,13 +38,13 @@ export const UploadFolderIcon = ({ variant = "primary" }: UploadIconProps) => {
   return (
     <Flex
       align="center"
-      justify="center"
-      borderRadius="50%"
-      w="40px"
-      h="40px"
       bgColor={style.bgColor}
+      borderRadius="50%"
+      h="40px"
+      justify="center"
+      w="40px"
     >
-      <CustomIcon name="folder" boxSize={4} color={style.color} />
+      <CustomIcon boxSize={4} color={style.color} name="folder" />
     </Flex>
   );
 };

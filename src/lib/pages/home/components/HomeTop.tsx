@@ -1,8 +1,8 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import type { Nullish } from "lib/types";
 
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import type { Nullish } from "lib/types";
 import { d0Formatter } from "lib/utils";
 
 import { CardInfo } from "./CardInfo";
@@ -25,25 +25,25 @@ const blockTimeInfo = {
 };
 
 interface HomeTopProps {
-  totalTxs: Nullish<number>;
-  isTotalTxsLoading: boolean;
-  latestBlock: Nullish<number>;
-  isLatestBlockLoading: boolean;
   blockTime: Nullish<number>;
   isBlockTimeLoading: boolean;
-  toTxs: () => void;
+  isLatestBlockLoading: boolean;
+  isTotalTxsLoading: boolean;
+  latestBlock: Nullish<number>;
   toBlocks: () => void;
+  totalTxs: Nullish<number>;
+  toTxs: () => void;
 }
 
 export const HomeTop = ({
-  totalTxs,
-  isTotalTxsLoading,
-  latestBlock,
-  isLatestBlockLoading,
   blockTime,
   isBlockTimeLoading,
-  toTxs,
+  isLatestBlockLoading,
+  isTotalTxsLoading,
+  latestBlock,
   toBlocks,
+  totalTxs,
+  toTxs,
 }: HomeTopProps) => {
   const isMobile = useMobile();
   const {
@@ -55,13 +55,13 @@ export const HomeTop = ({
       <Flex
         direction="column"
         mb={12}
-        position="relative"
         overflow="hidden"
+        position="relative"
         sx={{ "& > div": { zIndex: 1 } }}
       >
         <Flex
-          justifyContent="space-between"
           alignItems="center"
+          justifyContent="space-between"
           mb={5}
           zIndex={1}
         >
@@ -71,29 +71,29 @@ export const HomeTop = ({
             </Text>{" "}
             Overview
           </Heading>
-          <UserDocsLink isButton href="introduction/overview" />
+          <UserDocsLink href="introduction/overview" isButton />
         </Flex>
-        <Flex gap={4} direction={{ base: "column", md: "row" }}>
+        <Flex direction={{ base: "column", md: "row" }} gap={4}>
           <CardInfo
+            isLoading={isTotalTxsLoading}
+            navigate={toTxs}
             title={txInfo.title}
             tooltip={txInfo.tooltip}
             value={totalTxs ? d0Formatter(totalTxs, "0") : undefined}
-            isLoading={isTotalTxsLoading}
-            navigate={toTxs}
           />
           <CardInfo
+            isLoading={isLatestBlockLoading}
+            navigate={toBlocks}
             title={blockInfo.title}
             tooltip={blockInfo.tooltip}
             value={latestBlock ? d0Formatter(latestBlock, "0") : undefined}
-            isLoading={isLatestBlockLoading}
-            navigate={toBlocks}
           />
           <CardInfo
+            isLoading={isBlockTimeLoading}
+            navigate={toBlocks}
             title={blockTimeInfo.title}
             tooltip={blockTimeInfo.tooltip}
             value={blockTime?.toFixed(3).concat("s")}
-            isLoading={isBlockTimeLoading}
-            navigate={toBlocks}
           />
         </Flex>
       </Flex>

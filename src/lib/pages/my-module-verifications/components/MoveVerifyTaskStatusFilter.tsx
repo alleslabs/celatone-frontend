@@ -1,8 +1,7 @@
 import type { InputProps } from "@chakra-ui/react";
-import { Flex, FormControl, useOutsideClick } from "@chakra-ui/react";
-import { matchSorter } from "match-sorter";
-import { forwardRef, useMemo, useRef, useState } from "react";
+import type { RefObject } from "react";
 
+import { Flex, FormControl, useOutsideClick } from "@chakra-ui/react";
 import {
   DropdownContainer,
   FilterChip,
@@ -12,14 +11,16 @@ import {
 import { MyModuleVerificationDetailsStatusBadge } from "lib/pages/my-module-verification-details/components";
 import { MoveVerifyTaskStatus } from "lib/services/types";
 import { toggleItem } from "lib/utils";
+import { matchSorter } from "match-sorter";
+import { forwardRef, useMemo, useRef, useState } from "react";
 
 export interface MoveVerifyTaskStatusFilterProps extends InputProps {
-  result: MoveVerifyTaskStatus[];
-  minW?: string;
-  label?: string;
-  placeholder?: string;
-  setResult: (option: MoveVerifyTaskStatus[]) => void;
   isMulti: boolean;
+  label?: string;
+  minW?: string;
+  placeholder?: string;
+  result: MoveVerifyTaskStatus[];
+  setResult: (option: MoveVerifyTaskStatus[]) => void;
 }
 
 const OPTIONS = [
@@ -35,12 +36,12 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
 >(
   (
     {
-      result,
-      minW = "50%",
-      setResult,
-      placeholder,
-      label,
       isMulti,
+      label,
+      minW = "50%",
+      placeholder,
+      result,
+      setResult,
     }: MoveVerifyTaskStatusFilterProps,
     ref
   ) => {
@@ -77,32 +78,23 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
     };
 
     useOutsideClick({
-      ref: boxRef,
       handler: () => setIsDropdown(false),
+      ref: boxRef as RefObject<HTMLDivElement>,
     });
 
     return (
-      <FormControl ref={boxRef} minW={minW} maxW="full" h={8}>
+      <FormControl h={8} maxW="full" minW={minW} ref={boxRef}>
         <FilterInput
-          keyword={keyword}
-          placeholder={placeholder}
-          result={result}
-          label={label}
-          inputRef={inputRef}
-          mainRef={ref}
-          isDropdown={isDropdown}
-          setKeyword={setKeyword}
-          setIsDropdown={setIsDropdown}
           chipContainerComponent={
-            <Flex alignItems="center" pl={2} gap={2}>
+            <Flex alignItems="center" gap={2} pl={2}>
               {result.map((option) => (
                 <FilterChip
                   key={option}
                   chipComponent={
                     <MyModuleVerificationDetailsStatusBadge
-                      status={option}
                       hasCloseBtn
                       isActiveOnVerifying={false}
+                      status={option}
                     />
                   }
                   onSelect={() => setResult(toggleItem(result, option))}
@@ -110,6 +102,15 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
               ))}
             </Flex>
           }
+          inputRef={inputRef}
+          isDropdown={isDropdown}
+          keyword={keyword}
+          label={label}
+          mainRef={ref}
+          placeholder={placeholder}
+          result={result}
+          setIsDropdown={setIsDropdown}
+          setKeyword={setKeyword}
         />
 
         {isDropdown && (
@@ -122,8 +123,8 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
                 key={option.label}
                 filterDropdownComponent={
                   <MyModuleVerificationDetailsStatusBadge
-                    status={option.value}
                     isActiveOnVerifying={false}
+                    status={option.value}
                   />
                 }
                 isOptionSelected={isOptionSelected(option.value)}

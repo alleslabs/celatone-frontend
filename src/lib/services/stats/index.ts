@@ -1,10 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
+import { useQuery } from "@tanstack/react-query";
 import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
 
-import { getOverviewsStats } from "./api";
 import type { OverviewsStats } from "../types";
+
+import { getOverviewsStats } from "./api";
 
 /**
  * Fetches the overviews stats from the source based on the tier.
@@ -21,8 +22,8 @@ export const useOverviewsStats = (
     [CELATONE_QUERY_KEYS.OVERVIEWS_STATS, endpoint],
     async () => getOverviewsStats(endpoint),
     {
-      refetchOnWindowFocus: false,
       enabled,
+      refetchOnWindowFocus: false,
     }
   );
 };

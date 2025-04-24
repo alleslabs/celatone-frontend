@@ -1,27 +1,27 @@
-import { Flex, Text } from "@chakra-ui/react";
+import type { AssetInfos, Option, TokenWithValue } from "lib/types";
+import type { MsgSwapExactAmountInDetails } from "lib/utils/tx/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { AccordionStepperItem } from "lib/components/AccordionStepperItem";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
 import { usePoolsLiquidityByPoolIds } from "lib/services/pools";
-import type { AssetInfos, Option, TokenWithValue } from "lib/types";
 import { coinToTokenWithValue, getTokenLabel } from "lib/utils";
-import type { MsgSwapExactAmountInDetails } from "lib/utils/tx/types";
 
 interface PoolRouteProps {
-  routes: MsgSwapExactAmountInDetails["routes"];
+  ampCopierSection?: string;
   assetInfos: Option<AssetInfos>;
   isOpened: boolean;
-  ampCopierSection?: string;
+  routes: MsgSwapExactAmountInDetails["routes"];
 }
 
 export const PoolRoute = ({
-  routes,
+  ampCopierSection,
   assetInfos,
   isOpened,
-  ampCopierSection,
+  routes,
 }: PoolRouteProps) => {
   const { data: poolAssets, isLoading } = usePoolsLiquidityByPoolIds(
     routes.map((pool) => pool.poolId),
@@ -36,7 +36,7 @@ export const PoolRoute = ({
     );
   return (
     <Flex direction="column">
-      <Text variant="body2" textColor="gray.500" fontWeight={500}>
+      <Text fontWeight={500} textColor="gray.500" variant="body2">
         Pool Route
       </Text>
       {routes.map((pool) => {
@@ -50,38 +50,38 @@ export const PoolRoute = ({
             alignItems="center"
           >
             {showStepper && <AccordionStepperItem />}
-            <Flex alignItems="center" w="full" my={2}>
+            <Flex alignItems="center" my={2} w="full">
               <PoolLogo
-                tokens={tokens}
                 logoSize={5}
                 marginLeft={-4}
-                textVariant="small"
                 minW={20}
+                textVariant="small"
+                tokens={tokens}
               />
               <div>
                 <Flex
-                  gap={1}
                   css={{
                     "p:last-of-type > span": {
                       display: "none",
                     },
                   }}
+                  gap={1}
                 >
                   {tokens.map((token) => (
                     <Text
                       key={token.denom}
-                      variant="body2"
-                      fontWeight={
-                        token.denom === pool.tokenOutDenom ? 700 : 400
-                      }
                       color={
                         token.denom === pool.tokenOutDenom
                           ? "primary.main"
                           : "text.main"
                       }
+                      fontWeight={
+                        token.denom === pool.tokenOutDenom ? 700 : 400
+                      }
+                      variant="body2"
                     >
                       {getTokenLabel(token.denom, token.symbol)}
-                      <Text as="span" fontWeight={400} color="primary.main">
+                      <Text as="span" color="primary.main" fontWeight={400}>
                         {" "}
                         /
                       </Text>
@@ -89,10 +89,10 @@ export const PoolRoute = ({
                   ))}
                 </Flex>
                 <ExplorerLink
+                  ampCopierSection={ampCopierSection}
+                  showCopyOnHover
                   type="pool_id"
                   value={pool.poolId.toString()}
-                  showCopyOnHover
-                  ampCopierSection={ampCopierSection}
                 />
               </div>
             </Flex>

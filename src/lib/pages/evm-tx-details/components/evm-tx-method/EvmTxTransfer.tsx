@@ -1,10 +1,10 @@
-import { Box, Text } from "@chakra-ui/react";
+import type { TxDataJsonRpc } from "lib/services/types";
+import type { AssetInfos, Option } from "lib/types";
 
+import { Box, Text } from "@chakra-ui/react";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TokenCard, UnsupportedToken } from "lib/components/token";
-import type { TxDataJsonRpc } from "lib/services/types";
-import type { AssetInfos, Option } from "lib/types";
 import {
   coinToTokenWithValue,
   formatTokenWithValue,
@@ -15,17 +15,17 @@ import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
 
 interface EvmTxTransferProps {
-  evmTxData: TxDataJsonRpc;
-  evmDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
+  evmDenom: Option<string>;
+  evmTxData: TxDataJsonRpc;
 }
 
 export const EvmTxTransfer = ({
-  evmTxData,
-  evmDenom,
   assetInfos,
+  evmDenom,
+  evmTxData,
 }: EvmTxTransferProps) => {
-  const { from, to, input } = evmTxData.tx;
+  const { from, input, to } = evmTxData.tx;
 
   const amount = coinToTokenWithValue(
     evmDenom ?? "",
@@ -35,42 +35,42 @@ export const EvmTxTransfer = ({
 
   return (
     <EvmTxMethodAccordion
-      msgIcon="send"
       content={
         <Box display="inline">
           <ExplorerLink
-            type="user_address"
-            value={from}
+            ampCopierSection="tx_page_message_header_send_address"
             showCopyOnHover
             textVariant="body1"
-            ampCopierSection="tx_page_message_header_send_address"
+            type="user_address"
+            value={from}
           />{" "}
           <EvmMethodChip txInput={input} txTo={to} width="65px" />{" "}
           {formatTokenWithValue(amount)} to{" "}
           {to ? (
             <ExplorerLink
-              type="user_address"
-              value={to}
               showCopyOnHover
               textVariant="body1"
+              type="user_address"
+              value={to}
             />
           ) : (
-            <Text variant="body2" color="text.disabled">
+            <Text color="text.disabled" variant="body2">
               -
             </Text>
           )}
         </Box>
       }
+      msgIcon="send"
     >
       <EvmInfoLabelValue
         label="From"
         value={
           <ExplorerLink
-            type="user_address"
-            value={from}
+            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
-            fixedHeight={false}
+            type="user_address"
+            value={from}
           />
         }
       />
@@ -79,14 +79,14 @@ export const EvmTxTransfer = ({
         value={
           to ? (
             <ExplorerLink
-              type="user_address"
-              value={to}
+              fixedHeight={false}
               showCopyOnHover
               textFormat="normal"
-              fixedHeight={false}
+              type="user_address"
+              value={to}
             />
           ) : (
-            <Text variant="body2" color="text.disabled">
+            <Text color="text.disabled" variant="body2">
               -
             </Text>
           )
@@ -96,11 +96,11 @@ export const EvmTxTransfer = ({
         label="Transferred token"
         value={
           isSupportedToken(amount) ? (
-            <TokenCard token={amount} minW={{ base: "full", md: "50%" }} />
+            <TokenCard minW={{ base: "full", md: "50%" }} token={amount} />
           ) : (
             <UnsupportedToken
-              token={amount}
               minW={{ base: "full", md: "50%" }}
+              token={amount}
             />
           )
         }

@@ -1,18 +1,17 @@
-import { z } from "zod";
-
 import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
+import { z } from "zod";
 
 export enum AccountType {
   BaseAccount = "BaseAccount",
+  BaseVestingAccount = "BaseVestingAccount",
+  ClawbackVestingAccount = "ClawbackVestingAccount",
+  ContinuousVestingAccount = "ContinuousVestingAccount",
+  ContractAccount = "ContractAccount",
+  DelayedVestingAccount = "DelayedVestingAccount",
   InterchainAccount = "InterchainAccount",
   ModuleAccount = "ModuleAccount",
-  ContinuousVestingAccount = "ContinuousVestingAccount",
-  DelayedVestingAccount = "DelayedVestingAccount",
-  ClawbackVestingAccount = "ClawbackVestingAccount",
-  ContractAccount = "ContractAccount",
   PeriodicVestingAccount = "PeriodicVestingAccount",
   PermanentLockedAccount = "PermanentLockedAccount",
-  BaseVestingAccount = "BaseVestingAccount",
 }
 
 export enum AccountTypeRest {

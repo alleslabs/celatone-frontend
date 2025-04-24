@@ -1,7 +1,7 @@
-import { z } from "zod";
+import type { Option, TokenWithValue, USD } from "lib/types";
 
 import { zCoin, zPagination } from "lib/types";
-import type { Option, TokenWithValue, USD } from "lib/types";
+import { z } from "zod";
 
 export const zBalancesResponse = z.array(zCoin);
 
@@ -11,10 +11,10 @@ export const zBalancesReponseRest = z.object({
 });
 
 export interface BalanceInfos {
+  error: Error;
+  isLoading: boolean;
   supportedAssets: TokenWithValue[];
+  totalData: Option<number>;
   totalSupportedAssetsValue: Option<USD<Big>>;
   unsupportedAssets: TokenWithValue[];
-  isLoading: boolean;
-  totalData: Option<number>;
-  error: Error;
 }

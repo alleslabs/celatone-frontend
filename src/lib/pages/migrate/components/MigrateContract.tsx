@@ -1,17 +1,15 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import type { RJSFValidationError } from "@rjsf/utils";
-import Long from "long";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import type { FormStatus } from "lib/components/forms";
+import type { Code } from "lib/services/types";
+import type { BechAddr32, ComposedMsg, Option } from "lib/types";
 
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { AmpEvent, trackAction } from "lib/amplitude";
 import { useCurrentChain, useFabricateFee } from "lib/app-provider";
 import { useMigrateContractTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
-import type { FormStatus } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
-import JsonInput from "lib/components/json/JsonInput";
 import {
   jsonInputFormKey,
   MessageInputContent,
@@ -20,26 +18,28 @@ import {
   SchemaInputSection,
   yourSchemaInputFormKey,
 } from "lib/components/json-schema";
+import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
 import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
 import { useSimulateFeeQuery } from "lib/services/tx";
-import type { Code } from "lib/services/types";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeRest } from "lib/services/wasm/code";
-import type { BechAddr32, ComposedMsg, Option } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, isId, jsonValidate, resolvePermission } from "lib/utils";
+import Long from "long";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 
 interface MigrateContractProps {
-  contractAddress: BechAddr32;
   codeIdParam: Option<number>;
+  contractAddress: BechAddr32;
   handleBack: () => void;
 }
 
 export const MigrateContract = ({
-  contractAddress,
   codeIdParam,
+  contractAddress,
   handleBack,
 }: MigrateContractProps) => {
   // ------------------------------------------//
@@ -56,13 +56,13 @@ export const MigrateContract = ({
   // ------------------------------------------//
   const {
     control,
-    watch,
-    setValue,
     formState: { errors: formErrors },
+    setValue,
+    watch,
   } = useForm({
     defaultValues: {
-      codeId: codeIdParam?.toString() ?? "",
       codeHash: "",
+      codeId: codeIdParam?.toString() ?? "",
       msgInput: {
         [jsonInputFormKey]: "{}",
         [yourSchemaInputFormKey]: "{}",
@@ -70,7 +70,7 @@ export const MigrateContract = ({
     },
     mode: "all",
   });
-  const { codeId, codeHash, msgInput } = watch();
+  const { codeHash, codeId, msgInput } = watch();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -118,20 +118,23 @@ export const MigrateContract = ({
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
-    onSuccess: (gasRes) =>
-      gasRes
-        ? setEstimatedFee(fabricateFee(gasRes))
-        : setEstimatedFee(undefined),
     onError: (e) => {
       setSimulateError(e.message);
       setEstimatedFee(undefined);
     },
+    onSuccess: (gasRes) =>
+      gasRes
+        ? setEstimatedFee(fabricateFee(gasRes))
+        : setEstimatedFee(undefined),
   });
 
   const { refetch } = useCodeRest(Number(codeId), {
-    enabled: false,
-    retry: false,
     cacheTime: 0,
+    enabled: false,
+    onError: () => {
+      setStatus({ message: "This code ID does not exist", state: "error" });
+      setSimulateError("");
+    },
     onSuccess: (data) => {
       setValue("codeHash", data.hash.toLowerCase());
       if (
@@ -144,17 +147,14 @@ export const MigrateContract = ({
         setStatus({ state: "success" });
       else {
         setStatus({
-          state: "error",
           message:
             "This wallet does not have permission to migrate to this code",
+          state: "error",
         });
         setSimulateError("");
       }
     },
-    onError: () => {
-      setStatus({ state: "error", message: "This code ID does not exist" });
-      setSimulateError("");
-    },
+    retry: false,
   });
 
   // ------------------------------------------//
@@ -178,12 +178,12 @@ export const MigrateContract = ({
       tab === MessageTabs.YOUR_SCHEMA ? "schema" : "json-input"
     );
     const stream = await migrateTx({
-      contractAddress,
       codeId: Number(codeId),
-      migrateMsg: JSON.parse(currentInput),
+      contractAddress,
       estimatedFee,
-      onTxSucceed: () => setProcessing(false),
+      migrateMsg: JSON.parse(currentInput),
       onTxFailed: () => setProcessing(false),
+      onTxSucceed: () => setProcessing(false),
     });
 
     if (stream) {
@@ -211,7 +211,7 @@ export const MigrateContract = ({
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
         if (codeId) refetch();
-        else setStatus({ state: "error", message: "Invalid Code ID" });
+        else setStatus({ message: "Invalid Code ID", state: "error" });
       }, 500);
       return () => clearTimeout(timer);
     }
@@ -226,10 +226,10 @@ export const MigrateContract = ({
       const composedMsg = address
         ? [
             composeMsg(MsgType.MIGRATE, {
-              sender: address,
-              contract: contractAddress,
               codeId: Long.fromString(codeId),
+              contract: contractAddress,
               msg: Buffer.from(currentInput),
+              sender: address,
             }),
           ]
         : [];
@@ -251,53 +251,53 @@ export const MigrateContract = ({
 
   return (
     <>
-      <Heading as="h6" variant="h6" mb={4}>
+      <Heading as="h6" mb={4} variant="h6">
         Migrate to code ID
       </Heading>
       <CodeSelectSection
         codeId={isId(codeId) ? Number(codeId) : undefined}
-        name="codeId"
         control={control}
-        status={status}
         error={formErrors.codeId?.message}
+        name="codeId"
+        setCodeHash={(data: Code) =>
+          setValue("codeHash", data.hash.toLowerCase())
+        }
+        status={status}
         onCodeSelect={(code: number) => {
           setValue("codeId", code.toString());
           resetMsgInputSchema();
         }}
-        setCodeHash={(data: Code) =>
-          setValue("codeHash", data.hash.toLowerCase())
-        }
       />
-      <Flex align="center" justify="space-between" mt={12} mb={6}>
+      <Flex align="center" justify="space-between" mb={6} mt={12}>
         <Heading as="h6" variant="h6">
           Migrate message
         </Heading>
         <MessageInputSwitch
           currentTab={tab}
-          onTabChange={setTab}
           disabled={!codeHash}
+          onTabChange={setTab}
         />
       </Flex>
       <MessageInputContent
         currentTab={tab}
         jsonContent={
           <JsonInput
-            text={msgInput[MessageTabs.JSON_INPUT]}
+            minLines={10}
             setText={(msg: string) =>
               setValue(`msgInput.${jsonInputFormKey}`, msg)
             }
-            minLines={10}
+            text={msgInput[MessageTabs.JSON_INPUT]}
           />
         }
         schemaContent={
           isId(codeId) && (
             <SchemaInputSection
-              type="migrate"
               codeHash={codeHash}
               codeId={Number(codeId)}
-              verifiedSchema={verifiedSchema}
-              localSchema={localSchema}
               handleChange={handleChange}
+              localSchema={localSchema}
+              type="migrate"
+              verifiedSchema={verifiedSchema}
               onSchemaSave={resetMsgInputSchema}
             />
           )
@@ -306,21 +306,21 @@ export const MigrateContract = ({
       {simulateError && (
         <Flex gap={2} mb={4}>
           <CustomIcon
-            name="alert-triangle-solid"
             boxSize={3}
             color="error.main"
+            name="alert-triangle-solid"
           />
-          <Text variant="body3" color="error.main">
+          <Text color="error.main" variant="body3">
             {simulateError}
           </Text>
         </Flex>
       )}
       <Flex
-        fontSize="14px"
-        color="text.dark"
-        alignSelf="flex-start"
         alignItems="center"
+        alignSelf="flex-start"
+        color="text.dark"
         display="flex"
+        fontSize="14px"
         gap={1}
       >
         <p>Transaction fee:</p>
@@ -329,22 +329,22 @@ export const MigrateContract = ({
           loading={isSimulating}
         />
       </Flex>
-      <Flex justify="space-between" w="100%" mt={8}>
+      <Flex justify="space-between" mt={8} w="100%">
         <Button
+          leftIcon={<CustomIcon name="chevron-left" />}
           variant="outline-gray"
           w="128px"
-          leftIcon={<CustomIcon name="chevron-left" />}
           onClick={handleBack}
         >
           Previous
         </Button>
         <Button
-          variant="primary"
-          w="128px"
           isDisabled={!enableMigrate || !estimatedFee || isSimulating}
-          onClick={proceed}
           isLoading={processing}
           sx={{ pointerEvents: processing && "none" }}
+          variant="primary"
+          w="128px"
+          onClick={proceed}
         >
           Migrate
         </Button>

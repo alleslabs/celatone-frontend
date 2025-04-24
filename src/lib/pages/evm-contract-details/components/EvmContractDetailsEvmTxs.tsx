@@ -1,10 +1,11 @@
-import { Spinner, Text } from "@chakra-ui/react";
+import type { BechAddr20 } from "lib/types";
 
+import { Spinner, Text } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { EvmTransactionsTable, ViewMore } from "lib/components/table";
-import type { BechAddr20 } from "lib/types";
+
 import { useContractDetailsEvmTxs } from "../data";
 
 interface EvmContractDetailsEvmTxsProps {
@@ -17,20 +18,18 @@ export const EvmContractDetailsEvmTxs = ({
   onViewMore,
 }: EvmContractDetailsEvmTxsProps) => {
   const {
-    data,
-    isLoading,
-    isError,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
     cosmosTxsCount,
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+    isFetchingNextPage,
+    isLoading,
   } = useContractDetailsEvmTxs(address);
 
   return (
     <>
       <EvmTransactionsTable
-        evmTransactions={!onViewMore ? data : data?.slice(0, 5)}
-        isLoading={isLoading}
         emptyState={
           data === undefined ? (
             <ErrorFetching dataName="evm transactions" />
@@ -41,23 +40,25 @@ export const EvmContractDetailsEvmTxs = ({
             />
           )
         }
+        evmTransactions={!onViewMore ? data : data?.slice(0, 5)}
+        isLoading={isLoading}
         showTimestamp
       />
       {data && (
         <>
           {!onViewMore && (
             <>
-              <Text variant="body2" color="text.dark" mt={2}>
+              <Text color="text.dark" mt={2} variant="body2">
                 {isFetchingNextPage ? (
-                  <Spinner as="span" size="xs" mr={1} />
+                  <Spinner as="span" mr={1} size="xs" />
                 ) : (
                   data.length
                 )}{" "}
                 EVM Txs found from {cosmosTxsCount ?? 0} Cosmos Txs
               </Text>
               {isError && (
-                <Text variant="body2" color="warning.main" mt={2}>
-                  <CustomIcon name="alert-triangle-solid" boxSize={3} ml={0} />{" "}
+                <Text color="warning.main" mt={2} variant="body2">
+                  <CustomIcon boxSize={3} ml={0} name="alert-triangle-solid" />{" "}
                   There is an error during loading more transactions. Please try
                   again later.
                 </Text>
@@ -70,9 +71,9 @@ export const EvmContractDetailsEvmTxs = ({
                 <ViewMore onClick={onViewMore} />
               ) : (
                 <LoadNext
-                  text="Load more transactions"
                   fetchNextPage={fetchNextPage}
                   isFetchingNextPage={isFetchingNextPage}
+                  text="Load more transactions"
                 />
               )}
             </>

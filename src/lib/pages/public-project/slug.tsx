@@ -1,7 +1,4 @@
 import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useInternalNavigate,
@@ -14,6 +11,8 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { DetailHeader } from "./components/DetailHeader";
 import {
@@ -37,24 +36,24 @@ const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
   const move = useMoveConfig({ shouldRedirect: false });
 
   const {
+    isLoading,
+    projectDetail,
+    publicAccounts,
     publicCodes,
     publicContracts,
-    publicAccounts,
     publicModules,
-    projectDetail,
-    isLoading,
   } = usePublicData(slug);
 
   const handleTabChange = (nextTab: TabIndex) => () => {
     if (nextTab === tab) return;
     navigate({
+      options: {
+        shallow: true,
+      },
       pathname: "/projects/[slug]/[tab]",
       query: {
         slug,
         tab: nextTab,
-      },
-      options: {
-        shallow: true,
       },
     });
   };
@@ -67,15 +66,15 @@ const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
 
       if (!tab || !Object.values(TabIndex).includes(tab)) {
         navigate({
-          replace: true,
+          options: {
+            shallow: true,
+          },
           pathname: "/projects/[slug]/[tab]",
           query: {
             slug,
             tab: TabIndex.Overview,
           },
-          options: {
-            shallow: true,
-          },
+          replace: true,
         });
       }
     }
@@ -105,9 +104,9 @@ const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
         lazyBehavior="keepMounted"
       >
         <TabList
-          my={6}
-          borderBottom="1px solid"
+          borderBottomWidth="1px"
           borderColor="gray.700"
+          my={6}
           overflowX="scroll"
         >
           <CustomTab
@@ -118,17 +117,17 @@ const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
           </CustomTab>
           <CustomTab
             count={publicCodes.length}
+            hidden={!wasm.enabled}
             isDisabled={!publicCodes.length}
             onClick={handleTabChange(TabIndex.Codes)}
-            hidden={!wasm.enabled}
           >
             Codes
           </CustomTab>
           <CustomTab
             count={publicContracts.length}
+            hidden={!wasm.enabled}
             isDisabled={!publicContracts.length}
             onClick={handleTabChange(TabIndex.Contracts)}
-            hidden={!wasm.enabled}
           >
             Contracts
           </CustomTab>
@@ -141,9 +140,9 @@ const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
           </CustomTab>
           <CustomTab
             count={publicModules.length}
+            hidden={!move.enabled}
             isDisabled={!publicModules.length}
             onClick={handleTabChange(TabIndex.Modules)}
-            hidden={!move.enabled}
           >
             Modules
           </CustomTab>

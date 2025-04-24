@@ -9,16 +9,16 @@ export const zGas = <T extends z.ZodTypeAny>(zType: T) => zType.brand("gas");
 export type Gas<T = number> = T & z.BRAND<"gas">;
 
 // All currencies
-export type Token<T = string> = T & NominalType<string>;
+export type Token<T = string> = NominalType<string> & T;
 
-export type USD<T = string> = T & NominalType<"usd">;
+export type USD<T = string> = NominalType<"usd"> & T;
 
 // Percentage
 export const zRatio = <T extends z.ZodTypeAny>(zType: T) =>
   zType.brand("ratio");
 export type Ratio<T = string> = T & z.BRAND<"ratio">;
 
-export type Percent<T = string> = T & NominalType<"percent">;
+export type Percent<T = string> = NominalType<"percent"> & T;
 
 export interface ChainGasPrice {
   denom: string;

@@ -1,4 +1,15 @@
+import "ace-builds/src-noconflict/ace";
+import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-sh";
+import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/theme-one_dark";
+import "ace-builds/src-noconflict/theme-pastel_on_dark";
+
 import type { ButtonProps, FlexProps } from "@chakra-ui/react";
+import type { Coin } from "@cosmjs/stargate";
+import type { BechAddr32 } from "lib/types";
+
 import {
   Box,
   Button,
@@ -17,49 +28,39 @@ import {
   Tabs,
   useDisclosure,
 } from "@chakra-ui/react";
-import type { Coin } from "@cosmjs/stargate";
-import { useState } from "react";
-import AceEditor from "react-ace";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useGas, useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import type { BechAddr32 } from "lib/types";
 import { coinsToStr, jsonPrettify } from "lib/utils";
+import { useState } from "react";
+import AceEditor from "react-ace";
+
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 
-import "ace-builds/src-noconflict/ace";
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/mode-python";
-import "ace-builds/src-noconflict/mode-sh";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/src-noconflict/theme-one_dark";
-import "ace-builds/src-noconflict/theme-pastel_on_dark";
-
 interface WasmCodeSnippetProps {
   contractAddress: BechAddr32;
-  message: string;
-  type: "query" | "execute";
-  ml?: ButtonProps["ml"];
   funds?: Coin[];
+  message: string;
+  ml?: ButtonProps["ml"];
+  type: "execute" | "query";
   w?: FlexProps["width"];
 }
 
 const WasmCodeSnippet = ({
   contractAddress,
-  message,
-  type = "query",
-  ml,
-  w,
   funds = [],
+  message,
+  ml,
+  type = "query",
+  w,
 }: WasmCodeSnippetProps) => {
   const isMobile = useMobile();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const isDisabled = !contractAddress || !message.length;
   const {
-    currentChainId,
     chainConfig: { chain, rest: restEndpoint, rpc: rpcEndpoint },
+    currentChainId,
     theme,
   } = useCelatoneApp();
   const gasPrice = useGas();
@@ -73,72 +74,12 @@ const WasmCodeSnippet = ({
 
   const codeSnippets: Record<
     string,
-    { name: string; mode: string; snippet: string }[]
+    { mode: string; name: string; snippet: string }[]
   > = {
-    query: [
-      {
-        name: "CLI",
-        mode: "sh",
-        snippet: `export CHAIN_ID='${currentChainId}'\n
-export CONTRACT_ADDRESS='${contractAddress}'\n
-export QUERY_MSG='${message}'\n
-export RPC_URL='${rpcEndpoint}'\n
-${daemonName} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG \\
-  --chain-id $CHAIN_ID \\
-  --node $RPC_URL`,
-      },
-      {
-        name: "Python",
-        mode: "python",
-        snippet: `import base64
-import requests\n
-CONTRACT_ADDRESS = "${contractAddress}"
-LCD_URL = "${restEndpoint}"
-QUERY_MSG = b'''${message}'''\n
-query_b64encoded = base64.b64encode(QUERY_MSG).decode("ascii")
-res = requests.get(
-  f"{LCD_URL}/cosmwasm/wasm/v1/contract/{CONTRACT_ADDRESS}/smart/{query_b64encoded}"
-).json()\n
-print(res)`,
-      },
-      {
-        name: "CosmJS",
-        mode: "javascript",
-        snippet: `const { SigningCosmWasmClient } = require("@cosmjs/cosmwasm-stargate");
-const rpcURL = "${rpcEndpoint}";
-const contractAddress =
-"${contractAddress}";
-const queryMsg = \`${message}\`;\n
-const queryContract = async (rpcURL, contractAddress, queryMsg) => {
-  const client = await SigningCosmWasmClient.connect(rpcURL);
-  const queryResult = await client.queryContractSmart(
-    contractAddress,
-    JSON.parse(queryMsg)
-  );
-  console.log(queryResult);
-};\n
-queryContract(rpcURL, contractAddress, queryMsg);`,
-      },
-      {
-        name: "Axios",
-        mode: "javascript",
-        snippet: `const axios = require('axios');\n
-const lcdURL = '${restEndpoint}';
-const contractAddress =
-"${contractAddress}";
-const queryMsg = ${message};\n
-const queryContract = async () => {
-  const queryB64Encoded = Buffer.from(JSON.stringify(queryMsg)).toString('base64');
-  const res = await axios.get(\`$\{lcdURL}/cosmwasm/wasm/v1/contract/$\{contractAddress}/smart/$\{queryB64Encoded}\`);
-  console.log(res.data);
-};\n
-queryContract();`,
-      },
-    ],
     execute: [
       {
-        name: "CosmJS",
         mode: "javascript",
+        name: "CosmJS",
         snippet: `const { GasPrice } = require("@cosmjs/stargate");
 const { SigningCosmWasmClient } = require("@cosmjs/cosmwasm-stargate");
 const { getOfflineSignerAmino } = require("cosmjs-utils");
@@ -183,8 +124,8 @@ execute();
 `,
       },
       {
-        name: "CLI",
         mode: "sh",
+        name: "CLI",
         snippet: `export WALLET_NAME='<your-wallet-name>'\n
 export CHAIN_ID='${currentChainId}'\n
 export RPC_URL='${rpcEndpoint}'\n
@@ -200,6 +141,66 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
   --gas-adjustment 1.5`,
       },
     ],
+    query: [
+      {
+        mode: "sh",
+        name: "CLI",
+        snippet: `export CHAIN_ID='${currentChainId}'\n
+export CONTRACT_ADDRESS='${contractAddress}'\n
+export QUERY_MSG='${message}'\n
+export RPC_URL='${rpcEndpoint}'\n
+${daemonName} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG \\
+  --chain-id $CHAIN_ID \\
+  --node $RPC_URL`,
+      },
+      {
+        mode: "python",
+        name: "Python",
+        snippet: `import base64
+import requests\n
+CONTRACT_ADDRESS = "${contractAddress}"
+LCD_URL = "${restEndpoint}"
+QUERY_MSG = b'''${message}'''\n
+query_b64encoded = base64.b64encode(QUERY_MSG).decode("ascii")
+res = requests.get(
+  f"{LCD_URL}/cosmwasm/wasm/v1/contract/{CONTRACT_ADDRESS}/smart/{query_b64encoded}"
+).json()\n
+print(res)`,
+      },
+      {
+        mode: "javascript",
+        name: "CosmJS",
+        snippet: `const { SigningCosmWasmClient } = require("@cosmjs/cosmwasm-stargate");
+const rpcURL = "${rpcEndpoint}";
+const contractAddress =
+"${contractAddress}";
+const queryMsg = \`${message}\`;\n
+const queryContract = async (rpcURL, contractAddress, queryMsg) => {
+  const client = await SigningCosmWasmClient.connect(rpcURL);
+  const queryResult = await client.queryContractSmart(
+    contractAddress,
+    JSON.parse(queryMsg)
+  );
+  console.log(queryResult);
+};\n
+queryContract(rpcURL, contractAddress, queryMsg);`,
+      },
+      {
+        mode: "javascript",
+        name: "Axios",
+        snippet: `const axios = require('axios');\n
+const lcdURL = '${restEndpoint}';
+const contractAddress =
+"${contractAddress}";
+const queryMsg = ${message};\n
+const queryContract = async () => {
+  const queryB64Encoded = Buffer.from(JSON.stringify(queryMsg)).toString('base64');
+  const res = await axios.get(\`$\{lcdURL}/cosmwasm/wasm/v1/contract/$\{contractAddress}/smart/$\{queryB64Encoded}\`);
+  console.log(res.data);
+};\n
+queryContract();`,
+      },
+    ],
   };
 
   const handleTabChange = (index: number) => {
@@ -210,13 +211,13 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
   return (
     <>
       <Button
+        gap={1}
         isDisabled={isDisabled}
+        minW="128px"
+        ml={ml}
+        size="sm"
         variant="outline-white"
         w={w}
-        minW="128px"
-        size="sm"
-        ml={ml}
-        gap={1}
         onClick={() => {
           track(AmpEvent.USE_CONTRACT_SNIPPET, { actionType: type });
           onOpen();
@@ -226,19 +227,19 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
         Code snippet
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
+      <Modal isCentered isOpen={isOpen} size="4xl" onClose={onClose}>
         <ModalOverlay />
-        <ModalContent w="840px" maxH="80vh">
+        <ModalContent maxH="80vh" w="840px">
           <ModalHeader>
-            <CustomIcon name="code" boxSize={6} color="gray.600" />
+            <CustomIcon boxSize={6} color="gray.600" name="code" />
             <Heading as="h5" variant="h5">
               Code snippet
             </Heading>
           </ModalHeader>
           <ModalCloseButton color="gray.600" />
-          <ModalBody px={4} overflow="scroll">
+          <ModalBody overflow="scroll" px={4}>
             <Tabs index={activeTabIndex} onChange={handleTabChange}>
-              <TabList borderBottom="1px solid" borderColor="gray.700">
+              <TabList borderBottomWidth="1px" borderColor="gray.700">
                 {codeSnippets[type].map((item, index) => (
                   <CustomTab
                     key={`menu-${item.name}`}
@@ -253,34 +254,34 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
                   <TabPanel key={item.name} px={2} py={4}>
                     <Box
                       bgColor="background.main"
-                      p={4}
                       borderRadius="8px"
+                      p={4}
                       position="relative"
                     >
                       <AceEditor
-                        readOnly
-                        mode={item.mode}
-                        theme={theme.jsonTheme}
-                        fontSize="14px"
                         style={{
-                          width: "100%",
                           background: "transparent",
+                          width: "100%",
                         }}
-                        value={item.snippet}
+                        fontSize="14px"
+                        mode={item.mode}
+                        readOnly
                         setOptions={{
+                          printMargin: false,
                           showGutter: false,
                           useWorker: false,
-                          printMargin: false,
                           wrap: true,
                         }}
+                        theme={theme.jsonTheme}
+                        value={item.snippet}
                       />
                       {!isMobile && (
-                        <Box position="absolute" top={4} right={4}>
+                        <Box position="absolute" right={4} top={4}>
                           <CopyButton
-                            value={item.snippet}
+                            amptrackInfo={type}
                             amptrackSection="code_snippet"
                             amptrackSubSection={item.name}
-                            amptrackInfo={type}
+                            value={item.snippet}
                           />
                         </Box>
                       )}
@@ -292,13 +293,13 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
           </ModalBody>
           {isMobile && (
             <ModalFooter>
-              <Flex w="full" justifyContent="flex-end">
+              <Flex justifyContent="flex-end" w="full">
                 <CopyButton
-                  buttonText="Copy code snippet"
-                  value={activeSnippet}
+                  amptrackInfo={type}
                   amptrackSection="code_snippet"
                   amptrackSubSection={type}
-                  amptrackInfo={type}
+                  buttonText="Copy code snippet"
+                  value={activeSnippet}
                 />
               </Flex>
             </ModalFooter>

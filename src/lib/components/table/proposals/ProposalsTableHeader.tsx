@@ -1,17 +1,18 @@
 import type { DividerProps, GridProps } from "@chakra-ui/react";
-import { Grid, Text } from "@chakra-ui/react";
 
+import { Grid, Text } from "@chakra-ui/react";
 import { useTierConfig } from "lib/app-provider";
+
 import { TableHeader, TableHeaderFreeze } from "../tableComponents";
 
 interface ProposalsTableHeaderProps {
-  templateColumns: GridProps["templateColumns"];
   boxShadow: DividerProps["boxShadow"];
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const ProposalsTableHeader = ({
-  templateColumns,
   boxShadow,
+  templateColumns,
 }: ProposalsTableHeaderProps) => {
   const { isFullTier } = useTierConfig();
 
@@ -19,12 +20,12 @@ export const ProposalsTableHeader = ({
   const columnsWidth = templateColumns?.toString().split(" ");
 
   return (
-    <Grid templateColumns={templateColumns} minW="min-content">
+    <Grid minW="min-content" templateColumns={templateColumns}>
       <TableHeaderFreeze left="0">Proposal ID</TableHeaderFreeze>
       <TableHeaderFreeze
-        left={columnsWidth && columnsWidth[0]}
         boxShadow={boxShadow}
         color="gray.800"
+        left={columnsWidth && columnsWidth[0]}
       >
         <Text color="text.main" px={4}>
           Proposal title/types

@@ -1,20 +1,21 @@
 import type { StdFee } from "@cosmjs/stargate";
-import { MsgMigrateContract } from "@initia/initia.js";
-import { useCallback } from "react";
+import type { BechAddr32, Option } from "lib/types";
 
+import { MsgMigrateContract } from "@initia/initia.js";
 import { trackTxSucceed } from "lib/amplitude";
 import { migrateContractTx } from "lib/app-fns/tx/migrate";
-import type { BechAddr32, Option } from "lib/types";
 import { libEncode, toEncodeObject } from "lib/utils";
+import { useCallback } from "react";
+
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface MigrateStreamParams {
-  contractAddress: BechAddr32;
   codeId: number;
-  migrateMsg: object;
+  contractAddress: BechAddr32;
   estimatedFee: Option<StdFee>;
-  onTxSucceed?: (txHash: string) => void;
+  migrateMsg: object;
   onTxFailed?: () => void;
+  onTxSucceed?: (txHash: string) => void;
 }
 
 export const useMigrateContractTx = () => {
@@ -23,12 +24,12 @@ export const useMigrateContractTx = () => {
 
   return useCallback(
     async ({
-      contractAddress,
       codeId,
-      migrateMsg,
+      contractAddress,
       estimatedFee,
-      onTxSucceed,
+      migrateMsg,
       onTxFailed,
+      onTxSucceed,
     }: MigrateStreamParams) => {
       if (!address)
         throw new Error("No address provided (useMigrateContractTx)");
@@ -45,14 +46,14 @@ export const useMigrateContractTx = () => {
 
       return migrateContractTx({
         address,
-        messages,
         fee: estimatedFee,
-        signAndBroadcast,
+        messages,
+        onTxFailed,
         onTxSucceed: (txHash) => {
           trackTxSucceed();
           onTxSucceed?.(txHash);
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

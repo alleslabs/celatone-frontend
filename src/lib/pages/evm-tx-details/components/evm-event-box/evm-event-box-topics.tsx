@@ -1,60 +1,62 @@
-import { Flex, Stack, Text } from "@chakra-ui/react";
 import type { LogDescription } from "ethers";
 import type { Option } from "lib/types";
-import { EvmEventBoxDecoded } from "./evm-event-box-decoded";
+
+import { Flex, Stack, Text } from "@chakra-ui/react";
+
 import { EvmEventBoxTabs } from "../../types";
+import { EvmEventBoxDecoded } from "./evm-event-box-decoded";
 
 interface EvmEventBoxTopicProps {
-  topic: string;
   index: number;
+  topic: string;
 }
 
-const EvmEventBoxTopicHex = ({ topic, index }: EvmEventBoxTopicProps) => (
-  <Flex gap={2} key={topic} alignItems="center">
-    <Text variant="body2" fontFamily="mono">
+const EvmEventBoxTopicHex = ({ index, topic }: EvmEventBoxTopicProps) => (
+  <Flex key={topic} alignItems="center" gap={2}>
+    <Text fontFamily="mono" variant="body2">
       [{index}]
     </Text>
-    <Text variant="body2" fontFamily="mono">
+    <Text fontFamily="mono" variant="body2">
       {topic}
     </Text>
   </Flex>
 );
 
 interface EvmEventBoxTopicsProps {
+  parsedLog: Option<LogDescription>;
   tab: EvmEventBoxTabs;
   topics: string[];
-  parsedLog: Option<LogDescription>;
 }
 
 export const EvmEventBoxTopics = ({
+  parsedLog,
   tab,
   topics,
-  parsedLog,
 }: EvmEventBoxTopicsProps) => (
-  <Stack rowGap={4} columnGap={2} wordBreak="break-all" w="full">
+  <Stack columnGap={2} rowGap={4} w="full" wordBreak="break-all">
     {tab === EvmEventBoxTabs.Hex ? (
       topics.map((topic, index) => (
-        <EvmEventBoxTopicHex topic={topic} key={topic} index={index} />
+        <EvmEventBoxTopicHex key={topic} index={index} topic={topic} />
       ))
     ) : (
       <>
-        <EvmEventBoxTopicHex topic={topics[0]} index={0} />
+        <EvmEventBoxTopicHex index={0} topic={topics[0]} />
         {topics.length > 1 && parsedLog && (
           <Stack
-            rowGap={4}
+            bgColor="gray.800"
+            borderRadius={8}
             columnGap={2}
             p={4}
-            borderRadius={8}
-            bgColor="gray.800"
+            rowGap={4}
           >
             {parsedLog.fragment.inputs
               .slice(0, topics.length - 1)
               .map((input, index) => (
                 <EvmEventBoxDecoded
                   key={topics[index]}
+                  decode={parsedLog.args.slice(0, topics.length - 1)[index]}
                   index={index}
                   input={input}
-                  decode={parsedLog.args.slice(0, topics.length - 1)[index]}
                 />
               ))}
           </Stack>

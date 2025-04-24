@@ -1,27 +1,29 @@
 import type { JsonFragmentType } from "ethers";
+import type { JsonDataType } from "lib/types";
+
 import { cloneDeep } from "lodash";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import type { JsonDataType } from "lib/types";
+
 import { FormFields } from "./fields";
 import { getComponentsDefaultValues } from "./utils";
 
 interface EvmAbiFormProps {
-  types: ReadonlyArray<JsonFragmentType>;
-  isPayable?: boolean;
   initialData?: JsonDataType[];
+  isDisabled?: boolean;
+  isPayable?: boolean;
   propsOnChangeInputs?: (data: JsonDataType[]) => void;
   propsOnChangeValue?: (value: string) => void;
-  isDisabled?: boolean;
+  types: ReadonlyArray<JsonFragmentType>;
 }
 
 export const EvmAbiForm = ({
-  types,
-  isPayable = false,
   initialData,
+  isDisabled,
+  isPayable = false,
   propsOnChangeInputs,
   propsOnChangeValue,
-  isDisabled,
+  types,
 }: EvmAbiFormProps) => {
   const defaultValues = useMemo(
     () => initialData ?? getComponentsDefaultValues(types),
@@ -54,10 +56,10 @@ export const EvmAbiForm = ({
 
   return (
     <FormFields
-      control={control}
       components={types}
-      isPayable={isPayable}
+      control={control}
       isDisabled={isDisabled}
+      isPayable={isPayable}
     />
   );
 };

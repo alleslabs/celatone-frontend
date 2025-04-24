@@ -1,7 +1,11 @@
-import { Flex, Switch, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import type {
+  BechAddr20,
+  Option,
+  ProposalStatus,
+  ProposalType,
+} from "lib/types";
 
+import { Flex, Switch, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useCurrentChain, useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -12,12 +16,8 @@ import { ProposalsTable } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
 import { useDebounce } from "lib/hooks";
 import { useProposals } from "lib/services/proposal";
-import type {
-  BechAddr20,
-  Option,
-  ProposalStatus,
-  ProposalType,
-} from "lib/types";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import { ProposalStatusFilter } from "./ProposalStatusFilter";
 import { ProposalTypeFilter } from "./ProposalTypeFilter";
@@ -35,24 +35,24 @@ export const ProposalsTableFull = () => {
   const debouncedSearch = useDebounce(search);
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
   const {
     data: proposals,
-    isLoading,
     error,
+    isLoading,
   } = useProposals(
     pageSize,
     offset,
@@ -89,31 +89,31 @@ export const ProposalsTableFull = () => {
 
   return (
     <>
-      <Flex direction="column" my={8} gap={{ base: 4, md: 8 }}>
-        <Flex justify="space-between" align="center">
+      <Flex direction="column" gap={{ base: 4, md: 8 }} my={8}>
+        <Flex align="center" justify="space-between">
           <InputWithIcon
+            amptrackSection="proposal-list-search"
             placeholder="Search with proposal ID or proposal title"
+            size="lg"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            size="lg"
-            amptrackSection="proposal-list-search"
           />
           {!isMobile && (
             <Tooltip
+              hidden={!!address}
               label="You need to connect your wallet to see your proposals"
               maxW="240px"
               textAlign="center"
-              hidden={!!address}
             >
               <Switch
                 alignItems="center"
-                justifyContent="center"
-                h="fit-content"
-                minW="200px"
-                display="flex"
-                size="md"
-                isChecked={!!proposer}
                 disabled={!address}
+                display="flex"
+                h="fit-content"
+                isChecked={!!proposer}
+                justifyContent="center"
+                minW="200px"
+                size="md"
                 onChange={(e) => {
                   if (e.target.checked && address) {
                     track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
@@ -136,28 +136,26 @@ export const ProposalsTableFull = () => {
           )}
         </Flex>
         <Flex
+          direction={{ base: "column", md: "row" }}
           gap={{ base: 10, md: 3 }}
           pb={3}
-          direction={{ base: "column", md: "row" }}
         >
           <ProposalStatusFilter
+            isMulti
             label="Filter by status"
+            placeholder="All status"
             result={statuses}
             setResult={setStatuses}
-            placeholder="All status"
-            isMulti
           />
           <ProposalTypeFilter
             label="Filter by type"
+            placeholder="All type"
             result={types}
             setResult={setTypes}
-            placeholder="All type"
           />
         </Flex>
       </Flex>
       <ProposalsTable
-        proposals={proposals?.items}
-        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="proposals" />
@@ -182,14 +180,16 @@ export const ProposalsTableFull = () => {
             </>
           )
         }
+        isLoading={isLoading}
+        proposals={proposals?.items}
       />
       {proposals && proposals.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={proposals.total}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={proposals.total}
           onPageChange={(nextPage) => setCurrentPage(nextPage)}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

@@ -1,6 +1,8 @@
 import type { AttachFundsType } from "lib/components/fund/types";
-import { amp } from "../Amplitude";
+
 import type { ActionAmpEvent } from "../types";
+
+import { amp } from "../Amplitude";
 
 export const trackActionWithFunds = (
   event: ActionAmpEvent,
@@ -9,8 +11,8 @@ export const trackActionWithFunds = (
   method: "json-input" | "schema"
 ) =>
   amp.track(event, {
-    funds,
     attachFundsOption,
+    funds,
     method,
   });
 
@@ -28,6 +30,6 @@ export const trackActionQuery = (
   isInputRequired: boolean
 ) =>
   amp.track(event, {
-    method,
     isInputRequired,
+    method,
   });

@@ -1,8 +1,10 @@
 import type { HexAddr20, Nullable } from "lib/types";
+
 import type { ProxyResult } from "./types";
+
+import { getEthCall, getEthGetCode, getEthGetStorageAt } from "../eth";
 import { ProxyType } from "./types";
 import { parse1167Bytecode, readAddress } from "./utils";
-import { getEthCall, getEthGetCode, getEthGetStorageAt } from "../eth";
 
 // obtained as bytes32(uint256(keccak256('eip1967.proxy.implementation')) - 1)
 const EIP_1967_LOGIC_SLOT =
@@ -56,18 +58,18 @@ export const getEvmProxyTarget = (
       .then(parse1167Bytecode)
       .then(readAddress)
       .then((target) => ({
+        immutable: true,
         target,
         type: ProxyType.Eip1167,
-        immutable: true,
       })),
 
     // EIP-1967 direct proxy
     getEthGetStorageAt(endpoint, proxyAddress, EIP_1967_LOGIC_SLOT)
       .then(readAddress)
       .then((target) => ({
+        immutable: false,
         target,
         type: ProxyType.Eip1967Direct,
-        immutable: false,
       })),
 
     // EIP-1967 beacon proxy
@@ -85,9 +87,9 @@ export const getEvmProxyTarget = (
       )
       .then(readAddress)
       .then((target) => ({
+        immutable: false,
         target,
         type: ProxyType.Eip1967Beacon,
-        immutable: false,
       })),
 
     // OpenZeppelin proxy pattern
@@ -98,26 +100,24 @@ export const getEvmProxyTarget = (
     )
       .then(readAddress)
       .then((target) => ({
+        immutable: false,
         target,
         type: ProxyType.OpenZeppelin,
-        immutable: false,
       })),
 
     // EIP-1822 Universal Upgradeable Proxy Standard
     getEthGetStorageAt(endpoint, proxyAddress, EIP_1822_LOGIC_SLOT)
       .then(readAddress)
       .then((target) => ({
+        immutable: false,
         target,
         type: ProxyType.Eip1822,
-        immutable: false,
       })),
 
     // EIP-897 DelegateProxy pattern
     getEthCall(endpoint, null, proxyAddress, EIP_897_INTERFACE[0])
       .then(readAddress)
       .then(async (target) => ({
-        target,
-        type: ProxyType.Eip897,
         // proxyType === 1 means that the proxy is immutable
         immutable:
           (await getEthCall(
@@ -127,23 +127,25 @@ export const getEvmProxyTarget = (
             EIP_897_INTERFACE[1]
           ).catch(() => undefined)) ===
           "0x0000000000000000000000000000000000000000000000000000000000000001",
+        target,
+        type: ProxyType.Eip897,
       })),
 
     // SafeProxy contract
     getEthCall(endpoint, null, proxyAddress, SAFE_PROXY_INTERFACE[0])
       .then(readAddress)
       .then((target) => ({
+        immutable: false,
         target,
         type: ProxyType.Safe,
-        immutable: false,
       })),
 
     // Comptroller proxy
     getEthCall(endpoint, null, proxyAddress, COMPTROLLER_PROXY_INTERFACE[0])
       .then(readAddress)
       .then((target) => ({
+        immutable: false,
         target,
         type: ProxyType.Comptroller,
-        immutable: false,
       })),
   ]).catch(() => null);

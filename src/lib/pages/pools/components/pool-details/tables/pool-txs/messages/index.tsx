@@ -1,7 +1,7 @@
-import { Text } from "@chakra-ui/react";
 import type { Log } from "@cosmjs/stargate/build/logs";
-
 import type { AssetInfos, Message, Option, PoolData } from "lib/types";
+
+import { Text } from "@chakra-ui/react";
 import { extractTxDetails } from "lib/utils";
 
 import { MsgLockTokensAction, MsgLockTokensDetail } from "./lockup";
@@ -31,32 +31,98 @@ import {
 } from "./swap";
 
 export const PoolMsgAction = ({
+  ampCopierSection,
+  assetInfos,
   msg,
   pool,
-  assetInfos,
-  ampCopierSection,
 }: {
+  ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
   msg: Message;
   pool: PoolData;
-  assetInfos: Option<AssetInfos>;
-  ampCopierSection?: string;
 }) => {
   // TODO: fix this type casting
-  const { type, detail, log } = msg as unknown as {
-    type: string;
+  const { detail, log, type } = msg as unknown as {
     detail: Record<string, unknown>;
     log: Log;
+    type: string;
   };
 
   switch (type) {
+    case "/osmosis.gamm.v1beta1.MsgExitPool": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgExitPoolAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          msg={details}
+          pool={pool}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgExitSwapExternAmountOut": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgExitSwapExternAmountOutAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          msg={details}
+          pool={pool}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgExitSwapShareAmountIn": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgExitSwapShareAmountInAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          msg={details}
+          pool={pool}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgJoinPool": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgJoinPoolAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          msg={details}
+          pool={pool}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgJoinSwapExternAmountIn": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgJoinSwapExternAmountInAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          msg={details}
+          pool={pool}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgJoinSwapShareAmountOut": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgJoinSwapShareAmountOutAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          msg={details}
+          pool={pool}
+        />
+      );
+    }
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
     case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn": {
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgSwapExactAmountInAction
-          msg={details}
-          assetInfos={assetInfos}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          msg={details}
         />
       );
     }
@@ -65,75 +131,9 @@ export const PoolMsgAction = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgSwapExactAmountOutAction
-          msg={details}
-          assetInfos={assetInfos}
           ampCopierSection={ampCopierSection}
-        />
-      );
-    }
-    case "/osmosis.gamm.v1beta1.MsgJoinPool": {
-      const details = extractTxDetails(type, detail, log);
-      return (
-        <MsgJoinPoolAction
-          msg={details}
-          pool={pool}
           assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
-        />
-      );
-    }
-    case "/osmosis.gamm.v1beta1.MsgJoinSwapExternAmountIn": {
-      const details = extractTxDetails(type, detail, log);
-      return (
-        <MsgJoinSwapExternAmountInAction
           msg={details}
-          pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
-        />
-      );
-    }
-    case "/osmosis.gamm.v1beta1.MsgJoinSwapShareAmountOut": {
-      const details = extractTxDetails(type, detail, log);
-      return (
-        <MsgJoinSwapShareAmountOutAction
-          msg={details}
-          pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
-        />
-      );
-    }
-    case "/osmosis.gamm.v1beta1.MsgExitPool": {
-      const details = extractTxDetails(type, detail, log);
-      return (
-        <MsgExitPoolAction
-          msg={details}
-          pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
-        />
-      );
-    }
-    case "/osmosis.gamm.v1beta1.MsgExitSwapShareAmountIn": {
-      const details = extractTxDetails(type, detail, log);
-      return (
-        <MsgExitSwapShareAmountInAction
-          msg={details}
-          pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
-        />
-      );
-    }
-    case "/osmosis.gamm.v1beta1.MsgExitSwapExternAmountOut": {
-      const details = extractTxDetails(type, detail, log);
-      return (
-        <MsgExitSwapExternAmountOutAction
-          msg={details}
-          pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -141,10 +141,10 @@ export const PoolMsgAction = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgLockTokensAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
           msg={details}
           pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -152,10 +152,10 @@ export const PoolMsgAction = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgLockAndSuperfluidDelegateAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
           msg={details}
           pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -166,44 +166,128 @@ export const PoolMsgAction = ({
 };
 
 export const PoolMsgDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  pool,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  pool,
+  txHash,
 }: {
-  txHash: string;
-  blockHeight: number;
-  msgIndex: number;
-  msg: Message;
-  pool: PoolData;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  blockHeight: number;
+  isOpened: boolean;
+  msg: Message;
+  msgIndex: number;
+  pool: PoolData;
+  txHash: string;
 }) => {
   // TODO: fix this type casting
-  const { type, detail, log } = msg as unknown as {
-    type: string;
+  const { detail, log, type } = msg as unknown as {
     detail: Record<string, unknown>;
     log: Log;
+    type: string;
   };
 
   switch (type) {
+    case "/osmosis.gamm.v1beta1.MsgExitPool": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgExitPoolDetail
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgExitSwapExternAmountOut": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgExitSwapExternAmountOutDetail
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgExitSwapShareAmountIn": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgExitSwapShareAmountInDetail
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgJoinPool": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgJoinPoolDetail
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgJoinSwapExternAmountIn": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgJoinSwapExternAmountInDetail
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
+        />
+      );
+    }
+    case "/osmosis.gamm.v1beta1.MsgJoinSwapShareAmountOut": {
+      const details = extractTxDetails(type, detail, log);
+      return (
+        <MsgJoinSwapShareAmountOutDetail
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
+        />
+      );
+    }
     case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
     case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn": {
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgSwapExactAmountInDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
         />
       );
     }
@@ -212,97 +296,13 @@ export const PoolMsgDetail = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgSwapExactAmountOutDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
-        />
-      );
-    }
-    case "/osmosis.gamm.v1beta1.MsgJoinPool": {
-      const details = extractTxDetails(type, detail, log);
-      return (
-        <MsgJoinPoolDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
           assetInfos={assetInfos}
-          isOpened={isOpened}
-          ampCopierSection={ampCopierSection}
-        />
-      );
-    }
-    case "/osmosis.gamm.v1beta1.MsgJoinSwapExternAmountIn": {
-      const details = extractTxDetails(type, detail, log);
-      return (
-        <MsgJoinSwapExternAmountInDetail
-          txHash={txHash}
           blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
           isOpened={isOpened}
-          ampCopierSection={ampCopierSection}
-        />
-      );
-    }
-    case "/osmosis.gamm.v1beta1.MsgJoinSwapShareAmountOut": {
-      const details = extractTxDetails(type, detail, log);
-      return (
-        <MsgJoinSwapShareAmountOutDetail
+          msg={details}
+          msgIndex={msgIndex}
           txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
-          ampCopierSection={ampCopierSection}
-        />
-      );
-    }
-    case "/osmosis.gamm.v1beta1.MsgExitPool": {
-      const details = extractTxDetails(type, detail, log);
-      return (
-        <MsgExitPoolDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
-          ampCopierSection={ampCopierSection}
-        />
-      );
-    }
-    case "/osmosis.gamm.v1beta1.MsgExitSwapShareAmountIn": {
-      const details = extractTxDetails(type, detail, log);
-      return (
-        <MsgExitSwapShareAmountInDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
-          ampCopierSection={ampCopierSection}
-        />
-      );
-    }
-    case "/osmosis.gamm.v1beta1.MsgExitSwapExternAmountOut": {
-      const details = extractTxDetails(type, detail, log);
-      return (
-        <MsgExitSwapExternAmountOutDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
-          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -310,14 +310,14 @@ export const PoolMsgDetail = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgLockTokensDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          pool={pool}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          pool={pool}
+          txHash={txHash}
         />
       );
     }
@@ -325,14 +325,14 @@ export const PoolMsgDetail = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgLockAndSuperfluidDelegateDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          pool={pool}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          pool={pool}
+          txHash={txHash}
         />
       );
     }

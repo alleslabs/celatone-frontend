@@ -1,52 +1,53 @@
 import type { TextProps } from "@chakra-ui/react";
+import type { ChangeEvent, RefObject } from "react";
+
 import { Button, Flex, Input, Text, useOutsideClick } from "@chakra-ui/react";
-import type { ChangeEvent } from "react";
+import { useMobile } from "lib/app-provider";
 import { useEffect, useRef, useState } from "react";
 
-import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
 
 interface EditableCellProps {
-  initialValue?: string;
   defaultValue: string;
-  maxLength: number;
-  tooltip?: string;
+  initialValue?: string;
   isReadOnly?: boolean;
+  maxLength: number;
   onSave?: (value?: string) => void;
+  tooltip?: string;
 }
 
 const getInputValueTextProps = (
   isShowInputValue: boolean,
   inputValue: string,
   defaultValue: string
-): Pick<TextProps, "fontWeight" | "color" | "children"> => {
+): Pick<TextProps, "children" | "color" | "fontWeight"> => {
   if (isShowInputValue) {
-    return { fontWeight: 600, color: "text.main", children: inputValue };
+    return { children: inputValue, color: "text.main", fontWeight: 600 };
   }
-  return { fontWeight: 400, color: "text.dark", children: defaultValue };
+  return { children: defaultValue, color: "text.dark", fontWeight: 400 };
 };
 
 export const EditableCell = ({
-  initialValue = "",
   defaultValue,
-  maxLength,
-  tooltip,
+  initialValue = "",
   isReadOnly,
+  maxLength,
   onSave,
+  tooltip,
 }: EditableCellProps) => {
   const [inputValue, setInputValue] = useState(initialValue);
   const [isHover, setIsHover] = useState(false);
   const [isHoverText, setIsHoverText] = useState(false);
 
-  const editCellRef = useRef(null);
+  const editCellRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
   const [isEditCellOpen, setIsEditCellOpen] = useState(false);
   useOutsideClick({
-    ref: editCellRef,
     handler: () => {
       setIsEditCellOpen(false);
     },
+    ref: editCellRef as RefObject<HTMLDivElement>,
   });
 
   const handleMouseEnter = () => {
@@ -91,80 +92,80 @@ export const EditableCell = ({
     <>
       {isEditCellOpen && (
         <Flex
-          position="absolute"
-          left={0}
-          top={0}
           bg="transparent"
-          width="full"
           height="full"
+          left={0}
+          position="absolute"
+          top={0}
+          width="full"
+          zIndex={1}
           onClick={(e) => {
             e.stopPropagation();
             setIsEditCellOpen(false);
           }}
-          zIndex={1}
         />
       )}
       <Flex
         gap={1}
-        onMouseOver={handleMouseEnter}
-        onMouseOut={handleMouseOut}
         position="relative"
         w="full"
+        onMouseOut={handleMouseOut}
+        onMouseOver={handleMouseEnter}
       >
         {isEditCellOpen ? (
           <Flex
-            direction="column"
-            position="absolute"
-            zIndex="sticky"
-            top="-32px"
-            left="-16px"
             bg="gray.800"
-            p={3}
             borderRadius="8px"
+            direction="column"
+            left="-16px"
+            p={3}
+            position="absolute"
+            top="-32px"
+            zIndex="sticky"
             onClick={(e) => e.stopPropagation()}
             ref={editCellRef}
           >
             <Flex alignItems="center" gap={1}>
               <Input
+                autoFocus
+                maxLength={maxLength}
+                minH="40px"
+                minW="472px"
                 size="sm"
                 value={inputValue}
-                onChange={handleChange}
                 width="full"
-                minW="472px"
-                minH="40px"
-                maxLength={maxLength}
-                autoFocus
+                onChange={handleChange}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleSave();
                   else if (e.key === "Escape") handleCancel();
                 }}
               />
-              <Button size="sm" onClick={handleSave} variant="ghost">
-                <CustomIcon name="check" color="success.main" />
+              <Button size="sm" variant="ghost" onClick={handleSave}>
+                <CustomIcon color="success.main" name="check" />
               </Button>
-              <Button onClick={handleCancel} size="sm" variant="ghost">
-                <CustomIcon name="close" color="error.light" />
+              <Button size="sm" variant="ghost" onClick={handleCancel}>
+                <CustomIcon color="error.light" name="close" />
               </Button>
             </Flex>
-            <Text fontSize="body3" color="text.dark" ml={4} mt={2}>
+            <Text color="text.dark" fontSize="body3" ml={4} mt={2}>
               Your input will be stored in this device only.
             </Text>
           </Flex>
         ) : (
           <Flex
-            position="relative"
-            w="fit-content"
-            maxW="full"
             align="center"
             gap={2}
+            maxW="full"
+            position="relative"
+            w="fit-content"
             onClick={(e) => {
               if (!isReadOnly) e.stopPropagation();
             }}
           >
             <Text
-              variant="body2"
               className="ellipsis"
               maxW="full"
+              variant="body2"
               onClick={(e) => e.stopPropagation()}
               onMouseOver={handleMouseEnterText}
               ref={textRef}
@@ -176,14 +177,14 @@ export const EditableCell = ({
             />
             {showName && (
               <Text
-                variant="body2"
-                top="-16px"
-                left="-16px"
-                borderRadius="8px"
                 bg={isReadOnly ? "gray.700" : "gray.800"}
-                whiteSpace="nowrap"
+                borderRadius="8px"
+                left="-16px"
                 p={4}
                 position="absolute"
+                top="-16px"
+                variant="body2"
+                whiteSpace="nowrap"
                 zIndex="1"
                 onMouseOut={handleMouseOutText}
               >
@@ -194,9 +195,9 @@ export const EditableCell = ({
               <Tooltip label={tooltip}>
                 <p>
                   <CustomIcon
-                    name="info-circle"
                     boxSize="12px"
                     cursor="pointer"
+                    name="info-circle"
                   />
                 </p>
               </Tooltip>
@@ -207,7 +208,7 @@ export const EditableCell = ({
                 opacity={isHover ? 1 : 0}
                 onClick={handleEdit}
               >
-                <CustomIcon name="edit" color="gray.600" boxSize={3} />
+                <CustomIcon boxSize={3} color="gray.600" name="edit" />
               </Flex>
             )}
           </Flex>

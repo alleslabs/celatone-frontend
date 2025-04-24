@@ -1,6 +1,6 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Grid } from "@chakra-ui/react";
 
+import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "lib/components/table";
 
 export const PoolTxsTableHeader = ({
@@ -8,7 +8,7 @@ export const PoolTxsTableHeader = ({
 }: {
   templateColumns: GridProps["templateColumns"];
 }) => (
-  <Grid templateColumns={templateColumns} minW="min-content">
+  <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader />
     <TableHeader>Transaction hash</TableHeader>
     <TableHeader />

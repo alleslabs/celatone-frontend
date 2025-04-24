@@ -1,17 +1,7 @@
-import axios from "axios";
-
 import type {
   ContractCw2InfoRest,
   MigrationHistoriesResponseItemRest,
   MigrationHistoriesResponseRest,
-} from "lib/services/types";
-import {
-  zContractCw2InfoRest,
-  zContractQueryMsgs,
-  zContractRest,
-  zContractsResponseRest,
-  zInstantiatedContractsRest,
-  zMigrationHistoriesResponseRest,
 } from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
@@ -21,6 +11,16 @@ import type {
   Nullable,
   Option,
 } from "lib/types";
+
+import axios from "axios";
+import {
+  zContractCw2InfoRest,
+  zContractQueryMsgs,
+  zContractRest,
+  zContractsResponseRest,
+  zInstantiatedContractsRest,
+  zMigrationHistoriesResponseRest,
+} from "lib/services/types";
 import { encode, libEncode, parseWithError } from "lib/utils";
 
 export const getContractQueryRest = (
@@ -52,9 +52,9 @@ export const getContractsByCodeIdRest = (
       `${endpoint}/cosmwasm/wasm/v1/code/${encodeURIComponent(codeId)}/contracts`,
       {
         params: {
+          "pagination.key": paginationKey,
           "pagination.limit": 10,
           "pagination.reverse": true,
-          "pagination.key": paginationKey,
         },
       }
     )
@@ -107,8 +107,8 @@ export const getMigrationHistoriesByContractAddressRest = async (
         `${endpoint}/cosmwasm/wasm/v1/contract/${encodeURI(contractAddress)}/history`,
         {
           params: {
-            "pagination.reverse": true,
             "pagination.key": paginationKey,
+            "pagination.reverse": true,
           },
         }
       )

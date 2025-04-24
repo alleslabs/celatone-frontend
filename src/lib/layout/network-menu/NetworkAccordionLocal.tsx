@@ -1,3 +1,5 @@
+import type { Option } from "lib/types";
+
 import {
   AccordionButton,
   AccordionIcon,
@@ -7,24 +9,22 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-import type { Option } from "lib/types";
-
 import { NetworkCard } from "./network-card";
 
 interface NetworkAccordionLocalProps {
-  networks: string[];
   cursor: Option<number>;
+  networks: string[];
+  onClose: () => void;
   setCursor: (index: Option<number>) => void;
   startIndex: number;
-  onClose: () => void;
 }
 
 export const NetworkAccordionLocal = ({
-  networks,
   cursor,
+  networks,
+  onClose,
   setCursor,
   startIndex,
-  onClose,
 }: NetworkAccordionLocalProps) => (
   <AccordionItem hidden={networks.length === 0}>
     <Flex direction="column" gap={4}>
@@ -42,8 +42,8 @@ export const NetworkAccordionLocal = ({
             <NetworkCard
               key={chainId}
               chainId={chainId}
-              index={startIndex + index}
               cursor={cursor}
+              index={startIndex + index}
               setCursor={setCursor}
               onClose={onClose}
             />

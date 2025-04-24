@@ -1,8 +1,8 @@
-import { toBech32 } from "@cosmjs/encoding";
-import { useMemo } from "react";
-
 import type { BechAddr20, BechAddr32 } from "lib/types";
+
+import { toBech32 } from "@cosmjs/encoding";
 import { addrToValoper } from "lib/utils";
+import { useMemo } from "react";
 
 import { useCurrentChain } from "./useCurrentChain";
 
@@ -22,8 +22,8 @@ export const useExampleAddresses = () => {
     const validator = addrToValoper(user);
 
     return {
-      user,
       contract,
+      user,
       validator,
     };
   };

@@ -1,5 +1,5 @@
-import { useInternalNavigate } from "./useInternalNavigate";
 import { useCelatoneApp } from "../contexts";
+import { useInternalNavigate } from "./useInternalNavigate";
 
 export const useInitia = () => {
   const {

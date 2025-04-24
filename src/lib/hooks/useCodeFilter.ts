@@ -1,13 +1,13 @@
-import { useCallback } from "react";
+import type { CodeInfo } from "lib/types";
 
 import { useCurrentChain } from "lib/app-provider";
-import type { CodeInfo } from "lib/types";
 import { resolvePermission } from "lib/utils";
+import { useCallback } from "react";
 
 export type PermissionFilterValue =
   | "all"
-  | "without-proposal"
-  | "with-proposal";
+  | "with-proposal"
+  | "without-proposal";
 
 export const useCodePermissionFilter = (filterValue: PermissionFilterValue) => {
   const { address } = useCurrentChain();

@@ -1,31 +1,31 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
 
+import { Button } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 
-type TriggerVariant = "select-module" | "change-module";
+type TriggerVariant = "change-module" | "select-module";
 
 const buttonStyles: { [key in TriggerVariant]: ButtonProps } = {
+  "change-module": {
+    leftIcon: <CustomIcon boxSize={3} name="swap" />,
+    variant: "outline-white",
+  },
   "select-module": {
     variant: "primary",
-  },
-  "change-module": {
-    variant: "outline-white",
-    leftIcon: <CustomIcon name="swap" boxSize={3} />,
   },
 };
 
 interface ModuleSelectDrawerTriggerProps {
-  triggerVariant: TriggerVariant;
   buttonText?: string;
   onOpen: () => void;
+  triggerVariant: TriggerVariant;
 }
 
 export const ModuleSelectDrawerTrigger = ({
-  triggerVariant,
   buttonText = "Select module",
   onOpen,
+  triggerVariant,
 }: ModuleSelectDrawerTriggerProps) => (
   <Button
     {...buttonStyles[triggerVariant]}

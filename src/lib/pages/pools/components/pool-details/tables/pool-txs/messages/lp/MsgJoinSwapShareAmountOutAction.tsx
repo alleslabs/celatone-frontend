@@ -1,25 +1,26 @@
-import { Flex } from "@chakra-ui/react";
+import type { AssetInfos, Option, PoolData } from "lib/types";
+import type { MsgJoinSwapShareAmountOutDetails } from "lib/utils/tx/types";
 
+import { Flex } from "@chakra-ui/react";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import { CustomIcon } from "lib/components/icon";
-import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
-import type { MsgJoinSwapShareAmountOutDetails } from "lib/utils/tx/types";
+
 import { PoolLogoLink } from "../components";
 import { getPoolDenom } from "../utils";
 
 interface MsgJoinSwapShareAmountOutActionProps {
+  ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
   msg: MsgJoinSwapShareAmountOutDetails;
   pool: PoolData;
-  assetInfos: Option<AssetInfos>;
-  ampCopierSection?: string;
 }
 
 export const MsgJoinSwapShareAmountOutAction = ({
+  ampCopierSection,
+  assetInfos,
   msg,
   pool,
-  assetInfos,
-  ampCopierSection,
 }: MsgJoinSwapShareAmountOutActionProps) => {
   const poolDenom = getPoolDenom(msg.pool_id);
   const inToken = coinToTokenWithValue(
@@ -33,20 +34,20 @@ export const MsgJoinSwapShareAmountOutAction = ({
     assetInfos
   );
   return (
-    <Flex gap={1} alignItems="center" flexWrap="wrap">
+    <Flex alignItems="center" flexWrap="wrap" gap={1}>
       Provided at most
       <MsgToken
-        token={inToken}
-        fontWeight={400}
         ampCopierSection={ampCopierSection}
+        fontWeight={400}
+        token={inToken}
       />
       to
-      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
-      <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
+      <PoolLogoLink ampCopierSection={ampCopierSection} pool={pool} />
+      <CustomIcon boxSize={4} color="primary.main" name="arrow-right" />
       <MsgToken
-        token={poolToken}
-        fontWeight={700}
         ampCopierSection={ampCopierSection}
+        fontWeight={700}
+        token={poolToken}
       />
     </Flex>
   );

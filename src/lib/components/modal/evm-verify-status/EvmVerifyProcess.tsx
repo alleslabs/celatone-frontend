@@ -1,7 +1,9 @@
+import type { EvmVerifyInfo } from "lib/types";
+
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
-import type { EvmVerifyInfo } from "lib/types";
 import { formatUTC } from "lib/utils";
+
 import { EvmVerifyProcessStepIcon } from "./EvmVerifyProcessStepIcon";
 import { getProcessSteps } from "./utils";
 
@@ -21,20 +23,20 @@ export const EvmVerifyProcess = ({ evmVerifyInfo }: EvmVerifyProcessProps) => {
       <Flex direction="column" mt={4}>
         {steps.map((step, index) => (
           <Flex key={step.label} justifyContent="space-between">
-            <Flex gap={2} alignItems="center">
-              <Flex direction="column" alignItems="center" height="full">
+            <Flex alignItems="center" gap={2}>
+              <Flex alignItems="center" direction="column" height="full">
                 <EvmVerifyProcessStepIcon state={step.state} />
                 {index < steps.length - 1 && (
                   <Box
-                    left="50%"
-                    height="full"
-                    borderLeft="1px solid"
                     borderColor="gray.400"
+                    borderLeftWidth="1px"
+                    height="full"
+                    left="50%"
                   />
                 )}
               </Flex>
               <Flex direction="column">
-                <Text variant="body2" fontWeight={600} mt="2px">
+                <Text fontWeight={600} mt="2px" variant="body2">
                   {step.label}
                 </Text>
                 {isMobile && step.timestamp && (
@@ -52,7 +54,7 @@ export const EvmVerifyProcess = ({ evmVerifyInfo }: EvmVerifyProcessProps) => {
                 </Text>
               )}
               {step.state === "In Progress" && (
-                <Text variant="body2" color="success.main">
+                <Text color="success.main" variant="body2">
                   {step.state}
                 </Text>
               )}

@@ -1,9 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
 import type Big from "big.js";
-
-import { useInternalNavigate } from "lib/app-provider";
-import { MobileCardTemplate, MobileLabel } from "lib/components/table";
-import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type {
   AssetInfo,
   Option,
@@ -12,6 +7,11 @@ import type {
   U,
   ValidatorData,
 } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
+import { useInternalNavigate } from "lib/app-provider";
+import { MobileCardTemplate, MobileLabel } from "lib/components/table";
+import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import {
   divWithDefault,
   formatPrettyPercent,
@@ -20,20 +20,20 @@ import {
 } from "lib/utils";
 
 interface ValidatorsTableMobileCardProps {
-  validator: ValidatorData;
-  isActive: boolean;
-  totalVotingPower: Big;
-  minCommissionRate: number;
   assetInfo: Option<AssetInfo>;
+  isActive: boolean;
+  minCommissionRate: number;
   showUptime: boolean;
+  totalVotingPower: Big;
+  validator: ValidatorData;
 }
 export const ValidatorsTableMobileCard = ({
-  validator,
-  isActive,
-  totalVotingPower,
-  minCommissionRate,
   assetInfo,
+  isActive,
+  minCommissionRate,
   showUptime,
+  totalVotingPower,
+  validator,
 }: ValidatorsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
 
@@ -41,43 +41,25 @@ export const ValidatorsTableMobileCard = ({
   const isMinCommissionRate = minCommissionRate === validator.commissionRate;
   return (
     <MobileCardTemplate
-      onClick={() =>
-        navigate({
-          pathname: "/validators/[validatorAddress]",
-          query: { validatorAddress: validator.validatorAddress },
-        })
-      }
-      topContent={
-        <Flex gap={3} w="full">
-          {isActive && (
-            <Flex direction="column" gap={1} w="64px">
-              <MobileLabel label="Rank" />
-              <Flex alignItems="center" h="full">
-                <Text variant="body2" color="text.main">
-                  {validator.rank}
-                </Text>
-              </Flex>
-            </Flex>
-          )}
-          <Flex direction="column" gap={1} minW={0}>
-            <MobileLabel label="Validator" />
-            <ValidatorBadge
-              validator={{
-                validatorAddress: validator.validatorAddress,
-                identity: validator.identity,
-                moniker: validator.moniker,
-              }}
-              badgeSize={6}
-              hasLabel={false}
-            />
+      bottomContent={
+        showUptime && (
+          <Flex direction="column">
+            <MobileLabel label="Commission" />
+            <Text
+              color={isMinCommissionRate ? "success.main" : "text.main"}
+              fontWeight={isMinCommissionRate ? 700 : undefined}
+              variant="body2"
+            >
+              {formatPrettyPercent(validator.commissionRate, 2, true)}
+            </Text>
           </Flex>
-        </Flex>
+        )
       }
       middleContent={
         <Flex gap={3}>
           <Flex direction="column" flex={1}>
             <MobileLabel label="Voting power" />
-            <Text variant="body2" color="text.main">
+            <Text color="text.main" variant="body2">
               {formatPrettyPercent(
                 divWithDefault(
                   validator.votingPower,
@@ -88,7 +70,7 @@ export const ValidatorsTableMobileCard = ({
                 true
               )}
             </Text>
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               (
               {formatUTokenWithPrecision(
                 validator.votingPower as U<Token<Big>>,
@@ -107,9 +89,9 @@ export const ValidatorsTableMobileCard = ({
               <>
                 <MobileLabel label="Uptime" />
                 <Text
-                  variant="body2"
                   color={isZeroUptime ? "error.main" : "text.main"}
                   fontWeight={isZeroUptime ? 700 : undefined}
+                  variant="body2"
                 >
                   {formatPrettyPercent(
                     ((validator.uptime ?? 0) / 100) as Ratio<number>,
@@ -117,7 +99,7 @@ export const ValidatorsTableMobileCard = ({
                     true
                   )}
                 </Text>
-                <Text variant="body3" color="text.dark">
+                <Text color="text.dark" variant="body3">
                   (Recent 100 blocks)
                 </Text>
               </>
@@ -125,9 +107,9 @@ export const ValidatorsTableMobileCard = ({
               <>
                 <MobileLabel label="Commission" />
                 <Text
-                  variant="body2"
                   color={isMinCommissionRate ? "success.main" : "text.main"}
                   fontWeight={isMinCommissionRate ? 700 : undefined}
+                  variant="body2"
                 >
                   {formatPrettyPercent(validator.commissionRate, 2, true)}
                 </Text>
@@ -136,19 +118,37 @@ export const ValidatorsTableMobileCard = ({
           </Flex>
         </Flex>
       }
-      bottomContent={
-        showUptime && (
-          <Flex direction="column">
-            <MobileLabel label="Commission" />
-            <Text
-              variant="body2"
-              color={isMinCommissionRate ? "success.main" : "text.main"}
-              fontWeight={isMinCommissionRate ? 700 : undefined}
-            >
-              {formatPrettyPercent(validator.commissionRate, 2, true)}
-            </Text>
+      topContent={
+        <Flex gap={3} w="full">
+          {isActive && (
+            <Flex direction="column" gap={1} w="64px">
+              <MobileLabel label="Rank" />
+              <Flex alignItems="center" h="full">
+                <Text color="text.main" variant="body2">
+                  {validator.rank}
+                </Text>
+              </Flex>
+            </Flex>
+          )}
+          <Flex direction="column" gap={1} minW={0}>
+            <MobileLabel label="Validator" />
+            <ValidatorBadge
+              badgeSize={6}
+              hasLabel={false}
+              validator={{
+                identity: validator.identity,
+                moniker: validator.moniker,
+                validatorAddress: validator.validatorAddress,
+              }}
+            />
           </Flex>
-        )
+        </Flex>
+      }
+      onClick={() =>
+        navigate({
+          pathname: "/validators/[validatorAddress]",
+          query: { validatorAddress: validator.validatorAddress },
+        })
       }
     />
   );

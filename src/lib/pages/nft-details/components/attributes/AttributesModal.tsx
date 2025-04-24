@@ -1,3 +1,5 @@
+import type { Trait } from "lib/types";
+
 import {
   Flex,
   Heading,
@@ -10,40 +12,38 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { Trait } from "lib/types";
 
 interface AttributesModalProps {
-  title: string;
   address: string;
-  tokenId: string;
   attributes: Trait[];
   isOpen: boolean;
   onClose: () => void;
+  title: string;
+  tokenId: string;
 }
 
 export const AttributesModal = ({
-  title,
   address,
-  tokenId,
   attributes,
   isOpen,
   onClose,
+  title,
+  tokenId,
 }: AttributesModalProps) => (
   <Modal
-    isOpen={isOpen}
-    onClose={onClose}
     isCentered
+    isOpen={isOpen}
     returnFocusOnClose={false}
+    onClose={onClose}
   >
     <ModalOverlay />
-    <ModalContent w="800px" bg="gray.800">
+    <ModalContent bg="gray.800" w="800px">
       <ModalHeader>
-        <Flex w="full" direction="row" alignItems="center" gap={3}>
-          <CustomIcon name="list" boxSize={5} m={1} color="gray.600" />
-          <Heading variant="h5" as="h5">
+        <Flex alignItems="center" direction="row" gap={3} w="full">
+          <CustomIcon boxSize={5} color="gray.600" m={1} name="list" />
+          <Heading as="h5" variant="h5">
             {title}
           </Heading>
         </Flex>
@@ -53,32 +53,32 @@ export const AttributesModal = ({
         <Stack spacing="16px">
           <Stack spacing="8px">
             <Flex gap="12px">
-              <Text fontWeight={700} w="100px" variant="body2">
+              <Text fontWeight={700} variant="body2" w="100px">
                 Token ID:
               </Text>
               <Text>{tokenId}</Text>
             </Flex>
             <Flex gap="12px">
-              <Text fontWeight={700} w="100px" variant="body2">
+              <Text fontWeight={700} variant="body2" w="100px">
                 NFT Address:
               </Text>
-              <ExplorerLink value={address} type="user_address" />
+              <ExplorerLink type="user_address" value={address} />
             </Flex>
           </Stack>
 
           <Stack spacing="8px">
             {attributes.map(({ traitType, value }) => (
               <Stack
+                key={traitType}
                 bg="gray.900"
                 borderRadius="8px"
-                p="8px 12px"
                 gap={1}
-                key={traitType}
+                p="8px 12px"
               >
                 <Text color="text.dark" fontWeight={700}>
                   {traitType}
                 </Text>
-                <Text variant="body2" fontWeight={700}>
+                <Text fontWeight={700} variant="body2">
                   {value}
                 </Text>
               </Stack>

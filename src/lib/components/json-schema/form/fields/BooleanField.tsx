@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
   EnumOptionsType,
@@ -7,6 +6,7 @@ import type {
   RJSFSchema,
   StrictRJSFSchema,
 } from "@rjsf/utils";
+
 import { getUiOptions, getWidget, optionsList } from "@rjsf/utils";
 import isObject from "lodash/isObject";
 
@@ -21,30 +21,30 @@ function BooleanField<
   F extends FormContextType = any,
 >(props: FieldProps<T, S, F>) {
   const {
-    schema,
-    name,
-    uiSchema,
-    idSchema,
-    formData,
-    registry,
-    required,
-    disabled,
-    readonly,
-    hideError,
     autofocus,
-    title,
+    disabled,
+    formData,
+    hideError,
+    idSchema,
+    name,
+    onBlur,
     onChange,
     onFocus,
-    onBlur,
     rawErrors,
+    readonly,
+    registry,
+    required,
+    schema,
+    title,
+    uiSchema,
   } = props;
   const { title: schemaTitle } = schema;
-  const { widgets, formContext, globalUiOptions } = registry;
+  const { formContext, globalUiOptions, widgets } = registry;
   const {
-    widget = "select",
-    title: uiTitle,
     // Unlike the other fields, don't use `getDisplayLabel()` since it always returns false for the boolean type
     label: displayLabel = true,
+    title: uiTitle,
+    widget = "select",
     ...options
   } = getUiOptions<T, S, F>(uiSchema, globalUiOptions);
 
@@ -77,12 +77,12 @@ function BooleanField<
     ) {
       enumOptions = [
         {
-          value: enums[0],
           label: enums[0] ? "True" : "False",
+          value: enums[0],
         },
         {
-          value: enums[1],
           label: enums[1] ? "True" : "False",
+          value: enums[1],
         },
       ];
     } else {
@@ -95,30 +95,30 @@ function BooleanField<
   }
 
   if (!required)
-    enumOptions = [...(enumOptions ?? []), { value: null, label: "null" }];
+    enumOptions = [...(enumOptions ?? []), { label: "null", value: null }];
 
   return (
     <Widget
+      id={idSchema.$id}
+      autofocus={autofocus}
+      disabled={disabled}
+      formContext={formContext}
+      hideError={hideError}
+      hideLabel={!displayLabel}
+      label={label}
+      name={name}
       options={{ ...options, enumOptions }}
       placeholder={readonly ? undefined : "Select boolean option"}
+      rawErrors={rawErrors}
+      readonly={readonly}
+      registry={registry}
+      required={required}
       schema={schema}
       uiSchema={uiSchema}
-      id={idSchema.$id}
-      name={name}
+      value={formData}
+      onBlur={onBlur}
       onChange={onChange}
       onFocus={onFocus}
-      onBlur={onBlur}
-      label={label}
-      hideLabel={!displayLabel}
-      value={formData}
-      required={required}
-      disabled={disabled}
-      readonly={readonly}
-      hideError={hideError}
-      registry={registry}
-      formContext={formContext}
-      autofocus={autofocus}
-      rawErrors={rawErrors}
     />
   );
 }

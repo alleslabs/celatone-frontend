@@ -1,5 +1,4 @@
 import { Flex, Text } from "@chakra-ui/react";
-
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
@@ -9,36 +8,31 @@ import { getEventMessage } from "./TxsTableRow";
 
 interface TxsTableMobileCardProps {
   hash: string;
-  timestamp: Date;
   isNftBurn: boolean;
   isNftMint: boolean;
   isNftTransfer: boolean;
+  timestamp: Date;
 }
 
 export const TxsTableMobileCard = ({
-  timestamp,
   hash,
   isNftBurn,
   isNftMint,
   isNftTransfer,
+  timestamp,
 }: TxsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
 
   return (
     <MobileCardTemplate
-      onClick={() =>
-        navigate({
-          pathname: "/txs/[txHash]",
-          query: { txHash: hash.toLocaleUpperCase() },
-        })
-      }
-      topContent={
-        <Flex align="center" gap={2}>
-          <ExplorerLink
-            value={hash.toLocaleUpperCase()}
-            type="tx_hash"
-            showCopyOnHover
-          />
+      bottomContent={
+        <Flex direction="column" gap={0}>
+          <Text color="gray.400" fontSize="12px">
+            {formatUTC(timestamp)}
+          </Text>
+          <Text color="gray.500" fontSize="12px">
+            ({dateFromNow(timestamp)})
+          </Text>
         </Flex>
       }
       middleContent={
@@ -49,15 +43,20 @@ export const TxsTableMobileCard = ({
           </Text>
         </Flex>
       }
-      bottomContent={
-        <Flex direction="column" gap={0}>
-          <Text fontSize="12px" color="gray.400">
-            {formatUTC(timestamp)}
-          </Text>
-          <Text fontSize="12px" color="gray.500">
-            ({dateFromNow(timestamp)})
-          </Text>
+      topContent={
+        <Flex align="center" gap={2}>
+          <ExplorerLink
+            showCopyOnHover
+            type="tx_hash"
+            value={hash.toLocaleUpperCase()}
+          />
         </Flex>
+      }
+      onClick={() =>
+        navigate({
+          pathname: "/txs/[txHash]",
+          query: { txHash: hash.toLocaleUpperCase() },
+        })
       }
     />
   );

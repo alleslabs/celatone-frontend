@@ -1,4 +1,14 @@
+import "ace-builds/src-noconflict/ace";
+import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-sh";
+import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/theme-one_dark";
+import "ace-builds/src-noconflict/theme-pastel_on_dark";
+
 import type { ButtonProps } from "@chakra-ui/react";
+import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
+
 import {
   Box,
   Button,
@@ -15,57 +25,48 @@ import {
   Tabs,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useMemo } from "react";
-import AceEditor from "react-ace";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useGas } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
 import { getArgType, serializeAbiData } from "lib/utils";
+import { useMemo } from "react";
+import AceEditor from "react-ace";
+
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 
-import "ace-builds/src-noconflict/ace";
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/mode-python";
-import "ace-builds/src-noconflict/mode-sh";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/src-noconflict/theme-one_dark";
-import "ace-builds/src-noconflict/theme-pastel_on_dark";
-
 interface MoveCodeSnippetProps {
+  abiData: AbiFormData;
+  fn: ExposedFunction;
+  ml?: ButtonProps["ml"];
   moduleAddress: HexAddr;
   moduleName: string;
-  fn: ExposedFunction;
-  abiData: AbiFormData;
-  type: "view" | "execute";
-  ml?: ButtonProps["ml"];
+  type: "execute" | "view";
 }
 
 interface FormatedData {
-  showTypeArgs: boolean;
-  showArgs: boolean;
-  formatedTypeArgs: string;
-  formatedArgs: string;
-  formatedAbiData: string;
-  typeArgsFlags: string;
   argsFlags: string;
+  formatedAbiData: string;
+  formatedArgs: string;
+  formatedTypeArgs: string;
   isHiddenCLI: boolean;
+  showArgs: boolean;
+  showTypeArgs: boolean;
+  typeArgsFlags: string;
 }
 
 const MoveCodeSnippet = ({
+  abiData,
+  fn,
+  ml,
   moduleAddress,
   moduleName,
-  fn,
-  abiData,
   type = "view",
-  ml,
 }: MoveCodeSnippetProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
-    currentChainId,
     chainConfig: { chain, rest: restEndpoint, rpc: rpcEndpoint },
+    currentChainId,
     theme,
   } = useCelatoneApp();
   const gasPrice = useGas();
@@ -74,14 +75,14 @@ const MoveCodeSnippet = ({
   const gasPriceStr = `${gasPrice.tokenPerGas}${gasPrice.denom}`;
 
   const {
-    showTypeArgs,
-    showArgs,
+    argsFlags,
     formatedAbiData,
     formatedArgs,
     formatedTypeArgs,
-    typeArgsFlags,
-    argsFlags,
     isHiddenCLI,
+    showArgs,
+    showTypeArgs,
+    typeArgsFlags,
   } = useMemo<FormatedData>(() => {
     const serializedAbiData = serializeAbiData(fn, abiData);
     const displayTypeArgs = serializedAbiData.typeArgs.length > 0;
@@ -94,17 +95,12 @@ const MoveCodeSnippet = ({
     });
 
     return {
-      showTypeArgs: displayTypeArgs,
-      showArgs: displayArgs,
-      formatedTypeArgs: JSON.stringify(serializedAbiData.typeArgs),
-      formatedArgs: JSON.stringify(serializedAbiData.args),
-      formatedAbiData: JSON.stringify(serializedAbiData),
-      typeArgsFlags: displayTypeArgs
-        ? `\n\t--type-args '${serializedAbiData.typeArgs.join(" ")}' \\`
-        : "",
       argsFlags: displayArgs
         ? `\n\t--args '[${argsWithTypes.map((val) => JSON.stringify(val)).join(",")}]' \\`
         : "",
+      formatedAbiData: JSON.stringify(serializedAbiData),
+      formatedArgs: JSON.stringify(serializedAbiData.args),
+      formatedTypeArgs: JSON.stringify(serializedAbiData.typeArgs),
       isHiddenCLI: argTypes.some(
         (argType) =>
           argType === "vector" ||
@@ -115,67 +111,22 @@ const MoveCodeSnippet = ({
           argType === "decimal128" ||
           argType === "decimal256"
       ),
+      showArgs: displayArgs,
+      showTypeArgs: displayTypeArgs,
+      typeArgsFlags: displayTypeArgs
+        ? `\n\t--type-args '${serializedAbiData.typeArgs.join(" ")}' \\`
+        : "",
     };
   }, [abiData, fn]);
 
   const codeSnippets: Record<
     string,
-    { name: string; mode: string; snippet: string; isHidden?: boolean }[]
+    { isHidden?: boolean; mode: string; name: string; snippet: string }[]
   > = {
-    view: [
-      {
-        name: "Curl",
-        mode: "sh",
-        snippet: `\n\ncurl '${restEndpoint}/initia/move/v1/accounts/${moduleAddress}/modules/${moduleName}/view_functions/${fn.name}' \\
---data-raw '${formatedAbiData}'`,
-      },
-      {
-        name: "CLI",
-        mode: "sh",
-        isHidden: isHiddenCLI,
-        snippet: `export CHAIN_ID='${currentChainId}'\n
-export MODULE_ADDRESS='${moduleAddress}'\n
-export MODULE_NAME='${moduleName}'\n
-export MODULE_FN='${fn.name}'\n
-export RPC_URL='${rpcEndpoint}'\n
-${daemonName} query move view $MODULE_ADDRESS \\
-    $MODULE_NAME \\
-    $MODULE_FN \\${typeArgsFlags}${argsFlags}
-    --chain-id $CHAIN_ID \\
-    --node $RPC_URL`,
-      },
-      {
-        name: "InitiaJS",
-        mode: "javascript",
-        snippet: `import { LCDClient } from '@initia/initia.js'
-
-const lcd = new LCDClient('${restEndpoint}', {
-    chainId: '${currentChainId}',
-});
-const moduleAddress =
-"${moduleAddress}";
-const moduleName = "${moduleName}";
-const fnName = "${fn.name}";
-const viewModule = async (moduleAddress, moduleName, fnName) => {
-    const viewResult = await lcd.move.viewFunction(
-        moduleAddress,
-        moduleName,
-        fnName${showTypeArgs ? ",\n\t\t".concat(formatedTypeArgs) : ""}${
-          showArgs
-            ? (!showTypeArgs ? ",\n\t\tundefined" : "") +
-              ",\n\t\t".concat(formatedArgs)
-            : ""
-        }
-    )
-    console.log(viewResult);
-};\n
-viewModule(moduleAddress, moduleName, fnName);`,
-      },
-    ],
     execute: [
       {
-        name: "InitiaJS",
         mode: "javascript",
+        name: "InitiaJS",
         snippet: `import { LCDClient, Wallet, MnemonicKey, MsgExecute } from '@initia/initia.js';
 
 const lcd = new LCDClient('${restEndpoint}', {
@@ -209,9 +160,9 @@ const execute = async () => {
 execute();`,
       },
       {
-        name: "CLI",
-        mode: "sh",
         isHidden: isHiddenCLI,
+        mode: "sh",
+        name: "CLI",
         snippet: `export WALLET_NAME='<your-wallet-name>'\n
 export CHAIN_ID='${currentChainId}'\n
 export RPC_URL='${rpcEndpoint}'\n
@@ -230,15 +181,65 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
     --gas-adjustment 1.5`,
       },
     ],
+    view: [
+      {
+        mode: "sh",
+        name: "Curl",
+        snippet: `\n\ncurl '${restEndpoint}/initia/move/v1/accounts/${moduleAddress}/modules/${moduleName}/view_functions/${fn.name}' \\
+--data-raw '${formatedAbiData}'`,
+      },
+      {
+        isHidden: isHiddenCLI,
+        mode: "sh",
+        name: "CLI",
+        snippet: `export CHAIN_ID='${currentChainId}'\n
+export MODULE_ADDRESS='${moduleAddress}'\n
+export MODULE_NAME='${moduleName}'\n
+export MODULE_FN='${fn.name}'\n
+export RPC_URL='${rpcEndpoint}'\n
+${daemonName} query move view $MODULE_ADDRESS \\
+    $MODULE_NAME \\
+    $MODULE_FN \\${typeArgsFlags}${argsFlags}
+    --chain-id $CHAIN_ID \\
+    --node $RPC_URL`,
+      },
+      {
+        mode: "javascript",
+        name: "InitiaJS",
+        snippet: `import { LCDClient } from '@initia/initia.js'
+
+const lcd = new LCDClient('${restEndpoint}', {
+    chainId: '${currentChainId}',
+});
+const moduleAddress =
+"${moduleAddress}";
+const moduleName = "${moduleName}";
+const fnName = "${fn.name}";
+const viewModule = async (moduleAddress, moduleName, fnName) => {
+    const viewResult = await lcd.move.viewFunction(
+        moduleAddress,
+        moduleName,
+        fnName${showTypeArgs ? ",\n\t\t".concat(formatedTypeArgs) : ""}${
+          showArgs
+            ? (!showTypeArgs ? ",\n\t\tundefined" : "") +
+              ",\n\t\t".concat(formatedArgs)
+            : ""
+        }
+    )
+    console.log(viewResult);
+};\n
+viewModule(moduleAddress, moduleName, fnName);`,
+      },
+    ],
   };
 
   return (
     <>
       <Button
-        variant="outline-white"
-        size="md"
-        ml={ml}
         gap={1}
+        ml={ml}
+        size="md"
+        variant="outline-white"
         onClick={() => {
           track(AmpEvent.USE_CONTRACT_SNIPPET, {
             functionType: fn.is_view ? "view" : "Execute",
@@ -250,19 +251,19 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
         Code snippet
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
+      <Modal isCentered isOpen={isOpen} size="4xl" onClose={onClose}>
         <ModalOverlay />
         <ModalContent w="840px">
           <ModalHeader>
-            <CustomIcon name="code" boxSize={6} color="gray.600" />
+            <CustomIcon boxSize={6} color="gray.600" name="code" />
             <Heading as="h5" variant="h5">
               Code snippet
             </Heading>
           </ModalHeader>
           <ModalCloseButton color="gray.600" />
-          <ModalBody px={4} maxH="640px" overflow="scroll">
+          <ModalBody maxH="640px" overflow="scroll" px={4}>
             <Tabs>
-              <TabList borderBottom="1px solid" borderColor="gray.700">
+              <TabList borderBottomWidth="1px" borderColor="gray.700">
                 {codeSnippets[type].map((item) => (
                   <CustomTab key={`menu-${item.name}`} hidden={item.isHidden}>
                     {item.name}
@@ -274,33 +275,33 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
                   <TabPanel key={item.name} px={2} py={4}>
                     <Box
                       bgColor="background.main"
-                      p={4}
                       borderRadius="8px"
+                      p={4}
                       position="relative"
                     >
                       <AceEditor
-                        readOnly
-                        mode={item.mode}
-                        theme={theme.jsonTheme}
-                        fontSize="14px"
                         style={{
-                          width: "100%",
                           background: "transparent",
+                          width: "100%",
                         }}
-                        value={item.snippet}
+                        fontSize="14px"
+                        mode={item.mode}
+                        readOnly
                         setOptions={{
+                          printMargin: false,
                           showGutter: false,
                           useWorker: false,
-                          printMargin: false,
                           wrap: true,
                         }}
+                        theme={theme.jsonTheme}
+                        value={item.snippet}
                       />
-                      <Box position="absolute" top={4} right={4}>
+                      <Box position="absolute" right={4} top={4}>
                         <CopyButton
-                          value={item.snippet}
+                          amptrackInfo={fn.is_view ? "view" : "Execute"}
                           amptrackSection="code_snippet"
                           amptrackSubSection={item.name}
-                          amptrackInfo={fn.is_view ? "view" : "Execute"}
+                          value={item.snippet}
                         />
                       </Box>
                     </Box>

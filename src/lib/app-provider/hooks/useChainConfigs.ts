@@ -1,35 +1,35 @@
 import type { ChainConfig } from "@alleslabs/shared";
 import type { AssetList, Chain } from "@chain-registry/types";
-import chainRegistry from "chain-registry";
-import { isUndefined, unionBy } from "lodash";
-import { useMemo } from "react";
 
+import chainRegistry from "chain-registry";
 import { devChainConfigs } from "config/chain";
 import { CHAIN, SUPPORTED_NETWORK_TYPES } from "env";
 import { useLocalChainConfigStore } from "lib/providers/store";
 import { useApiChainConfigs } from "lib/services/chain-config";
 import { getRegistryAssets, getRegistryChain } from "lib/utils";
+import { isUndefined, unionBy } from "lodash";
+import { useMemo } from "react";
 
 const defaultConfigs = {
   chainConfigs: {} as { [chainId: string]: ChainConfig },
-  registryChains: [] as Chain[],
   registryAssets: [] as AssetList[],
+  registryChains: [] as Chain[],
   supportedChainIds: [] as string[],
 };
 
 export const useChainConfigs = (): {
   chainConfigs: { [chainId: string]: ChainConfig };
-  registryChains: Chain[];
-  registryAssets: AssetList[];
-  supportedChainIds: string[];
   isChainIdExist: (chainId: string) => boolean;
   isLoading: boolean;
+  registryAssets: AssetList[];
+  registryChains: Chain[];
+  supportedChainIds: string[];
 } => {
   const { data: apiChainConfigs, isFetching } = useApiChainConfigs(
     SUPPORTED_NETWORK_TYPES,
     CHAIN
   );
-  const { localChainConfigs, isHydrated } = useLocalChainConfigStore();
+  const { isHydrated, localChainConfigs } = useLocalChainConfigStore();
 
   const api = useMemo(() => {
     if (isFetching || isUndefined(apiChainConfigs)) return defaultConfigs;
@@ -61,8 +61,8 @@ export const useChainConfigs = (): {
           ...acc.chainConfigs,
           [each.chainId]: each,
         },
-        registryChains: [...acc.registryChains, getRegistryChain(each)],
         registryAssets: [...acc.registryAssets, getRegistryAssets(each)],
+        registryChains: [...acc.registryChains, getRegistryChain(each)],
         supportedChainIds: [...acc.supportedChainIds, each.chainId],
       }),
       defaultConfigs
@@ -78,8 +78,8 @@ export const useChainConfigs = (): {
             ...acc.chainConfigs,
             [each.chainId]: each,
           },
-          registryChains: [...acc.registryChains, getRegistryChain(each)],
           registryAssets: [...acc.registryAssets, getRegistryAssets(each)],
+          registryChains: [...acc.registryChains, getRegistryChain(each)],
           supportedChainIds: [...acc.supportedChainIds, each.chainId],
         }),
         defaultConfigs
@@ -97,8 +97,8 @@ export const useChainConfigs = (): {
                 ...acc.chainConfigs,
                 [each.chainId]: each,
               },
-              registryChains: [...acc.registryChains, getRegistryChain(each)],
               registryAssets: [...acc.registryAssets, getRegistryAssets(each)],
+              registryChains: [...acc.registryChains, getRegistryChain(each)],
               supportedChainIds: [...acc.supportedChainIds, each.chainId],
             }),
             defaultConfigs
@@ -116,13 +116,8 @@ export const useChainConfigs = (): {
 
     return {
       chainConfigs,
-      registryChains: unionBy(
-        chainRegistry.chains,
-        api.registryChains,
-        custom.registryChains,
-        local.registryChains,
-        "chain_id"
-      ),
+      isChainIdExist: (chainId: string) => !!chainConfigs[chainId],
+      isLoading: isFetching || !isHydrated,
       registryAssets: unionBy(
         chainRegistry.assets,
         api.registryAssets,
@@ -130,13 +125,18 @@ export const useChainConfigs = (): {
         local.registryAssets,
         "chain_name"
       ),
+      registryChains: unionBy(
+        chainRegistry.chains,
+        api.registryChains,
+        custom.registryChains,
+        local.registryChains,
+        "chain_id"
+      ),
       supportedChainIds: [
         ...api.supportedChainIds,
         ...custom.supportedChainIds,
         ...local.supportedChainIds,
       ],
-      isChainIdExist: (chainId: string) => !!chainConfigs[chainId],
-      isLoading: isFetching || !isHydrated,
     };
   }, [
     api.chainConfigs,

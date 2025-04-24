@@ -1,24 +1,24 @@
-import { Button, Flex } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
+import type { CodeInfo } from "lib/types";
 
+import { Button, Flex } from "@chakra-ui/react";
 import { InstantiateButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import { RemoveCodeModal, SaveOrEditCodeModal } from "lib/components/modal";
 import { useCodeStore } from "lib/providers/store";
-import type { CodeInfo } from "lib/types";
+import { observer } from "mobx-react-lite";
 
 export const CtaSection = observer((codeInfo: CodeInfo) => {
-  const { isCodeIdSaved, getCodeLocalInfo } = useCodeStore();
+  const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
   const isSaved = isCodeIdSaved(codeInfo.id);
   return (
-    <Flex gap={{ base: 2, md: 4 }} my={{ base: 8, md: 0 }} justify="center">
+    <Flex gap={{ base: 2, md: 4 }} justify="center" my={{ base: 8, md: 0 }}>
       {(getCodeLocalInfo(codeInfo.id)?.name || isSaved) && (
-        <SaveOrEditCodeModal mode="edit" codeInfo={codeInfo} />
+        <SaveOrEditCodeModal codeInfo={codeInfo} mode="edit" />
       )}
       <InstantiateButton
+        codeId={codeInfo.id}
         instantiatePermission={codeInfo.instantiatePermission}
         permissionAddresses={codeInfo.permissionAddresses}
-        codeId={codeInfo.id}
         size={{ base: "sm", md: "md" }}
       />
       {isSaved ? (
@@ -27,16 +27,16 @@ export const CtaSection = observer((codeInfo: CodeInfo) => {
           name={codeInfo.name}
           trigger={
             <Button
-              variant="outline-gray"
-              size={{ base: "sm", md: "md" }}
               leftIcon={<CustomIcon name="check" />}
+              size={{ base: "sm", md: "md" }}
+              variant="outline-gray"
             >
               Saved
             </Button>
           }
         />
       ) : (
-        <SaveOrEditCodeModal mode="save" codeInfo={codeInfo} />
+        <SaveOrEditCodeModal codeInfo={codeInfo} mode="save" />
       )}
     </Flex>
   );

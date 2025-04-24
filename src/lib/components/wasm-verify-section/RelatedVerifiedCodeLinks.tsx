@@ -15,9 +15,9 @@ export const RelatedVerifiedCodeLinks = ({
       {displayedCodes.map((code, index) => (
         <Fragment key={code.toString()}>
           <ExplorerLink
+            showCopyOnHover
             type="code_id"
             value={code.toString()}
-            showCopyOnHover
           />
           {relatedVerifiedCodes.length > 2 &&
             index < displayedCodes.length - 1 &&

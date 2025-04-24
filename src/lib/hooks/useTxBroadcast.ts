@@ -1,7 +1,7 @@
-import { createContext, useContext } from "react";
+import type { TxResultRendering } from "lib/types";
 import type { Observable } from "rxjs";
 
-import type { TxResultRendering } from "lib/types";
+import { createContext, useContext } from "react";
 
 export interface TxBroadcast {
   broadcast: (nextStream: Observable<TxResultRendering>) => void;

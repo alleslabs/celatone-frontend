@@ -1,32 +1,33 @@
-import { Box } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
+import type { BechAddr, Option } from "lib/types";
 import type { ChangeEvent } from "react";
 
+import { Box } from "@chakra-ui/react";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ErrorFetching } from "lib/components/state";
 import { CodesTable, MobileTitle, ViewMore } from "lib/components/table";
 import { useAccountCodes } from "lib/pages/account-details/data";
-import type { BechAddr, Option } from "lib/types";
+import { observer } from "mobx-react-lite";
+
 import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
 
 interface StoredCodesTableProps {
   address: BechAddr;
+  onViewMore?: () => void;
+  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
-  refetchCount: () => void;
-  onViewMore?: () => void;
 }
 
 export const StoredCodesTable = observer(
   ({
     address,
+    onViewMore,
+    refetchCount,
     scrollComponentId,
     totalData,
-    refetchCount,
-    onViewMore,
   }: StoredCodesTableProps) => {
     const isMobile = useMobile();
     const navigate = useInternalNavigate();
@@ -37,19 +38,19 @@ export const StoredCodesTable = observer(
       });
 
     const {
-      pagesQuantity,
       currentPage,
-      setCurrentPage,
-      pageSize,
-      setPageSize,
       offset,
+      pageSize,
+      pagesQuantity,
+      setCurrentPage,
+      setPageSize,
     } = usePaginator({
-      total: totalData,
       initialState: {
-        pageSize: 10,
         currentPage: 1,
         isDisabled: false,
+        pageSize: 10,
       },
+      total: totalData,
     });
     const { codes, isLoading } = useAccountCodes(
       address,
@@ -74,32 +75,32 @@ export const StoredCodesTable = observer(
       <Box mt={{ base: 4, md: 8 }}>
         {isMobileOverview ? (
           <MobileTitle
-            title="Stored codes"
             count={totalData}
+            title="Stored codes"
             onViewMore={onViewMore}
           />
         ) : (
           <AccountSectionWrapper
-            title="Stored codes"
-            totalData={totalData}
             hasHelperText={!!codes?.length}
             helperText="This account stored the following codes"
+            title="Stored codes"
+            totalData={totalData}
           >
             <CodesTable
               codes={codes}
-              isLoading={isLoading}
               emptyState={
                 !codes ? (
                   <ErrorFetching
                     dataName="codes"
-                    withBorder
-                    my={2}
                     hasBorderTop={false}
+                    my={2}
+                    withBorder
                   />
                 ) : (
                   <AccountDetailsEmptyState message="No codes have been stored by this account before." />
                 )
               }
+              isLoading={isLoading}
               onRowSelect={onRowSelect}
             />
           </AccountSectionWrapper>
@@ -110,11 +111,11 @@ export const StoredCodesTable = observer(
             : totalData > 10 && (
                 <Pagination
                   currentPage={currentPage}
-                  pagesQuantity={pagesQuantity}
                   offset={offset}
-                  totalData={totalData}
-                  scrollComponentId={scrollComponentId}
                   pageSize={pageSize}
+                  pagesQuantity={pagesQuantity}
+                  scrollComponentId={scrollComponentId}
+                  totalData={totalData}
                   onPageChange={onPageChange}
                   onPageSizeChange={onPageSizeChange}
                 />

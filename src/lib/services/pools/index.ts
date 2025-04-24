@@ -1,11 +1,12 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
-
-import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
 import type { PoolTypeFilter } from "lib/types";
 
-import { getPoolData, getPools, getPoolsLiquidityByPoolIds } from "./api";
+import { useQuery } from "@tanstack/react-query";
+import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
+
 import type { PoolsResponse } from "../types";
+
+import { getPoolData, getPools, getPoolsLiquidityByPoolIds } from "./api";
 
 export const usePools = (
   limit: number,
@@ -42,8 +43,8 @@ export const usePools = (
         isDesc
       ),
     {
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
       ...options,
     }
   );
@@ -55,7 +56,7 @@ export const usePoolData = (id: number, enabled = true) => {
   return useQuery(
     [CELATONE_QUERY_KEYS.POOL_DATA, endpoint, id],
     async () => getPoolData(endpoint, id),
-    { enabled, retry: false, refetchOnWindowFocus: false }
+    { enabled, refetchOnWindowFocus: false, retry: false }
   );
 };
 
@@ -79,8 +80,8 @@ export const usePoolsLiquidityByPoolIds = (
       ),
     {
       enabled,
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };

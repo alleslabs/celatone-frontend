@@ -1,8 +1,10 @@
 import type { TransactionRequest } from "ethers";
-import { z } from "zod";
 
 import { parseWithError } from "lib/utils";
+import { z } from "zod";
+
 import type { JsonRpcParams } from "../evm/json-rpc";
+
 import { requestBatchJsonRpc, requestJsonRpc } from "../evm/json-rpc";
 import {
   zEvmTxHashByCosmosTxHashJsonRpc,

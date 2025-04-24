@@ -1,7 +1,8 @@
-import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { TxReceiptJsonRpc } from "lib/services/types";
 import type { TxResultRendering } from "lib/types";
+
+import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TxStreamPhase } from "lib/types";
 
 interface PostEvmTxParams<T extends TxReceiptJsonRpc> {
@@ -14,21 +15,23 @@ export const postEvmTx = <T extends TxReceiptJsonRpc>({
   return () =>
     postFn().then((txResult) => {
       return {
-        value: txResult,
+        actionVariant: "sending",
         phase: TxStreamPhase.BROADCAST,
+        receiptInfo: {
+          header: "Sending transaction",
+        },
         receipts: [
           {
-            title: "Tx hash",
             html: (
               <ExplorerLink
+                openNewTab
                 type="evm_tx_hash"
                 value={txResult.transactionHash}
-                openNewTab
               />
             ),
+            title: "Tx hash",
           },
           {
-            title: "Tx fee",
             // TODO: Implement event/rawlog attribute picker
             html: (
               <EstimatedFeeEvmRender
@@ -37,12 +40,10 @@ export const postEvmTx = <T extends TxReceiptJsonRpc>({
                 loading={false}
               />
             ),
+            title: "Tx fee",
           },
         ],
-        receiptInfo: {
-          header: "Sending transaction",
-        },
-        actionVariant: "sending",
+        value: txResult,
       } as TxResultRendering<T>;
     });
 };

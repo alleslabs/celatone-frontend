@@ -1,12 +1,13 @@
-import axios from "axios";
-
 import type {
   Addr,
   Nullable,
   Option,
   TransactionWithSignerPubkey,
 } from "lib/types";
+
+import axios from "axios";
 import { parseWithError } from "lib/utils";
+
 import {
   zBlockTxsResponseSequencer,
   zTxsByHashResponseSequencer,
@@ -19,8 +20,8 @@ export const getTxsCountSequencer = (endpoint: string) =>
   axios
     .get(`${endpoint}/indexer/tx/v1/txs`, {
       params: {
-        "pagination.limit": 1,
         "pagination.count_total": true,
+        "pagination.limit": 1,
       },
     })
     .then(
@@ -36,9 +37,9 @@ export const getTxsSequencer = (
     axios
       .get(`${endpoint}/indexer/tx/v1/txs`, {
         params: {
+          "pagination.key": paginationKey,
           "pagination.limit": limit,
           "pagination.reverse": true,
-          "pagination.key": paginationKey,
         },
       })
       .then(({ data }) => parseWithError(zTxsResponseSequencer, data));
@@ -47,25 +48,25 @@ export const getTxsSequencer = (
 };
 
 export const getTxsByAccountAddressSequencer = ({
-  endpoint,
   address,
-  paginationKey,
+  endpoint,
   limit,
+  paginationKey,
   reverse = true,
 }: {
-  endpoint: string;
   address: Addr;
-  paginationKey?: string;
+  endpoint: string;
   limit?: number;
+  paginationKey?: string;
   reverse?: boolean;
 }) => {
   const fetch = (endpoint: string) =>
     axios
       .get(`${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`, {
         params: {
+          "pagination.key": paginationKey,
           "pagination.limit": limit,
           "pagination.reverse": reverse,
-          "pagination.key": paginationKey,
         },
       })
       .then(({ data }) => parseWithError(zTxsResponseSequencer, data));
@@ -96,7 +97,7 @@ export const getTxsByBlockHeightSequencer = async (
           {
             params: {
               "pagination.key": paginationKey,
-              "pagination.limit": "500",
+              "pagination.limit": "100",
             },
           }
         )

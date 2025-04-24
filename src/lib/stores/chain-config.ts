@@ -1,9 +1,10 @@
+/* eslint-disable no-param-reassign */
 import type { ChainConfig as SharedChainConfig } from "@alleslabs/shared";
+import type { Option } from "lib/types";
+
 import { find } from "lodash";
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
-
-import type { Option } from "lib/types";
 
 type SharedChainConfigWithLcd = SharedChainConfig & { lcd: string };
 
@@ -12,17 +13,6 @@ export class LocalChainConfigStore {
     string, // chainId
     SharedChainConfig
   >;
-
-  constructor() {
-    this.localChainConfigs = {};
-
-    makeAutoObservable(this, {}, { autoBind: true });
-
-    makePersistable(this, {
-      name: "ChainConfigStore",
-      properties: ["localChainConfigs"],
-    });
-  }
 
   get isHydrated(): boolean {
     const hydrated = isHydrated(this);
@@ -45,16 +35,15 @@ export class LocalChainConfigStore {
     return hydrated;
   }
 
-  getLocalChainConfig(chainId: string): Option<SharedChainConfig> {
-    if (!this.isLocalChainIdExist(chainId)) {
-      return undefined;
-    }
+  constructor() {
+    this.localChainConfigs = {};
 
-    return this.localChainConfigs[chainId];
-  }
+    makeAutoObservable(this, {}, { autoBind: true });
 
-  updateLocalChainConfig(chainId: string, chainConfig: SharedChainConfig) {
-    this.localChainConfigs[chainId] = chainConfig;
+    makePersistable(this, {
+      name: "ChainConfigStore",
+      properties: ["localChainConfigs"],
+    });
   }
 
   addLocalChainConfig(chainId: string, chainConfig: SharedChainConfig) {
@@ -65,8 +54,12 @@ export class LocalChainConfigStore {
     this.updateLocalChainConfig(chainId, chainConfig);
   }
 
-  removeLocalChainConfig(chainId: string) {
-    delete this.localChainConfigs[chainId];
+  getLocalChainConfig(chainId: string): Option<SharedChainConfig> {
+    if (!this.isLocalChainIdExist(chainId)) {
+      return undefined;
+    }
+
+    return this.localChainConfigs[chainId];
   }
 
   isLocalChainIdExist(chainId: string): boolean {
@@ -75,5 +68,13 @@ export class LocalChainConfigStore {
 
   isLocalPrettyNameExist(name: string): boolean {
     return !!find(this.localChainConfigs, { prettyName: name });
+  }
+
+  removeLocalChainConfig(chainId: string) {
+    delete this.localChainConfigs[chainId];
+  }
+
+  updateLocalChainConfig(chainId: string, chainConfig: SharedChainConfig) {
+    this.localChainConfigs[chainId] = chainConfig;
   }
 }

@@ -1,16 +1,16 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Flex, Grid, Text } from "@chakra-ui/react";
-
-import { useGetAddressType, useTierConfig } from "lib/app-provider";
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CodeNameCell, RemarkRender, TableRow } from "lib/components/table";
-import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import type {
   BechAddr,
   ContractMigrationHistory,
   Nullish,
   WasmVerifyInfo,
 } from "lib/types";
+
+import { Flex, Grid, Text } from "@chakra-ui/react";
+import { useGetAddressType, useTierConfig } from "lib/app-provider";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CodeNameCell, RemarkRender, TableRow } from "lib/components/table";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import {
   dateFromNow,
   formatUTC,
@@ -19,14 +19,14 @@ import {
 } from "lib/utils";
 
 interface MigrationRowProps {
-  templateColumns: GridProps["templateColumns"];
   history: ContractMigrationHistory;
+  templateColumns: GridProps["templateColumns"];
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const MigrationRow = ({
-  templateColumns,
   history,
+  templateColumns,
   wasmVerifyInfo,
 }: MigrationRowProps) => {
   const { isFullTier } = useTierConfig();
@@ -37,24 +37,24 @@ export const MigrationRow = ({
     <Grid templateColumns={templateColumns}>
       <TableRow>
         <ExplorerLink
-          type="code_id"
-          value={history.codeId.toString()}
           rightIcon={
             <WasmVerifyBadge
-              status={getWasmVerifyStatus(wasmVerifyInfo)}
               relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              status={getWasmVerifyStatus(wasmVerifyInfo)}
             />
           }
           showCopyOnHover
+          type="code_id"
+          value={history.codeId.toString()}
         />
       </TableRow>
       <TableRow>
         <CodeNameCell
           code={{
             id: history.codeId,
+            name: history.codeName,
             // TODO: fix by handle uploader undefined
             uploader: history.uploader ?? ("" as BechAddr),
-            name: history.codeName,
           }}
         />
       </TableRow>
@@ -71,10 +71,10 @@ export const MigrationRow = ({
           <TableRow>
             {history.sender ? (
               <ExplorerLink
+                showCopyOnHover
+                textFormat="truncate"
                 type={getAddressType(history.sender)}
                 value={history.sender}
-                textFormat="truncate"
-                showCopyOnHover
               />
             ) : (
               "N/A"
@@ -85,9 +85,9 @@ export const MigrationRow = ({
       <TableRow>
         {history.height ? (
           <ExplorerLink
-            value={history.height.toString()}
-            type="block_height"
             showCopyOnHover
+            type="block_height"
+            value={history.height.toString()}
           />
         ) : (
           "N/A"

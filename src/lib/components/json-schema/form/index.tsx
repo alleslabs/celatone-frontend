@@ -1,21 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-continue */
-/* eslint-disable no-console */
-/* eslint-disable no-restricted-syntax */
+
+import type { FormProps } from "@rjsf/core";
+import type { RJSFSchema, RJSFValidationError } from "@rjsf/utils";
+import type { JsonDataType } from "lib/types";
+import type { FC } from "react";
+
 import Form, {
   Templates as DefaultTemplates,
   Widgets as DefaultWidgets,
 } from "@rjsf/chakra-ui";
-import type { FormProps } from "@rjsf/core";
-import type { RJSFSchema, RJSFValidationError } from "@rjsf/utils";
 import { customizeValidator } from "@rjsf/validator-ajv8";
 import { isUndefined } from "lodash";
-import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
-
-import type { JsonDataType } from "lib/types";
 
 import { Fields } from "./fields";
 import { Templates } from "./templates";
@@ -39,28 +36,28 @@ function fixSchema(schema: RJSFSchema) {
 export interface JsonSchemaFormProps
   extends Pick<
     Partial<FormProps>,
-    "widgets" | "fields" | "templates" | "uiSchema"
+    "fields" | "templates" | "uiSchema" | "widgets"
   > {
-  schema: RJSFSchema;
+  formContext?: Record<string, unknown>;
   formId: string;
   initialFormData?: JsonDataType;
-  onSubmit?: (data: JsonDataType) => void;
   /** Onchange callback is with BROKEN data */
   onChange?: (data: JsonDataType, errors: RJSFValidationError[]) => void;
-  formContext?: Record<string, unknown>;
+  onSubmit?: (data: JsonDataType) => void;
+  schema: RJSFSchema;
 }
 
 export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
-  formId,
-  schema,
-  initialFormData = "",
-  onSubmit: propsOnSubmit,
-  onChange: propsOnChange,
-  widgets,
   fields,
+  formContext,
+  formId,
+  initialFormData = "",
+  onChange: propsOnChange,
+  onSubmit: propsOnSubmit,
+  schema,
   templates,
   uiSchema,
-  formContext,
+  widgets,
 }) => {
   const fixedSchema = useMemo(() => {
     fixSchema(schema);
@@ -79,45 +76,45 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   return (
     <Form
       id={formId}
+      // onError={() => console.error("errors")}
+      experimental_defaultFormStateBehavior={{
+        // Assign value to formData when only default is set
+        emptyObjectFields: "skipEmptyDefaults",
+      }}
+      fields={{
+        ...Fields,
+        ...fields,
+      }}
       formContext={formContext}
       formData={formData}
+      liveValidate={!schema.readOnly}
+      noValidate
       schema={fixedSchema}
+      showErrorList={false}
+      templates={{
+        ...DefaultTemplates,
+        ...Templates,
+        ...templates,
+      }}
       uiSchema={{
         "ui:submitButtonOptions": {
           norender: true,
         },
         ...uiSchema,
       }}
+      validator={v8Validator}
       widgets={{
         ...DefaultWidgets,
         ...Widgets,
         ...widgets,
       }}
-      fields={{
-        ...Fields,
-        ...fields,
-      }}
-      templates={{
-        ...DefaultTemplates,
-        ...Templates,
-        ...templates,
-      }}
-      validator={v8Validator}
-      liveValidate={!schema.readOnly}
-      noValidate
-      showErrorList={false}
-      onChange={({ formData: values, errors }) => {
+      onChange={({ errors, formData: values }) => {
         setFormData(values);
         propsOnChange?.(values, errors);
       }}
       onSubmit={({ formData: values }) => {
         // console.log("onSubmit", values);
         propsOnSubmit?.(values);
-      }}
-      // onError={() => console.error("errors")}
-      experimental_defaultFormStateBehavior={{
-        // Assign value to formData when only default is set
-        emptyObjectFields: "skipEmptyDefaults",
       }}
     />
   );

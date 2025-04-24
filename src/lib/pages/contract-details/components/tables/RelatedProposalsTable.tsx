@@ -1,3 +1,4 @@
+import type { BechAddr32, Option } from "lib/types";
 import type { ChangeEvent } from "react";
 
 import { Pagination } from "lib/components/pagination";
@@ -5,41 +6,40 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { useRelatedProposalsByContractAddress } from "lib/services/proposal";
-import type { BechAddr32, Option } from "lib/types";
 
 interface RelatedProposalsTableProps {
   contractAddress: BechAddr32;
+  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
-  refetchCount: () => void;
 }
 
 export const RelatedProposalsTable = ({
   contractAddress,
+  refetchCount,
   scrollComponentId,
   totalData,
-  refetchCount,
 }: RelatedProposalsTableProps) => {
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: totalData,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: totalData,
   });
 
   const {
     data: relatedProposals,
-    isLoading,
     error,
+    isLoading,
   } = useRelatedProposalsByContractAddress(contractAddress, offset, pageSize);
 
   const onPageChange = (nextPage: number) => {
@@ -57,8 +57,6 @@ export const RelatedProposalsTable = ({
   return (
     <>
       <ProposalsTable
-        proposals={relatedProposals?.items}
-        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="related proposals" />
@@ -69,15 +67,17 @@ export const RelatedProposalsTable = ({
             />
           )
         }
+        isLoading={isLoading}
+        proposals={relatedProposals?.items}
       />
       {!!totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalData}
-          scrollComponentId={scrollComponentId}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          scrollComponentId={scrollComponentId}
+          totalData={totalData}
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
         />

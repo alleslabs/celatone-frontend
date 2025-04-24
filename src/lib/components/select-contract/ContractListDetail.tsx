@@ -1,32 +1,33 @@
-import { Box, Grid, GridItem } from "@chakra-ui/react";
-import { matchSorter } from "match-sorter";
-import { useMemo, useState } from "react";
+import type { ContractListInfo } from "lib/stores/contract";
+import type { BechAddr32, ContractInfo } from "lib/types";
 
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { useCurrentChain, useTierConfig } from "lib/app-provider";
 import { DisconnectedState, EmptyState, ZeroState } from "lib/components/state";
 import { TagSelection } from "lib/components/TagSelection";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useAdminsByContractAddresses } from "lib/services/wasm/contract";
-import type { ContractListInfo } from "lib/stores/contract";
-import type { BechAddr32, ContractInfo } from "lib/types";
 import { formatSlugName } from "lib/utils";
+import { matchSorter } from "match-sorter";
+import { useMemo, useState } from "react";
+
 import InputWithIcon from "../InputWithIcon";
 import { ContractsTable } from "../table";
 
 interface ContractListContentProps {
   contractListInfo: ContractListInfo;
   filteredContracts: ContractInfo[];
-  onContractSelect: (addr: BechAddr32) => void;
   isLoading: boolean;
   isReadOnly: boolean;
+  onContractSelect: (addr: BechAddr32) => void;
 }
 
 const ContractListContent = ({
   contractListInfo,
   filteredContracts,
   isLoading,
-  onContractSelect,
   isReadOnly,
+  onContractSelect,
 }: ContractListContentProps) => {
   const { address } = useCurrentChain();
   const isInstantiatedByMe =
@@ -41,15 +42,14 @@ const ContractListContent = ({
   return (
     <ContractsTable
       contracts={filteredContracts}
-      isLoading={isInstantiatedByMe && isLoading}
       emptyState={
         !contractListInfo.contracts.length ? (
           <ZeroState
+            isReadOnly={isReadOnly}
             list={{
               label: contractListInfo.name,
               value: contractListInfo.slug,
             }}
-            isReadOnly={isReadOnly}
           />
         ) : (
           <EmptyState
@@ -60,7 +60,7 @@ const ContractListContent = ({
           />
         )
       }
-      onRowSelect={onContractSelect}
+      isLoading={isInstantiatedByMe && isLoading}
       isReadOnly={isReadOnly}
       withCta={
         isReadOnly
@@ -71,6 +71,7 @@ const ContractListContent = ({
                 : undefined,
             }
       }
+      onRowSelect={onContractSelect}
     />
   );
 };
@@ -85,8 +86,8 @@ interface ContractListDetailProps {
 export const ContractListDetail = ({
   contractListInfo,
   isLoading,
-  onContractSelect,
   isReadOnly = false,
+  onContractSelect,
 }: ContractListDetailProps) => {
   const { isFullTier } = useTierConfig();
   const dataFull = useAdminsByContractAddresses(
@@ -111,8 +112,8 @@ export const ContractListDetail = ({
         .map<ContractInfo>((contractLocalInfo) => ({
           ...contractLocalInfo,
           admin: admins[contractLocalInfo.contractAddress],
-          latestUpdater: undefined,
           latestUpdated: undefined,
+          latestUpdater: undefined,
           remark: undefined,
         })),
     [admins, contractListInfo.contracts, searchKeyword, tagFilter]
@@ -121,29 +122,29 @@ export const ContractListDetail = ({
   return (
     <Box minH="xs">
       <Grid
-        w="full"
         gap={4}
-        templateColumns={isReadOnly ? "1fr" : "3fr 1fr"}
         my={isReadOnly ? 6 : 8}
+        templateColumns={isReadOnly ? "1fr" : "3fr 1fr"}
+        w="full"
       >
         <GridItem w="full">
           <InputWithIcon
+            amptrackSection="contract-list-item-search"
             placeholder="Search with contract address, name, or description"
+            size={{ base: "md", md: "lg" }}
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
-            size={{ base: "md", md: "lg" }}
-            amptrackSection="contract-list-item-search"
           />
         </GridItem>
         {!isReadOnly && (
           <GridItem w="full">
             <TagSelection
-              result={tagFilter}
-              setResult={setTagFilter}
-              placeholder="No tag selected"
-              label="Filter by tag"
               boxWidth="400px"
               creatable={false}
+              label="Filter by tag"
+              placeholder="No tag selected"
+              result={tagFilter}
+              setResult={setTagFilter}
             />
           </GridItem>
         )}
@@ -152,8 +153,8 @@ export const ContractListDetail = ({
         contractListInfo={contractListInfo}
         filteredContracts={filteredContracts}
         isLoading={isLoading}
-        onContractSelect={onContractSelect}
         isReadOnly={isReadOnly}
+        onContractSelect={onContractSelect}
       />
     </Box>
   );

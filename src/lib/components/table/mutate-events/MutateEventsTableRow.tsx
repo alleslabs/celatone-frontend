@@ -1,8 +1,9 @@
-import { Badge, Box, Flex, Grid, Text } from "@chakra-ui/react";
-
-import { CustomIcon } from "lib/components/icon";
 import type { MutateEvent } from "lib/types";
+
+import { Badge, Box, Flex, Grid, Text } from "@chakra-ui/react";
+import { CustomIcon } from "lib/components/icon";
 import { dateFromNow, formatUTC } from "lib/utils";
+
 import { RemarkRender } from "../RemarkRender";
 import { TableRow } from "../tableComponents";
 
@@ -11,18 +12,18 @@ interface MutateEventsTableRowProps extends MutateEvent {
 }
 
 export const MutateEventsTableRow = ({
-  timestamp,
-  templateColumns,
   mutatedFieldName,
-  oldValue,
   newValue,
+  oldValue,
   remark,
+  templateColumns,
+  timestamp,
 }: MutateEventsTableRowProps) => (
-  <Box w="full" minW="min-content">
+  <Box minW="min-content" w="full">
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
       _hover={{ background: "gray.900" }}
+      templateColumns={templateColumns}
       transition="all 0.25s ease-in-out"
     >
       <TableRow pr={1}>
@@ -34,7 +35,7 @@ export const MutateEventsTableRow = ({
         </Text>
       </TableRow>
       <TableRow px={10}>
-        <CustomIcon name="arrow-right" color="gray.600" />
+        <CustomIcon color="gray.600" name="arrow-right" />
       </TableRow>
       <TableRow>
         <Text display="inline" wordBreak="break-word">
@@ -44,7 +45,7 @@ export const MutateEventsTableRow = ({
       <TableRow>
         <Flex direction="column" gap={1}>
           <Text variant="body3">{formatUTC(timestamp)}</Text>
-          <Text variant="body3" color="text.dark">
+          <Text color="text.dark" variant="body3">
             {`(${dateFromNow(timestamp)})`}
           </Text>
         </Flex>

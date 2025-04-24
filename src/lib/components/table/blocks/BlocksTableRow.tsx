@@ -1,23 +1,23 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Flex, Grid, Text } from "@chakra-ui/react";
+import type { Block } from "lib/types";
 
+import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
-import type { Block } from "lib/types";
 import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
 interface BlocksTableRowProps {
-  templateColumns: GridProps["templateColumns"];
   blockData: Block;
   showProposer: boolean;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const BlocksTableRow = ({
-  templateColumns,
   blockData,
   showProposer,
+  templateColumns,
 }: BlocksTableRowProps) => {
   const navigate = useInternalNavigate();
 
@@ -30,17 +30,17 @@ export const BlocksTableRow = ({
   return (
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
-      onClick={() => onRowSelect(blockData.height)}
       _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
+      onClick={() => onRowSelect(blockData.height)}
     >
       <TableRow>
         <ExplorerLink
+          showCopyOnHover
           type="block_height"
           value={blockData.height.toString()}
-          showCopyOnHover
         >
           {blockData.height}
         </ExplorerLink>
@@ -55,21 +55,21 @@ export const BlocksTableRow = ({
       </TableRow>
       {showProposer && (
         <TableRow>
-          <ValidatorBadge validator={blockData.proposer} badgeSize={7} />
+          <ValidatorBadge badgeSize={7} validator={blockData.proposer} />
         </TableRow>
       )}
       <TableRow
-        justifyContent="center"
         color={blockData.txCount === 0 ? "text.dark" : "text.main"}
+        justifyContent="center"
       >
         {blockData.txCount}
       </TableRow>
       <TableRow>
         <Flex direction="column">
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             {formatUTC(blockData.timestamp)}
           </Text>
-          <Text variant="body3" color="text.disabled">
+          <Text color="text.disabled" variant="body3">
             ({dateFromNow(blockData.timestamp)})
           </Text>
         </Flex>

@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react";
-
 import type { PublishTxInternalResult } from "lib/app-fns/tx/publish";
+
 import { UpgradePolicy } from "lib/types";
 import { scrollToTop } from "lib/utils";
+import { useEffect, useState } from "react";
+
+import type { Module } from "./formConstants";
 
 import { PublishCompleted } from "./completed";
-import type { Module } from "./formConstants";
 import { PublishModule } from "./publish";
 
 export interface PublishCompleteState extends PublishTxInternalResult {
-  upgradePolicy: UpgradePolicy;
   modules: Module[];
+  upgradePolicy: UpgradePolicy;
 }
 
 const DEFAULT_STATE: PublishCompleteState = {
-  txHash: "",
-  txFee: undefined,
-  upgradePolicy: UpgradePolicy.UNSPECIFIED,
   modules: [],
+  txFee: undefined,
+  txHash: "",
+  upgradePolicy: UpgradePolicy.UNSPECIFIED,
 };
 
 export const PublishIndex = () => {

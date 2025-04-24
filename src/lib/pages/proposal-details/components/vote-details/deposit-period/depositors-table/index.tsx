@@ -1,8 +1,8 @@
-import { TableContainer } from "@chakra-ui/react";
+import type { ProposalDeposit } from "lib/types";
 
+import { TableContainer } from "@chakra-ui/react";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import type { ProposalDeposit } from "lib/types";
 
 import { DepositorsTableHeader } from "./DepositorsTableHeader";
 import { DepositorsTableRow } from "./DepositorsTableRow";
@@ -10,15 +10,15 @@ import { DepositorsTableRow } from "./DepositorsTableRow";
 interface DepositorsTableProps {
   depositors: ProposalDeposit[];
   isDepositsLoading: boolean;
-  showTransaction: boolean;
   isPruned: boolean;
+  showTransaction: boolean;
 }
 
 export const DepositorsTable = ({
   depositors,
   isDepositsLoading,
-  showTransaction,
   isPruned,
+  showTransaction,
 }: DepositorsTableProps) => {
   const templateColumns = showTransaction ? "1.5fr 1.5fr 2fr 1fr" : "240px 1fr";
 
@@ -35,15 +35,15 @@ export const DepositorsTable = ({
   return (
     <TableContainer>
       <DepositorsTableHeader
-        templateColumns={templateColumns}
         showTransaction={showTransaction}
+        templateColumns={templateColumns}
       />
       {depositors.map((each) => (
         <DepositorsTableRow
           key={each.depositor}
           proposalDeposit={each}
-          templateColumns={templateColumns}
           showTransaction={showTransaction}
+          templateColumns={templateColumns}
         />
       ))}
     </TableContainer>

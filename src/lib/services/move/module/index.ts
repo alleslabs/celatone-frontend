@@ -3,17 +3,7 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useCelatoneApp,
-  useGovConfig,
-  useInitia,
-  useMoveConfig,
-} from "lib/app-provider";
 import type {
   AccountModulesResponse,
   DecodeModuleQueryResponse,
@@ -23,7 +13,6 @@ import type {
   ModuleTableCountsResponse,
   ModuleTxsResponse,
 } from "lib/services/types";
-import { zHexAddr } from "lib/types";
 import type {
   AbiFormData,
   Addr,
@@ -34,6 +23,17 @@ import type {
   Option,
   RpcQueryError,
 } from "lib/types";
+
+import { useQuery } from "@tanstack/react-query";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useCelatoneApp,
+  useGovConfig,
+  useInitia,
+  useMoveConfig,
+} from "lib/app-provider";
+import { zHexAddr } from "lib/types";
 import { truncate } from "lib/utils";
 
 import {
@@ -79,13 +79,13 @@ export const useModuleByAddressRest = ({
 export const useModulesByAddress = ({
   address,
   enabled = true,
-  onSuccess,
   onError,
+  onSuccess,
 }: {
   address: Option<Addr>;
   enabled?: boolean;
-  onSuccess?: (data: AccountModulesResponse) => void;
   onError?: (err: AxiosError<RpcQueryError>) => void;
+  onSuccess?: (data: AccountModulesResponse) => void;
 }) => {
   const {
     chainConfig: { rest: restEndpoint },
@@ -100,28 +100,28 @@ export const useModulesByAddress = ({
     },
     {
       enabled,
-      retry: 0,
-      refetchOnWindowFocus: false,
-      onSuccess,
       onError,
+      onSuccess,
+      refetchOnWindowFocus: false,
+      retry: 0,
     }
   );
 };
 
 export const useFunctionView = ({
+  abiData,
+  fn,
   moduleAddress,
   moduleName,
-  fn,
-  abiData,
-  onSuccess,
   onError,
+  onSuccess,
 }: {
+  abiData: AbiFormData;
+  fn: ExposedFunction;
   moduleAddress: HexAddr;
   moduleName: string;
-  fn: ExposedFunction;
-  abiData: AbiFormData;
-  onSuccess?: (data: string) => void;
   onError?: (err: AxiosError<RpcQueryError>) => void;
+  onSuccess?: (data: string) => void;
 }): UseQueryResult<string> => {
   const {
     chainConfig: { rest: restEndpoint },
@@ -140,10 +140,10 @@ export const useFunctionView = ({
     queryFn,
     {
       enabled: false,
-      retry: 0,
       keepPreviousData: true,
-      onSuccess,
       onError,
+      onSuccess,
+      retry: 0,
     }
   );
 };
@@ -172,7 +172,7 @@ export const useDecodeModule = ({
     )
       .then((data) => data.upgradePolicy)
       .catch(() => undefined);
-    return { abi, modulePath, currentPolicy };
+    return { abi, currentPolicy, modulePath };
   };
 
   return useQuery(
@@ -229,7 +229,7 @@ export const useModules = (
   return useQuery<ModulesResponse>(
     [CELATONE_QUERY_KEYS.MODULES, endpoint, limit, offset],
     async () => getModules(endpoint, limit, offset),
-    { ...options, retry: 1, refetchOnWindowFocus: false }
+    { ...options, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -252,9 +252,9 @@ export const useModulePublishInfo = (
     async () =>
       getModulePublishInfo(endpoint, vmAddress, moduleName, govConfig.enabled),
     {
-      retry: 1,
-      refetchOnWindowFocus: false,
       enabled,
+      refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -278,9 +278,9 @@ export const useModuleTableCounts = (
     async () =>
       getModuleTableCounts(endpoint, vmAddress, moduleName, govConfig.enabled),
     {
-      retry: 1,
-      refetchOnWindowFocus: false,
       enabled,
+      refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -306,7 +306,7 @@ export const useModuleTxs = (
     ],
     async () =>
       getModuleTxs(endpoint, vmAddress, moduleName, limit, offset, isInitia),
-    { retry: 1, refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -330,7 +330,7 @@ export const useModuleHistories = (
     ],
     async () =>
       getModuleHistories(endpoint, vmAddress, moduleName, limit, offset),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { refetchOnWindowFocus: false, retry: 1, ...options }
   );
 };
 
@@ -357,6 +357,6 @@ export const useModuleRelatedProposals = (
     ],
     async () =>
       getModuleRelatedProposals(endpoint, vmAddress, moduleName, limit, offset),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { refetchOnWindowFocus: false, retry: 1, ...options }
   );
 };

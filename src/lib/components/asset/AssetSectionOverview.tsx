@@ -1,42 +1,42 @@
-import { Divider, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
-
 import type { Option, TokenWithValue, USD } from "lib/types";
 
+import { Divider, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+
+import { ViewMore } from "../table";
 import { SupportedAssetSectionContent } from "./SupportedAssetSectionContent";
 import { SupportedAssetTitle } from "./SupportedAssetTitle";
 import { UnsupportedAssetSectionContent } from "./UnsupportedAssetSectionContent";
 import { UnsupportedAssetTitle } from "./UnsupportedAssetTitle";
-import { ViewMore } from "../table";
 
 const MAX_SUPPORTED_ASSETS_SHOW = 4;
 const MAX_UNSUPPORTED_ASSETS_SHOW = 3;
 
 interface AssetSectionOverviewProps {
   isAccount: boolean;
+  onViewMore: () => void;
   supportedAssets: TokenWithValue[];
   totalSupportedAssetsValue: Option<USD<Big>>;
   unsupportedAssets: TokenWithValue[];
-  onViewMore: () => void;
 }
 
 export const AssetSectionOverview = ({
   isAccount,
+  onViewMore,
   supportedAssets,
   totalSupportedAssetsValue,
   unsupportedAssets,
-  onViewMore,
 }: AssetSectionOverviewProps) => {
   if (!supportedAssets.length && !unsupportedAssets.length)
     return (
-      <Text variant="body1" color="text.dark">
+      <Text color="text.dark" variant="body1">
         This {isAccount ? "address" : "contract"} does not hold any assets
       </Text>
     );
 
   return (
-    <Grid gridTemplateColumns={{ base: "1fr", xl: "1fr 1fr" }} gridGap={12}>
+    <Grid gridGap={12} gridTemplateColumns={{ base: "1fr", xl: "1fr 1fr" }}>
       <GridItem>
-        <Flex direction="column" justifyContent="space-between" h="full">
+        <Flex direction="column" h="full" justifyContent="space-between">
           <Flex direction="column">
             <SupportedAssetTitle
               supportedAssets={supportedAssets}
@@ -53,7 +53,7 @@ export const AssetSectionOverview = ({
             />
           </Flex>
           {onViewMore && supportedAssets.length > MAX_SUPPORTED_ASSETS_SHOW && (
-            <ViewMore onClick={onViewMore} borderRadius="8px" minH="48px" />
+            <ViewMore borderRadius="8px" minH="48px" onClick={onViewMore} />
           )}
         </Flex>
       </GridItem>
@@ -70,7 +70,7 @@ export const AssetSectionOverview = ({
         />
         {onViewMore &&
           unsupportedAssets.length > MAX_UNSUPPORTED_ASSETS_SHOW && (
-            <ViewMore onClick={onViewMore} borderRadius="8px" minH="48px" />
+            <ViewMore borderRadius="8px" minH="48px" onClick={onViewMore} />
           )}
       </GridItem>
     </Grid>

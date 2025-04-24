@@ -1,20 +1,20 @@
 import { Text } from "@chakra-ui/react";
 
 interface MobileLabelProps {
-  label: string;
   fontWeight?: number;
+  label: string;
   variant?: string;
 }
 
 export const MobileLabel = ({
-  label,
   fontWeight = 600,
+  label,
   variant = "body3",
 }: MobileLabelProps) => (
   <Text
     color="text.dark"
-    variant={variant}
     fontWeight={fontWeight}
+    variant={variant}
     whiteSpace="nowrap"
   >
     {label}

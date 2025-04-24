@@ -1,3 +1,12 @@
+import "ace-builds/src-noconflict/ace";
+import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/theme-one_dark";
+import "ace-builds/src-noconflict/theme-pastel_on_dark";
+
+import type { JsonFragment } from "ethers";
+import type { HexAddr20, JsonDataType, Nullable } from "lib/types";
+
 import {
   Box,
   Button,
@@ -14,45 +23,37 @@ import {
   Tabs,
   useDisclosure,
 } from "@chakra-ui/react";
-import type { JsonFragment } from "ethers";
-import { useMemo } from "react";
-import AceEditor from "react-ace";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { useEvmConfig } from "lib/app-provider/hooks";
 import { CustomTab } from "lib/components/CustomTab";
-import type { HexAddr20, JsonDataType, Nullable } from "lib/types";
-
-import "ace-builds/src-noconflict/ace";
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/src-noconflict/theme-one_dark";
-import "ace-builds/src-noconflict/theme-pastel_on_dark";
 import { formatEvmFunctionInputsArgs } from "lib/utils";
+import { useMemo } from "react";
+import AceEditor from "react-ace";
+
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 
 type CodeSnippetType = "read" | "write";
 
 interface CodeSnippet {
-  name: string;
   mode: string;
+  name: string;
   snippet: string;
 }
 
 interface EvmCodeSnippetProps {
-  type: CodeSnippetType;
-  contractAddress: HexAddr20;
   abiSection: JsonFragment;
+  contractAddress: HexAddr20;
   inputs?: JsonDataType[];
+  type: CodeSnippetType;
 }
 
 const EvmCodeSnippet = ({
-  contractAddress,
   abiSection,
-  type,
+  contractAddress,
   inputs,
+  type,
 }: EvmCodeSnippetProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { theme } = useCelatoneApp();
@@ -68,8 +69,8 @@ const EvmCodeSnippet = ({
       return {
         read: [
           {
-            name: "Ethers",
             mode: "javascript",
+            name: "Ethers",
             snippet: `import { ethers, Interface } from "ethers";
 
 const provider = new ethers.JsonRpcProvider("${evm.jsonRpc}");
@@ -92,8 +93,8 @@ main();`,
         ],
         write: [
           {
-            name: "Ethers",
             mode: "javascript",
+            name: "Ethers",
             snippet: `import { ethers, Interface } from "ethers";
 
 const provider = new ethers.JsonRpcProvider("${evm.jsonRpc}");
@@ -125,10 +126,10 @@ main();`,
   return (
     <>
       <Button
-        variant="outline-secondary"
+        gap={1}
         minW="128px"
         size="sm"
-        gap={1}
+        variant="outline-secondary"
         onClick={() => {
           track(AmpEvent.USE_CONTRACT_SNIPPET, {});
           onOpen();
@@ -138,19 +139,19 @@ main();`,
         Code snippet
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
+      <Modal isCentered isOpen={isOpen} size="4xl" onClose={onClose}>
         <ModalOverlay />
         <ModalContent w="840px">
           <ModalHeader>
-            <CustomIcon name="code" boxSize={6} color="gray.600" />
+            <CustomIcon boxSize={6} color="gray.600" name="code" />
             <Heading as="h5" variant="h5">
               Code snippet
             </Heading>
           </ModalHeader>
           <ModalCloseButton color="gray.600" />
-          <ModalBody px={4} maxH="640px" overflow="scroll">
+          <ModalBody maxH="640px" overflow="scroll" px={4}>
             <Tabs>
-              <TabList borderBottom="1px solid" borderColor="gray.700">
+              <TabList borderBottomWidth="1px" borderColor="gray.700">
                 {codeSnippets[type].map((item) => (
                   <CustomTab key={`menu-${item.name}`}>{item.name}</CustomTab>
                 ))}
@@ -160,33 +161,33 @@ main();`,
                   <TabPanel key={item.name} px={2} py={4}>
                     <Box
                       bgColor="background.main"
-                      p={4}
                       borderRadius="8px"
+                      p={4}
                       position="relative"
                     >
                       <AceEditor
-                        readOnly
-                        mode={item.mode}
-                        theme={theme.jsonTheme}
-                        fontSize="14px"
                         style={{
-                          width: "100%",
                           background: "transparent",
+                          width: "100%",
                         }}
-                        value={item.snippet}
+                        fontSize="14px"
+                        mode={item.mode}
+                        readOnly
                         setOptions={{
+                          printMargin: false,
                           showGutter: false,
                           useWorker: false,
-                          printMargin: false,
                           wrap: true,
                         }}
+                        theme={theme.jsonTheme}
+                        value={item.snippet}
                       />
-                      <Box position="absolute" top={4} right={4}>
+                      <Box position="absolute" right={4} top={4}>
                         <CopyButton
-                          value={item.snippet}
+                          amptrackInfo={type}
                           amptrackSection="code_snippet"
                           amptrackSubSection={item.name}
-                          amptrackInfo={type}
+                          value={item.snippet}
                         />
                       </Box>
                     </Box>

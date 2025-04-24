@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react";
+import type { EvmContractVerifyForm } from "lib/types";
 import type { Control } from "react-hook-form";
 
-import type { EvmContractVerifyForm } from "lib/types";
+import { useEffect, useState } from "react";
+
 import { EvmContractVerifyFailedModal } from "./EvmContractVerifyFailedModal";
 import { EvmContractVerifyLoadingModal } from "./EvmContractVerifyLoadingModal";
 import { EvmContractVerifySuccessModal } from "./EvmContractVerifySuccessModal";
 
 interface EvmContractVerifyModalBodyProps {
+  control: Control<EvmContractVerifyForm>;
   isError: boolean;
   isLoading: boolean;
   onClose: () => void;
-  control: Control<EvmContractVerifyForm>;
 }
 
 export const EvmContractVerifyModalBody = ({
+  control,
   isError,
   isLoading,
   onClose,
-  control,
 }: EvmContractVerifyModalBodyProps) => {
   const [fakeLoading, setFakeLoading] = useState(false);
 

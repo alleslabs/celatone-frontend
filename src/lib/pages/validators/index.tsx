@@ -1,7 +1,4 @@
 import { Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig, useMobile, useTierConfig } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -11,6 +8,10 @@ import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { useDebounce } from "lib/hooks";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+
+import type { ValidatorCounts } from "./types";
 
 import {
   ActiveFilter,
@@ -18,7 +19,6 @@ import {
   ValidatorsBodyFull,
   ValidatorsBodyLite,
 } from "./components";
-import type { ValidatorCounts } from "./types";
 import { ValidatorOrder } from "./types";
 
 const SCROLL_COMPONENT_ID = "validator-table-header";
@@ -45,44 +45,44 @@ const Validators = () => {
       <CelatoneSeo pageName="Validators" />
       <PageHeaderContainer bgColor="transparent">
         <PageHeader
-          title="Validators"
-          subtitle="This page displays all validators on this network"
           docHref="introduction/overview#validators"
+          subtitle="This page displays all validators on this network"
+          title="Validators"
         />
         <Flex
-          direction={{ base: "column", md: "row" }}
           align="end"
+          direction={{ base: "column", md: "row" }}
           gap={{ base: "18px", md: "8px" }}
           w="full"
         >
           <ActiveFilter
-            isActive={isActive}
-            setIsActive={setIsActive}
             activeCount={counts?.activeCount}
             inactiveCount={counts?.inactiveCount}
+            isActive={isActive}
+            setIsActive={setIsActive}
           />
           {isMobile && (
             <OrderSelect
-              order={order}
-              setOrder={setOrder}
-              isDesc={isDesc}
-              setIsDesc={setIsDesc}
               allowUptime={isFullTier}
+              isDesc={isDesc}
+              order={order}
+              setIsDesc={setIsDesc}
+              setOrder={setOrder}
             />
           )}
           <InputWithIcon
-            size="lg"
+            amptrackSection="validator-list-search"
             placeholder={
               isMobile
                 ? "Search with name or address ..."
                 : "Search with validator name or validator address ..."
             }
+            size="lg"
             value={search}
             onChange={(e) => {
               const newValue = e.target.value;
               setSearch(newValue);
             }}
-            amptrackSection="validator-list-search"
           />
         </Flex>
       </PageHeaderContainer>
@@ -91,25 +91,25 @@ const Validators = () => {
           full={
             <ValidatorsBodyFull
               isActive={isActive}
-              setCounts={setCounts}
-              order={order}
-              setOrder={setOrder}
               isDesc={isDesc}
-              setIsDesc={setIsDesc}
-              search={debouncedSearch}
+              order={order}
               scrollComponentId={SCROLL_COMPONENT_ID}
+              search={debouncedSearch}
+              setCounts={setCounts}
+              setIsDesc={setIsDesc}
+              setOrder={setOrder}
             />
           }
           lite={
             <ValidatorsBodyLite
               isActive={isActive}
-              setCounts={setCounts}
-              order={order}
-              setOrder={setOrder}
               isDesc={isDesc}
-              setIsDesc={setIsDesc}
-              search={debouncedSearch}
+              order={order}
               scrollComponentId={SCROLL_COMPONENT_ID}
+              search={debouncedSearch}
+              setCounts={setCounts}
+              setIsDesc={setIsDesc}
+              setOrder={setOrder}
             />
           }
         />

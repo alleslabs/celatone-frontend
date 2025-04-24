@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import type {
   Block,
   BlockData,
@@ -7,6 +5,7 @@ import type {
   TransactionWithSignerPubkey,
   Validator,
 } from "lib/types";
+
 import {
   ActionMsgType,
   MsgFurtherAction,
@@ -23,21 +22,22 @@ import {
   parseTxHash,
   snakeToCamel,
 } from "lib/utils";
+import { z } from "zod";
 
 import { zTx, zTxJsonRpc, zTxReceiptJsonRpc } from "./tx";
 
 const zNullableValidator = z.nullable(
   z
     .object({
-      operator_address: zValidatorAddr.nullish(),
-      moniker: z.string(),
       identity: z.string(),
+      moniker: z.string(),
+      operator_address: zValidatorAddr.nullish(),
     })
     .transform<Validator>((val) => ({
+      identity: val.identity,
+      moniker: val.moniker,
       // nullable operator address for ICS chain
       validatorAddress: val.operator_address ?? zValidatorAddr.parse(""),
-      moniker: val.moniker,
-      identity: val.identity,
     }))
 );
 
@@ -53,9 +53,9 @@ const zBlocksResponseItem = z
   .transform<Block>((val) => ({
     hash: val.hash,
     height: val.height,
+    proposer: val.validator,
     timestamp: val.timestamp,
     txCount: val.transaction_count,
-    proposer: val.validator,
   }));
 
 export const zBlocksResponse = z.object({
@@ -66,33 +66,33 @@ export type BlocksResponse = z.infer<typeof zBlocksResponse>;
 
 export const zBlockDataResponse = z
   .object({
+    gas_limit: z.number().nullable(),
+    gas_used: z.number().nullable(),
     hash: z.string().transform(parseTxHash),
     height: z.number().nonnegative(),
     timestamp: zUtcDate,
     validator: zNullableValidator,
-    gas_used: z.number().nullable(),
-    gas_limit: z.number().nullable(),
   })
   .transform<BlockData>((val) => ({
+    gasLimit: val.gas_limit,
+    gasUsed: val.gas_used,
     hash: val.hash,
     height: val.height,
-    timestamp: val.timestamp,
     proposer: val.validator,
-    gasUsed: val.gas_used,
-    gasLimit: val.gas_limit,
+    timestamp: val.timestamp,
   }));
 
 // ---------------- REST ----------------
 export const zBlockRest = z.object({
   block: z.object({
+    data: z.object({
+      txs: z.array(z.string()),
+    }),
     header: z.object({
       chain_id: z.string(),
       height: z.coerce.number(),
-      time: zUtcDate,
       proposer_address: z.string(),
-    }),
-    data: z.object({
-      txs: z.array(z.string()),
+      time: zUtcDate,
     }),
   }),
   block_id: z.object({
@@ -102,8 +102,8 @@ export const zBlockRest = z.object({
 
 export const zBlockDataResponseRest = zBlockRest
   .extend({
-    txs: z.array(zTx),
     pagination: zPagination,
+    txs: z.array(zTx),
   })
   .transform(snakeToCamel)
   .transform<{
@@ -123,44 +123,44 @@ export const zBlockDataResponseRest = zBlockRest
         type: msg["@type"],
       }));
 
-      const { isIbc, isOpinit, isEvm } = messages.reduce(
+      const { isEvm, isIbc, isOpinit } = messages.reduce(
         (acc, msg) => {
           const current = getTxBadges(msg.type, undefined);
           return {
+            isEvm: acc.isEvm || current.isEvm,
             isIbc: acc.isIbc || current.isIbc,
             isOpinit: acc.isOpinit || current.isOpinit,
-            isEvm: acc.isEvm || current.isEvm,
           };
         },
-        { isIbc: false, isOpinit: false, isEvm: false }
+        { isEvm: false, isIbc: false, isOpinit: false }
       );
 
       return {
-        hash: txHashes[idx],
-        messages,
-        signerPubkey: tx.authInfo.signerInfos[0].publicKey,
-        isSigner: true,
-        height: val.block.header.height,
-        created: val.block.header.time,
-        success: false, // NOTE: Hidden in Lite Tier,
-        isIbc,
-        isOpinit,
-        isEvm,
         // TODO: implement below later
         actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
+        created: val.block.header.time,
         furtherAction: MsgFurtherAction.NONE,
+        hash: txHashes[idx],
+        height: val.block.header.height,
+        isEvm,
+        isIbc,
         isInstantiate: false,
+        isOpinit,
+        isSigner: true,
+        messages,
+        signerPubkey: tx.authInfo.signerInfos[0].publicKey,
+        success: false, // NOTE: Hidden in Lite Tier,
       };
     });
 
     // 3. Create Block Data
     const block: BlockData = {
-      hash: Buffer.from(val.blockId.hash, "base64").toString("hex"),
-      height: val.block.header.height,
-      timestamp: val.block.header.time,
-      proposer: null, // NOTE: Will be filled in the next step
       gasLimit: undefined,
       gasUsed: undefined,
+      hash: Buffer.from(val.blockId.hash, "base64").toString("hex"),
+      height: val.block.header.height,
+      proposer: null, // NOTE: Will be filled in the next step
+      timestamp: val.block.header.time,
     };
 
     return {
@@ -172,22 +172,22 @@ export const zBlockDataResponseRest = zBlockRest
 
 // ---------------- Sequencer ----------------
 const zBlockSequencer = z.object({
-  hash: z.string(),
-  height: z.coerce.number(),
-  timestamp: zUtcDate,
   gas_used: z.coerce.number(),
   gas_wanted: z.coerce.number(),
-  tx_count: z.coerce.number(),
+  hash: z.string(),
+  height: z.coerce.number(),
   proposer: zNullableValidator,
+  timestamp: zUtcDate,
+  tx_count: z.coerce.number(),
 });
 
 const zBlocksResponseItemSequencer = zBlockSequencer.transform<Block>(
   (val) => ({
     hash: val.hash,
     height: val.height,
+    proposer: val.proposer,
     timestamp: val.timestamp,
     txCount: val.tx_count,
-    proposer: val.proposer,
   })
 );
 
@@ -204,13 +204,13 @@ export const zBlockTimeAverageSequencer = z
 
 export const zBlockDataResponseSequencer = zBlockSequencer.transform<BlockData>(
   (val) => ({
+    gasLimit: val.gas_wanted,
+    gasUsed: val.gas_used,
     hash: val.hash,
     height: val.height,
+    proposer: val.proposer,
     timestamp: val.timestamp,
     txCount: val.tx_count,
-    gasUsed: val.gas_used,
-    gasLimit: val.gas_wanted,
-    proposer: val.proposer,
   })
 );
 

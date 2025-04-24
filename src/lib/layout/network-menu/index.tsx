@@ -8,10 +8,9 @@ import {
   DrawerOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-
 import { AmpEvent } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
+import { observer } from "mobx-react-lite";
 
 import { useNetworkSelector, useNetworkShortCut } from "./hooks";
 import { NetworkButton } from "./NetworkButton";
@@ -23,16 +22,16 @@ export const NetworkMenu = observer(() => {
   const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
 
   const {
-    keyword,
-    setKeyword,
-    handleOnKeyDown,
     cursor,
-    setCursor,
-    filteredPinnedChains,
-    filteredMainnetChains,
-    filteredTestnetChains,
     filteredDevnetChains,
     filteredLocalChains,
+    filteredMainnetChains,
+    filteredPinnedChains,
+    filteredTestnetChains,
+    handleOnKeyDown,
+    keyword,
+    setCursor,
+    setKeyword,
   } = useNetworkSelector(onClose);
 
   useNetworkShortCut(onToggle);
@@ -47,36 +46,36 @@ export const NetworkMenu = observer(() => {
         }}
       />
       <Drawer
-        isOpen={isOpen}
-        onClose={onClose}
-        placement="right"
         autoFocus={false}
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
       >
         <DrawerOverlay />
         <DrawerContent
-          h="100%"
           background="background.main"
-          minW="343px"
           gap={6}
+          h="100%"
+          minW="343px"
         >
-          <DrawerHeader px={4} pt={6} pb={0}>
+          <DrawerHeader pb={0} pt={6} px={4}>
             <NetworkMenuTop
+              handleOnKeyDown={handleOnKeyDown}
               keyword={keyword}
               setKeyword={setKeyword}
-              handleOnKeyDown={handleOnKeyDown}
               onClose={onClose}
             />
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
-          <DrawerBody px={4} pt={0} pb={6}>
+          <DrawerBody pb={6} pt={0} px={4}>
             <NetworkMenuBody
               cursor={cursor}
-              setCursor={setCursor}
-              filteredPinnedChains={filteredPinnedChains}
-              filteredMainnetChains={filteredMainnetChains}
-              filteredTestnetChains={filteredTestnetChains}
               filteredDevnetChains={filteredDevnetChains}
               filteredLocalChains={filteredLocalChains}
+              filteredMainnetChains={filteredMainnetChains}
+              filteredPinnedChains={filteredPinnedChains}
+              filteredTestnetChains={filteredTestnetChains}
+              setCursor={setCursor}
               onClose={onClose}
             />
           </DrawerBody>

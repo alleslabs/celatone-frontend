@@ -1,11 +1,11 @@
-import { Flex, Text } from "@chakra-ui/react";
+import type { Activity } from "lib/services/types";
+import type { HexAddr32 } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
-import type { Activity } from "lib/services/types";
-import type { HexAddr32 } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { getEventMessage } from "./ActivitiesTableRow";
@@ -19,31 +19,25 @@ export const ActivitiesTableMobileCard = ({
 }) => {
   const navigate = useInternalNavigate();
   const {
-    txhash,
-    timestamp,
+    isCollectionCreate,
     isNftBurn,
     isNftMint,
     isNftTransfer,
-    isCollectionCreate,
-    tokenId,
     nftAddress,
+    timestamp,
+    tokenId,
+    txhash,
   } = activity;
 
   return (
     <MobileCardTemplate
-      onClick={() =>
-        navigate({
-          pathname: "/txs/[txHash]",
-          query: { txHash: txhash.toUpperCase() },
-        })
-      }
-      topContent={
-        <ExplorerLink
-          value={txhash.toUpperCase()}
-          type="tx_hash"
-          showCopyOnHover
-          ampCopierSection="nft-collection-activities-table"
-        />
+      bottomContent={
+        <Flex direction="column" gap={1}>
+          <Text variant="body3">{formatUTC(timestamp)}</Text>
+          <Text color="text.dark" variant="body3">
+            {`(${dateFromNow(timestamp)})`}
+          </Text>
+        </Flex>
       }
       middleContent={
         <Flex direction="column" gap={3}>
@@ -52,7 +46,7 @@ export const ActivitiesTableMobileCard = ({
             <AppLink
               href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
             >
-              <Text variant="body2" color="primary.dark">
+              <Text color="primary.dark" variant="body2">
                 {tokenId}
               </Text>
             </AppLink>
@@ -70,13 +64,19 @@ export const ActivitiesTableMobileCard = ({
           </Flex>
         </Flex>
       }
-      bottomContent={
-        <Flex direction="column" gap={1}>
-          <Text variant="body3">{formatUTC(timestamp)}</Text>
-          <Text variant="body3" color="text.dark">
-            {`(${dateFromNow(timestamp)})`}
-          </Text>
-        </Flex>
+      topContent={
+        <ExplorerLink
+          ampCopierSection="nft-collection-activities-table"
+          showCopyOnHover
+          type="tx_hash"
+          value={txhash.toUpperCase()}
+        />
+      }
+      onClick={() =>
+        navigate({
+          pathname: "/txs/[txHash]",
+          query: { txHash: txhash.toUpperCase() },
+        })
       }
     />
   );

@@ -1,18 +1,18 @@
-import { Button } from "@chakra-ui/react";
 import type { EncodeObject } from "@cosmjs/proto-signing";
-import { useCallback, useState } from "react";
+import type { Gas, Message, Msg, Option } from "lib/types";
 
+import { Button } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useFabricateFee, useResendTx } from "lib/app-provider";
 import { useTxBroadcast } from "lib/hooks";
 import { useSimulateFeeQuery } from "lib/services/tx";
-import type { Gas, Message, Msg, Option } from "lib/types";
 import { camelToSnake, encode } from "lib/utils";
+import { useCallback, useState } from "react";
 
 interface ResendButtonProps {
   messages: Message[];
-  txHash: string;
   msgIndex?: number;
+  txHash: string;
 }
 
 const formatMsgs = (messages: Message[]) =>
@@ -33,8 +33,8 @@ const formatMsgs = (messages: Message[]) =>
 
 export const ResendButton = ({
   messages,
-  txHash,
   msgIndex = 0,
+  txHash,
 }: ResendButtonProps) => {
   const fabricateFee = useFabricateFee();
   const resendTx = useResendTx();
@@ -51,8 +51,8 @@ export const ResendButton = ({
           ? fabricateFee(estimatedGasUsed)
           : undefined,
         messages: composedMsgs,
-        onTxSucceed: () => setIsProcessing(false),
         onTxFailed: () => setIsProcessing(false),
+        onTxSucceed: () => setIsProcessing(false),
       });
       if (stream) broadcast(stream);
     },
@@ -61,23 +61,23 @@ export const ResendButton = ({
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: isProcessing,
-    messages: composedMsgs,
     extraQueryKey: [txHash, msgIndex],
-    onSuccess: proceed,
+    messages: composedMsgs,
     onError: () => setIsProcessing(false),
+    onSuccess: proceed,
   });
 
   return (
     <Button
-      variant="outline-gray"
       iconSpacing="0"
+      isDisabled={isProcessing}
+      isLoading={isSimulating}
       size="sm"
+      variant="outline-gray"
       onClick={(e) => {
         e.stopPropagation();
         setIsProcessing(true);
       }}
-      isLoading={isSimulating}
-      isDisabled={isProcessing}
     >
       Resend
     </Button>
