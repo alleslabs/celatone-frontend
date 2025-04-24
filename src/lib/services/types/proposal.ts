@@ -221,16 +221,46 @@ export type ProposalAnswerCountsResponse = z.infer<
   typeof zProposalAnswerCountsResponse
 >;
 
+const zProposalFinalTallyResultBase = z.object({
+  abstain_count: zBig,
+  no_count: zBig,
+  no_with_veto_count: zBig,
+  yes_count: zBig,
+});
+
+const zProposalFinalTallyResultCosmos = zProposalFinalTallyResultBase.transform(
+  (val) => ({
+    abstain: val.abstain_count,
+    no: val.no_count,
+    noWithVeto: val.no_with_veto_count,
+    totalVotingPower: null,
+    yes: val.yes_count,
+  })
+);
+
+const zProposalFinalTallyResultInitia = z
+  .object({
+    tally_height: z.coerce.number(),
+    total_staking_power: zBig,
+    total_vesting_power: zBig,
+    v1_tally_result: zProposalFinalTallyResultBase,
+  })
+  .transform((val) => ({
+    abstain: val.v1_tally_result.abstain_count,
+    no: val.v1_tally_result.no_count,
+    noWithVeto: val.v1_tally_result.no_with_veto_count,
+    totalVotingPower: val.total_staking_power.add(val.total_vesting_power),
+    yes: val.v1_tally_result.yes_count,
+  }));
+
 export const zProposalDataResponseRest = z
   .object({
     deposit_end_time: zUtcDate,
     expedited: z.boolean().optional().default(false),
-    final_tally_result: z.object({
-      abstain_count: zBig,
-      no_count: zBig,
-      no_with_veto_count: zBig,
-      yes_count: zBig,
-    }),
+    final_tally_result: z.union([
+      zProposalFinalTallyResultCosmos,
+      zProposalFinalTallyResultInitia,
+    ]),
     id: z.coerce.number(),
     messages: z.array(zMessageResponse).nullable(),
     metadata: z.string(),
@@ -250,13 +280,6 @@ export const zProposalDataResponseRest = z
     createdTxHash: null,
     description: val.summary,
     failedReason: "",
-    finalTallyResult: {
-      abstain: val.final_tally_result.abstain_count,
-      no: val.final_tally_result.no_count,
-      noWithVeto: val.final_tally_result.no_with_veto_count,
-      totalVotingPower: null,
-      yes: val.final_tally_result.yes_count,
-    },
     isEmergency: false,
     isExpedited: val.expedited,
     proposalDeposits: [],

@@ -29,12 +29,13 @@ export const getProposalParamsRest = (restEndpoint: string) =>
     );
 
 export const getProposalsRest = async (
+  isInitia: boolean,
   endpoint: string,
   paginationKey: Option<string>,
   status?: Omit<ProposalStatus, "CANCELLED" | "DEPOSIT_FAILED">
 ): Promise<ProposalsResponseRest> =>
   axios
-    .get(`${endpoint}/cosmos/gov/v1/proposals`, {
+    .get(`${endpoint}/${isInitia ? "initia" : "cosmos"}/gov/v1/proposals`, {
       params: {
         "pagination.key": paginationKey,
         "pagination.limit": 10,
@@ -47,11 +48,14 @@ export const getProposalsRest = async (
     .then(({ data }) => parseWithError(zProposalsResponseRest, data));
 
 export const getProposalDataRest = async (
+  isInitia: boolean,
   endpoint: string,
   id: number
 ): Promise<ProposalDataResponseRest> =>
   axios
-    .get(`${endpoint}/cosmos/gov/v1/proposals/${encodeURIComponent(id)}`)
+    .get(
+      `${endpoint}/${isInitia ? "initia" : "cosmos"}/gov/v1/proposals/${encodeURIComponent(id)}`
+    )
     .then(({ data }) =>
       parseWithError(zProposalDataResponseRest, data.proposal)
     );

@@ -18,6 +18,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
+  useInitia,
   useTierConfig,
 } from "lib/app-provider";
 
@@ -121,10 +122,12 @@ export const useProposalsRest = (
   const {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
+  const isInitia = useInitia();
 
   const { data, ...rest } = useInfiniteQuery<ProposalsResponseRest>(
     [CELATONE_QUERY_KEYS.PROPOSALS_REST, restEndpoint, status],
-    ({ pageParam }) => getProposalsRest(restEndpoint, pageParam, status),
+    ({ pageParam }) =>
+      getProposalsRest(isInitia, restEndpoint, pageParam, status),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
       refetchOnWindowFocus: false,
@@ -200,10 +203,11 @@ export const useProposalDataRest = (id: number, enabled = true) => {
   const {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
+  const isInitia = useInitia();
 
   return useQuery<ProposalDataResponseRest>(
     [CELATONE_QUERY_KEYS.PROPOSAL_DATA_REST, restEndpoint, id],
-    async () => getProposalDataRest(restEndpoint, id),
+    async () => getProposalDataRest(isInitia, restEndpoint, id),
     {
       enabled,
       refetchOnWindowFocus: false,
