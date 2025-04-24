@@ -378,7 +378,7 @@ export const EvmContractVerifyBody = ({
               option === EvmVerifyOptions.SolidityHardhat ||
               option === EvmVerifyOptions.SolidityFoundry
                 ? "View verification status"
-                : "Verify & Publish Contract"
+                : "Verify & publish contract"
             }
             handleNext={handleSubmit}
             handlePrevious={router.back}

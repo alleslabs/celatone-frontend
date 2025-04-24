@@ -40,12 +40,12 @@ export const EvmContractDetailsTop = ({
             name="contract-address"
           />
           <Heading as="h5" variant="h5" wordBreak="break-word">
-            Contract Details
+            Contract details
           </Heading>
         </Flex>
         <Flex columnGap={2} flexDirection={{ base: "column", md: "row" }}>
           <Text color="text.dark" fontWeight={500} variant="body2">
-            Contract Address:
+            Contract address:
           </Text>
           <Flex alignItems="center">
             <CopyLink
@@ -69,7 +69,7 @@ export const EvmContractDetailsTop = ({
             minHeight={6}
           >
             <Text color="text.dark" fontWeight={500} variant="body2">
-              Contract Name:
+              Contract name:
             </Text>
             <Text className="ellipsis" variant="body2">
               {evmVerifyInfo.contractName}
@@ -79,7 +79,7 @@ export const EvmContractDetailsTop = ({
         {proxyTargetAddress && (
           <Flex columnGap={2} flexDirection={{ base: "column", md: "row" }}>
             <Text color="text.dark" fontWeight={500} variant="body2">
-              Implementation Address:
+              Implementation address:
             </Text>
             <Flex alignItems="center">
               <ExplorerLink
