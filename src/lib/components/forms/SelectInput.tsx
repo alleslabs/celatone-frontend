@@ -154,8 +154,8 @@ export const SelectInput = <
       >
         {label}
       </Text>
-      <SelectInputBody {...options} />
+      <SelectInputBody isDisabled={isDisabled} {...options} />
     </Stack>
   ) : (
-    <SelectInputBody {...options} />
+    <SelectInputBody isDisabled={isDisabled} {...options} />
   );
