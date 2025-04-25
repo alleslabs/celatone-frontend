@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1316](https://github.com/alleslabs/celatone-frontend/pull/1316) Fix select input disabled option, add EVM verification entry
 - [#1301](https://github.com/alleslabs/celatone-frontend/pull/1301) Upgrade Nextjs 14 to 15
 - [#1294](https://github.com/alleslabs/celatone-frontend/pull/1294) Upgrade React & ESLint version
 - [#1309](https://github.com/alleslabs/celatone-frontend/pull/1309) Add emergency tag and fix sentence case in EVM verification flow

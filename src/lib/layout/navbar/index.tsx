@@ -23,6 +23,7 @@ import { ExpandNavMenu } from "./Expand";
 import {
   getDeviceSubmenuMove,
   getDeviceSubmenuWasm,
+  getDevSubmenuEvm,
   getDevSubmenuMove,
   getDevSubmenuWasm,
   getPublicProjectsSubmenu,
@@ -71,6 +72,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                   submenu: [
                     ...getDevSubmenuMove(move.enabled),
                     ...getDevSubmenuWasm(wasm.enabled),
+                    ...getDevSubmenuEvm(evm.enabled),
                   ],
                   subSection: [
                     ...getWalletSubSectionMove(move.enabled),

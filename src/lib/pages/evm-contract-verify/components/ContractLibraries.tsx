@@ -35,7 +35,7 @@ export const ContractLibraries = <T extends FieldValues>({
     <Stack spacing={2}>
       <Stack spacing={1}>
         <Heading as="h6" variant="h6">
-          Add Contract Libraries
+          Add contract libraries
         </Heading>
         <Text color="text.dark" variant="body2">
           Provide addresses of external libraries linked to the contract to
