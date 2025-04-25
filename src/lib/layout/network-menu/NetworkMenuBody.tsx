@@ -65,7 +65,7 @@ export const NetworkMenuBody = observer(
               title="Mainnet"
               onClose={onClose}
             />
-            {!!filteredMainnetChains.length && (
+            {!!filteredTestnetChains.length && (
               <Divider borderColor="gray.700" />
             )}
             <NetworkAccordion

@@ -126,6 +126,17 @@ export const getDevSubmenuWasm = (isWasm: boolean) =>
       ]
     : [];
 
+export const getDevSubmenuEvm = (isEvm: boolean) =>
+  isEvm
+    ? [
+        {
+          icon: "verification" as IconKeys,
+          name: "Verify contracts",
+          slug: "/evm-contracts/verify",
+        },
+      ]
+    : [];
+
 export const getWalletSubSectionMove = (isMove: boolean) =>
   isMove
     ? [

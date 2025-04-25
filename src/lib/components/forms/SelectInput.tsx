@@ -124,7 +124,6 @@ export const SelectInput = <
   OptionValue extends SelectInputOptionValue,
   IsMulti extends boolean = false,
 >({
-  isDisabled,
   isRequired,
   label,
   labelBg = "background.main",
@@ -145,7 +144,7 @@ export const SelectInput = <
           fontSize: "12px",
           letterSpacing: "0.15px",
           ml: 3,
-          opacity: isDisabled ? 0.3 : 1,
+          opacity: options.isDisabled ? 0.3 : 1,
           position: "absolute",
           px: 1,
           top: -2,

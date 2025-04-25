@@ -33,7 +33,7 @@ export const EvmContractVerifySolidityContractCode = ({
       <EvmContractVerifyAlert option={EvmVerifyOptions.SolidityContractCode} />
       <Stack spacing={6}>
         <Heading as="h6" variant="h6">
-          Provide Contract Code
+          Provide contract code
         </Heading>
         <ControllerTextarea
           control={control}

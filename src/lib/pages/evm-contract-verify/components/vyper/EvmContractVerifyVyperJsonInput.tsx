@@ -26,7 +26,7 @@ export const EvmContractVerifyVyperJsonInput = ({
     <Stack spacing={12}>
       <Stack spacing={4}>
         <Heading as="h6" variant="h6">
-          Provide Standard JSON Input
+          Provide standard JSON input
         </Heading>
         {value ? (
           <UploadCard deleteFile={() => onChange("")} file={value} />

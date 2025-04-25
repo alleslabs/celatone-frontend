@@ -38,7 +38,7 @@ export const EvmContractVerifyVyperContractCode = ({
       <EvmContractVerifyAlert option={EvmVerifyOptions.VyperContractCode} />
       <Stack spacing={6}>
         <Heading as="h6" variant="h6">
-          Provide Contract Code
+          Provide contract code
         </Heading>
         <ControllerInput
           control={control}

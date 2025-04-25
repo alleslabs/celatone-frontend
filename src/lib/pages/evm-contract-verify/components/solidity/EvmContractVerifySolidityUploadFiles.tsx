@@ -33,7 +33,7 @@ export const EvmContractVerifySolidityUploadFiles = ({
       <EvmContractVerifyAlert option={EvmVerifyOptions.SolidityUploadFiles} />
       <Stack spacing={4}>
         <Heading as="h6" variant="h6">
-          Upload File(s)
+          Upload file(s)
         </Heading>
         {fields.map((field, index) => (
           <Fragment key={field.id}>
