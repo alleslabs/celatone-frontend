@@ -348,12 +348,14 @@ export const useValidatorImage = (
       if (!validator) return "";
       return resolveValIdentity(chainName, validator, primaryDark);
     },
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: [
       CELATONE_QUERY_KEYS.VALIDATOR_IDENTITY,
       chainName,
       validator?.validatorAddress,
       validator?.identity,
       validator?.moniker,
+      primaryDark,
     ],
     refetchOnWindowFocus: false,
     retry: false,

@@ -441,6 +441,7 @@ export const useTxsSequencer = (limit = 10) => {
     [restEndpoint, limit]
   );
 
+  // eslint-disable-next-line @tanstack/query/no-rest-destructuring
   const { data, ...rest } = useInfiniteQuery(
     [CELATONE_QUERY_KEYS.TXS_SEQUENCER, restEndpoint, limit],
     ({ pageParam }) => queryfn(pageParam),
@@ -553,6 +554,7 @@ export const useTxsByAddressSequencer = (
     [address, restEndpoint, bech32Prefix, search, limit]
   );
 
+  // eslint-disable-next-line @tanstack/query/no-rest-destructuring
   const { data, ...rest } = useInfiniteQuery(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_SEQUENCER,

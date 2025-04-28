@@ -174,6 +174,7 @@ export const useNftCollectionActivitiesSequencer = (
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
+  // eslint-disable-next-line @tanstack/query/no-rest-destructuring
   const { data, ...rest } = useInfiniteQuery(
     [CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES_SEQUENCER, restEndpoint],
     async ({ pageParam }) =>

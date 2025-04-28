@@ -50,6 +50,7 @@ export const useMovePoolInfos = ({ withPrices }: { withPrices: boolean }) => {
     error: assetsErrors,
     isLoading: isAssetsLoading,
   } = useAssetInfos({ withPrices });
+  // eslint-disable-next-line @tanstack/query/no-rest-destructuring
   const {
     data: pools,
     error: poolsErrors,

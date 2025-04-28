@@ -27,6 +27,7 @@ export const useWasmVerifyInfos = (codeIds: number[], enabled = true) => {
   return useQuery({
     enabled,
     queryFn: () => getWasmVerifyInfos(currentChainId, codeIds),
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: [
       CELATONE_QUERY_KEYS.WASM_VERIFICATION_INFOS,
       currentChainId,
@@ -44,6 +45,7 @@ const useWasmRelatedVerifyInfos = (hashes: string[], enabled = true) => {
   return useQuery({
     enabled,
     queryFn: () => getWasmRelatedVerifyInfos(currentChainId, hashes),
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: [
       CELATONE_QUERY_KEYS.WASM_RELATED_VERIFICATION_INFOS,
       currentChainId,

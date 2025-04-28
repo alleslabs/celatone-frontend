@@ -124,6 +124,7 @@ export const useProposalsRest = (
   } = useCelatoneApp();
   const isInitia = useInitia();
 
+  // eslint-disable-next-line @tanstack/query/no-rest-destructuring
   const { data, ...rest } = useInfiniteQuery<ProposalsResponseRest>(
     [CELATONE_QUERY_KEYS.PROPOSALS_REST, restEndpoint, status],
     ({ pageParam }) =>

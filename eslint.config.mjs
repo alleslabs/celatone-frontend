@@ -1,5 +1,6 @@
 import js from "@eslint/js";
 import { flatConfig as next } from "@next/eslint-plugin-next";
+import tanstackQuery from "@tanstack/eslint-plugin-query";
 import perfectionist from "eslint-plugin-perfectionist";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
@@ -72,6 +73,7 @@ export default defineConfig([
   tseslint.configs.recommended,
   tseslint.config({
     rules: {
+      "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/no-empty-object-type": [
         "error",
         { allowInterfaces: "always" },
@@ -146,4 +148,6 @@ export default defineConfig([
       ],
     },
   },
+  // Tanstack Query
+  tanstackQuery.configs["flat/recommended"],
 ]);
