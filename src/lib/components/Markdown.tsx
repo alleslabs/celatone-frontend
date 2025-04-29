@@ -1,9 +1,22 @@
 import type { PropsWithChildren } from "react";
 
-import { Box, Heading, List, ListItem, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  List,
+  ListItem,
+  Table,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+
+import { TableContainer } from "./table";
 
 const defaultTheme = {
   blockquote: (props: PropsWithChildren) => {
@@ -36,7 +49,6 @@ const defaultTheme = {
         px={2}
         py={1}
         sx={{ "> p": { marginBottom: 0 } }}
-        whiteSpace="normal"
       >
         {children}
       </Box>
@@ -128,6 +140,44 @@ const defaultTheme = {
         {children}
       </Box>
     );
+  },
+  table: (props: PropsWithChildren) => {
+    const { children } = props;
+
+    return (
+      <TableContainer
+        sx={{
+          "@media screen and (min-width: 767px)": {
+            width: "100%",
+          },
+          width: "87vw",
+        }}
+      >
+        <Table
+          style={{ tableLayout: "auto" }}
+          minW="max-content"
+          variant="simple"
+        >
+          {children}
+        </Table>
+      </TableContainer>
+    );
+  },
+  td: (props: PropsWithChildren) => {
+    const { children } = props;
+    return <Td px={3}>{children}</Td>;
+  },
+  th: (props: PropsWithChildren) => {
+    const { children } = props;
+    return <Th px={3}>{children}</Th>;
+  },
+  thead: (props: PropsWithChildren) => {
+    const { children } = props;
+    return <Thead>{children}</Thead>;
+  },
+  tr: (props: PropsWithChildren) => {
+    const { children } = props;
+    return <Tr>{children}</Tr>;
   },
   ul: (props: PropsWithChildren) => {
     const { children } = props;
