@@ -155,7 +155,12 @@ const defaultTheme = {
       >
         <Table
           style={{ tableLayout: "auto" }}
-          minW="max-content"
+          sx={{
+            "@media screen and (min-width: 767px)": {
+              minWidth: 0,
+            },
+            minWidth: "max-content",
+          }}
           variant="simple"
         >
           {children}
