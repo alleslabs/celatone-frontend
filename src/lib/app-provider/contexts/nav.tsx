@@ -1,4 +1,4 @@
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type { ReactNode } from "react";
 
 import { StorageKeys } from "lib/data";
 import { useLocalStorage } from "lib/hooks/useLocalStorage";
@@ -6,8 +6,8 @@ import { createContext, useContext, useMemo } from "react";
 
 interface NavContextInterface {
   isExpand: boolean;
-  setIsExpand: Dispatch<SetStateAction<boolean>>;
-  submenus: Record<string, [boolean, Dispatch<SetStateAction<boolean>>]>;
+  setIsExpand: (value: boolean) => void;
+  submenus: Record<string, [boolean, (value: boolean) => void]>;
 }
 const NavContext = createContext<NavContextInterface>({
   isExpand: false,

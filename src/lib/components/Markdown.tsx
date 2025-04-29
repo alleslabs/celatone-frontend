@@ -13,12 +13,14 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
+import { StorageKeys } from "lib/data";
+import { useLocalStorageListener } from "lib/hooks";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { TableContainer } from "./table";
 
-const defaultTheme = {
+const defaultTheme = (isExpand: boolean) => ({
   blockquote: (props: PropsWithChildren) => {
     const { children } = props;
     return (
@@ -143,24 +145,21 @@ const defaultTheme = {
   },
   table: (props: PropsWithChildren) => {
     const { children } = props;
-
     return (
       <TableContainer
         sx={{
           "@media screen and (min-width: 767px)": {
-            width: "100%",
+            width: isExpand ? "calc(100vw - 370px)" : "calc(100vw - 180px)",
           },
-          width: "87vw",
+          "@media screen and (min-width: 1280px)": {
+            width: isExpand ? "calc(100vw - 800px)" : "calc(100vw - 600px)",
+          },
+          width: "calc(100vw - 70px)",
         }}
       >
         <Table
           style={{ tableLayout: "auto" }}
-          sx={{
-            "@media screen and (min-width: 767px)": {
-              minWidth: 0,
-            },
-            minWidth: "max-content",
-          }}
+          minWidth="max-content"
           variant="simple"
         >
           {children}
@@ -198,13 +197,14 @@ const defaultTheme = {
       </List>
     );
   },
-};
+});
 
 export const Markdown = ({ markdown }: { markdown: string }) => {
+  const isExpand = useLocalStorageListener(StorageKeys.NavSidebar, true);
   return (
     <div style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
       <ReactMarkdown
-        components={ChakraUIRenderer(defaultTheme)}
+        components={ChakraUIRenderer(defaultTheme(isExpand))}
         remarkPlugins={[remarkGfm]}
         skipHtml
       >
