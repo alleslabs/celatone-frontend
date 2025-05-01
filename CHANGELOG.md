@@ -47,7 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#1320](https://github.com/alleslabs/celatone-frontend/pull/1320) Support NFT on WASM, EVM VM
+- [#1321](https://github.com/alleslabs/celatone-frontend/pull/1321) Support NFT on WASM, EVM VM
 
 ### Improvements
 
