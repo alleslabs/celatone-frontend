@@ -4,6 +4,7 @@ import { useMoveConfig } from "lib/app-provider";
 import { useResourcesByAddressRest } from "lib/services/move/resource";
 import { useNftCollectionByCollectionAddress } from "lib/services/nft-collection";
 import { CollectionByCollectionAddressResponse } from "lib/services/types";
+import { isUndefined } from "lodash";
 
 interface SupplyData {
   current_supply: string;
@@ -76,7 +77,7 @@ const useCollectionInfosMove = (
       royalty: Number(royaltyData?.royalty ?? 0) * 100,
       supplies: {
         currentSupply,
-        maxSupply: supplyData?.max_supply
+        maxSupply: !isUndefined(supplyData?.max_supply)
           ? Number(supplyData.max_supply)
           : undefined,
         totalBurned,

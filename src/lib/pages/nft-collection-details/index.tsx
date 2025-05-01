@@ -81,8 +81,7 @@ const CollectionDetailsBody = ({
     collectionAddressBech,
     collectionAddressHex,
     6,
-    0,
-    undefined
+    0
   );
 
   const { data: nftsSequencer, isFetching: isNftsLoadingSequencer } =
