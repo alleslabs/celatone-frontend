@@ -26,7 +26,9 @@ export const SearchZeroState = ({
   const evmText = isEvm ? ["EVM tx hash", "Contract address"] : [];
   const poolText = isPool && isFullTier ? ["Pool ID"] : [];
   const nftCollectionText = isNft
-    ? ["NFT collection address", "NFT address"]
+    ? isMove
+      ? ["NFT collection address", "NFT address"]
+      : ["NFT collection address"]
     : [];
 
   const supportedItemsType = base.concat(

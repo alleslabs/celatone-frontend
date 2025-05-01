@@ -1,7 +1,7 @@
-import type { HexAddr32 } from "lib/types";
+import type { BechAddr32, HexAddr32 } from "lib/types";
 
 import { Flex, Heading, Link, Text } from "@chakra-ui/react";
-import { useMobile, useTierConfig } from "lib/app-provider";
+import { useMobile, useMoveConfig, useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
@@ -12,7 +12,8 @@ import { InfoCard } from "./InfoCard";
 
 interface CollectionInfoSectionProps {
   activities?: number;
-  collectionAddress: HexAddr32;
+  collectionAddressBech: BechAddr32;
+  collectionAddressHex: HexAddr32;
   collectionName: string;
   desc: string;
   mutateEventes?: number;
@@ -24,7 +25,8 @@ interface CollectionInfoSectionProps {
 
 export const CollectionInfoSection = ({
   activities,
-  collectionAddress,
+  collectionAddressBech,
+  collectionAddressHex,
   collectionName,
   desc,
   mutateEventes,
@@ -35,8 +37,11 @@ export const CollectionInfoSection = ({
 }: CollectionInfoSectionProps) => {
   const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
-  const { data: collectionCreator, isLoading } =
-    useNftCollectionCreator(collectionAddress);
+  const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
+  const { data: collectionCreator, isLoading } = useNftCollectionCreator(
+    collectionAddressBech,
+    collectionAddressHex
+  );
 
   if (isLoading) return <Loading />;
   if (!collectionCreator) return null;
@@ -107,7 +112,7 @@ export const CollectionInfoSection = ({
               showCopyOnHover
               textFormat="normal"
               type="user_address"
-              value={collectionAddress}
+              value={collectionAddressBech}
             />
           </Flex>
           <Flex flexDir={infoDirection} gap={infoGap}>
@@ -136,32 +141,42 @@ export const CollectionInfoSection = ({
             <Text fontWeight={600} minW={24} variant="body2">
               Uri
             </Text>
-            <Link
-              href={uri}
-              target="_blank"
-              variant="body2"
-              wordBreak="break-all"
-            >
-              {uri}
-            </Link>
+            {uri ? (
+              <Link
+                href={uri}
+                target="_blank"
+                variant="body2"
+                wordBreak="break-all"
+              >
+                {uri}
+              </Link>
+            ) : (
+              <Text color="text.dark" variant="body2" wordBreak="break-word">
+                No URI was provided by the creator.
+              </Text>
+            )}
           </Flex>
 
-          <Flex flexDir={infoDirection} gap={infoGap}>
-            <Text fontWeight={600} minW={24} variant="body2">
-              Royalty
-            </Text>
-            <Text variant="body2">{royalty}%</Text>
-          </Flex>
+          {isMoveEnabled && (
+            <Flex flexDir={infoDirection} gap={infoGap}>
+              <Text fontWeight={600} minW={24} variant="body2">
+                Royalty
+              </Text>
+              <Text variant="body2">{royalty}%</Text>
+            </Flex>
+          )}
         </Flex>
       </Flex>
       <Flex flexDir={infoDirection} gap={{ base: 4, md: 8 }}>
-        <InfoCard
-          content={activities}
-          icon="list"
-          isDisabled={activities === 0}
-          title="Activities"
-          onClick={onClickActivities}
-        />
+        {isMoveEnabled && (
+          <InfoCard
+            content={activities}
+            icon="list"
+            isDisabled={activities === 0}
+            title="Activities"
+            onClick={onClickActivities}
+          />
+        )}
         {isFullTier && (
           <InfoCard
             content={mutateEventes}

@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
-import { useMobile, useTierConfig } from "lib/app-provider";
+import { useMobile, useMoveConfig, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -22,6 +22,7 @@ import { TierSwitcher } from "lib/components/TierSwitcher";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
   useMetadata,
   useNftByNftAddress,
@@ -29,6 +30,8 @@ import {
   useNftTransactions,
 } from "lib/services/nft";
 import { useNftCollectionByCollectionAddress } from "lib/services/nft-collection";
+import { zHexAddr32 } from "lib/types";
+import { zBechAddr32 } from "lib/types";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -57,12 +60,20 @@ const NftDetailsBody = ({
 }: NftDetailQueryParams) => {
   const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
+  const formatAddresses = useFormatAddresses();
+
+  const formattedAddresses = formatAddresses(collectionAddress);
+  const collectionAddressBech = zBechAddr32.parse(formattedAddresses.address);
+  const collectionAddressHex = zHexAddr32.parse(formattedAddresses.hex);
 
   const { data: collection, isLoading: isCollectionLoading } =
-    useNftCollectionByCollectionAddress(collectionAddress);
+    useNftCollectionByCollectionAddress(
+      collectionAddressBech,
+      collectionAddressHex
+    );
 
   const { data: nft, isLoading: isNftLoading } = useNftByNftAddress(
-    collectionAddress,
+    collectionAddressHex,
     nftAddress
   );
 
@@ -300,6 +311,8 @@ const NftDetailsBody = ({
 
 const NftDetails = observer(() => {
   useTierConfig({ minTier: "sequencer" });
+  // NOTE: allow to access the page only in move config enabled
+  useMoveConfig({ shouldRedirect: true });
   const router = useRouter();
   const validated = zNftDetailQueryParams.safeParse(router.query);
 

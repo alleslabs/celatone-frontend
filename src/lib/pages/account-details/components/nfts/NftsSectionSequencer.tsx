@@ -1,4 +1,4 @@
-import type { HexAddr, HexAddr32, Option } from "lib/types";
+import type { BechAddr, HexAddr32, Option } from "lib/types";
 
 import { Badge, Box, Flex, Heading, Stack } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
@@ -18,17 +18,17 @@ interface SelectedCollection {
 }
 
 interface NftsSectionSequencerProps {
-  address: HexAddr;
+  accountAddress: BechAddr;
   totalData: Option<number>;
 }
 
 export const NftsSectionSequencer = ({
-  address,
+  accountAddress,
   totalData = 0,
 }: NftsSectionSequencerProps) => {
   const isMobile = useMobile();
   const { data: accountNfts, isLoading } =
-    useNftsByAccountByCollectionSequencer(address, undefined, undefined);
+    useNftsByAccountByCollectionSequencer(accountAddress, undefined, undefined);
 
   const collections = groupBy(accountNfts?.items, "collectionAddress");
 
