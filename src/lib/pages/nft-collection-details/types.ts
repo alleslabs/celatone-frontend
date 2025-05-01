@@ -1,4 +1,4 @@
-import { zHexAddr32 } from "lib/types";
+import { zAddr32 } from "lib/types";
 import { z } from "zod";
 
 export enum TabIndex {
@@ -9,7 +9,7 @@ export enum TabIndex {
 }
 
 export const zCollectionDetailQueryParams = z.object({
-  collectionAddress: zHexAddr32,
+  collectionAddress: zAddr32,
   tab: z.union([
     z.nativeEnum(TabIndex),
     z

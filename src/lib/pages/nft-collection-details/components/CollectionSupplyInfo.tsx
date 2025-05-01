@@ -1,5 +1,5 @@
 import { Divider, Flex, Stack, Text } from "@chakra-ui/react";
-import { useMobile } from "lib/app-provider";
+import { useMobile, useMoveConfig } from "lib/app-provider";
 import { TooltipInfo } from "lib/components/Tooltip";
 
 const InfoComponent = ({
@@ -43,6 +43,11 @@ export const CollectionSupplyInfo = ({
   totalMinted,
 }: CollectionSupplyInfoProps) => {
   const isMobile = useMobile();
+  const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
+
+  if (!isMoveEnabled) {
+    return null;
+  }
 
   const currentSupplyTooltip =
     "Number of NFTs currently available in the market. Calculated by subtracting total burned NFTs from the total minted.";
@@ -83,7 +88,6 @@ export const CollectionSupplyInfo = ({
       align="center"
       bg="gray.900"
       borderRadius="8px"
-      mt="24px"
       overflow="auto"
       p="16px"
       w="100%"

@@ -12,6 +12,7 @@ import {
   zNftsResponse,
   zNftTxsResponse,
 } from "../types";
+import { getIpfsUrl } from "../utils";
 
 export const getNftsByCollectionAddress = async (
   endpoint: string,
@@ -65,8 +66,24 @@ export const getNftMintInfo = async (endpoint: string, nftAddress: HexAddr32) =>
     .get(`${endpoint}/nft/${encodeURI(nftAddress)}/mint-info`)
     .then(({ data }) => parseWithError(zNftMintInfoResponse, data));
 
-export const getMetadata = async (uri: string) =>
-  axios.get(uri).then(({ data }) => parseWithError(zMetadata, data));
+export const getMetadata = async (uri: string) => {
+  const baseUrl = getIpfsUrl(uri);
+
+  const tryFetch = async (url: string) => {
+    const { data } = await axios.get(url);
+    return parseWithError(zMetadata, data);
+  };
+
+  try {
+    return await tryFetch(baseUrl);
+  } catch (error) {
+    // Retry with .json suffix only for ipfs:// URIs
+    if (uri.startsWith("ipfs://")) {
+      return await tryFetch(`${baseUrl}.json`);
+    }
+    throw error;
+  }
+};
 
 export const getNftTxs = async (
   endpoint: string,

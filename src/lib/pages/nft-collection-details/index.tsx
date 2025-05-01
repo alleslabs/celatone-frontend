@@ -13,7 +13,9 @@ import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
   useInternalNavigate,
   useMobile,
+  useMoveConfig,
   useTierConfig,
+  useValidateAddress,
 } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
@@ -25,12 +27,14 @@ import { ErrorFetching, InvalidState } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useNfts } from "lib/services/nft";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
+import { useNfts, useNftsSequencer } from "lib/services/nft";
 import {
   useNftCollectionActivities,
-  useNftCollectionByCollectionAddress,
   useNftCollectionMutateEvents,
 } from "lib/services/nft-collection";
+import { zHexAddr32 } from "lib/types";
+import { zBechAddr32 } from "lib/types";
 import { isHexModuleAddress } from "lib/utils";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
@@ -38,12 +42,13 @@ import { useCallback, useEffect } from "react";
 import type { CollectionDetailQueryParams } from "./types";
 
 import { CollectionInfoSection } from "./components/CollectionInfoSection";
-import { CollectionSupplies } from "./components/CollectionSupplies";
+import { CollectionSuppliesFull } from "./components/CollectionSuppliesFull";
 import { CollectionSuppliesOverview } from "./components/CollectionSuppliesOverview";
+import { CollectionSuppliesSequencer } from "./components/CollectionSuppliesSequencer";
 import { CollectionSupplyInfo } from "./components/CollectionSupplyInfo";
 import { ActivitiesFull, ActivitiesSequencer } from "./components/tables";
 import { CollectionMutateEvents } from "./components/tables/CollectionMutateEvents";
-import { useCollectionInfos } from "./data";
+import { useCollectionData } from "./data";
 import { TabIndex, zCollectionDetailQueryParams } from "./types";
 
 const InvalidCollection = () => (
@@ -59,29 +64,45 @@ const CollectionDetailsBody = ({
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const { isFullTier } = useTierConfig();
+  const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
+  const formatAddresses = useFormatAddresses();
 
-  const { data: collection, isLoading: isCollectionLoading } =
-    useNftCollectionByCollectionAddress(collectionAddress);
+  const formattedAddresses = formatAddresses(collectionAddress);
+  const collectionAddressBech = zBechAddr32.parse(formattedAddresses.address);
+  const collectionAddressHex = zHexAddr32.parse(formattedAddresses.hex);
 
-  const { data: nfts, isLoading: isNftsLoading } = useNfts(
-    collectionAddress,
+  const {
+    collection,
+    collectionInfos,
+    isLoading: isCollectionDataLoading,
+  } = useCollectionData(collectionAddressBech, collectionAddressHex);
+
+  const { data: nftsFull, isFetching: isNftsLoadingFull } = useNfts(
+    collectionAddressBech,
+    collectionAddressHex,
     6,
     0,
     undefined
   );
 
-  const { collectionInfos, isLoading: isCollectionInfosLoading } =
-    useCollectionInfos(collectionAddress);
+  const { data: nftsSequencer, isFetching: isNftsLoadingSequencer } =
+    useNftsSequencer(collectionAddressBech, 6);
 
+  const nfts = isFullTier ? nftsFull?.items : nftsSequencer;
+  const isNftsLoading = isFullTier ? isNftsLoadingFull : isNftsLoadingSequencer;
+
+  // Enable when isFullTier is true
   const { data: activities } = useNftCollectionActivities(
-    collectionAddress,
+    collectionAddressHex,
     10,
     0,
     undefined,
     { enabled: isFullTier }
   );
+
+  // Enable when isFullTier is true
   const { data: mutateEvents } = useNftCollectionMutateEvents(
-    collectionAddress,
+    collectionAddressHex,
     10,
     0,
     { enabled: isFullTier }
@@ -105,8 +126,7 @@ const CollectionDetailsBody = ({
     [collectionAddress, navigate, tab]
   );
 
-  if (isCollectionLoading || isCollectionInfosLoading)
-    return <Loading withBorder />;
+  if (isCollectionDataLoading) return <Loading withBorder />;
   if (!collection || !collectionInfos)
     return <ErrorFetching dataName="collection information" />;
   if (!collection) return <InvalidCollection />;
@@ -115,9 +135,8 @@ const CollectionDetailsBody = ({
   const {
     isUnlimited,
     royalty,
-    supplies: { currentSupply, maxSupply, totalMinted },
+    supplies: { currentSupply, maxSupply, totalBurned, totalMinted },
   } = collectionInfos;
-  const totalBurned = totalMinted - currentSupply;
 
   const displayCollectionName =
     name.length > 20 ? `${name.slice(0, 20)}...` : name;
@@ -188,36 +207,40 @@ const CollectionDetailsBody = ({
               />
             </Tooltip>
           </Flex>
-          <Flex align="center" gap={1}>
-            <Text color="text.dark" variant="body2">
-              Type:
-            </Text>
-            <Badge textTransform="capitalize">
-              {isUnlimited ? "Unlimited supply" : "Fixed supply"}
-            </Badge>
-          </Flex>
+          {isMoveEnabled && (
+            <Flex align="center" gap={1}>
+              <Text color="text.dark" variant="body2">
+                Type:
+              </Text>
+              <Badge textTransform="capitalize">
+                {isUnlimited ? "Unlimited supply" : "Fixed supply"}
+              </Badge>
+            </Flex>
+          )}
         </Flex>
-        <Button
-          mb={{ base: 4, md: 0 }}
-          minW="140px !important"
-          size={{ base: "sm", md: "md" }}
-          variant="outline-primary"
-          w={{ base: "full", md: "auto" }}
-          onClick={() => {
-            track(AmpEvent.USE_NFT_VIEW_RESOURCE_CTA, {
-              amptrackSection: "nft-collection-details",
-            });
-            navigate({
-              pathname: "/accounts/[accountAddress]/[tab]",
-              query: {
-                accountAddress: collectionAddress,
-                tab: "resources",
-              },
-            });
-          }}
-        >
-          View resource
-        </Button>
+        {isMoveEnabled && (
+          <Button
+            mb={{ base: 4, md: 0 }}
+            minW="140px !important"
+            size={{ base: "sm", md: "md" }}
+            variant="outline-primary"
+            w={{ base: "full", md: "auto" }}
+            onClick={() => {
+              track(AmpEvent.USE_NFT_VIEW_RESOURCE_CTA, {
+                amptrackSection: "nft-collection-details",
+              });
+              navigate({
+                pathname: "/accounts/[accountAddress]/[tab]",
+                query: {
+                  accountAddress: collectionAddress,
+                  tab: "resources",
+                },
+              });
+            }}
+          >
+            View resource
+          </Button>
+        )}
       </Flex>
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
@@ -242,24 +265,24 @@ const CollectionDetailsBody = ({
           </CustomTab>
           <CustomTab
             count={activities?.total}
+            hidden={!isMoveEnabled}
             isDisabled={!activities?.total}
             onClick={handleTabChange(TabIndex.Activities)}
           >
             Activities
           </CustomTab>
-          {isFullTier && (
-            <CustomTab
-              count={mutateEvents?.total}
-              isDisabled={!mutateEvents?.total}
-              onClick={handleTabChange(TabIndex.MutateEvents)}
-            >
-              Mutate events
-            </CustomTab>
-          )}
+          <CustomTab
+            count={mutateEvents?.total}
+            hidden={!isFullTier}
+            isDisabled={!mutateEvents?.total}
+            onClick={handleTabChange(TabIndex.MutateEvents)}
+          >
+            Mutate events
+          </CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <Flex direction="column" gap={10}>
+            <Flex direction="column" gap={10} pt={6}>
               <CollectionSupplyInfo
                 currentSupply={currentSupply}
                 maxSupply={maxSupply}
@@ -268,13 +291,14 @@ const CollectionDetailsBody = ({
               />
               <CollectionSuppliesOverview
                 isLoading={isNftsLoading}
-                nfts={nfts?.items}
+                nfts={nfts}
                 totalCount={currentSupply}
                 onViewMore={handleTabChange(TabIndex.Supplies)}
               />
               <CollectionInfoSection
                 activities={activities?.total}
-                collectionAddress={collectionAddress}
+                collectionAddressBech={collectionAddressBech}
+                collectionAddressHex={collectionAddressHex}
                 collectionName={name}
                 desc={description}
                 mutateEventes={mutateEvents?.total}
@@ -291,22 +315,34 @@ const CollectionDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <CollectionSupplies
-              collectionAddress={collectionAddress}
-              totalSupply={currentSupply}
+            <TierSwitcher
+              full={
+                <CollectionSuppliesFull
+                  collectionAddressBech={collectionAddressBech}
+                  collectionAddressHex={collectionAddressHex}
+                  totalSupply={currentSupply}
+                />
+              }
+              sequencer={
+                <CollectionSuppliesSequencer
+                  collectionAddress={collectionAddressBech}
+                />
+              }
             />
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <TierSwitcher
-              full={<ActivitiesFull collectionAddress={collectionAddress} />}
+              full={<ActivitiesFull collectionAddress={collectionAddressHex} />}
               sequencer={
-                <ActivitiesSequencer collectionAddress={collectionAddress} />
+                <ActivitiesSequencer collectionAddress={collectionAddressHex} />
               }
             />
           </TabPanel>
           {isFullTier && (
             <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-              <CollectionMutateEvents collectionAddress={collectionAddress} />
+              <CollectionMutateEvents
+                collectionAddress={collectionAddressHex}
+              />
             </TabPanel>
           )}
         </TabPanels>
@@ -318,6 +354,7 @@ const CollectionDetailsBody = ({
 const CollectionDetails = () => {
   useTierConfig({ minTier: "sequencer" });
   const router = useRouter();
+  const { validateContractAddress } = useValidateAddress();
   const validated = zCollectionDetailQueryParams.safeParse(router.query);
 
   useEffect(() => {
@@ -328,7 +365,8 @@ const CollectionDetails = () => {
 
   if (
     !validated.success ||
-    !isHexModuleAddress(validated.data.collectionAddress)
+    (validateContractAddress(validated.data.collectionAddress) !== null &&
+      !isHexModuleAddress(validated.data.collectionAddress))
   )
     return <InvalidCollection />;
 
