@@ -1,36 +1,62 @@
-import type { HexAddr, HexAddr32, Option } from "lib/types";
+import type { BechAddr32, HexAddr, HexAddr32, Option } from "lib/types";
 
 import axios from "axios";
 import {
-  bech32AddressToHex,
   convertAccountPubkeyToAccountAddress,
   parseWithError,
 } from "lib/utils";
 
-import type { Activity, CollectionCreatorResponse } from "../types";
+import type {
+  Activity,
+  CollectionByCollectionAddressResponse,
+  CollectionCreatorResponse,
+} from "../types";
 
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import {
   zCollectionByCollectionAddressResponseSequencer,
   zCollectionsByAccountAddressResponseSequencer,
+  zNftsResponseSequencer,
 } from "../types";
 import { getCollectionByCollectionAddressRest } from "./rest";
 
 export const getNftCollectionByCollectionAddressSequencer = async (
   endpoint: string,
-  collectionAddress: HexAddr32
-) =>
-  axios
-    .get(
-      `${endpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddress)}`
-    )
-    .then(({ data }) =>
-      parseWithError(zCollectionByCollectionAddressResponseSequencer, data)
-    )
-    // Fallback to lite version if the collection is not found
-    .catch(() =>
-      getCollectionByCollectionAddressRest(endpoint, collectionAddress)
+  collectionAddressBech: BechAddr32,
+  collectionAddressHex: HexAddr32
+): Promise<CollectionByCollectionAddressResponse> => {
+  try {
+    const { data: collectionResponse } = await axios.get(
+      `${endpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddressBech)}`
     );
+
+    const collection = parseWithError(
+      zCollectionByCollectionAddressResponseSequencer,
+      collectionResponse
+    );
+
+    // Remove this when backend fix the `/indexer/nft/v1/collections` endpoint
+    const { data: nftsResponse } = await axios.get(
+      `${endpoint}/indexer/nft/v1/tokens/by_collection/${encodeURI(collectionAddressBech)}`,
+      {
+        params: {
+          "pagination.count_total": true,
+        },
+      }
+    );
+    const currentSupply = parseWithError(zNftsResponseSequencer, nftsResponse)
+      .pagination.total;
+    // end of remove
+
+    return {
+      ...collection,
+      currentSupply,
+    };
+  } catch {
+    // Fallback to lite version if the collection is not found (Support Move only)
+    return getCollectionByCollectionAddressRest(endpoint, collectionAddressHex);
+  }
+};
 
 export const getNftCollectionsByAccountAddressSequencer = async (
   endpoint: string,
@@ -53,7 +79,7 @@ export const getNftCollectionsByAccountAddressSequencer = async (
 export const getNftCollectionCreatorSequencer = async (
   endpoint: string,
   prefix: string,
-  collectionAddress: HexAddr32
+  collectionAddress: BechAddr32
 ): Promise<CollectionCreatorResponse> => {
   const txByCollectionAddress = await getTxsByAccountAddressSequencer({
     address: collectionAddress,
@@ -67,9 +93,7 @@ export const getNftCollectionCreatorSequencer = async (
 
   const tx = txByCollectionAddress.items[0];
 
-  const sender = bech32AddressToHex(
-    convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix)
-  );
+  const sender = convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix);
 
   return {
     creatorAddress: sender,

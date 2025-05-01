@@ -1,7 +1,10 @@
-import type { HexAddr, HexAddr32, Option } from "lib/types";
+import type { BechAddr32, HexAddr, HexAddr32, Option } from "lib/types";
 
-import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
+import { useMoveConfig } from "lib/app-provider";
 import { useResourcesByAddressRest } from "lib/services/move/resource";
+import { useNftCollectionByCollectionAddress } from "lib/services/nft-collection";
+import { CollectionByCollectionAddressResponse } from "lib/services/types";
+import { isUndefined } from "lodash";
 
 interface SupplyData {
   current_supply: string;
@@ -17,16 +20,29 @@ interface RoyaltyData {
 interface CollectionInfos {
   isUnlimited: boolean;
   royalty: number;
-  supplies: { currentSupply: number; maxSupply?: number; totalMinted: number };
+  supplies: {
+    currentSupply: number;
+    maxSupply: Option<number>;
+    totalBurned: number;
+    totalMinted: number;
+  };
 }
 
-export const useCollectionInfos = (
-  collectionAddress: HexAddr32
-): { collectionInfos: Option<CollectionInfos>; isLoading: boolean } => {
-  const formatAddress = useFormatAddresses();
-  const { address } = formatAddress(collectionAddress);
+interface CollectionInfosResponse {
+  collectionInfos?: CollectionInfos;
+  isLoading: boolean;
+}
+
+interface CollectionDataResponse extends CollectionInfosResponse {
+  collection?: CollectionByCollectionAddressResponse;
+}
+
+// MOVE
+const useCollectionInfosMove = (
+  collectionAddress: BechAddr32
+): CollectionInfosResponse => {
   const { data: resourcesData, isFetching } =
-    useResourcesByAddressRest(address);
+    useResourcesByAddressRest(collectionAddress);
 
   if (!resourcesData)
     return { collectionInfos: undefined, isLoading: isFetching };
@@ -51,18 +67,65 @@ export const useCollectionInfos = (
     ? JSON.parse(collectionRoyaltyResource.moveResource).data
     : undefined;
 
+  const totalMinted = Number(supplyData?.total_minted ?? 0);
+  const currentSupply = Number(supplyData?.current_supply ?? 0);
+  const totalBurned = totalMinted - currentSupply;
+
   return {
     collectionInfos: {
       isUnlimited,
       royalty: Number(royaltyData?.royalty ?? 0) * 100,
       supplies: {
-        currentSupply: Number(supplyData?.current_supply ?? 0),
-        maxSupply: supplyData?.max_supply
+        currentSupply,
+        maxSupply: !isUndefined(supplyData?.max_supply)
           ? Number(supplyData.max_supply)
           : undefined,
-        totalMinted: Number(supplyData?.total_minted ?? 0),
+        totalBurned,
+        totalMinted,
       },
     },
     isLoading: isFetching,
+  };
+};
+
+export const useCollectionData = (
+  collectionAddressBech: BechAddr32,
+  collectionAddressHex: HexAddr32
+): CollectionDataResponse => {
+  const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
+
+  const { data: collection, isLoading: isCollectionLoading } =
+    useNftCollectionByCollectionAddress(
+      collectionAddressBech,
+      collectionAddressHex
+    );
+
+  const {
+    collectionInfos: collectionInfosMove,
+    isLoading: isCollectionInfosMoveLoading,
+  } = useCollectionInfosMove(collectionAddressBech);
+
+  if (isMoveEnabled)
+    return {
+      collection,
+      collectionInfos: collectionInfosMove,
+      isLoading: isCollectionLoading || isCollectionInfosMoveLoading,
+    };
+
+  // TODO: implement WASM and EVM collection data
+
+  return {
+    collection,
+    collectionInfos: {
+      isUnlimited: false,
+      royalty: 0,
+      supplies: {
+        currentSupply: collection?.currentSupply ?? 0,
+        maxSupply: undefined,
+        totalBurned: 0,
+        totalMinted: 0,
+      },
+    },
+    isLoading: isCollectionLoading,
   };
 };

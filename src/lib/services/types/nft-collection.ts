@@ -1,4 +1,7 @@
 import {
+  Addr,
+  Nullable,
+  zAddr,
   zHexAddr,
   zHexAddr32,
   zPagination,
@@ -28,21 +31,33 @@ export const zNftCollectionsResponse = z.object({
 });
 export type NftCollectionsResponse = z.infer<typeof zNftCollectionsResponse>;
 
+export interface CollectionByCollectionAddressResponse {
+  createdHeight: Nullable<number>;
+  creatorAddress?: Addr;
+  currentSupply?: number;
+  description: string;
+  name: string;
+  uri: string;
+}
+
 export const zCollectionByCollectionAddressResponse = z
   .object({
     description: z.string(),
     name: z.string(),
     uri: z.string(),
   })
-  .transform(snakeToCamel)
-  .optional();
-export type CollectionByCollectionAddressResponse = z.infer<
-  typeof zCollectionByCollectionAddressResponse
->;
+  .transform<CollectionByCollectionAddressResponse>((val) => ({
+    createdHeight: null,
+    creatorAddress: undefined,
+    currentSupply: undefined,
+    description: val.description,
+    name: val.name,
+    uri: val.uri,
+  }));
 
 export const zCollectionCreatorResponse = z
   .object({
-    creator_address: zHexAddr,
+    creator_address: zAddr,
     height: z.number(),
     timestamp: zUtcDate,
     tx_hash: z.string(),
@@ -98,6 +113,7 @@ export type CollectionMutateEventsResponse = z.infer<
 
 const zCollectionByAccountItemResponse = z
   .object({
+    // Revisit this address type
     collection_address: zHexAddr32,
     collection_name: z.string(),
     hold: z.number(),
@@ -122,6 +138,7 @@ const zCollectionNftsSequencer = z.object({
 });
 
 const zCollectionSequencer = z.object({
+  // Revisit this address type
   creator: zHexAddr32,
   description: z.string(),
   name: z.string(),
@@ -160,6 +177,7 @@ export const zCollectionByCollectionAddressResponseSequencer = z
   .transform<CollectionByCollectionAddressResponse>((val) => ({
     createdHeight: null,
     creatorAddress: val.collection.collection.creator,
+    currentSupply: val.collection.collection.nfts.length,
     description: val.collection.collection.description,
     name: val.collection.collection.name,
     uri: val.collection.collection.uri,

@@ -90,6 +90,7 @@ export const useModulesByAddress = ({
   const {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
+  const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
 
   return useQuery(
     [CELATONE_QUERY_KEYS.MODULES_BY_ADDRESS, restEndpoint, address],
@@ -99,7 +100,7 @@ export const useModulesByAddress = ({
       return getModulesByAddressRest(restEndpoint, address);
     },
     {
-      enabled,
+      enabled: isMoveEnabled && enabled,
       onError,
       onSuccess,
       refetchOnWindowFocus: false,

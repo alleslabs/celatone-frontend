@@ -17,7 +17,8 @@ export const zNft = z
     collection_name: z.string().optional(),
     description: z.string().optional(),
     is_burned: z.boolean(),
-    nft_address: zHexAddr32,
+    // Available in Move VM only
+    nft_address: zHexAddr32.nullable(),
     owner_address: zHexAddr,
     token_id: z.string(),
     uri: z.string(),
@@ -101,12 +102,10 @@ export type NftMutateEventsResponse = z.infer<typeof zNftMutateEventsResponse>;
 
 const zNftSequencer = z
   .object({
+    // Revisit this address type
     collection_addr: zHexAddr32,
     collection_name: z.string(),
     nft: z.object({
-      collection: z.object({
-        inner: zHexAddr32,
-      }),
       description: z.string(),
       token_id: z.string(),
       uri: z.string(),
@@ -119,7 +118,7 @@ const zNftSequencer = z
     collectionName: val.collection_name,
     description: val.nft.description,
     isBurned: false,
-    nftAddress: val.object_addr,
+    nftAddress: val.object_addr ? val.object_addr : null,
     ownerAddress: val.owner_addr,
     tokenId: val.nft.token_id,
     uri: val.nft.uri,
@@ -143,6 +142,7 @@ export const zNftsByAccountResponseSequencer = z
 
 export const zNftInfoRest = z
   .object({
+    // Revisit this address type
     collection: zHexAddr32,
     description: z.string(),
     token_id: z.string(),
