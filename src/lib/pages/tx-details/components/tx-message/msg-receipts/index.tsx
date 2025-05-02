@@ -12,6 +12,7 @@ import {
   extractTxDetails,
   formatUTC,
   parseDate,
+  parseNanosecondsToDate,
   voteOption,
 } from "lib/utils";
 
@@ -828,7 +829,7 @@ export const generateReceipts = (
         },
         !!details.timeout_timestamp && {
           title: "Timeout timestamp",
-          value: formatUTC(parseDate(details.timeout_timestamp)),
+          value: formatUTC(parseNanosecondsToDate(details.timeout_timestamp)),
         },
         {
           title: "Memo",
