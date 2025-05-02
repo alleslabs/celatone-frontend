@@ -223,22 +223,26 @@ export const useNftTransactionsSequencer = (
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  // eslint-disable-next-line @tanstack/query/no-rest-destructuring
-  const { data, ...rest } = useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_SEQUENCER, restEndpoint],
-    async ({ pageParam }) =>
-      getNftTransactionsSequencer(restEndpoint, pageParam, nftAddress),
-    {
-      enabled,
-      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery(
+      [CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_SEQUENCER, restEndpoint],
+      async ({ pageParam }) =>
+        getNftTransactionsSequencer(restEndpoint, pageParam, nftAddress),
+      {
+        enabled,
+        getNextPageParam: (lastPage) =>
+          lastPage.pagination.nextKey ?? undefined,
+        refetchOnWindowFocus: false,
+        retry: 1,
+      }
+    );
 
   return {
     data: data?.pages.flatMap((page) => page.items),
-    ...rest,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
   };
 };
 

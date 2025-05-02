@@ -50,12 +50,11 @@ export const useMovePoolInfos = ({ withPrices }: { withPrices: boolean }) => {
     error: assetsErrors,
     isLoading: isAssetsLoading,
   } = useAssetInfos({ withPrices });
-  // eslint-disable-next-line @tanstack/query/no-rest-destructuring
+
   const {
     data: pools,
     error: poolsErrors,
     isFetching: isPoolsFetching,
-    ...queryResult
   } = useQuery(
     [CELATONE_QUERY_KEYS.MOVE_POOL_INFOS, moveEndpoint],
     async () => getMovePoolInfos(moveEndpoint),
@@ -115,7 +114,6 @@ export const useMovePoolInfos = ({ withPrices }: { withPrices: boolean }) => {
   }, {});
 
   return {
-    ...queryResult,
     data,
     error: assetsErrors ?? poolsErrors,
     isLoading: isAssetsLoading || isPoolsFetching,

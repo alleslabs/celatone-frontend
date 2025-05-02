@@ -110,19 +110,24 @@ export const useBlocksSequencer = (limit = 10) => {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  // eslint-disable-next-line @tanstack/query/no-rest-destructuring
-  const { data, ...rest } = useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, restEndpoint, limit],
-    async ({ pageParam }) => getBlocksSequencer(restEndpoint, pageParam, limit),
-    {
-      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
-      refetchOnWindowFocus: false,
-    }
-  );
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery(
+      [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, restEndpoint, limit],
+      async ({ pageParam }) =>
+        getBlocksSequencer(restEndpoint, pageParam, limit),
+      {
+        getNextPageParam: (lastPage) =>
+          lastPage.pagination.nextKey ?? undefined,
+        refetchOnWindowFocus: false,
+      }
+    );
 
   return {
     data: data?.pages.flatMap((page) => page.blocks),
-    ...rest,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
   };
 };
 

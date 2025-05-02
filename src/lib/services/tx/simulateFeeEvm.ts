@@ -26,7 +26,6 @@ interface SimulateQueryEvmParams {
 export const useSimulateFeeEvmQuery = ({
   data,
   enabled,
-  extraQueryKey = [],
   onError,
   onSuccess,
   retry = 2,
@@ -62,14 +61,14 @@ export const useSimulateFeeEvmQuery = ({
         value: value ? toBeHex(value) : null,
       });
     },
-    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_EVM,
+      walletProvider,
       address,
-      to,
+      evm,
       data,
+      to,
       value,
-      ...extraQueryKey,
     ],
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

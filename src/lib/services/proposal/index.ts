@@ -124,8 +124,14 @@ export const useProposalsRest = (
   } = useCelatoneApp();
   const isInitia = useInitia();
 
-  // eslint-disable-next-line @tanstack/query/no-rest-destructuring
-  const { data, ...rest } = useInfiniteQuery<ProposalsResponseRest>(
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteQuery<ProposalsResponseRest>(
     [CELATONE_QUERY_KEYS.PROPOSALS_REST, restEndpoint, status],
     ({ pageParam }) =>
       getProposalsRest(isInitia, restEndpoint, pageParam, status),
@@ -137,7 +143,11 @@ export const useProposalsRest = (
 
   return {
     data: data?.pages.flatMap((page) => page.proposals),
-    ...rest,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
   };
 };
 
