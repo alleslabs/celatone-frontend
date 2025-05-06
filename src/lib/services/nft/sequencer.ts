@@ -55,8 +55,13 @@ export const getNftsSequencer = async (
   paginationKey: Option<string>,
   limit: number
 ) => {
+  // TODO: remove this when backend fix the stagesync issue
+  const archivalEndpoint = endpoint.includes("anvil")
+    ? endpoint.replace("rest-", "archival-rest-")
+    : null;
+
   const { data } = await axios.get(
-    `${endpoint}/indexer/nft/v1/tokens/by_collection/${collectionAddress}`,
+    `${archivalEndpoint}/indexer/nft/v1/tokens/by_collection/${collectionAddress}`,
     {
       params: {
         "pagination.key": paginationKey,
