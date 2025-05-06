@@ -28,24 +28,30 @@ function incrementLastByte(base64: string): string {
   return buffer.toString("base64");
 }
 
-export const getBlocksSequencer = (
+export const getBlocksSequencer = async (
   endpoint: string,
   paginationKey: Option<string>,
   limit: number
 ) => {
-  const fetch = (endpoint: string) =>
-    axios
-      .get(`${endpoint}/indexer/block/v1/blocks`, {
-        params: {
-          "pagination.key": paginationKey
-            ? incrementLastByte(paginationKey)
-            : undefined,
-          "pagination.limit": limit,
-          "pagination.offset": 0,
-          "pagination.reverse": true,
-        },
-      })
-      .then(({ data }) => parseWithError(zBlocksResponseSequencer, data));
+  const fetch = async (endpoint: string, throwErrorIfNoData: boolean) => {
+    const { data } = await axios.get(`${endpoint}/indexer/block/v1/blocks`, {
+      params: {
+        "pagination.key": paginationKey
+          ? incrementLastByte(paginationKey)
+          : undefined,
+        "pagination.limit": limit,
+        "pagination.offset": 0,
+        "pagination.reverse": true,
+      },
+    });
+
+    const parsed = parseWithError(zBlocksResponseSequencer, data);
+    if (throwErrorIfNoData && parsed.blocks.length === 0) {
+      throw new Error("No data found");
+    }
+
+    return parsed;
+  };
 
   return queryWithArchivalFallback(endpoint, fetch);
 };

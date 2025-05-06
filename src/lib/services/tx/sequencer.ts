@@ -47,7 +47,7 @@ export const getTxsSequencer = (
   return queryWithArchivalFallback(endpoint, fetch);
 };
 
-export const getTxsByAccountAddressSequencer = ({
+export const getTxsByAccountAddressSequencer = async ({
   address,
   endpoint,
   limit,
@@ -60,16 +60,25 @@ export const getTxsByAccountAddressSequencer = ({
   paginationKey?: string;
   reverse?: boolean;
 }) => {
-  const fetch = (endpoint: string) =>
-    axios
-      .get(`${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`, {
+  const fetch = async (endpoint: string, throwErrorIfNoData: boolean) => {
+    const { data } = await axios.get(
+      `${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`,
+      {
         params: {
           "pagination.key": paginationKey,
           "pagination.limit": limit,
           "pagination.reverse": reverse,
         },
-      })
-      .then(({ data }) => parseWithError(zTxsResponseSequencer, data));
+      }
+    );
+
+    const parsed = parseWithError(zTxsResponseSequencer, data);
+    if (throwErrorIfNoData && parsed.items.length === 0) {
+      throw new Error("No data found");
+    }
+
+    return parsed;
+  };
 
   return queryWithArchivalFallback(endpoint, fetch);
 };
@@ -90,18 +99,24 @@ export const getTxsByBlockHeightSequencer = async (
   const result: TransactionWithSignerPubkey[] = [];
 
   const fetchTxsByPaginationKey = async (paginationKey: Nullable<string>) => {
-    const fetch = (endpoint: string) =>
-      axios
-        .get(
-          `${endpoint}/indexer/tx/v1/txs/by_height/${encodeURIComponent(height)}`,
-          {
-            params: {
-              "pagination.key": paginationKey,
-              "pagination.limit": "100",
-            },
-          }
-        )
-        .then(({ data }) => parseWithError(zBlockTxsResponseSequencer, data));
+    const fetch = async (endpoint: string, throwErrorIfNoData: boolean) => {
+      const { data } = await axios.get(
+        `${endpoint}/indexer/tx/v1/txs/by_height/${encodeURIComponent(height)}`,
+        {
+          params: {
+            "pagination.key": paginationKey,
+            "pagination.limit": "100",
+          },
+        }
+      );
+
+      const parsed = parseWithError(zBlockTxsResponseSequencer, data);
+      if (throwErrorIfNoData && parsed.txs.length === 0) {
+        throw new Error("No data found");
+      }
+
+      return parsed;
+    };
 
     const res = await queryWithArchivalFallback(endpoint, fetch);
     result.push(...res.txs);

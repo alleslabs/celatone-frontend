@@ -70,15 +70,27 @@ export const handleQueryByTier = async <R>({
 
 export const queryWithArchivalFallback = async <T>(
   endpoint: string,
-  fetch: (endpoint: string) => Promise<T>
-) => {
+  fetch: (endpoint: string, throwErrorIfNoData: boolean) => Promise<T>
+): Promise<T> => {
+  const archivalEndpoint = endpoint.includes("anvil")
+    ? endpoint.replace("rest-", "archival-rest-")
+    : null;
+
   try {
-    return await fetch(endpoint);
-  } catch (error) {
-    if (endpoint.includes("anvil")) {
-      return fetch(endpoint.replace("rest-", "archival-rest-"));
+    // Try main endpoint first
+    return await fetch(endpoint, true);
+  } catch (err) {
+    if (!archivalEndpoint) {
+      throw err;
     }
-    throw error;
+
+    // Try archival endpoint second
+    const archivalData = await fetch(archivalEndpoint, false);
+    if (archivalData === null) {
+      throw new Error("No data found");
+    }
+
+    return archivalData;
   }
 };
 
