@@ -26,8 +26,13 @@ export const getNftCollectionByCollectionAddressSequencer = async (
   collectionAddressHex: HexAddr32
 ): Promise<CollectionByCollectionAddressResponse> => {
   try {
+    // TODO: remove this when backend fix the stagesync issue
+    const archivalEndpoint = endpoint.includes("anvil")
+      ? endpoint.replace("rest-", "archival-rest-")
+      : null;
+
     const { data: collectionResponse } = await axios.get(
-      `${endpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddressBech)}`
+      `${archivalEndpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddressBech)}`
     );
 
     const collection = parseWithError(
@@ -37,7 +42,7 @@ export const getNftCollectionByCollectionAddressSequencer = async (
 
     // Remove this when backend fix the `/indexer/nft/v1/collections` endpoint
     const { data: nftsResponse } = await axios.get(
-      `${endpoint}/indexer/nft/v1/tokens/by_collection/${encodeURI(collectionAddressBech)}`,
+      `${archivalEndpoint}/indexer/nft/v1/tokens/by_collection/${encodeURI(collectionAddressBech)}`,
       {
         params: {
           "pagination.count_total": true,
