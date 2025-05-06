@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1319](https://github.com/alleslabs/celatone-frontend/pull/1319) Fix table layout in markdown, fix badges layout in proposal text
 - [#1314](https://github.com/alleslabs/celatone-frontend/pull/1314) Fix css, sentence case in EVM verification flow
 
 ## v1.11.0
