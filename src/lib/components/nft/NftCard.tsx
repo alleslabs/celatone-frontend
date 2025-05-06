@@ -4,6 +4,7 @@ import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
+import { getIpfsUrl } from "lib/services/utils";
 
 import { AppLink } from "../AppLink";
 
@@ -25,10 +26,12 @@ export const NftCard = ({
   uri,
 }: NftCardProps) => {
   const { data: metadata } = useMetadata(uri);
+  const image = metadata?.image ? getIpfsUrl(metadata.image) : undefined;
 
   return (
     <Flex direction="column" minW="full">
       <AppLink
+        style={{ pointerEvents: nftAddress ? "auto" : "none" }}
         href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
         onClick={() => track(AmpEvent.USE_NFT_CARD, { showCollection })}
       >
@@ -43,7 +46,7 @@ export const NftCard = ({
             left={0}
             objectFit="contain"
             position="absolute"
-            src={metadata?.image}
+            src={image}
             top={0}
             width="100%"
           />

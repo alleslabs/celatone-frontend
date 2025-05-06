@@ -47,6 +47,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v1.12.0
 
+### Features
+
+- [#1321](https://github.com/alleslabs/celatone-frontend/pull/1321) Support NFT on WASM, EVM VM
+
 ### Improvements
 
 - [#1316](https://github.com/alleslabs/celatone-frontend/pull/1316) Fix select input disabled option, add EVM verification entry
@@ -57,6 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1322](https://github.com/alleslabs/celatone-frontend/pull/1322) Fix archival fallback logic for no data case
+- [#1319](https://github.com/alleslabs/celatone-frontend/pull/1319) Fix table layout in markdown, fix badges layout in proposal text
 - [#1314](https://github.com/alleslabs/celatone-frontend/pull/1314) Fix css, sentence case in EVM verification flow
 
 ## v1.11.0

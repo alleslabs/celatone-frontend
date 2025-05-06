@@ -1,4 +1,10 @@
-import type { HexAddr, HexAddr32, Nullable, Option } from "lib/types";
+import type {
+  BechAddr,
+  BechAddr32,
+  HexAddr32,
+  Nullable,
+  Option,
+} from "lib/types";
 
 import axios from "axios";
 import {
@@ -14,9 +20,9 @@ import {
   zNftsResponseSequencer,
 } from "../types";
 
-export const getNftsSequencer = async (
+export const getNftsSequencerLoop = async (
   endpoint: string,
-  collectionAddress: HexAddr32
+  collectionAddress: BechAddr32
 ) => {
   const nfts: Nft[] = [];
 
@@ -43,10 +49,28 @@ export const getNftsSequencer = async (
   return nfts;
 };
 
+export const getNftsSequencer = async (
+  endpoint: string,
+  collectionAddress: BechAddr32,
+  paginationKey: Option<string>,
+  limit: number
+) => {
+  const { data } = await axios.get(
+    `${endpoint}/indexer/nft/v1/tokens/by_collection/${collectionAddress}`,
+    {
+      params: {
+        "pagination.key": paginationKey,
+        "pagination.limit": limit,
+      },
+    }
+  );
+  return parseWithError(zNftsResponseSequencer, data);
+};
+
 export const getNftsByAccountSequencer = async (
   endpoint: string,
-  accountAddress: HexAddr,
-  collectionAddress?: HexAddr32
+  accountAddress: BechAddr,
+  collectionAddress?: BechAddr32
 ) => {
   const nfts: Nft[] = [];
 

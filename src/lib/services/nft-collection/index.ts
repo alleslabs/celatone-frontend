@@ -1,5 +1,5 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
-import type { HexAddr, HexAddr32 } from "lib/types";
+import type { BechAddr32, HexAddr, HexAddr32 } from "lib/types";
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
@@ -12,6 +12,7 @@ import {
 
 import type {
   ActivitiesResponse,
+  CollectionByCollectionAddressResponse,
   CollectionCreatorResponse,
   CollectionMutateEventsResponse,
   NftCollectionsResponse,
@@ -56,7 +57,8 @@ export const useNftCollections = (
 };
 
 export const useNftCollectionByCollectionAddress = (
-  collectionAddress: HexAddr32,
+  collectionAddressBech: BechAddr32,
+  collectionAddressHex: HexAddr32,
   enabled = true
 ) => {
   const { tier } = useTierConfig();
@@ -71,16 +73,21 @@ export const useNftCollectionByCollectionAddress = (
       apiEndpoint,
       restEndpoint,
       tier,
-      collectionAddress,
+      collectionAddressBech,
+      collectionAddressHex,
     ],
-    async () =>
-      handleQueryByTier({
+    () =>
+      handleQueryByTier<CollectionByCollectionAddressResponse>({
         queryFull: () =>
-          getNftCollectionByCollectionAddress(apiEndpoint, collectionAddress),
+          getNftCollectionByCollectionAddress(
+            apiEndpoint,
+            collectionAddressHex
+          ),
         querySequencer: () =>
           getNftCollectionByCollectionAddressSequencer(
             restEndpoint,
-            collectionAddress
+            collectionAddressBech,
+            collectionAddressHex
           ),
         threshold: "sequencer",
         tier,
@@ -93,7 +100,10 @@ export const useNftCollectionByCollectionAddress = (
   );
 };
 
-export const useNftCollectionCreator = (collectionAddress: HexAddr32) => {
+export const useNftCollectionCreator = (
+  collectionAddressBech: BechAddr32,
+  collectionAddressHex: HexAddr32
+) => {
   const { bech32Prefix } = useCurrentChain();
   const { tier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("nft_collections");
@@ -108,20 +118,21 @@ export const useNftCollectionCreator = (collectionAddress: HexAddr32) => {
       restEndpoint,
       tier,
       bech32Prefix,
-      collectionAddress,
+      collectionAddressHex,
+      collectionAddressBech,
     ],
     async () =>
       handleQueryByTier({
         queryFull: () =>
           getNftCollectionCreatorByCollectionAddress(
             apiEndpoint,
-            collectionAddress
+            collectionAddressHex
           ),
         querySequencer: () =>
           getNftCollectionCreatorSequencer(
             restEndpoint,
             bech32Prefix,
-            collectionAddress
+            collectionAddressBech
           ),
         threshold: "sequencer",
         tier,

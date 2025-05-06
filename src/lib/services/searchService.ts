@@ -158,8 +158,12 @@ export const useSearchHandler = (
 
   const { data: nftCollectionData, isFetching: nftCollectionFetching } =
     useNftCollectionByCollectionAddress(
+      zBechAddr32.parse(debouncedKeyword),
       zHexAddr32.parse(debouncedKeyword),
-      isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
+      isNft &&
+        (isHexModuleAddress(debouncedKeyword) ||
+          validateContractAddress(debouncedKeyword) === null) &&
+        !isLiteTier
     );
 
   /// /////////////////////////////////////////////////////

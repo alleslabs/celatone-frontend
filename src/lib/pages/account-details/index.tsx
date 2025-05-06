@@ -125,7 +125,7 @@ const AccountDetailsBody = ({
     });
 
   const { data: accountNfts } = useNftsByAccountByCollectionSequencer(
-    hexAddress,
+    accountAddress,
     undefined,
     undefined,
     isSequencerTier
@@ -378,8 +378,9 @@ const AccountDetailsBody = ({
             )}
             {nftEnabled && (
               <NftsOverview
+                accountAddress={accountAddress}
+                hexAddress={hexAddress}
                 totalCount={totalNfts}
-                userAddress={hexAddress}
                 onViewMore={handleTabChange(TabIndex.Nfts, totalNfts)}
               />
             )}
@@ -492,7 +493,7 @@ const AccountDetailsBody = ({
               }
               sequencer={
                 <NftsSectionSequencer
-                  address={hexAddress}
+                  accountAddress={accountAddress}
                   totalData={totalNfts}
                 />
               }

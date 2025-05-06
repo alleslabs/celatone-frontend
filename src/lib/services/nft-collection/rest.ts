@@ -49,6 +49,7 @@ export const getCollectionByCollectionAddressRest = async (
     ([name, description, uri, creatorAddress]) => ({
       createdHeight: null,
       creatorAddress,
+      currentSupply: undefined,
       description,
       name,
       uri,

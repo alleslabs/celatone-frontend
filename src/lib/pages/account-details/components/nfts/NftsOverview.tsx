@@ -1,4 +1,4 @@
-import type { HexAddr } from "lib/types";
+import type { BechAddr, HexAddr } from "lib/types";
 
 import { Box, Divider, Flex } from "@chakra-ui/react";
 import { useMobile, useTierConfig } from "lib/app-provider";
@@ -13,21 +13,23 @@ import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
 
 interface NftsOverviewProps {
+  accountAddress: BechAddr;
+  hexAddress: HexAddr;
   onViewMore?: () => void;
   totalCount?: number;
-  userAddress: HexAddr;
 }
 
 export const NftsOverview = ({
+  accountAddress,
+  hexAddress,
   onViewMore,
   totalCount,
-  userAddress,
 }: NftsOverviewProps) => {
   const isMobile = useMobile();
   const { isFullTier, isSequencerTier } = useTierConfig();
   const limit = 5;
   const accountNftsFull = useNftsByAccountAddress(
-    userAddress,
+    hexAddress,
     limit,
     0,
     undefined,
@@ -37,7 +39,7 @@ export const NftsOverview = ({
     }
   );
   const accountNftsSequencer = useNftsByAccountByCollectionSequencer(
-    userAddress,
+    accountAddress,
     undefined,
     undefined,
     isSequencerTier

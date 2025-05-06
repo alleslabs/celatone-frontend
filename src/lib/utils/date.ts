@@ -19,6 +19,10 @@ export const getCurrentDate = (): Date => dayjs.utc().toDate();
 
 export const parseDate = (date: string): Date => dayjs.utc(date).toDate();
 
+// convert nanoseconds to milliseconds to date
+export const parseNanosecondsToDate = (date: string): Date =>
+  dayjs.utc(Number(date) / 1_000_000).toDate();
+
 export const parseDateOpt = (dateOpt: Option<string>): Option<Date> =>
   dateOpt ? parseDate(dateOpt) : undefined;
 
