@@ -7,8 +7,8 @@ import { AmpEvent, track } from "lib/amplitude";
 import { MotionBox } from "lib/components/MotionBox";
 
 export enum InteractionTabs {
-  EXECUTE_MODULE = "Execute",
   VIEW_MODULE = "View",
+  EXECUTE_MODULE = "Execute",
 }
 
 interface InteractionTypeSwitchProps extends FlexProps {
