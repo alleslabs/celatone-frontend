@@ -1,4 +1,10 @@
-import type { BechAddr32, HexAddr, HexAddr32, Option } from "lib/types";
+import type {
+  BechAddr32,
+  HexAddr,
+  HexAddr32,
+  Nullable,
+  Option,
+} from "lib/types";
 
 import { useMoveConfig } from "lib/app-provider";
 import { useResourcesByAddressRest } from "lib/services/move/resource";
@@ -34,7 +40,7 @@ interface CollectionInfosResponse {
 }
 
 interface CollectionDataResponse extends CollectionInfosResponse {
-  collection?: CollectionByCollectionAddressResponse;
+  collection: Nullable<CollectionByCollectionAddressResponse>;
 }
 
 // MOVE
@@ -94,7 +100,7 @@ export const useCollectionData = (
 ): CollectionDataResponse => {
   const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
 
-  const { data: collection, isLoading: isCollectionLoading } =
+  const { data: collection = null, isLoading: isCollectionLoading } =
     useNftCollectionByCollectionAddress(
       collectionAddressBech,
       collectionAddressHex
