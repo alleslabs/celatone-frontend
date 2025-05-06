@@ -1,4 +1,10 @@
-import type { BechAddr32, HexAddr, HexAddr32, Option } from "lib/types";
+import type {
+  BechAddr32,
+  HexAddr,
+  HexAddr32,
+  Nullable,
+  Option,
+} from "lib/types";
 
 import axios from "axios";
 import {
@@ -23,8 +29,9 @@ import { getCollectionByCollectionAddressRest } from "./rest";
 export const getNftCollectionByCollectionAddressSequencer = async (
   endpoint: string,
   collectionAddressBech: BechAddr32,
-  collectionAddressHex: HexAddr32
-): Promise<CollectionByCollectionAddressResponse> => {
+  collectionAddressHex: HexAddr32,
+  isMove: boolean
+): Promise<Nullable<CollectionByCollectionAddressResponse>> => {
   try {
     // TODO: remove this when backend fix the stagesync issue
     const archivalEndpoint = endpoint.includes("anvil")
@@ -58,8 +65,15 @@ export const getNftCollectionByCollectionAddressSequencer = async (
       currentSupply,
     };
   } catch {
-    // Fallback to lite version if the collection is not found (Support Move only)
-    return getCollectionByCollectionAddressRest(endpoint, collectionAddressHex);
+    if (isMove) {
+      // Fallback to lite version if the collection is not found (Support Move only)
+      return getCollectionByCollectionAddressRest(
+        endpoint,
+        collectionAddressHex
+      );
+    }
+
+    return null;
   }
 };
 
