@@ -148,7 +148,7 @@ const defaultTheme = (isExpand: boolean) => ({
     return (
       <TableContainer
         sx={{
-          "@media screen and (min-width: 767px)": {
+          "@media screen and (min-width: 768px)": {
             width: isExpand ? "calc(100vw - 370px)" : "calc(100vw - 180px)",
           },
           "@media screen and (min-width: 1280px)": {
