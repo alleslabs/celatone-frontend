@@ -68,13 +68,28 @@ export const handleQueryByTier = async <R>({
   }
 };
 
+export const getArchivalEndpoint = (
+  endpoint: string,
+  defaultEndpoint: string | null
+) => {
+  if (!endpoint.includes("anvil")) return defaultEndpoint;
+
+  if (endpoint.includes("jsonrpc-")) {
+    return endpoint.replace("jsonrpc-", "archival-jsonrpc-");
+  }
+
+  if (endpoint.includes("rest-")) {
+    return endpoint.replace("rest-", "archival-rest-");
+  }
+
+  return defaultEndpoint;
+};
+
 export const queryWithArchivalFallback = async <T>(
   endpoint: string,
   fetch: (endpoint: string, throwErrorIfNoData: boolean) => Promise<T>
 ): Promise<T> => {
-  const archivalEndpoint = endpoint.includes("anvil")
-    ? endpoint.replace("rest-", "archival-rest-")
-    : null;
+  const archivalEndpoint = getArchivalEndpoint(endpoint, null);
 
   try {
     // Try main endpoint first

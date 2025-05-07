@@ -58,7 +58,7 @@ export function enumOptionsIndexForValue(
  *        `emptyValue` or an empty list.
  */
 export function enumOptionsValueForIndex(
-  valueIndex: Array<number | string> | number | string,
+  valueIndex: number | string | Array<number | string>,
   allEnumOptions: EnumOptionsType[] = [],
   emptyValue?: EnumOptionsType["value"]
 ): EnumOptionsType["value"] | EnumOptionsType["value"][] | undefined {
