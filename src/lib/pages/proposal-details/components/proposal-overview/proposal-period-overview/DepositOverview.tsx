@@ -72,7 +72,7 @@ const DepositOverviewBody = ({
             })
           }
         >
-          View All Depositors ({proposalData.proposalDeposits.length})
+          View all depositors ({proposalData.proposalDeposits.length})
         </Button>
       )}
     </>

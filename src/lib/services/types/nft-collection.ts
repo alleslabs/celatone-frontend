@@ -42,33 +42,52 @@ export interface CollectionByCollectionAddressResponse {
 
 export const zCollectionByCollectionAddressResponse = z
   .object({
-    description: z.string(),
-    name: z.string(),
-    uri: z.string(),
+    collection: z
+      .object({
+        description: z.string(),
+        name: z.string(),
+        uri: z.string(),
+      })
+      .nullable(),
   })
-  .transform<CollectionByCollectionAddressResponse>((val) => ({
-    createdHeight: null,
-    creatorAddress: undefined,
-    currentSupply: undefined,
-    description: val.description,
-    name: val.name,
-    uri: val.uri,
-  }));
+  .transform<Nullable<CollectionByCollectionAddressResponse>>((val) => {
+    if (!val.collection) {
+      return null;
+    }
+
+    return {
+      createdHeight: null,
+      creatorAddress: undefined,
+      currentSupply: undefined,
+      description: val.collection.description,
+      name: val.collection.name,
+      uri: val.collection.uri,
+    };
+  });
 
 export const zCollectionCreatorResponse = z
   .object({
-    creator_address: zAddr,
-    height: z.number(),
-    timestamp: zUtcDate,
-    tx_hash: z.string(),
+    creator: z
+      .object({
+        creator_address: zAddr,
+        height: z.number(),
+        timestamp: zUtcDate,
+        tx_hash: z.string(),
+      })
+      .nullable(),
   })
-  .transform((val) => ({
-    creatorAddress: val.creator_address,
-    height: val.height,
-    timestamp: val.timestamp,
-    txhash: parseTxHash(val.tx_hash),
-  }))
-  .optional();
+  .transform((val) => {
+    if (!val.creator) {
+      return null;
+    }
+
+    return {
+      creatorAddress: val.creator.creator_address,
+      height: val.creator.height,
+      timestamp: val.creator.timestamp,
+      txhash: parseTxHash(val.creator.tx_hash),
+    };
+  });
 export type CollectionCreatorResponse = z.infer<
   typeof zCollectionCreatorResponse
 >;

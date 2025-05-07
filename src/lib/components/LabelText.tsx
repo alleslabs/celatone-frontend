@@ -5,7 +5,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import { TooltipInfo } from "./Tooltip";
 
 export interface LabelTextProps extends FlexProps {
-  children?: JSX.Element | string;
+  children?: string | JSX.Element;
   helperText1?: string;
   helperText2?: string;
   isSmall?: boolean;

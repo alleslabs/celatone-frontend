@@ -1,5 +1,4 @@
 import type { IconKeys } from "lib/components/icon";
-import type { Dispatch, SetStateAction } from "react";
 
 import { Flex } from "@chakra-ui/react";
 import {
@@ -35,7 +34,7 @@ import {
 
 interface NavbarProps {
   isExpand: boolean;
-  setIsExpand: Dispatch<SetStateAction<boolean>>;
+  setIsExpand: (value: boolean) => void;
 }
 
 const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {

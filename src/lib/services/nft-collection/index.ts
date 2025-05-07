@@ -1,5 +1,5 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
-import type { BechAddr32, HexAddr, HexAddr32 } from "lib/types";
+import type { BechAddr32, HexAddr, HexAddr32, Nullable } from "lib/types";
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
@@ -7,6 +7,7 @@ import {
   useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
+  useMoveConfig,
   useTierConfig,
 } from "lib/app-provider";
 
@@ -62,6 +63,7 @@ export const useNftCollectionByCollectionAddress = (
   enabled = true
 ) => {
   const { tier } = useTierConfig();
+  const { enabled: isMove } = useMoveConfig({ shouldRedirect: false });
   const apiEndpoint = useBaseApiRoute("nft_collections");
   const {
     chainConfig: { rest: restEndpoint },
@@ -77,7 +79,7 @@ export const useNftCollectionByCollectionAddress = (
       collectionAddressHex,
     ],
     () =>
-      handleQueryByTier<CollectionByCollectionAddressResponse>({
+      handleQueryByTier<Nullable<CollectionByCollectionAddressResponse>>({
         queryFull: () =>
           getNftCollectionByCollectionAddress(
             apiEndpoint,
@@ -87,7 +89,8 @@ export const useNftCollectionByCollectionAddress = (
           getNftCollectionByCollectionAddressSequencer(
             restEndpoint,
             collectionAddressBech,
-            collectionAddressHex
+            collectionAddressHex,
+            isMove
           ),
         threshold: "sequencer",
         tier,
@@ -122,7 +125,7 @@ export const useNftCollectionCreator = (
       collectionAddressBech,
     ],
     async () =>
-      handleQueryByTier({
+      handleQueryByTier<CollectionCreatorResponse>({
         queryFull: () =>
           getNftCollectionCreatorByCollectionAddress(
             apiEndpoint,

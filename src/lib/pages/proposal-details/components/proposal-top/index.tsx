@@ -58,7 +58,9 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
               {(proposalData.isExpedited || proposalData.isEmergency) && (
                 <span
                   style={{
-                    display: "inline-block",
+                    alignItems: "center",
+                    display: "inline-flex",
+                    gap: "8px",
                     marginLeft: "8px",
                     verticalAlign: "middle",
                   }}

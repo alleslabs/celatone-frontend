@@ -1,11 +1,26 @@
 import type { PropsWithChildren } from "react";
 
-import { Box, Heading, List, ListItem, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  List,
+  ListItem,
+  Table,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
+import { StorageKeys } from "lib/data";
+import { useLocalStorageListener } from "lib/hooks";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-const defaultTheme = {
+import { TableContainer } from "./table";
+
+const defaultTheme = (isExpand: boolean) => ({
   blockquote: (props: PropsWithChildren) => {
     const { children } = props;
     return (
@@ -36,7 +51,6 @@ const defaultTheme = {
         px={2}
         py={1}
         sx={{ "> p": { marginBottom: 0 } }}
-        whiteSpace="normal"
       >
         {children}
       </Box>
@@ -129,6 +143,46 @@ const defaultTheme = {
       </Box>
     );
   },
+  table: (props: PropsWithChildren) => {
+    const { children } = props;
+    return (
+      <TableContainer
+        sx={{
+          "@media screen and (min-width: 768px)": {
+            width: isExpand ? "calc(100vw - 370px)" : "calc(100vw - 180px)",
+          },
+          "@media screen and (min-width: 1280px)": {
+            width: isExpand ? "calc(100vw - 800px)" : "calc(100vw - 600px)",
+          },
+          width: "calc(100vw - 70px)",
+        }}
+      >
+        <Table
+          style={{ tableLayout: "auto" }}
+          minWidth="max-content"
+          variant="simple"
+        >
+          {children}
+        </Table>
+      </TableContainer>
+    );
+  },
+  td: (props: PropsWithChildren) => {
+    const { children } = props;
+    return <Td px={3}>{children}</Td>;
+  },
+  th: (props: PropsWithChildren) => {
+    const { children } = props;
+    return <Th px={3}>{children}</Th>;
+  },
+  thead: (props: PropsWithChildren) => {
+    const { children } = props;
+    return <Thead>{children}</Thead>;
+  },
+  tr: (props: PropsWithChildren) => {
+    const { children } = props;
+    return <Tr>{children}</Tr>;
+  },
   ul: (props: PropsWithChildren) => {
     const { children } = props;
     return (
@@ -143,13 +197,14 @@ const defaultTheme = {
       </List>
     );
   },
-};
+});
 
 export const Markdown = ({ markdown }: { markdown: string }) => {
+  const isExpand = useLocalStorageListener(StorageKeys.NavSidebar, true);
   return (
     <div style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
       <ReactMarkdown
-        components={ChakraUIRenderer(defaultTheme)}
+        components={ChakraUIRenderer(defaultTheme(isExpand))}
         remarkPlugins={[remarkGfm]}
         skipHtml
       >
