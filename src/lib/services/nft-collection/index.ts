@@ -188,23 +188,28 @@ export const useNftCollectionActivitiesSequencer = (
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  const { data, ...rest } = useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES_SEQUENCER, restEndpoint],
-    async ({ pageParam }) =>
-      getNftCollectionActivitiesSequencer(
-        restEndpoint,
-        pageParam,
-        collectionAddress
-      ),
-    {
-      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
-      refetchOnWindowFocus: false,
-    }
-  );
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery(
+      [CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES_SEQUENCER, restEndpoint],
+      async ({ pageParam }) =>
+        getNftCollectionActivitiesSequencer(
+          restEndpoint,
+          pageParam,
+          collectionAddress
+        ),
+      {
+        getNextPageParam: (lastPage) =>
+          lastPage.pagination.nextKey ?? undefined,
+        refetchOnWindowFocus: false,
+      }
+    );
 
   return {
     data: data?.pages.flatMap((page) => page.items),
-    ...rest,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
   };
 };
 
@@ -261,6 +266,7 @@ export const useNftCollectionsByAccountAddress = (accountAddress: HexAddr) => {
       handleQueryByTier({
         queryFull: () =>
           getNftCollectionsByAccountAddress(apiEndpoint, accountAddress),
+        // TODO: revisit this later, it isn't used now.
         querySequencer: () =>
           getNftCollectionsByAccountAddressSequencer(
             restEndpoint,
