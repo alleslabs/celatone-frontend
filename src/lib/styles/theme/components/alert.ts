@@ -9,9 +9,9 @@ const dupStyleKeys = ["title", "container", "description"];
 const generateVariantStyle = (
   variant:
     | "error"
-    | "info"
     | "info-left-primary"
     | "info-left-secondary"
+    | "info"
     | "primary"
     | "secondary"
     | "success"
