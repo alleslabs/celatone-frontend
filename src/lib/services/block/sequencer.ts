@@ -10,24 +10,6 @@ import {
 } from "../types";
 import { queryWithArchivalFallback } from "../utils";
 
-// NOTE: There is a bug in /indexer/block/v1/blocks, so we have to increase last byte by 1
-function incrementLastByte(base64: string): string {
-  // Decode base64 to buffer
-  const buffer = Buffer.from(base64, "base64");
-
-  // Increment the last byte
-  let i = buffer.length - 1;
-  buffer[i] += 1;
-  while (Math.floor(buffer[i] / 256) > 0 && i > 0) {
-    buffer[i] %= 256;
-    buffer[i - 1] += 1;
-    i -= 1;
-  }
-
-  // Convert buffer back to base64
-  return buffer.toString("base64");
-}
-
 export const getBlocksSequencer = async (
   endpoint: string,
   paginationKey: Option<string>,
@@ -36,9 +18,7 @@ export const getBlocksSequencer = async (
   const fetch = async (endpoint: string, throwErrorIfNoData: boolean) => {
     const { data } = await axios.get(`${endpoint}/indexer/block/v1/blocks`, {
       params: {
-        "pagination.key": paginationKey
-          ? incrementLastByte(paginationKey)
-          : undefined,
+        "pagination.key": paginationKey,
         "pagination.limit": limit,
         "pagination.offset": 0,
         "pagination.reverse": true,
