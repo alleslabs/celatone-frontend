@@ -1,4 +1,10 @@
-import type { BechAddr32, HexAddr, HexAddr32, Option } from "lib/types";
+import type {
+  BechAddr32,
+  HexAddr,
+  HexAddr32,
+  Nullable,
+  Option,
+} from "lib/types";
 
 import axios from "axios";
 import {
@@ -18,16 +24,21 @@ import {
   zCollectionsByAccountAddressResponseSequencer,
   zNftsResponseSequencer,
 } from "../types";
+import { getArchivalEndpoint } from "../utils";
 import { getCollectionByCollectionAddressRest } from "./rest";
 
 export const getNftCollectionByCollectionAddressSequencer = async (
   endpoint: string,
   collectionAddressBech: BechAddr32,
-  collectionAddressHex: HexAddr32
-): Promise<CollectionByCollectionAddressResponse> => {
+  collectionAddressHex: HexAddr32,
+  isMove: boolean
+): Promise<Nullable<CollectionByCollectionAddressResponse>> => {
   try {
+    // TODO: remove this when backend fix the stagesync issue
+    const archivalEndpoint = getArchivalEndpoint(endpoint, endpoint);
+
     const { data: collectionResponse } = await axios.get(
-      `${endpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddressBech)}`
+      `${archivalEndpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddressBech)}`
     );
 
     const collection = parseWithError(
@@ -37,7 +48,7 @@ export const getNftCollectionByCollectionAddressSequencer = async (
 
     // Remove this when backend fix the `/indexer/nft/v1/collections` endpoint
     const { data: nftsResponse } = await axios.get(
-      `${endpoint}/indexer/nft/v1/tokens/by_collection/${encodeURI(collectionAddressBech)}`,
+      `${archivalEndpoint}/indexer/nft/v1/tokens/by_collection/${encodeURI(collectionAddressBech)}`,
       {
         params: {
           "pagination.count_total": true,
@@ -53,8 +64,15 @@ export const getNftCollectionByCollectionAddressSequencer = async (
       currentSupply,
     };
   } catch {
-    // Fallback to lite version if the collection is not found (Support Move only)
-    return getCollectionByCollectionAddressRest(endpoint, collectionAddressHex);
+    if (isMove) {
+      // Fallback to lite version if the collection is not found (Support Move only)
+      return getCollectionByCollectionAddressRest(
+        endpoint,
+        collectionAddressHex
+      );
+    }
+
+    return null;
   }
 };
 

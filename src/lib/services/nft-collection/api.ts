@@ -12,7 +12,7 @@ import {
   zNftCollectionsResponse,
 } from "../types";
 
-export const getNftCollections = async (
+export const getNftCollections = (
   endpoint: string,
   limit: number,
   offset: number,
@@ -28,7 +28,7 @@ export const getNftCollections = async (
     })
     .then(({ data }) => parseWithError(zNftCollectionsResponse, data));
 
-export const getNftCollectionByCollectionAddress = async (
+export const getNftCollectionByCollectionAddress = (
   endpoint: string,
   collectionAddress: HexAddr32
 ) =>
@@ -38,7 +38,7 @@ export const getNftCollectionByCollectionAddress = async (
       parseWithError(zCollectionByCollectionAddressResponse, data)
     );
 
-export const getNftCollectionCreatorByCollectionAddress = async (
+export const getNftCollectionCreatorByCollectionAddress = (
   endpoint: string,
   collectionAddress: HexAddr32
 ) =>
@@ -46,7 +46,7 @@ export const getNftCollectionCreatorByCollectionAddress = async (
     .get(`${endpoint}/${encodeURI(collectionAddress)}/creator`)
     .then(({ data }) => parseWithError(zCollectionCreatorResponse, data));
 
-export const getNftCollectionActivitiesByCollectionAddress = async (
+export const getNftCollectionActivitiesByCollectionAddress = (
   endpoint: string,
   collectionAddress: HexAddr32,
   limit: number,
@@ -63,7 +63,7 @@ export const getNftCollectionActivitiesByCollectionAddress = async (
     })
     .then(({ data }) => parseWithError(zActivitiesResponse, data));
 
-export const getNftCollectionMutateEventsByCollectionAddress = async (
+export const getNftCollectionMutateEventsByCollectionAddress = (
   endpoint: string,
   collectionAddress: HexAddr32,
   limit: number,
@@ -78,7 +78,7 @@ export const getNftCollectionMutateEventsByCollectionAddress = async (
     })
     .then(({ data }) => parseWithError(zCollectionMutateEventsResponse, data));
 
-export const getNftCollectionsByAccountAddress = async (
+export const getNftCollectionsByAccountAddress = (
   endpoint: string,
   accountAddress: HexAddr
 ) =>

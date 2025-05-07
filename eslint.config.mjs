@@ -146,6 +146,26 @@ export default defineConfig([
           partitionByNewLine: true,
         },
       ],
+      "perfectionist/sort-union-types": [
+        "error",
+        {
+          groups: [
+            "conditional",
+            "function",
+            "import",
+            "intersection",
+            "keyword",
+            "literal",
+            "named",
+            "object",
+            "operator",
+            "tuple",
+            "union",
+            "nullish",
+          ],
+          order: "asc",
+        },
+      ],
     },
   },
   // Tanstack Query

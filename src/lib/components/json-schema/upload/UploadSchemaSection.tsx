@@ -7,7 +7,7 @@ import { UploadSchema } from "./UploadSchema";
 interface UploadSchemaSectionProps {
   codeHash: string;
   codeId: number;
-  title?: JSX.Element | string;
+  title?: string | JSX.Element;
 }
 
 export const UploadSchemaSection = ({
