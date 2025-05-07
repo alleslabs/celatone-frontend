@@ -35,7 +35,7 @@ import {
 export const generateReceipts = (
   { log, msgBody }: Omit<TxMsgData, "assetInfos">,
   getAddressType: (address: string) => AddressReturnType
-): Option<false | null | TxReceipt>[] => {
+): Option<false | TxReceipt | null>[] => {
   const { "@type": type, ...body } = msgBody;
 
   switch (type) {

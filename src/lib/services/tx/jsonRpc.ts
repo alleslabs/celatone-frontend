@@ -13,6 +13,7 @@ import {
   zTxDataJsonRpc,
   zTxsDataJsonRpc,
 } from "../types";
+import { queryWithArchivalFallback } from "../utils";
 
 export const getEvmTxHashByCosmosTxHash = async (
   endpoint: string,
@@ -22,7 +23,7 @@ export const getEvmTxHashByCosmosTxHash = async (
     (result) => parseWithError(zEvmTxHashByCosmosTxHashJsonRpc, result)
   );
 
-export const getEvmTxHashesByCosmosTxHashes = async (
+export const getEvmTxHashesByCosmosTxHashes = (
   endpoint: string,
   cosmosTxHashes: string[]
 ) =>
@@ -36,22 +37,27 @@ export const getEvmTxHashesByCosmosTxHashes = async (
     parseWithError(zEvmTxHashesByCosmosTxHashesJsonRpc, results)
   );
 
-export const getTxDataJsonRpc = async (endpoint: string, evmTxHash: string) =>
-  requestBatchJsonRpc(endpoint, [
-    {
-      method: "eth_getTransactionByHash",
-      params: [evmTxHash],
-    },
-    {
-      method: "eth_getTransactionReceipt",
-      params: [evmTxHash],
-    },
-  ]).then((results) => parseWithError(zTxDataJsonRpc, results));
+export const getTxDataJsonRpc = async (endpoint: string, evmTxHash: string) => {
+  const fetch = async (endpoint: string) => {
+    const result = await requestBatchJsonRpc(endpoint, [
+      {
+        method: "eth_getTransactionByHash",
+        params: [evmTxHash],
+      },
+      {
+        method: "eth_getTransactionReceipt",
+        params: [evmTxHash],
+      },
+    ]);
 
-export const getTxsDataJsonRpc = async (
-  endpoint: string,
-  evmTxHashes: string[]
-) => {
+    // If tx or tx receipt is null, then this will throw an error
+    return parseWithError(zTxDataJsonRpc, result);
+  };
+
+  return queryWithArchivalFallback(endpoint, fetch);
+};
+
+export const getTxsDataJsonRpc = (endpoint: string, evmTxHashes: string[]) => {
   const requests: {
     method: string;
     params: JsonRpcParams[];
@@ -84,10 +90,28 @@ export const getTxsDataJsonRpc = async (
 export const getCosmosTxHashByEvmTxHash = (
   endpoint: string,
   evmTxHash: string
-) =>
-  requestJsonRpc(endpoint, "cosmos_cosmosTxHashByTxHash", [evmTxHash]).then(
-    (result) => parseWithError(z.string(), result)
-  );
+) => {
+  const fetch = async (endpoint: string, throwErrorIfNoData: boolean) => {
+    const result = await requestJsonRpc(
+      endpoint,
+      "cosmos_cosmosTxHashByTxHash",
+      [evmTxHash]
+    );
+    const parsed = parseWithError(z.string(), result);
+
+    if (
+      throwErrorIfNoData &&
+      parsed ===
+        "0000000000000000000000000000000000000000000000000000000000000000"
+    ) {
+      throw new Error("No data found");
+    }
+
+    return parsed;
+  };
+
+  return queryWithArchivalFallback(endpoint, fetch);
+};
 
 export const getSimulateFeeEvm = (
   endpoint: string,

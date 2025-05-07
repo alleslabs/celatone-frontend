@@ -22,7 +22,7 @@ const WalletWidgetProvider = ({
 }: PropsWithChildren<WidgetConfig> & {
   fallback?: ReactNode;
 }) => {
-  const [widget, setWidget] = useState<null | WalletWidget>(null);
+  const [widget, setWidget] = useState<WalletWidget | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
