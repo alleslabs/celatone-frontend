@@ -35,7 +35,7 @@ export const getNftCollectionByCollectionAddressSequencer = async (
 ): Promise<Nullable<CollectionByCollectionAddressResponse>> => {
   try {
     // TODO: remove this when backend fix the stagesync issue
-    const archivalEndpoint = getArchivalEndpoint(endpoint, null);
+    const archivalEndpoint = getArchivalEndpoint(endpoint, endpoint);
 
     const { data: collectionResponse } = await axios.get(
       `${archivalEndpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddressBech)}`

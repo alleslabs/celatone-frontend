@@ -57,7 +57,7 @@ export const getNftsSequencer = async (
   limit: number
 ) => {
   // TODO: remove this when backend fix the stagesync issue
-  const archivalEndpoint = getArchivalEndpoint(endpoint, null);
+  const archivalEndpoint = getArchivalEndpoint(endpoint, endpoint);
 
   const { data } = await axios.get(
     `${archivalEndpoint}/indexer/nft/v1/tokens/by_collection/${collectionAddress}`,
