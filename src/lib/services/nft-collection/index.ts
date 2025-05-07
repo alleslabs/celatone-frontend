@@ -266,6 +266,7 @@ export const useNftCollectionsByAccountAddress = (accountAddress: HexAddr) => {
       handleQueryByTier({
         queryFull: () =>
           getNftCollectionsByAccountAddress(apiEndpoint, accountAddress),
+        // TODO: revisit this later, it isn't used now.
         querySequencer: () =>
           getNftCollectionsByAccountAddressSequencer(
             restEndpoint,

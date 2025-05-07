@@ -129,7 +129,15 @@ export const useNftsSequencer = (
     [restEndpoint, collectionAddressBech, limit]
   );
 
-  const { data, ...rest } = useInfiniteQuery(
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteQuery(
     [
       CELATONE_QUERY_KEYS.NFTS_SEQUENCER,
       restEndpoint,
@@ -145,8 +153,13 @@ export const useNftsSequencer = (
   );
 
   return {
-    ...rest,
     data: data?.pages.flatMap<NftSequencer>((page) => page.tokens),
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    isLoading,
   };
 };
 
