@@ -1,6 +1,6 @@
+import type { Addr, Nullable } from "lib/types";
+
 import {
-  Addr,
-  Nullable,
   zAddr,
   zHexAddr,
   zHexAddr32,

@@ -1,3 +1,4 @@
+import type { CollectionByCollectionAddressResponse } from "lib/services/types";
 import type {
   BechAddr32,
   HexAddr,
@@ -9,7 +10,6 @@ import type {
 import { useMoveConfig } from "lib/app-provider";
 import { useResourcesByAddressRest } from "lib/services/move/resource";
 import { useNftCollectionByCollectionAddress } from "lib/services/nft-collection";
-import { CollectionByCollectionAddressResponse } from "lib/services/types";
 import { isUndefined } from "lodash";
 
 interface SupplyData {

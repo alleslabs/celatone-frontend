@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#1328](https://github.com/alleslabs/celatone-frontend/pull/1328) Remove hot fix increment last byte for blocks
+- [#1318](https://github.com/alleslabs/celatone-frontend/pull/1318) Update ESLint rules
 - [#1327](https://github.com/alleslabs/celatone-frontend/pull/1327) Support show scrollbar when table overflow
 
 ### Bug fixes

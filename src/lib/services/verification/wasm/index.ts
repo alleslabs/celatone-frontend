@@ -24,13 +24,14 @@ export const useSubmitWasmVerify = () =>
 
 export const useWasmVerifyInfos = (codeIds: number[], enabled = true) => {
   const { currentChainId } = useCelatoneApp();
+  const sortedCodeIds = [...codeIds].sort();
   return useQuery({
     enabled,
-    queryFn: () => getWasmVerifyInfos(currentChainId, codeIds),
+    queryFn: () => getWasmVerifyInfos(currentChainId, sortedCodeIds),
     queryKey: [
       CELATONE_QUERY_KEYS.WASM_VERIFICATION_INFOS,
       currentChainId,
-      ...codeIds.sort(),
+      sortedCodeIds,
     ],
     refetchOnWindowFocus: false,
     retry: false,
@@ -41,13 +42,14 @@ export const useWasmVerifyInfos = (codeIds: number[], enabled = true) => {
 
 const useWasmRelatedVerifyInfos = (hashes: string[], enabled = true) => {
   const { currentChainId } = useCelatoneApp();
+  const sortedHashes = [...hashes].sort();
   return useQuery({
     enabled,
-    queryFn: () => getWasmRelatedVerifyInfos(currentChainId, hashes),
+    queryFn: () => getWasmRelatedVerifyInfos(currentChainId, sortedHashes),
     queryKey: [
       CELATONE_QUERY_KEYS.WASM_RELATED_VERIFICATION_INFOS,
       currentChainId,
-      ...hashes.sort(),
+      sortedHashes,
     ],
     refetchOnWindowFocus: false,
     retry: false,

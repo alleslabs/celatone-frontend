@@ -351,9 +351,8 @@ export const useValidatorImage = (
     queryKey: [
       CELATONE_QUERY_KEYS.VALIDATOR_IDENTITY,
       chainName,
-      validator?.validatorAddress,
-      validator?.identity,
-      validator?.moniker,
+      validator,
+      primaryDark,
     ],
     refetchOnWindowFocus: false,
     retry: false,
