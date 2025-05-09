@@ -16,13 +16,17 @@ import {
 } from "../types";
 import { getArchivalEndpoint, queryWithArchivalFallback } from "../utils";
 
-export const getEvmTxHashByCosmosTxHash = async (
+export const getEvmTxHashByCosmosTxHash = (
   endpoint: string,
   cosmosTxHash: string
-) =>
-  requestJsonRpc(endpoint, "cosmos_txHashByCosmosTxHash", [cosmosTxHash]).then(
-    (result) => parseWithError(zEvmTxHashByCosmosTxHashJsonRpc, result)
-  );
+) => {
+  // Remove this once new indexer is deployed
+  const archivalEndpoint = getArchivalEndpoint(endpoint, endpoint);
+
+  return requestJsonRpc(archivalEndpoint, "cosmos_txHashByCosmosTxHash", [
+    cosmosTxHash,
+  ]).then((result) => parseWithError(zEvmTxHashByCosmosTxHashJsonRpc, result));
+};
 
 export const getEvmTxHashesByCosmosTxHashes = (
   endpoint: string,
