@@ -68,9 +68,9 @@ export const handleQueryByTier = async <R>({
   }
 };
 
-export const getArchivalEndpoint = (
+export const getArchivalEndpoint = <T>(
   endpoint: string,
-  defaultEndpoint: string | null
+  defaultEndpoint: T
 ) => {
   if (!endpoint.includes("anvil")) return defaultEndpoint;
 

@@ -73,7 +73,10 @@ export const getTxsByAccountAddressSequencer = async ({
     );
 
     const parsed = parseWithError(zTxsResponseSequencer, data);
-    if (throwErrorIfNoData && parsed.items.length === 0) {
+    const itemsLength = parsed.items.length;
+    const lessThanLimit = limit && itemsLength < limit;
+
+    if (throwErrorIfNoData && (itemsLength === 0 || lessThanLimit)) {
       throw new Error("No data found");
     }
 
