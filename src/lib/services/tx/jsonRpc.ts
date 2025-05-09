@@ -1,5 +1,6 @@
 import type { TransactionRequest } from "ethers";
 
+import { HexAddr20 } from "lib/types";
 import { parseWithError } from "lib/utils";
 import { z } from "zod";
 
@@ -13,7 +14,7 @@ import {
   zTxDataJsonRpc,
   zTxsDataJsonRpc,
 } from "../types";
-import { queryWithArchivalFallback } from "../utils";
+import { getArchivalEndpoint, queryWithArchivalFallback } from "../utils";
 
 export const getEvmTxHashByCosmosTxHash = async (
   endpoint: string,
@@ -26,9 +27,12 @@ export const getEvmTxHashByCosmosTxHash = async (
 export const getEvmTxHashesByCosmosTxHashes = (
   endpoint: string,
   cosmosTxHashes: string[]
-) =>
-  requestBatchJsonRpc(
-    endpoint,
+) => {
+  // Remove this once new indexer is deployed
+  const archivalEndpoint = getArchivalEndpoint(endpoint, endpoint);
+
+  return requestBatchJsonRpc(
+    archivalEndpoint,
     cosmosTxHashes.map((hash) => ({
       method: "cosmos_txHashByCosmosTxHash",
       params: [hash],
@@ -36,6 +40,21 @@ export const getEvmTxHashesByCosmosTxHashes = (
   ).then((results) =>
     parseWithError(zEvmTxHashesByCosmosTxHashesJsonRpc, results)
   );
+};
+
+// account nonce starts with 0
+// that means the transaction count is the next account nonce
+// example: tx count = 10,then last account nonce = 9, next account nonce = 10
+export const getEvmAccountNonce = async (
+  endpoint: string,
+  address: HexAddr20
+) => {
+  const result = await requestJsonRpc(endpoint, "eth_getTransactionCount", [
+    address,
+    "latest",
+  ]);
+  return parseWithError(z.string(), result);
+};
 
 export const getTxDataJsonRpc = async (endpoint: string, evmTxHash: string) => {
   const fetch = async (endpoint: string) => {
@@ -75,7 +94,9 @@ export const getTxsDataJsonRpc = (endpoint: string, evmTxHashes: string[]) => {
     });
   });
 
-  return requestBatchJsonRpc(endpoint, requests).then((results) => {
+  const fetch = async (endpoint: string) => {
+    const results = await requestBatchJsonRpc(endpoint, requests);
+
     const parsedResults = [];
 
     for (let i = 0; i < results.length; i += 2) {
@@ -84,7 +105,9 @@ export const getTxsDataJsonRpc = (endpoint: string, evmTxHashes: string[]) => {
     }
 
     return parseWithError(zTxsDataJsonRpc, parsedResults);
-  });
+  };
+
+  return queryWithArchivalFallback(endpoint, fetch);
 };
 
 export const getCosmosTxHashByEvmTxHash = (
