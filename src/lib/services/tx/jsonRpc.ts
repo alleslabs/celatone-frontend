@@ -1,6 +1,6 @@
 import type { TransactionRequest } from "ethers";
+import type { HexAddr20 } from "lib/types";
 
-import { HexAddr20 } from "lib/types";
 import { parseWithError } from "lib/utils";
 import { z } from "zod";
 
