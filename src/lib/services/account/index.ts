@@ -33,14 +33,17 @@ export const useAccountData = (
   const {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
+  const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
   const endpoint = isFullTier ? apiEndpoint : restEndpoint;
 
   return useQuery(
     [CELATONE_QUERY_KEYS.ACCOUNT_DATA, endpoint, address],
-    async () =>
-      isFullTier
-        ? getAccountData(endpoint, address)
-        : getAccountDataRest(endpoint, address),
+    async () => {
+      if (isFullTier) return getAccountData(endpoint, address);
+      if (isWasm) return getAccountDataRest(endpoint, address);
+
+      throw new Error("Account data not found (useAccountData)");
+    },
     { enabled: !!address, refetchOnWindowFocus: false, retry: 1 }
   );
 };
