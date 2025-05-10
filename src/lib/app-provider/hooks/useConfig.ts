@@ -1,5 +1,6 @@
 import type { ChainConfig } from "@alleslabs/shared";
 
+import { getArchivalEndpoint } from "lib/services/utils";
 import { TierMap } from "lib/types";
 
 import { useCelatoneApp } from "../contexts";
@@ -91,7 +92,17 @@ export const useEvmConfig = ({
     },
   } = useCelatoneApp();
 
-  return useBaseConfig({ feature: evm, shouldRedirect });
+  // TODO: Remove this once new indexer is deployed
+  const modifiedEvm: ChainConfig["features"]["evm"] = evm.enabled
+    ? {
+        enabled: true,
+        jsonRpc: getArchivalEndpoint(evm.jsonRpc, evm.jsonRpc),
+      }
+    : {
+        enabled: false,
+      };
+
+  return useBaseConfig({ feature: modifiedEvm, shouldRedirect });
 };
 
 export const useNftConfig = ({

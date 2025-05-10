@@ -19,7 +19,6 @@ import {
   zNftsByAccountResponseSequencer,
   zNftsResponseSequencer,
 } from "../types";
-import { getArchivalEndpoint } from "../utils";
 
 export const getNftsSequencerLoop = async (
   endpoint: string,
@@ -56,11 +55,8 @@ export const getNftsSequencer = async (
   paginationKey: Option<string>,
   limit: number
 ) => {
-  // TODO: remove this when backend fix the stagesync issue
-  const archivalEndpoint = getArchivalEndpoint(endpoint, endpoint);
-
   const { data } = await axios.get(
-    `${archivalEndpoint}/indexer/nft/v1/tokens/by_collection/${collectionAddress}`,
+    `${endpoint}/indexer/nft/v1/tokens/by_collection/${collectionAddress}`,
     {
       params: {
         "pagination.key": paginationKey,

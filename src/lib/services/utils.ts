@@ -72,7 +72,8 @@ export const getArchivalEndpoint = <T>(
   endpoint: string,
   defaultEndpoint: T
 ) => {
-  if (!endpoint.includes("anvil")) return defaultEndpoint;
+  if (!endpoint.includes("anvil") || endpoint.includes("archival-"))
+    return defaultEndpoint;
 
   if (endpoint.includes("jsonrpc-")) {
     return endpoint.replace("jsonrpc-", "archival-jsonrpc-");

@@ -14,29 +14,22 @@ import {
   zTxDataJsonRpc,
   zTxsDataJsonRpc,
 } from "../types";
-import { getArchivalEndpoint, queryWithArchivalFallback } from "../utils";
+import { queryWithArchivalFallback } from "../utils";
 
 export const getEvmTxHashByCosmosTxHash = (
   endpoint: string,
   cosmosTxHash: string
-) => {
-  // Remove this once new indexer is deployed
-  const archivalEndpoint = getArchivalEndpoint(endpoint, endpoint);
-
-  return requestJsonRpc(archivalEndpoint, "cosmos_txHashByCosmosTxHash", [
-    cosmosTxHash,
-  ]).then((result) => parseWithError(zEvmTxHashByCosmosTxHashJsonRpc, result));
-};
+) =>
+  requestJsonRpc(endpoint, "cosmos_txHashByCosmosTxHash", [cosmosTxHash]).then(
+    (result) => parseWithError(zEvmTxHashByCosmosTxHashJsonRpc, result)
+  );
 
 export const getEvmTxHashesByCosmosTxHashes = (
   endpoint: string,
   cosmosTxHashes: string[]
-) => {
-  // Remove this once new indexer is deployed
-  const archivalEndpoint = getArchivalEndpoint(endpoint, endpoint);
-
-  return requestBatchJsonRpc(
-    archivalEndpoint,
+) =>
+  requestBatchJsonRpc(
+    endpoint,
     cosmosTxHashes.map((hash) => ({
       method: "cosmos_txHashByCosmosTxHash",
       params: [hash],
@@ -44,7 +37,6 @@ export const getEvmTxHashesByCosmosTxHashes = (
   ).then((results) =>
     parseWithError(zEvmTxHashesByCosmosTxHashesJsonRpc, results)
   );
-};
 
 // account nonce starts with 0
 // that means the transaction count is the next account nonce

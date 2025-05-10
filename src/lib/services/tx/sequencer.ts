@@ -60,7 +60,7 @@ export const getTxsByAccountAddressSequencer = async ({
   paginationKey?: string;
   reverse?: boolean;
 }) => {
-  const fetch = async (endpoint: string, throwErrorIfNoData: boolean) => {
+  const fetch = async (endpoint: string) => {
     const { data } = await axios.get(
       `${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`,
       {
@@ -72,15 +72,7 @@ export const getTxsByAccountAddressSequencer = async ({
       }
     );
 
-    const parsed = parseWithError(zTxsResponseSequencer, data);
-    const itemsLength = parsed.items.length;
-    const lessThanLimit = limit && itemsLength < limit;
-
-    if (throwErrorIfNoData && (itemsLength === 0 || lessThanLimit)) {
-      throw new Error("No data found");
-    }
-
-    return parsed;
+    return parseWithError(zTxsResponseSequencer, data);
   };
 
   return queryWithArchivalFallback(endpoint, fetch);
