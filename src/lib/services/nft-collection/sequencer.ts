@@ -24,7 +24,6 @@ import {
   zCollectionsByAccountAddressResponseSequencer,
   zNftsResponseSequencer,
 } from "../types";
-import { getArchivalEndpoint } from "../utils";
 import { getCollectionByCollectionAddressRest } from "./rest";
 
 export const getNftCollectionByCollectionAddressSequencer = async (
@@ -34,11 +33,8 @@ export const getNftCollectionByCollectionAddressSequencer = async (
   isMove: boolean
 ): Promise<Nullable<CollectionByCollectionAddressResponse>> => {
   try {
-    // TODO: remove this when backend fix the stagesync issue
-    const archivalEndpoint = getArchivalEndpoint(endpoint, endpoint);
-
     const { data: collectionResponse } = await axios.get(
-      `${archivalEndpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddressBech)}`
+      `${endpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddressBech)}`
     );
 
     const collection = parseWithError(
@@ -48,7 +44,7 @@ export const getNftCollectionByCollectionAddressSequencer = async (
 
     // Remove this when backend fix the `/indexer/nft/v1/collections` endpoint
     const { data: nftsResponse } = await axios.get(
-      `${archivalEndpoint}/indexer/nft/v1/tokens/by_collection/${encodeURI(collectionAddressBech)}`,
+      `${endpoint}/indexer/nft/v1/tokens/by_collection/${encodeURI(collectionAddressBech)}`,
       {
         params: {
           "pagination.count_total": true,
