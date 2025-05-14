@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1329](https://github.com/alleslabs/celatone-frontend/pull/1329) Support contract txs sequencer tier by indexer
+
 ### Improvements
 
 - [#1328](https://github.com/alleslabs/celatone-frontend/pull/1328) Remove hot fix increment last byte for blocks

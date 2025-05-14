@@ -1,28 +1,17 @@
-import type { BechAddr32, Option } from "lib/types";
-
-import { useTierConfig } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
-import { DEFAULT_TX_FILTERS } from "lib/data";
-import { useTxsByAddress, useTxsByContractAddressRest } from "lib/services/tx";
+import { useTxsByContractAddressRest } from "lib/services/tx";
 
-interface TxsTableProps {
-  contractAddress: BechAddr32;
-  refetchCount: () => void;
-  scrollComponentId: string;
-  totalData: Option<number>;
-}
+import type { TxsTableProps } from "./types";
 
-export const TxsTable = ({
+export const TxsTableLite = ({
   contractAddress,
   refetchCount,
   scrollComponentId,
   totalData,
 }: TxsTableProps) => {
-  const { isFullTier } = useTierConfig();
-
   const {
     currentPage,
     offset,
@@ -40,26 +29,14 @@ export const TxsTable = ({
     total: totalData,
   });
 
-  const resApi = useTxsByAddress(
-    contractAddress,
-    undefined,
-    undefined,
-    DEFAULT_TX_FILTERS,
-    pageSize,
-    offset,
-    { enabled: isFullTier }
-  );
-  const resRest = useTxsByContractAddressRest(
+  const { data, error, isLoading } = useTxsByContractAddressRest(
     contractAddress,
     pageSize,
     offset,
     {
-      enabled: !isFullTier,
       onSuccess: ({ total }) => setTotalData(total),
     }
   );
-
-  const { data, error, isLoading } = isFullTier ? resApi : resRest;
 
   return (
     <>
@@ -70,11 +47,7 @@ export const TxsTable = ({
           ) : (
             <EmptyState
               imageVariant="empty"
-              message={
-                isFullTier
-                  ? "This contract does not have any transactions."
-                  : "This contract does not have any transactions, or they are too old and have been pruned from the REST."
-              }
+              message="This contract does not have any transactions, or they are too old and have been pruned from the REST."
               withBorder
             />
           )

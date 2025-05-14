@@ -14,7 +14,7 @@ import { useContractTableCounts } from "lib/services/wasm/contract";
 
 import { MigrationTable } from "./migration";
 import { RelatedProposalsTable } from "./RelatedProposalsTable";
-import { TxsTable } from "./TxsTable";
+import { TxsTable } from "./txs";
 
 interface ContractTablesProps {
   contractAddress: BechAddr32;

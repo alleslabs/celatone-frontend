@@ -493,7 +493,7 @@ export const useTxsCountSequencer = () => {
 
 const mapTxsByAddressSequencerItems = (
   prefix: string,
-  address: Option<BechAddr20>,
+  address: Option<BechAddr>,
   items: Option<TransactionWithSignerPubkey[]>
 ) =>
   items?.map((item) => {
@@ -510,7 +510,7 @@ const mapTxsByAddressSequencerItems = (
   });
 
 export const useTxsByAddressSequencer = (
-  address: Option<BechAddr20>,
+  address: Option<BechAddr>,
   search: Option<string>,
   limit = 10
 ) => {
