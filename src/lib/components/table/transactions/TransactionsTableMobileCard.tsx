@@ -24,19 +24,25 @@ export const TransactionsTableMobileCard = ({
   transaction,
 }: TransactionsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
+  const isTxHasNoData = transaction.height === 0;
+
   return (
     <MobileCardTemplate
       bottomContent={
         <Flex direction="column" gap={3}>
           <Flex direction="column">
             <MobileLabel label="sender" />
-            <ExplorerLink
-              showCopyOnHover
-              type="user_address"
-              value={transaction.sender}
-            />
+            {isTxHasNoData ? (
+              <Text color="gray.600">N/A</Text>
+            ) : (
+              <ExplorerLink
+                showCopyOnHover
+                type="user_address"
+                value={transaction.sender}
+              />
+            )}
           </Flex>
-          {showTimestamp && (
+          {showTimestamp && !isTxHasNoData && (
             <Flex direction="column">
               <Text variant="body3">{formatUTC(transaction.created)}</Text>
               <Text color="text.dark" variant="body3">
@@ -46,11 +52,19 @@ export const TransactionsTableMobileCard = ({
           )}
         </Flex>
       }
-      middleContent={<ActionMessages transaction={transaction} />}
+      middleContent={
+        isTxHasNoData ? (
+          <Text color="gray.600">
+            Unable to load data due to large transaction size
+          </Text>
+        ) : (
+          <ActionMessages transaction={transaction} />
+        )
+      }
       topContent={
         <>
           <Flex align="center" gap={2}>
-            {showSuccess && (
+            {showSuccess && !isTxHasNoData && (
               <>
                 {transaction.success ? (
                   <CustomIcon color="success.main" name="check" />
@@ -65,7 +79,9 @@ export const TransactionsTableMobileCard = ({
               value={transaction.hash.toLocaleUpperCase()}
             />
           </Flex>
-          {showRelations && <RelationChip isSigner={transaction.isSigner} />}
+          {showRelations && !isTxHasNoData && (
+            <RelationChip isSigner={transaction.isSigner} />
+          )}
         </>
       }
       onClick={() =>

@@ -49,6 +49,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1330](https://github.com/alleslabs/celatone-frontend/pull/1330) Fallback Tx list to show N/A when tx is too large
+
 ## v1.12.0
 
 ### Features
