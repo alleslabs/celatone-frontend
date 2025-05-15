@@ -33,7 +33,9 @@ export const TransactionsTableMobileCard = ({
           <Flex direction="column">
             <MobileLabel label="sender" />
             {isTxHasNoData ? (
-              <Text color="gray.600">N/A</Text>
+              <Text color="gray.600" variant="body2">
+                N/A
+              </Text>
             ) : (
               <ExplorerLink
                 showCopyOnHover
@@ -54,7 +56,7 @@ export const TransactionsTableMobileCard = ({
       }
       middleContent={
         isTxHasNoData ? (
-          <Text color="gray.600">
+          <Text color="gray.600" variant="body2">
             Unable to load data due to large transaction size
           </Text>
         ) : (
