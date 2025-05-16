@@ -3,7 +3,7 @@ import type { StdFee } from "@cosmjs/stargate";
 import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
 
 import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
-import { MsgExecute as MsgExecuteModule } from "@initia/initia.js";
+import { MsgExecuteJSON as MsgExecuteJsonModule } from "@initia/initia.js";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCurrentChain,
@@ -17,7 +17,11 @@ import { CustomIcon } from "lib/components/icon";
 import { AbiForm } from "lib/components/move-abi";
 import { useTxBroadcast } from "lib/hooks";
 import { useSimulateFeeQuery } from "lib/services/tx";
-import { getAbiInitialData, serializeAbiData, toEncodeObject } from "lib/utils";
+import {
+  getAbiInitialData,
+  serializeAbiDataJson,
+  toEncodeObject,
+} from "lib/utils";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -86,7 +90,7 @@ export const ExecuteArea = ({
   });
 
   const proceed = useCallback(async () => {
-    const { args, typeArgs } = serializeAbiData(executeFn, data);
+    const { args, typeArgs } = serializeAbiDataJson(executeFn, data);
     const stream = await executeModuleTx({
       args,
       estimatedFee: fee,
@@ -113,10 +117,10 @@ export const ExecuteArea = ({
 
   useEffect(() => {
     if (enableExecute) {
-      const { args, typeArgs } = serializeAbiData(executeFn, data);
+      const { args, typeArgs } = serializeAbiDataJson(executeFn, data);
 
       const composedMsgs = toEncodeObject([
-        new MsgExecuteModule(
+        new MsgExecuteJsonModule(
           address as string,
           moduleAddress,
           moduleName,

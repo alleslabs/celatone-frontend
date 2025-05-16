@@ -28,7 +28,7 @@ import {
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useGas } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import { getArgType, serializeAbiData } from "lib/utils";
+import { getArgType, serializeAbiData, serializeAbiDataJson } from "lib/utils";
 import { useMemo } from "react";
 import AceEditor from "react-ace";
 
@@ -48,10 +48,14 @@ interface FormatedData {
   argsFlags: string;
   formatedAbiData: string;
   formatedArgs: string;
+  formatedArgsJson: string;
   formatedTypeArgs: string;
+  formatedTypeArgsJson: string;
   isHiddenCLI: boolean;
   showArgs: boolean;
+  showArgsJson: boolean;
   showTypeArgs: boolean;
+  showTypeArgsJson: boolean;
   typeArgsFlags: string;
 }
 
@@ -78,17 +82,25 @@ const MoveCodeSnippet = ({
     argsFlags,
     formatedAbiData,
     formatedArgs,
+    formatedArgsJson,
     formatedTypeArgs,
+    formatedTypeArgsJson,
     isHiddenCLI,
     showArgs,
+    showArgsJson,
     showTypeArgs,
+    showTypeArgsJson,
     typeArgsFlags,
   } = useMemo<FormatedData>(() => {
     const serializedAbiData = serializeAbiData(fn, abiData);
     const displayTypeArgs = serializedAbiData.typeArgs.length > 0;
     const displayArgs = serializedAbiData.args.length > 0;
-    const argTypes = fn.params.map((param) => getArgType(param));
 
+    const serializedAbiDataJson = serializeAbiDataJson(fn, abiData);
+    const displayTypeArgsJson = serializedAbiDataJson.typeArgs.length > 0;
+    const displayArgsJson = serializedAbiDataJson.args.length > 0;
+
+    const argTypes = fn.params.map((param) => getArgType(param));
     const argsWithTypes = Object.values(abiData.args).map((arg, index) => {
       const argType = argTypes[index];
       return `${argType}:${arg}`;
@@ -100,7 +112,9 @@ const MoveCodeSnippet = ({
         : "",
       formatedAbiData: JSON.stringify(serializedAbiData),
       formatedArgs: JSON.stringify(serializedAbiData.args),
+      formatedArgsJson: JSON.stringify(serializedAbiDataJson.args),
       formatedTypeArgs: JSON.stringify(serializedAbiData.typeArgs),
+      formatedTypeArgsJson: JSON.stringify(serializedAbiDataJson.typeArgs),
       isHiddenCLI: argTypes.some(
         (argType) =>
           argType === "vector" ||
@@ -112,7 +126,9 @@ const MoveCodeSnippet = ({
           argType === "decimal256"
       ),
       showArgs: displayArgs,
+      showArgsJson: displayArgsJson,
       showTypeArgs: displayTypeArgs,
+      showTypeArgsJson: displayTypeArgsJson,
       typeArgsFlags: displayTypeArgs
         ? `\n\t--type-args '${serializedAbiData.typeArgs.join(" ")}' \\`
         : "",
@@ -138,13 +154,15 @@ const key = new MnemonicKey({
     mnemonic: "<MNEMONIC>",
 });
 const wallet = new Wallet(lcd, key);
-const msg = new MsgExecute(
+const msg = new MsgExecuteJSON(
     key.accAddress,
     '${moduleAddress}',
     '${moduleName}',
-    '${fn.name}'${showTypeArgs ? ",\n\t".concat(formatedTypeArgs) : ""}${
-      showArgs
-        ? (!showTypeArgs ? ",\n\tundefined" : "") + ",\n\t".concat(formatedArgs)
+    '${fn.name}'${showTypeArgsJson ? ",\n\t" + formatedTypeArgsJson : ""}${
+      showArgsJson
+        ? (!showTypeArgsJson ? ",\n\tundefined" : "") +
+          ",\n\t" +
+          formatedArgsJson
         : ""
     }
 );

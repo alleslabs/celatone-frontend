@@ -139,3 +139,26 @@ export const serializeAbiData = (fn: ExposedFunction, abiData: AbiFormData) => {
     typeArgs: fn.generic_type_params.map((_, index) => abiData.typeArgs[index]),
   };
 };
+
+const serializeArgJson = (arg: { type: string; value: Nullable<string> }) => {
+  if (arg.type === "bool") return String(arg.value);
+  return JSON.stringify(arg.value);
+};
+
+export const serializeAbiDataJson = (
+  fn: ExposedFunction,
+  abiData: AbiFormData
+) => {
+  const serializedArgs = fn.params.map((type, index) =>
+    serializeArgJson({ type, value: abiData.args[index] })
+  );
+
+  const serializedTypeArgs = fn.generic_type_params.map((_, index) =>
+    abiData.typeArgs[index] ? JSON.stringify(abiData.typeArgs[index]) : ""
+  );
+
+  return {
+    args: serializedArgs,
+    typeArgs: serializedTypeArgs,
+  };
+};
