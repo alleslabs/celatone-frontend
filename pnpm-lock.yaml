@@ -11,9 +11,6 @@ importers:
 
   .:
     dependencies:
-      '@alleslabs/legacy-bcs':
-        specifier: 0.0.3
-        version: 0.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@alleslabs/shared':
         specifier: 1.0.0-dev7
         version: 1.0.0-dev7
@@ -105,8 +102,8 @@ importers:
         specifier: 1.0.9
         version: 1.0.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@initia/react-wallet-widget':
-        specifier: 1.6.9
-        version: 1.6.9(wviymr35qcrrm3q6tmsun2q62i)
+        specifier: 1.6.13
+        version: 1.6.13(wviymr35qcrrm3q6tmsun2q62i)
       '@initia/utils':
         specifier: 1.6.3
         version: 1.6.3(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.1)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.0)(@keplr-wallet/types@0.12.215(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.2.3)(ramda@0.30.1)(rxjs@7.8.1)(zod@3.24.2)
@@ -419,10 +416,6 @@ packages:
 
   '@adraffy/ens-normalize@1.10.1':
     resolution: {integrity: sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==}
-
-  '@alleslabs/legacy-bcs@0.0.3':
-    resolution: {integrity: sha512-93dSIOMsviBYqGP3sXO04vbTwLR8LOlb40fy24f851Ii8Bwi/W7fnIie9GAyo2F1JzRcUd5oo9YequhcA7LejQ==}
-    engines: {node: '>=14'}
 
   '@alleslabs/shared@1.0.0-dev7':
     resolution: {integrity: sha512-ckjGvmhFlQKKk36lb9zd6CJkasTWlNEfFTHOvGJyn+WqLR4olUm65pr9LkPeBMGgX3/pQnIb8T7/4TZQ7754Cw==}
@@ -2397,9 +2390,6 @@ packages:
   '@initia/opinit.proto@0.0.11':
     resolution: {integrity: sha512-Op9GIlXiV1xhUIjVQ2TFE9a3X8iyFVNtJNHCM34gwLQHJktDNm2KCoW4eHh6pkn4//ECRVH7zuKgV8TdZWogCw==}
 
-  '@initia/opinit.proto@0.0.8':
-    resolution: {integrity: sha512-MddIGje1CX2lT+jezpWDQv7ex/wLbAK9qCHu+RM/kY13yOwzMeeD539Au2llVB4LWwPEkd0h71HwxJWE78IE1A==}
-
   '@initia/opinit.proto@1.0.0':
     resolution: {integrity: sha512-I/VG4PFLEdGyb0qAxKImbA2le1SXeDlBtGRu/0qAiEq70OxEViQm2s3/Cme2vjBxS6Kx5vanyRHcOAhzWfSRXw==}
 
@@ -2409,13 +2399,13 @@ packages:
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@initia/react-wallet-widget@1.6.9':
-    resolution: {integrity: sha512-dODl7Mvv6RtH4GIsrG7JX5pQipFW0En+mS9GfiNDRiC031uIZKlBcaNcI0pmMJCB97dzsli3Y8WtV217VL+9Jw==}
+  '@initia/react-wallet-widget@1.6.13':
+    resolution: {integrity: sha512-QGCs1c8k2qEP58canzaSPgh/dqcarTQzg+ZeYLBragc3Q3AlojX18fMYATPaaG4n4c7/WAnkft3SYFRlvSKHUw==}
     peerDependencies:
       '@cosmjs/proto-signing': ^0.33.1
       '@initia/initia.js': ^1.0.8
-      '@initia/utils': ^1.6.9
-      '@initia/wallet-widget': ^1.6.9
+      '@initia/utils': ^1.6.13
+      '@initia/wallet-widget': ^1.6.13
       '@keplr-wallet/types': ^0.12.211
       cosmjs-types: ^0.9.0
       ethers: ^6.13.5
@@ -2659,9 +2649,6 @@ packages:
   '@msgpack/msgpack@3.1.0':
     resolution: {integrity: sha512-igBxaq5JHWdJ0lDyKkCo00pDu+bNVuBAs/cHra6a3ndCw6vlZK9BGLuG7Fvmar/DXK2uJ25zvgcAZEl+AvLpjQ==}
     engines: {node: '>= 18'}
-
-  '@mysten/bcs@0.10.1':
-    resolution: {integrity: sha512-cQDb7Rhz2J82ZqgVQiHykuwKUlgiLWS2bjoajPPW0uvXlb75qrgKuaxh1UzsaRhHy3egk/APc0xjiZoqdbzB4w==}
 
   '@mysten/bcs@1.2.0':
     resolution: {integrity: sha512-LuKonrGdGW7dq/EM6U2L9/as7dFwnhZnsnINzB/vu08Xfrj0qzWwpLOiXagAa5yZOPLK7anRZydMonczFkUPzA==}
@@ -9775,10 +9762,6 @@ packages:
     resolution: {integrity: sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==}
     engines: {node: '>=0.6.0'}
 
-  tmp@0.2.3:
-    resolution: {integrity: sha512-nZD7m9iCPC5g0pYmcaxogYKggSfLsdxl8of3Q/oIbqCqLLIO9IAF0GWjX1z9NZRHPiXv8Wex4yDCaZsgEw0Y8w==}
-    engines: {node: '>=14.14'}
-
   tmpl@1.0.5:
     resolution: {integrity: sha512-3f0uOEAQwIqGuWW2MVzYg8fV/QNnc/IpuJNG837rLuczAaLVHslWHZQj4IGiEl5Hs3kkbhwL9Ab7Hrsmuj+Smw==}
 
@@ -10522,31 +10505,6 @@ snapshots:
   '@adobe/css-tools@4.4.1': {}
 
   '@adraffy/ens-normalize@1.10.1': {}
-
-  '@alleslabs/legacy-bcs@0.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@initia/initia.proto': 0.2.6
-      '@initia/opinit.proto': 0.0.8
-      '@ledgerhq/hw-transport': 6.31.4
-      '@ledgerhq/hw-transport-webhid': 6.30.0
-      '@ledgerhq/hw-transport-webusb': 6.29.4
-      '@mysten/bcs': 0.10.1
-      axios: 1.7.9
-      bech32: 2.0.0
-      bignumber.js: 9.1.2
-      bip32: 2.0.6
-      bip39: 3.1.0
-      jscrypto: 1.0.3
-      keccak256: 1.0.6
-      long: 5.2.3
-      ripemd160: 2.0.2
-      secp256k1: 5.0.1
-      tmp: 0.2.3
-      ws: 7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
 
   '@alleslabs/shared@1.0.0-dev7':
     dependencies:
@@ -13412,13 +13370,6 @@ snapshots:
       long: 5.3.1
       protobufjs: 7.4.0
 
-  '@initia/opinit.proto@0.0.8':
-    dependencies:
-      '@improbable-eng/grpc-web': 0.15.0(google-protobuf@3.21.4)
-      google-protobuf: 3.21.4
-      long: 5.3.1
-      protobufjs: 7.4.0
-
   '@initia/opinit.proto@1.0.0':
     dependencies:
       '@improbable-eng/grpc-web': 0.15.0(google-protobuf@3.21.4)
@@ -13431,7 +13382,7 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  '@initia/react-wallet-widget@1.6.9(wviymr35qcrrm3q6tmsun2q62i)':
+  '@initia/react-wallet-widget@1.6.13(wviymr35qcrrm3q6tmsun2q62i)':
     dependencies:
       '@cosmjs/proto-signing': 0.32.4
       '@initia/initia.js': 1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
@@ -13938,10 +13889,6 @@ snapshots:
       react-dom: 19.1.0(react@19.1.0)
 
   '@msgpack/msgpack@3.1.0': {}
-
-  '@mysten/bcs@0.10.1':
-    dependencies:
-      bs58: 5.0.0
 
   '@mysten/bcs@1.2.0':
     dependencies:
@@ -23235,8 +23182,6 @@ snapshots:
   tmp@0.0.33:
     dependencies:
       os-tmpdir: 1.0.2
-
-  tmp@0.2.3: {}
 
   tmpl@1.0.5: {}
 

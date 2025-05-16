@@ -13,13 +13,13 @@ import type {
   TxMessage,
 } from "lib/types";
 
-import { MsgPublish, MsgScript } from "@initia/initia.js";
+import { MsgPublish, MsgScriptJSON } from "@initia/initia.js";
 import { ParameterChangeProposal } from "cosmjs-types/cosmos/params/v1beta1/params";
 import { StoreCodeProposal } from "cosmjs-types/cosmwasm/wasm/v1/proposal";
 import { typeUrlDict } from "lib/data";
 import { MsgType, UpgradePolicy } from "lib/types";
 
-import { serializeAbiData } from "../abi";
+import { serializeAbiDataJson } from "../abi";
 import { exponentify } from "../formatter";
 
 export const toEncodeObject = (msgs: Msg[]): EncodeObject[] => {
@@ -197,6 +197,8 @@ export const composeScriptMsg = (
   data: AbiFormData
 ) => {
   if (!address || !fn) return [];
-  const { args, typeArgs } = serializeAbiData(fn, data);
-  return toEncodeObject([new MsgScript(address, scriptBytes, typeArgs, args)]);
+  const { args, typeArgs } = serializeAbiDataJson(fn, data);
+  return toEncodeObject([
+    new MsgScriptJSON(address, scriptBytes, typeArgs, args),
+  ]);
 };
