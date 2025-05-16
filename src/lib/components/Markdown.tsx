@@ -148,6 +148,13 @@ const defaultTheme = (isExpand: boolean) => ({
     return (
       <TableContainer
         sx={{
+          "&::-webkit-scrollbar": {
+            height: "8px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "gray.600",
+            borderRadius: "md",
+          },
           "@media screen and (min-width: 768px)": {
             width: isExpand ? "calc(100vw - 370px)" : "calc(100vw - 180px)",
           },

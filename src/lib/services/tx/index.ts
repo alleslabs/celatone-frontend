@@ -441,7 +441,14 @@ export const useTxsSequencer = (limit = 10) => {
     [restEndpoint, limit]
   );
 
-  const { data, ...rest } = useInfiniteQuery(
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteQuery(
     [CELATONE_QUERY_KEYS.TXS_SEQUENCER, restEndpoint, limit],
     ({ pageParam }) => queryfn(pageParam),
     {
@@ -451,7 +458,6 @@ export const useTxsSequencer = (limit = 10) => {
   );
 
   return {
-    ...rest,
     data: data?.pages.flatMap<Transaction>((page) =>
       page.items.map((item) => {
         const sender = convertAccountPubkeyToAccountAddress(
@@ -465,6 +471,11 @@ export const useTxsSequencer = (limit = 10) => {
         };
       })
     ),
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
   };
 };
 
@@ -482,7 +493,7 @@ export const useTxsCountSequencer = () => {
 
 const mapTxsByAddressSequencerItems = (
   prefix: string,
-  address: Option<BechAddr20>,
+  address: Option<BechAddr>,
   items: Option<TransactionWithSignerPubkey[]>
 ) =>
   items?.map((item) => {
@@ -499,7 +510,7 @@ const mapTxsByAddressSequencerItems = (
   });
 
 export const useTxsByAddressSequencer = (
-  address: Option<BechAddr20>,
+  address: Option<BechAddr>,
   search: Option<string>,
   limit = 10
 ) => {
@@ -553,7 +564,15 @@ export const useTxsByAddressSequencer = (
     [address, restEndpoint, bech32Prefix, search, limit]
   );
 
-  const { data, ...rest } = useInfiniteQuery(
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteQuery(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_SEQUENCER,
       restEndpoint,
@@ -570,11 +589,16 @@ export const useTxsByAddressSequencer = (
   );
 
   return {
-    ...rest,
     data: data?.pages.flatMap(
       (page) =>
         mapTxsByAddressSequencerItems(bech32Prefix, address, page.items) ?? []
     ),
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+    isFetchingNextPage,
+    isLoading,
     latestFetchedData: mapTxsByAddressSequencerItems(
       bech32Prefix,
       address,
