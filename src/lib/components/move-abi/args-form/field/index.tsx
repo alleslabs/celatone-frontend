@@ -31,15 +31,11 @@ export const ArgFieldTemplate = ({
   param,
 }: ArgFieldTemplateProps) => {
   const [isEditted, setIsEditted] = useState(false);
-  const { validateContractAddress, validateUserAddress } = useValidateAddress();
+  const { validateContractAddress } = useValidateAddress();
 
   const isValidArgAddress = useCallback(
-    (input: string) =>
-      validateUserAddress(input) === null ||
-      validateContractAddress(input) === null ||
-      isHexWalletAddress(input) ||
-      isHexModuleAddress(input),
-    [validateContractAddress, validateUserAddress]
+    (input: string) => isHexWalletAddress(input) || isHexModuleAddress(input),
+    []
   );
   const isValidArgObject = useCallback(
     (input: string) =>
