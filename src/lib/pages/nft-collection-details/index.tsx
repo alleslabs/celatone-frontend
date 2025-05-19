@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
+  useEvmConfig,
   useInternalNavigate,
   useMobile,
   useMoveConfig,
@@ -48,7 +49,7 @@ import { CollectionSuppliesSequencer } from "./components/CollectionSuppliesSequ
 import { CollectionSupplyInfo } from "./components/CollectionSupplyInfo";
 import { ActivitiesFull, ActivitiesSequencer } from "./components/tables";
 import { CollectionMutateEvents } from "./components/tables/CollectionMutateEvents";
-import { useCollectionData } from "./data";
+import { useNftCollectionData } from "./data";
 import { TabIndex, zCollectionDetailQueryParams } from "./types";
 
 const InvalidCollection = () => (
@@ -65,6 +66,7 @@ const CollectionDetailsBody = ({
   const navigate = useInternalNavigate();
   const { isFullTier } = useTierConfig();
   const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
+  const { enabled: isEvmEnabled } = useEvmConfig({ shouldRedirect: false });
   const formatAddresses = useFormatAddresses();
 
   const formattedAddresses = formatAddresses(collectionAddress);
@@ -75,7 +77,7 @@ const CollectionDetailsBody = ({
     collection,
     collectionInfos,
     isLoading: isCollectionDataLoading,
-  } = useCollectionData(collectionAddressBech, collectionAddressHex);
+  } = useNftCollectionData(collectionAddressBech, collectionAddressHex);
 
   const { data: nftsFull, isFetching: isNftsLoadingFull } = useNfts(
     collectionAddressBech,
@@ -195,14 +197,22 @@ const CollectionDetailsBody = ({
             <Text color="text.dark" variant="body2">
               Collection address:
             </Text>
-            <Tooltip label="View as Account Address">
+            <Tooltip
+              label={
+                isEvmEnabled
+                  ? "View as Contract Address"
+                  : "View as Account Address"
+              }
+            >
               <ExplorerLink
                 ampCopierSection="collection-addresss-top"
                 fixedHeight={false}
                 maxWidth="full"
                 textFormat="normal"
                 type="contract_address"
-                value={collectionAddress}
+                value={
+                  isEvmEnabled ? collectionAddressHex : collectionAddressBech
+                }
               />
             </Tooltip>
           </Flex>
@@ -353,7 +363,7 @@ const CollectionDetailsBody = ({
 const CollectionDetails = () => {
   useTierConfig({ minTier: "sequencer" });
   const router = useRouter();
-  const { validateContractAddress } = useValidateAddress();
+  const { isSomeValidAddress } = useValidateAddress();
   const validated = zCollectionDetailQueryParams.safeParse(router.query);
 
   useEffect(() => {
@@ -364,7 +374,7 @@ const CollectionDetails = () => {
 
   if (
     !validated.success ||
-    (validateContractAddress(validated.data.collectionAddress) !== null &&
+    (!isSomeValidAddress(validated.data.collectionAddress) &&
       !isHexModuleAddress(validated.data.collectionAddress))
   )
     return <InvalidCollection />;

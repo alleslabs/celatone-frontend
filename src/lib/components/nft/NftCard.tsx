@@ -1,4 +1,4 @@
-import type { HexAddr32, Nullable, Option } from "lib/types";
+import type { Addr, Option } from "lib/types";
 
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
@@ -9,9 +9,8 @@ import { getIpfsUrl } from "lib/services/utils";
 import { AppLink } from "../AppLink";
 
 interface NftCardProps {
-  collectionAddress: HexAddr32;
+  collectionAddress: Addr;
   collectionName: Option<string>;
-  nftAddress: Nullable<HexAddr32>;
   showCollection?: boolean;
   tokenId: string;
   uri: string;
@@ -20,7 +19,6 @@ interface NftCardProps {
 export const NftCard = ({
   collectionAddress,
   collectionName,
-  nftAddress,
   showCollection = false,
   tokenId,
   uri,
@@ -31,8 +29,7 @@ export const NftCard = ({
   return (
     <Flex direction="column" minW="full">
       <AppLink
-        style={{ pointerEvents: nftAddress ? "auto" : "none" }}
-        href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
+        href={`/nft-collections/${collectionAddress}/nft/${tokenId}`}
         onClick={() => track(AmpEvent.USE_NFT_CARD, { showCollection })}
       >
         <Box mb={2} paddingBottom="100%" position="relative" width="100%">

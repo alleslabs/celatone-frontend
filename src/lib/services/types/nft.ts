@@ -1,6 +1,7 @@
 import type { MutateEvent } from "lib/types";
 
 import {
+  zAddr,
   zBechAddr,
   zHexAddr,
   zHexAddr32,
@@ -13,13 +14,13 @@ import { z } from "zod";
 
 export const zNft = z
   .object({
-    collection_address: zHexAddr32,
+    collection_address: zAddr,
     collection_name: z.string().optional(),
     description: z.string().optional(),
     is_burned: z.boolean(),
     // Available in Move VM only
     nft_address: zHexAddr32.nullable(),
-    owner_address: zHexAddr,
+    owner_address: zAddr,
     token_id: z.string(),
     uri: z.string(),
   })
@@ -140,7 +141,7 @@ export const zNftsByAccountResponseSequencer = z
     pagination: val.pagination,
   }));
 
-export const zNftInfoRest = z
+export const zNftInfoMoveRest = z
   .object({
     // Revisit this address type
     collection: zHexAddr32,
@@ -149,3 +150,16 @@ export const zNftInfoRest = z
     uri: z.string(),
   })
   .transform(snakeToCamel);
+
+export const zNftInfoWasmRest = z
+  .object({
+    data: z.object({
+      access: z.object({
+        owner: zBechAddr,
+      }),
+      info: z.object({
+        token_uri: z.string(),
+      }),
+    }),
+  })
+  .transform(({ data }) => snakeToCamel(data));

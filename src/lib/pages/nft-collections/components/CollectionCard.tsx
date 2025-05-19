@@ -40,7 +40,7 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
           w={{ base: 28, md: 40 }}
         />
         <Flex
-          alignSelf="center"
+          alignSelf="flex-start"
           direction="column"
           gap={2}
           overflow="hidden"
@@ -87,18 +87,20 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
             )}
           </Flex>
           <Flex flexWrap="wrap" mt={{ md: 2 }}>
-            <Flex direction="column" flex={1} minW="fit-content">
-              <Text color="text.dark" variant="body2">
-                Created by
-              </Text>
-              <ExplorerLink
-                ampCopierSection="collection-list"
-                minW={36}
-                showCopyOnHover={!isMobile}
-                type="user_address"
-                value={collectionInfo.creator}
-              />
-            </Flex>
+            {collectionInfo.creator && (
+              <Flex direction="column" flex={1} minW="fit-content">
+                <Text color="text.dark" variant="body2">
+                  Created by
+                </Text>
+                <ExplorerLink
+                  ampCopierSection="collection-list"
+                  minW={36}
+                  showCopyOnHover={!isMobile}
+                  type="user_address"
+                  value={collectionInfo.creator}
+                />
+              </Flex>
+            )}
             <Flex direction="column" flex={1} minW="fit-content">
               <Text color="text.dark" variant="body2">
                 Collection address

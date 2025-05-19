@@ -1,7 +1,7 @@
 import type { HexAddr32 } from "lib/types";
 
 import { Alert, Flex, Heading, Text } from "@chakra-ui/react";
-import { useMobile } from "lib/app-provider";
+import { useMobile, useMoveConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 
 import { ViewResourceButton } from "./ViewResourceButton";
@@ -11,6 +11,7 @@ interface TitleProps {
   displayCollectionName: string;
   isBurned: boolean;
   nftAddress: HexAddr32;
+  nftName?: string;
   tokenId: string;
 }
 
@@ -19,9 +20,12 @@ export const Title = ({
   displayCollectionName,
   isBurned,
   nftAddress,
+  nftName,
   tokenId,
 }: TitleProps) => {
   const isMobile = useMobile();
+  const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
+
   return (
     <Flex direction="column" w="full">
       {isBurned && (
@@ -44,10 +48,12 @@ export const Title = ({
             variant={{ base: "h6", md: "h5" }}
             wordBreak="break-word"
           >
-            {tokenId}
+            {nftName || tokenId}
           </Heading>
         </Flex>
-        {!isMobile && <ViewResourceButton nftAddress={nftAddress} />}
+        {!isMobile && isMoveEnabled && (
+          <ViewResourceButton nftAddress={nftAddress} />
+        )}
       </Flex>
     </Flex>
   );

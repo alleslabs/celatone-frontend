@@ -2,6 +2,7 @@ import type { Addr, Nullable } from "lib/types";
 
 import {
   zAddr,
+  zBechAddr,
   zHexAddr,
   zHexAddr32,
   zPagination,
@@ -19,9 +20,9 @@ const zCollection = z
     name: z.string(),
     uri: z.string(),
   })
-  .transform((val) => ({
-    ...val,
-    collectionAddress: val.id,
+  .transform(({ id, ...rest }) => ({
+    ...rest,
+    collectionAddress: id,
   }));
 export type Collection = z.infer<typeof zCollection>;
 
@@ -32,7 +33,6 @@ export const zNftCollectionsResponse = z.object({
 export type NftCollectionsResponse = z.infer<typeof zNftCollectionsResponse>;
 
 export interface CollectionByCollectionAddressResponse {
-  createdHeight: Nullable<number>;
   creatorAddress?: Addr;
   currentSupply?: number;
   description: string;
@@ -56,7 +56,6 @@ export const zCollectionByCollectionAddressResponse = z
     }
 
     return {
-      createdHeight: null,
       creatorAddress: undefined,
       currentSupply: undefined,
       description: val.collection.description,
@@ -151,13 +150,17 @@ export type CollectionsByAccountAddressResponse = z.infer<
   typeof zCollectionsByAccountAddressResponse
 >;
 
+// #####################################
+// ############# SEQUENCER #############
+// #####################################
+
 const zCollectionNftsSequencer = z.object({
   handle: zHexAddr32,
   length: z.coerce.number(),
 });
 
 const zCollectionSequencer = z.object({
-  // Revisit this address type
+  // Revisit this address type, it can be empty string
   creator: zHexAddr32,
   description: z.string(),
   name: z.string(),
@@ -171,6 +174,16 @@ export const zCollectionResponseSequencer = z
     object_addr: zHexAddr32,
   })
   .transform(snakeToCamel);
+
+export const zCollectionsResponseSequencer = z.object({
+  collections: z.array(
+    zCollectionResponseSequencer.transform<Collection>((val) => ({
+      collectionAddress: val.objectAddr,
+      ...val.collection,
+    }))
+  ),
+  pagination: zPagination,
+});
 
 export const zCollectionsByAccountAddressResponseSequencer = z
   .object({
@@ -194,10 +207,26 @@ export const zCollectionByCollectionAddressResponseSequencer = z
     collection: zCollectionResponseSequencer,
   })
   .transform<CollectionByCollectionAddressResponse>((val) => ({
-    createdHeight: null,
     creatorAddress: val.collection.collection.creator,
     currentSupply: val.collection.collection.nfts.length,
     description: val.collection.collection.description,
     name: val.collection.collection.name,
     uri: val.collection.collection.uri,
+  }));
+
+export const zCollectionByCollectionAddressResponseWasm = z
+  .object({
+    data: z.object({
+      creator: zBechAddr,
+      description: z.string(),
+      image: z.string(),
+      royalty_info: z.object({
+        payment_address: zBechAddr,
+        share: z.string(),
+      }),
+      start_trading_time: z.string(),
+    }),
+  })
+  .transform((val) => ({
+    ...snakeToCamel(val.data),
   }));

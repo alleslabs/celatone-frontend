@@ -1,11 +1,4 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
-import type {
-  BechAddr,
-  BechAddr32,
-  HexAddr,
-  HexAddr32,
-  Option,
-} from "lib/types";
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
@@ -13,9 +6,20 @@ import {
   useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
+  useEvmConfig,
+  useMoveConfig,
   useNftConfig,
   useTierConfig,
+  useWasmConfig,
 } from "lib/app-provider";
+import {
+  type BechAddr,
+  type BechAddr32,
+  type HexAddr,
+  type HexAddr32,
+  type Option,
+  zHexAddr32,
+} from "lib/types";
 import { useCallback } from "react";
 
 import type {
@@ -38,7 +42,11 @@ import {
   getNftsByCollectionAddress,
   getNftTxs,
 } from "./api";
-import { getNftByNftAddressRest } from "./rest";
+import {
+  getNftByNftAddressMoveRest,
+  getNftByTokenIdEvmRest,
+  getNftByTokenIdWasmRest,
+} from "./rest";
 import {
   getNftMintInfoSequencer,
   getNftsByAccountSequencer,
@@ -163,31 +171,66 @@ export const useNftsSequencer = (
   };
 };
 
-export const useNftByNftAddress = (
-  collectionAddress: HexAddr32,
-  nftAddress: HexAddr32,
+export const useNftByTokenId = (
+  collectionAddressHex: HexAddr,
+  collectionAddressBech: BechAddr32,
+  tokenId: string,
   enabled = true
 ) => {
   const { tier } = useTierConfig();
+  const moveConfig = useMoveConfig({ shouldRedirect: false });
+  const evmConfig = useEvmConfig({
+    shouldRedirect: false,
+  });
+  const wasmConfig = useWasmConfig({
+    shouldRedirect: false,
+  });
   const apiEndpoint = useBaseApiRoute("nfts");
   const {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
+  // Token ID can be a string, a address or a number
+  const nftAddress = zHexAddr32.parse(tokenId);
+
   return useQuery(
     [
-      CELATONE_QUERY_KEYS.NFT_BY_NFT_ADDRESS,
-      collectionAddress,
-      nftAddress,
+      CELATONE_QUERY_KEYS.NFT_BY_TOKEN_ID,
+      collectionAddressHex,
+      collectionAddressBech,
+      tokenId,
       tier,
       apiEndpoint,
       restEndpoint,
+      evmConfig,
+      moveConfig,
+      wasmConfig,
     ],
-    async () =>
+    () =>
       handleQueryByTier({
         queryFull: () =>
-          getNftByNftAddress(apiEndpoint, collectionAddress, nftAddress),
-        querySequencer: () => getNftByNftAddressRest(restEndpoint, nftAddress),
+          getNftByNftAddress(
+            apiEndpoint,
+            collectionAddressHex as HexAddr32,
+            nftAddress
+          ),
+        querySequencer: () => {
+          if (moveConfig.enabled)
+            return getNftByNftAddressMoveRest(restEndpoint, nftAddress);
+          if (evmConfig.enabled)
+            return getNftByTokenIdEvmRest(
+              evmConfig.jsonRpc,
+              collectionAddressHex,
+              tokenId
+            );
+          if (wasmConfig.enabled)
+            return getNftByTokenIdWasmRest(
+              restEndpoint,
+              collectionAddressBech,
+              tokenId
+            );
+          throw new Error("Unsupported VM (useNftByTokenId)");
+        },
         threshold: "sequencer",
         tier,
       }),
@@ -199,7 +242,7 @@ export const useNftByNftAddress = (
   );
 };
 
-export const useNftByNftAddressRest = (
+export const useNftByNftAddressMoveRest = (
   nftAddress: HexAddr32,
   enabled = true
 ) => {
@@ -209,7 +252,7 @@ export const useNftByNftAddressRest = (
 
   return useQuery(
     [CELATONE_QUERY_KEYS.NFT_BY_NFT_ADDRESS_REST, nftAddress, restEndpoint],
-    async () => getNftByNftAddressRest(restEndpoint, nftAddress),
+    async () => getNftByNftAddressMoveRest(restEndpoint, nftAddress),
     {
       enabled,
       refetchOnWindowFocus: false,
@@ -280,6 +323,7 @@ export const useNftTransactions = (
   );
 };
 
+// For Move only
 export const useNftTransactionsSequencer = (
   nftAddress: HexAddr32,
   enabled = true

@@ -1,4 +1,4 @@
-import type { Addr, BechAddr, HexAddr32 } from "lib/types";
+import type { Addr, BechAddr } from "lib/types";
 import type { IcnsNamesByAddress } from "lib/types/name";
 
 import {
@@ -27,7 +27,7 @@ import { useBlockData, useBlockDataRest } from "./block";
 import { useEvmCodesByAddress } from "./evm";
 import { useModuleByAddressRest } from "./move/module";
 import { useAddressByIcnsNameRest, useIcnsNamesByAddressRest } from "./name";
-import { useNftByNftAddressRest } from "./nft";
+import { useNftByNftAddressMoveRest } from "./nft";
 import { useNftCollectionByCollectionAddress } from "./nft-collection";
 import { usePoolData } from "./pools";
 import { useProposalData, useProposalDataRest } from "./proposal";
@@ -61,7 +61,7 @@ interface ResultMetadata {
   };
   initiaUsername?: string;
   nft?: {
-    collectionAddress?: HexAddr32;
+    collectionAddress?: Addr;
     name: string;
   };
 }
@@ -102,6 +102,7 @@ export const useSearchHandler = (
   const {
     isSomeValidAddress,
     validateContractAddress,
+    validateUserAddress,
     validateValidatorAddress,
   } = useValidateAddress();
 
@@ -151,19 +152,36 @@ export const useSearchHandler = (
   //                       NFT
   /// /////////////////////////////////////////////////////
 
-  const { data: nftData, isFetching: nftFetching } = useNftByNftAddressRest(
+  // Search by NFT address is only available for Move
+  const { data: nftData, isFetching: nftFetching } = useNftByNftAddressMoveRest(
     zHexAddr32.parse(debouncedKeyword),
-    isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
+    isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier && isMove
   );
+
+  const enableNftCollectionFetching = useMemo(() => {
+    if (!isNft || isLiteTier) return false;
+    if (isMove && isHexModuleAddress(debouncedKeyword)) return true;
+    if (isWasm && validateContractAddress(debouncedKeyword) === null)
+      return true;
+    if (isEvm && validateUserAddress(debouncedKeyword) === null) return true;
+
+    return false;
+  }, [
+    isNft,
+    isLiteTier,
+    isMove,
+    debouncedKeyword,
+    isWasm,
+    validateContractAddress,
+    isEvm,
+    validateUserAddress,
+  ]);
 
   const { data: nftCollectionData, isFetching: nftCollectionFetching } =
     useNftCollectionByCollectionAddress(
       zBechAddr32.parse(debouncedKeyword),
       zHexAddr32.parse(debouncedKeyword),
-      isNft &&
-        (isHexModuleAddress(debouncedKeyword) ||
-          validateContractAddress(debouncedKeyword) === null) &&
-        !isLiteTier
+      enableNftCollectionFetching
     );
 
   /// /////////////////////////////////////////////////////

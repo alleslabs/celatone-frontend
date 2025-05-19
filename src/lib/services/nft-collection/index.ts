@@ -9,6 +9,7 @@ import {
   useCurrentChain,
   useMoveConfig,
   useTierConfig,
+  useWasmConfig,
 } from "lib/app-provider";
 
 import type {
@@ -28,11 +29,13 @@ import {
   getNftCollections,
   getNftCollectionsByAccountAddress,
 } from "./api";
+import { getCollectionByCollectionAddressWasmRest } from "./rest";
 import {
   getNftCollectionActivitiesSequencer,
   getNftCollectionByCollectionAddressSequencer,
-  getNftCollectionCreatorSequencer,
+  getNftCollectionCreatorByCollectionAddressSequencer,
   getNftCollectionsByAccountAddressSequencer,
+  getNftCollectionsSequencer,
 } from "./sequencer";
 
 export const useNftCollections = (
@@ -48,13 +51,38 @@ export const useNftCollections = (
 
   return useQuery(
     [CELATONE_QUERY_KEYS.NFT_COLLECTIONS, apiEndpoint, limit, offset, search],
-    async () => getNftCollections(apiEndpoint, limit, offset, search),
+    () => getNftCollections(apiEndpoint, limit, offset, search),
     {
       refetchOnWindowFocus: false,
       retry: 1,
       ...options,
     }
   );
+};
+
+export const useNftCollectionsSequencer = () => {
+  const {
+    chainConfig: { rest: restEndpoint },
+  } = useCelatoneApp();
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery(
+      [CELATONE_QUERY_KEYS.NFT_COLLECTIONS_SEQUENCER, restEndpoint],
+      ({ pageParam }) => getNftCollectionsSequencer(restEndpoint, pageParam),
+      {
+        getNextPageParam: (lastPage) =>
+          lastPage.pagination.nextKey ?? undefined,
+        refetchOnWindowFocus: false,
+      }
+    );
+
+  return {
+    data: data?.pages.flatMap((page) => page.collections),
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  };
 };
 
 export const useNftCollectionByCollectionAddress = (
@@ -103,6 +131,28 @@ export const useNftCollectionByCollectionAddress = (
   );
 };
 
+// Since the collection info from sequencer is not complete
+export const useNftCollectionInfosWasm = (collectionAddress: BechAddr32) => {
+  const { enabled } = useWasmConfig({ shouldRedirect: false });
+  const {
+    chainConfig: { rest: restEndpoint },
+  } = useCelatoneApp();
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.NFT_COLLECTION_INFOS_BY_COLLECTION_ADDRESS_WASM,
+      collectionAddress,
+    ],
+    () =>
+      getCollectionByCollectionAddressWasmRest(restEndpoint, collectionAddress),
+    {
+      enabled,
+      refetchOnWindowFocus: false,
+      retry: 1,
+    }
+  );
+};
+
 export const useNftCollectionCreator = (
   collectionAddressBech: BechAddr32,
   collectionAddressHex: HexAddr32
@@ -132,7 +182,7 @@ export const useNftCollectionCreator = (
             collectionAddressHex
           ),
         querySequencer: () =>
-          getNftCollectionCreatorSequencer(
+          getNftCollectionCreatorByCollectionAddressSequencer(
             restEndpoint,
             bech32Prefix,
             collectionAddressBech

@@ -7,9 +7,12 @@ import type {
   Option,
 } from "lib/types";
 
-import { useMoveConfig } from "lib/app-provider";
+import { useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { useResourcesByAddressRest } from "lib/services/move/resource";
-import { useNftCollectionByCollectionAddress } from "lib/services/nft-collection";
+import {
+  useNftCollectionByCollectionAddress,
+  useNftCollectionInfosWasm,
+} from "lib/services/nft-collection";
 import { isUndefined } from "lodash";
 
 interface SupplyData {
@@ -44,7 +47,7 @@ interface CollectionDataResponse extends CollectionInfosResponse {
 }
 
 // MOVE
-const useCollectionInfosMove = (
+const useNftCollectionInfosMove = (
   collectionAddress: BechAddr32
 ): CollectionInfosResponse => {
   const { data: resourcesData, isFetching } =
@@ -94,12 +97,16 @@ const useCollectionInfosMove = (
   };
 };
 
-export const useCollectionData = (
+export const useNftCollectionData = (
   collectionAddressBech: BechAddr32,
   collectionAddressHex: HexAddr32
 ): CollectionDataResponse => {
   const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
+  const { enabled: isWasmEnabled } = useWasmConfig({ shouldRedirect: false });
 
+  // ############################################################
+  // ########################## Base ############################
+  // ############################################################
   const { data: collection = null, isLoading: isCollectionLoading } =
     useNftCollectionByCollectionAddress(
       collectionAddressBech,
@@ -109,7 +116,12 @@ export const useCollectionData = (
   const {
     collectionInfos: collectionInfosMove,
     isLoading: isCollectionInfosMoveLoading,
-  } = useCollectionInfosMove(collectionAddressBech);
+  } = useNftCollectionInfosMove(collectionAddressBech);
+
+  const {
+    data: collectionInfosWasm,
+    isFetching: isCollectionInfosWasmLoading,
+  } = useNftCollectionInfosWasm(collectionAddressBech);
 
   if (isMoveEnabled)
     return {
@@ -118,20 +130,37 @@ export const useCollectionData = (
       isLoading: isCollectionLoading || isCollectionInfosMoveLoading,
     };
 
-  // TODO: implement WASM and EVM collection data
+  const collectionInfos: CollectionInfos = {
+    isUnlimited: false,
+    royalty: 0,
+    supplies: {
+      currentSupply: collection?.currentSupply ?? 0,
+      maxSupply: undefined,
+      totalBurned: 0,
+      totalMinted: 0,
+    },
+  };
+
+  if (isWasmEnabled)
+    return {
+      collection: collection
+        ? {
+            ...collection,
+            description: collectionInfosWasm?.description ?? "",
+          }
+        : null,
+      collectionInfos: {
+        ...collectionInfos,
+        royalty: Number(collectionInfosWasm?.royaltyInfo.share ?? 0) * 100,
+      },
+      isLoading: isCollectionLoading || isCollectionInfosWasmLoading,
+    };
+
+  // TODO: implement EVM collection data if needed
 
   return {
     collection,
-    collectionInfos: {
-      isUnlimited: false,
-      royalty: 0,
-      supplies: {
-        currentSupply: collection?.currentSupply ?? 0,
-        maxSupply: undefined,
-        totalBurned: 0,
-        totalMinted: 0,
-      },
-    },
+    collectionInfos,
     isLoading: isCollectionLoading,
   };
 };
