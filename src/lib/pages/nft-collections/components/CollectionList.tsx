@@ -1,10 +1,10 @@
 import type { Collection } from "lib/services/types";
 import type { Option } from "lib/types";
 
-import { Flex, GridItem, SimpleGrid } from "@chakra-ui/react";
+import { Button, Flex, GridItem, SimpleGrid } from "@chakra-ui/react";
 import { useCurrentChain, useTierConfig } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { ConnectWalletBtn } from "lib/components/button/ConnectWallet";
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 
@@ -39,11 +39,9 @@ export const CollectionList = ({
           {address ? (
             <>
               For now, go to
-              <ExplorerLink
-                showCopyOnHover
-                type="user_address"
-                value={address}
-              />
+              <AppLink href={`/accounts/${address}/nfts`}>
+                <Button>Your account details</Button>
+              </AppLink>
               to see your NFTs
             </>
           ) : (
