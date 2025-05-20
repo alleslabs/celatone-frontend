@@ -147,36 +147,36 @@ export const CollectionInfoSection = ({
             </Text>
           </Flex>
 
+          <Flex flexDir={infoDirection} gap={infoGap}>
+            <Text fontWeight={600} minW={24} variant="body2">
+              Description
+            </Text>
+            <Text color="text.dark" variant="body2" wordBreak="break-word">
+              {desc || "No description was provided by the creator."}
+            </Text>
+          </Flex>
+
           {isMoveEnabled && (
             <Flex flexDir={infoDirection} gap={infoGap}>
               <Text fontWeight={600} minW={24} variant="body2">
-                Description
+                Uri
               </Text>
-              <Text color="text.dark" variant="body2" wordBreak="break-word">
-                {desc || "No description was provided by the creator."}
-              </Text>
+              {uri ? (
+                <Link
+                  href={uri}
+                  target="_blank"
+                  variant="body2"
+                  wordBreak="break-all"
+                >
+                  {uri}
+                </Link>
+              ) : (
+                <Text color="text.dark" variant="body2" wordBreak="break-word">
+                  No URI was provided by the creator.
+                </Text>
+              )}
             </Flex>
           )}
-
-          <Flex flexDir={infoDirection} gap={infoGap}>
-            <Text fontWeight={600} minW={24} variant="body2">
-              Uri
-            </Text>
-            {uri ? (
-              <Link
-                href={uri}
-                target="_blank"
-                variant="body2"
-                wordBreak="break-all"
-              >
-                {uri}
-              </Link>
-            ) : (
-              <Text color="text.dark" variant="body2" wordBreak="break-word">
-                No URI was provided by the creator.
-              </Text>
-            )}
-          </Flex>
 
           {!isEvmEnabled && (
             <Flex flexDir={infoDirection} gap={infoGap}>

@@ -49,6 +49,7 @@ export const CollectionSuppliesOverviewBody = ({
             <NftCard
               collectionAddress={nft.collectionAddress}
               collectionName={nft.collectionName}
+              nftAddress={nft.nftAddress}
               tokenId={nft.tokenId}
               uri={nft.uri}
             />

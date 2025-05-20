@@ -220,10 +220,12 @@ export const zCollectionByCollectionAddressResponseWasm = z
       creator: zBechAddr,
       description: z.string(),
       image: z.string(),
-      royalty_info: z.object({
-        payment_address: zBechAddr,
-        share: z.string(),
-      }),
+      royalty_info: z
+        .object({
+          payment_address: zBechAddr,
+          share: z.string(),
+        })
+        .nullable(),
       start_trading_time: z.string(),
     }),
   })

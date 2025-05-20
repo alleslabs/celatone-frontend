@@ -195,13 +195,13 @@ const CollectionDetailsBody = ({
             mt={{ base: 2, md: 0 }}
           >
             <Text color="text.dark" variant="body2">
-              Collection address:
+              {isMoveEnabled ? "Collection address:" : "Collection contract:"}
             </Text>
             <Tooltip
               label={
-                isEvmEnabled
-                  ? "View as Contract Address"
-                  : "View as Account Address"
+                isMoveEnabled
+                  ? "View as Account Address"
+                  : "View as Contract Address"
               }
             >
               <ExplorerLink

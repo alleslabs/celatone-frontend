@@ -7,6 +7,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useMetadata } from "lib/services/nft";
+import { getIpfsUrl } from "lib/services/utils";
 import { useMemo } from "react";
 
 interface CollectionCardProps {
@@ -63,7 +64,7 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
             h={{ base: 28, md: 40 }}
             minW={{ base: 28, md: 40 }}
             objectFit="contain"
-            src={metadata?.image}
+            src={metadata?.image ? getIpfsUrl(metadata.image) : undefined}
             w={{ base: 28, md: 40 }}
           />
           <Flex

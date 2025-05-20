@@ -31,6 +31,7 @@ export const NftList = ({
           key={nft.tokenId + nft.uri}
           collectionAddress={nft.collectionAddress}
           collectionName={nft.collectionName}
+          nftAddress={nft.nftAddress}
           showCollection={showCollection}
           tokenId={nft.tokenId}
           uri={nft.uri}
