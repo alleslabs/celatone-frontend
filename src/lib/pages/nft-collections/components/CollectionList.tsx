@@ -2,7 +2,6 @@ import type { Collection } from "lib/services/types";
 import type { Option } from "lib/types";
 
 import { GridItem, SimpleGrid } from "@chakra-ui/react";
-import { AppLink } from "lib/components/AppLink";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 
@@ -32,9 +31,7 @@ export const CollectionList = ({
     <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={{ base: 4, xl: 8 }}>
       {collections.map((collection) => (
         <GridItem key={collection.collectionAddress}>
-          <AppLink href={`/nft-collections/${collection.collectionAddress}`}>
-            <CollectionCard collectionInfo={collection} />
-          </AppLink>
+          <CollectionCard collectionInfo={collection} />
         </GridItem>
       ))}
     </SimpleGrid>

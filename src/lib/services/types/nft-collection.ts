@@ -14,9 +14,9 @@ import { z } from "zod";
 
 const zCollection = z
   .object({
-    creator: zHexAddr32,
+    creator: zAddr,
     description: z.string(),
-    id: zHexAddr32,
+    id: zAddr,
     name: z.string(),
     uri: z.string(),
   })
