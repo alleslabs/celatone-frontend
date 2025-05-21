@@ -9,7 +9,6 @@ import type { Nft } from "../types";
 
 import { getEthCall } from "../evm/json-rpc";
 import { getMoveViewJsonRest } from "../move/module/rest";
-import { getCollectionByCollectionAddressWasmRest } from "../nft-collection/rest";
 import { zNftInfoMoveRest, zNftInfoWasmRest } from "../types";
 import { getContractQueryRest } from "../wasm/contract/rest";
 
@@ -80,15 +79,12 @@ export const getNftByTokenIdWasmRest = async (
   collectionAddress: BechAddr32,
   tokenId: string
 ): Promise<Nft> => {
-  const [collection, info] = await Promise.all([
-    getCollectionByCollectionAddressWasmRest(endpoint, collectionAddress),
-    getNftInfoWasmRest(endpoint, collectionAddress, tokenId),
-  ]);
+  const info = await getNftInfoWasmRest(endpoint, collectionAddress, tokenId);
 
   return {
     collectionAddress,
     collectionName: undefined,
-    description: collection.description,
+    description: undefined,
     isBurned: false,
     nftAddress: null,
     ownerAddress: info.access.owner,

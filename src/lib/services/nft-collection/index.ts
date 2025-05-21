@@ -131,7 +131,6 @@ export const useNftCollectionByCollectionAddress = (
   );
 };
 
-// Since the collection info from sequencer is not complete
 export const useNftCollectionInfosWasm = (collectionAddress: BechAddr32) => {
   const { enabled } = useWasmConfig({ shouldRedirect: false });
   const {
