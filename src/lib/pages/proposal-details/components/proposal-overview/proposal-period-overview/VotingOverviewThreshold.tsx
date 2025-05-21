@@ -120,7 +120,7 @@ export const VotingOverviewThreshold = ({
                   {formatPrettyPercent(vetoThreshold)} threshold
                 </span>
                 . If the proposal concludes with this voting outcome, it will be
-                regardless of &ldquo;Yes&rdquo; votes.
+                rejected regardless of &ldquo;Yes&rdquo; votes.
               </>
             ) : (
               <>
