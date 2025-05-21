@@ -305,16 +305,21 @@ export const useMetadata = (uri: string) =>
   );
 
 export const useNftTransactions = (
+  nftAddress: Option<HexAddr32>,
   limit: number,
   offset: number,
-  nftAddress: HexAddr32,
   options: Pick<UseQueryOptions<NftTxsResponse>, "enabled" | "onSuccess"> = {}
 ) => {
   const apiEndpoint = useBaseApiRoute("nfts");
 
   return useQuery(
     [CELATONE_QUERY_KEYS.NFT_TRANSACTIONS, nftAddress, limit, offset],
-    () => getNftTxs(apiEndpoint, nftAddress, limit, offset),
+    () => {
+      if (!nftAddress)
+        throw new Error("NFT address is required (useNftTransactions)");
+
+      return getNftTxs(apiEndpoint, nftAddress, limit, offset);
+    },
     {
       refetchOnWindowFocus: false,
       retry: 1,
@@ -356,7 +361,7 @@ export const useNftTransactionsSequencer = (
 };
 
 export const useNftMutateEvents = (
-  nftAddress: HexAddr32,
+  nftAddress: Option<HexAddr32>,
   limit: number,
   offset: number,
   options: Pick<
@@ -374,7 +379,12 @@ export const useNftMutateEvents = (
       offset,
       apiEndpoint,
     ],
-    async () => getNftMutateEvents(apiEndpoint, nftAddress, limit, offset),
+    () => {
+      if (!nftAddress)
+        throw new Error("NFT address is required (useNftMutateEvents)");
+
+      return getNftMutateEvents(apiEndpoint, nftAddress, limit, offset);
+    },
     {
       refetchOnWindowFocus: false,
       retry: 1,

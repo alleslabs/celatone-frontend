@@ -275,7 +275,7 @@ const CollectionDetailsBody = ({
           <CustomTab
             count={activities?.total}
             hidden={!isMoveEnabled}
-            isDisabled={!activities?.total}
+            isDisabled={(!activities?.total && isFullTier) || !isMoveEnabled}
             onClick={handleTabChange(TabIndex.Activities)}
           >
             Activities

@@ -81,15 +81,17 @@ const NftDetailsBody = ({
     tokenId
   );
 
+  // Note: NFT Address is only available in Move VM
+  const nftAddress = isMoveEnabled ? zHexAddr32.parse(tokenId) : undefined;
+
   // Note: NFT Txs total count and Mutate Events are enabled only if Move and full tier are enabled
-  const nftAddress = zHexAddr32.parse(tokenId);
-  const { data: transactions } = useNftTransactions(10, 0, nftAddress, {
-    enabled: isFullTier,
+  const { data: transactions } = useNftTransactions(nftAddress, 10, 0, {
+    enabled: isFullTier && !!nftAddress,
   });
   const totalTxs = isFullTier && transactions ? transactions?.total : undefined;
 
   const { data: mutateEvents } = useNftMutateEvents(nftAddress, 10, 0, {
-    enabled: isFullTier,
+    enabled: isFullTier && !!nftAddress,
   });
 
   const { data: metadata } = useMetadata(nft?.uri ?? "");
@@ -208,7 +210,7 @@ const NftDetailsBody = ({
                     </Text>
                   </NftInfoItem>
                 )}
-                {isMoveEnabled ? (
+                {nftAddress ? (
                   <NftInfoItem label="NFT Address">
                     <Tooltip label="View as Account Address">
                       <Flex>
@@ -254,13 +256,11 @@ const NftDetailsBody = ({
             {isMobile && (
               <>
                 <DescriptionBox description={description} />
-                {isMoveEnabled && (
-                  <ViewResourceButton nftAddress={nftAddress} />
-                )}
+                {nftAddress && <ViewResourceButton nftAddress={nftAddress} />}
               </>
             )}
             <Flex direction="column" gap={{ base: 8, md: 12 }}>
-              {isMoveEnabled && <MintInfo nftAddress={nftAddress} />}
+              {nftAddress && <MintInfo nftAddress={nftAddress} />}
               {metadata?.attributes && (
                 <Attributes
                   attributes={metadata.attributes}
@@ -281,8 +281,8 @@ const NftDetailsBody = ({
             )}
           </Flex>
         </Flex>
-        {/* Rollup Wasm and Evm aren't supported yet */}
-        {(isFullTier || isMoveEnabled) && (
+        {/* Support only Move VM and full tier */}
+        {nftAddress && (
           <>
             <Divider color="gray.700" width="100%" />
             <Tabs
