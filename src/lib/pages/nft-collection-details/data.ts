@@ -7,7 +7,7 @@ import type {
   Option,
 } from "lib/types";
 
-import { useMoveConfig, useWasmConfig } from "lib/app-provider";
+import { useEvmConfig, useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { useResourcesByAddressRest } from "lib/services/move/resource";
 import {
   useNftCollectionByCollectionAddress,
@@ -103,6 +103,7 @@ export const useNftCollectionData = (
 ): CollectionDataResponse => {
   const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
   const { enabled: isWasmEnabled } = useWasmConfig({ shouldRedirect: false });
+  const { enabled: isEvmEnabled } = useEvmConfig({ shouldRedirect: false });
 
   // ############################################################
   // ########################## Base ############################
@@ -113,6 +114,9 @@ export const useNftCollectionData = (
       collectionAddressHex
     );
 
+  // ############################################################
+  // ###################### VM Specific #########################
+  // ############################################################
   const {
     collectionInfos: collectionInfosMove,
     isLoading: isCollectionInfosMoveLoading,
@@ -157,7 +161,13 @@ export const useNftCollectionData = (
       isLoading: isCollectionLoading || isCollectionInfosWasmLoading,
     };
 
-  // TODO: implement EVM collection data if needed
+  if (isEvmEnabled) {
+    return {
+      collection,
+      collectionInfos,
+      isLoading: isCollectionLoading,
+    };
+  }
 
   return {
     collection,

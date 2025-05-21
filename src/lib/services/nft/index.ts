@@ -42,6 +42,7 @@ import {
   getNftsByCollectionAddress,
   getNftTxs,
 } from "./api";
+import { getNftRoyaltyInfoEvm } from "./json-rpc";
 import {
   getNftByNftAddressMoveRest,
   getNftByTokenIdEvmRest,
@@ -156,6 +157,7 @@ export const useNftsSequencer = (
     {
       enabled,
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
       retry: 1,
     }
   );
@@ -190,8 +192,8 @@ export const useNftByTokenId = (
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  // Token ID can be a string, a address or a number
-  const nftAddress = zHexAddr32.parse(tokenId);
+  // Nft address is available for Move VM only
+  const nftAddress = moveConfig.enabled ? zHexAddr32.parse(tokenId) : undefined;
 
   return useQuery(
     [
@@ -208,14 +210,18 @@ export const useNftByTokenId = (
     ],
     () =>
       handleQueryByTier({
-        queryFull: () =>
-          getNftByNftAddress(
+        queryFull: () => {
+          if (!nftAddress)
+            throw new Error("NFT address is required (useNftByTokenId)");
+
+          return getNftByNftAddress(
             apiEndpoint,
             collectionAddressHex as HexAddr32,
             nftAddress
-          ),
+          );
+        },
         querySequencer: () => {
-          if (moveConfig.enabled)
+          if (moveConfig.enabled && nftAddress)
             return getNftByNftAddressMoveRest(restEndpoint, nftAddress);
           if (evmConfig.enabled)
             return getNftByTokenIdEvmRest(
@@ -465,5 +471,21 @@ export const useNftsByAccountByCollectionSequencer = (
       refetchOnWindowFocus: false,
       retry: 1,
     }
+  );
+};
+
+export const useNftRoyaltyInfoEvmSequencer = (collectionAddress: HexAddr) => {
+  const evmConfig = useEvmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.NFT_ROYALTY_INFO_EVM, collectionAddress],
+    async () => {
+      if (!evmConfig.enabled)
+        throw new Error("EVM is not enabled (useNftRoyaltyInfo)");
+
+      // TODO
+      return getNftRoyaltyInfoEvm(evmConfig.jsonRpc, collectionAddress, "a52");
+    },
+    { enabled: evmConfig.enabled }
   );
 };

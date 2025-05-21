@@ -1,16 +1,15 @@
-import type { JsonFragment } from "ethers";
-import type { BechAddr32, HexAddr, HexAddr20, HexAddr32 } from "lib/types";
+import type { BechAddr32, HexAddr, HexAddr32 } from "lib/types";
 
-import { Interface } from "ethers";
 import { zHexAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 import type { Nft } from "../types";
 
-import { getEthCall } from "../evm/json-rpc";
 import { getMoveViewJsonRest } from "../move/module/rest";
 import { zNftInfoMoveRest, zNftInfoWasmRest } from "../types";
 import { getContractQueryRest } from "../wasm/contract/rest";
+import { getNftOwnerEvm } from "./json-rpc";
+import { getNftUriEvm } from "./json-rpc";
 
 // ############################################################
 // ########################## MOVE ############################
@@ -96,86 +95,14 @@ export const getNftByTokenIdWasmRest = async (
 // ############################################################
 // ########################## EVM #############################
 // ############################################################
-const ERC721ViewAbi = [
-  {
-    inputs: [{ name: "owner", type: "address" }],
-    name: "balanceOf",
-    outputs: [{ name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ name: "tokenId", type: "uint256" }],
-    name: "ownerOf",
-    outputs: [{ name: "", type: "address" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "name",
-    outputs: [{ name: "", type: "string" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "symbol",
-    outputs: [{ name: "", type: "string" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ name: "tokenId", type: "uint256" }],
-    name: "tokenURI",
-    outputs: [{ name: "", type: "string" }],
-    stateMutability: "view",
-    type: "function",
-  },
-] as JsonFragment[];
-
-const getNftUriEvmRest = async (
-  endpoint: string,
-  collectionAddress: HexAddr,
-  tokenId: string
-) => {
-  const iface = new Interface(ERC721ViewAbi);
-  const data = iface.encodeFunctionData("tokenURI", [tokenId]);
-  const result = await getEthCall(
-    endpoint,
-    null,
-    collectionAddress as HexAddr20,
-    data
-  );
-  return iface.decodeFunctionResult("tokenURI", result).toString();
-};
-
-const getNftOwnerEvmRest = async (
-  endpoint: string,
-  collectionAddress: HexAddr,
-  tokenId: string
-) => {
-  const iface = new Interface(ERC721ViewAbi);
-  const data = iface.encodeFunctionData("ownerOf", [tokenId]);
-  const result = await getEthCall(
-    endpoint,
-    null,
-    collectionAddress as HexAddr20,
-    data
-  );
-  return zHexAddr.parse(
-    iface.decodeFunctionResult("ownerOf", result).toString()
-  );
-};
-
 export const getNftByTokenIdEvmRest = async (
   endpoint: string,
   collectionAddress: HexAddr,
   tokenId: string
 ): Promise<Nft> => {
   const [uri, owner] = await Promise.all([
-    getNftUriEvmRest(endpoint, collectionAddress, tokenId),
-    getNftOwnerEvmRest(endpoint, collectionAddress, tokenId),
+    getNftUriEvm(endpoint, collectionAddress, tokenId),
+    getNftOwnerEvm(endpoint, collectionAddress, tokenId),
   ]);
 
   return {

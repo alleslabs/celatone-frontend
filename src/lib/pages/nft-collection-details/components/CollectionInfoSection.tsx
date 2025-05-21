@@ -21,7 +21,7 @@ interface CollectionInfoSectionProps {
   collectionAddressBech: BechAddr32;
   collectionAddressHex: HexAddr32;
   collectionName: string;
-  desc: string;
+  description: string;
   mutateEventes?: number;
   onClickActivities: () => void;
   onClickMutateEvents: () => void;
@@ -34,7 +34,7 @@ export const CollectionInfoSection = ({
   collectionAddressBech,
   collectionAddressHex,
   collectionName,
-  desc,
+  description,
   mutateEventes,
   onClickActivities,
   onClickMutateEvents,
@@ -147,14 +147,16 @@ export const CollectionInfoSection = ({
             </Text>
           </Flex>
 
-          <Flex flexDir={infoDirection} gap={infoGap}>
-            <Text fontWeight={600} minW={24} variant="body2">
-              Description
-            </Text>
-            <Text color="text.dark" variant="body2" wordBreak="break-word">
-              {desc || "No description was provided by the creator."}
-            </Text>
-          </Flex>
+          {isMoveEnabled && (
+            <Flex flexDir={infoDirection} gap={infoGap}>
+              <Text fontWeight={600} minW={24} variant="body2">
+                Description
+              </Text>
+              <Text color="text.dark" variant="body2" wordBreak="break-word">
+                {description || "No description was provided by the creator."}
+              </Text>
+            </Flex>
+          )}
 
           {isMoveEnabled && (
             <Flex flexDir={infoDirection} gap={infoGap}>
@@ -178,14 +180,12 @@ export const CollectionInfoSection = ({
             </Flex>
           )}
 
-          {!isEvmEnabled && (
-            <Flex flexDir={infoDirection} gap={infoGap}>
-              <Text fontWeight={600} minW={24} variant="body2">
-                Royalty
-              </Text>
-              <Text variant="body2">{royalty}%</Text>
-            </Flex>
-          )}
+          <Flex flexDir={infoDirection} gap={infoGap}>
+            <Text fontWeight={600} minW={24} variant="body2">
+              Royalty
+            </Text>
+            <Text variant="body2">{royalty}%</Text>
+          </Flex>
         </Flex>
       </Flex>
       <Flex flexDir={infoDirection} gap={{ base: 4, md: 8 }}>

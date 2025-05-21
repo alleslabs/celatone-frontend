@@ -9,7 +9,8 @@ import { CollectionList } from "./CollectionList";
 
 export const CollectionsSequencer = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
-  const debouncedSearch = useDebounce(searchKeyword);
+  // Remove all spaces from the search keyword
+  const debouncedSearch = useDebounce(searchKeyword).replace(/\s+/g, "");
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useNftCollectionsSequencer(10, debouncedSearch);
