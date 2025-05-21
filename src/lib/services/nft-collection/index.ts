@@ -9,8 +9,10 @@ import {
   useCurrentChain,
   useMoveConfig,
   useTierConfig,
+  useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 
 import type {
   ActivitiesResponse,
@@ -31,10 +33,12 @@ import {
 } from "./api";
 import { getCollectionByCollectionAddressWasmRest } from "./rest";
 import {
+  getNftCollecitonsByNameSequencer,
   getNftCollectionActivitiesSequencer,
   getNftCollectionByCollectionAddressSequencer,
   getNftCollectionCreatorByCollectionAddressSequencer,
   getNftCollectionsByAccountAddressSequencer,
+  getNftCollectionsByCollectionAddressSequencer,
   getNftCollectionsSequencer,
 } from "./sequencer";
 
@@ -60,15 +64,40 @@ export const useNftCollections = (
   );
 };
 
-export const useNftCollectionsSequencer = () => {
+export const useNftCollectionsSequencer = (limit: number, search?: string) => {
   const {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
+  const formatAddresses = useFormatAddresses();
+  const { isSomeValidAddress } = useValidateAddress();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery(
-      [CELATONE_QUERY_KEYS.NFT_COLLECTIONS_SEQUENCER, restEndpoint],
-      ({ pageParam }) => getNftCollectionsSequencer(restEndpoint, pageParam),
+      [
+        CELATONE_QUERY_KEYS.NFT_COLLECTIONS_SEQUENCER,
+        restEndpoint,
+        limit,
+        search ?? "",
+      ],
+      ({ pageParam }) => {
+        if (search) {
+          if (isSomeValidAddress(search)) {
+            const formattedAddress = formatAddresses(search);
+            return getNftCollectionsByCollectionAddressSequencer(
+              restEndpoint,
+              formattedAddress.address as BechAddr32
+            );
+          }
+
+          return getNftCollecitonsByNameSequencer(
+            restEndpoint,
+            search,
+            pageParam
+          );
+        }
+
+        return getNftCollectionsSequencer(restEndpoint, limit, pageParam);
+      },
       {
         getNextPageParam: (lastPage) =>
           lastPage.pagination.nextKey ?? undefined,

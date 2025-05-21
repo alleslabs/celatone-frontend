@@ -175,15 +175,19 @@ export const zCollectionResponseSequencer = z
   })
   .transform(snakeToCamel);
 
+const zTransformedCollectionSequencer =
+  zCollectionResponseSequencer.transform<Collection>((val) => ({
+    collectionAddress: val.objectAddr,
+    ...val.collection,
+  }));
+
 export const zCollectionsResponseSequencer = z.object({
-  collections: z.array(
-    zCollectionResponseSequencer.transform<Collection>((val) => ({
-      collectionAddress: val.objectAddr,
-      ...val.collection,
-    }))
-  ),
+  collections: z.array(zTransformedCollectionSequencer),
   pagination: zPagination,
 });
+export type CollectionsResponseSequencer = z.infer<
+  typeof zCollectionsResponseSequencer
+>;
 
 export const zCollectionsByAccountAddressResponseSequencer = z
   .object({
@@ -202,17 +206,9 @@ export type CollectionsByAccountAddressResponseSequencer = z.infer<
   typeof zCollectionsByAccountAddressResponseSequencer
 >;
 
-export const zCollectionByCollectionAddressResponseSequencer = z
-  .object({
-    collection: zCollectionResponseSequencer,
-  })
-  .transform<CollectionByCollectionAddressResponse>((val) => ({
-    creatorAddress: val.collection.collection.creator,
-    currentSupply: val.collection.collection.nfts.length,
-    description: val.collection.collection.description,
-    name: val.collection.collection.name,
-    uri: val.collection.collection.uri,
-  }));
+export const zCollectionByCollectionAddressResponseSequencer = z.object({
+  collection: zTransformedCollectionSequencer,
+});
 
 export const zCollectionByCollectionAddressResponseWasm = z
   .object({
