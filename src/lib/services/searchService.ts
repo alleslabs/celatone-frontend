@@ -102,7 +102,6 @@ export const useSearchHandler = (
   const {
     isSomeValidAddress,
     validateContractAddress,
-    validateUserAddress,
     validateValidatorAddress,
   } = useValidateAddress();
 
@@ -160,10 +159,15 @@ export const useSearchHandler = (
 
   const enableNftCollectionFetching = useMemo(() => {
     if (!isNft || isLiteTier) return false;
-    if (isMove && isHexModuleAddress(debouncedKeyword)) return true;
+    if (
+      isMove &&
+      (isHexModuleAddress(debouncedKeyword) ||
+        validateContractAddress(debouncedKeyword) === null)
+    )
+      return true;
     if (isWasm && validateContractAddress(debouncedKeyword) === null)
       return true;
-    if (isEvm && validateUserAddress(debouncedKeyword) === null) return true;
+    if (isEvm && isHexWalletAddress(debouncedKeyword)) return true;
 
     return false;
   }, [
@@ -174,7 +178,6 @@ export const useSearchHandler = (
     isWasm,
     validateContractAddress,
     isEvm,
-    validateUserAddress,
   ]);
 
   const { data: nftCollectionData, isFetching: nftCollectionFetching } =
