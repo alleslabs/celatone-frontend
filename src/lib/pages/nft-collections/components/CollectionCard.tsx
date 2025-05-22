@@ -8,6 +8,7 @@ import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useMetadata } from "lib/services/nft";
 import { getIpfsUrl } from "lib/services/utils";
+import { extractNftDescription } from "lib/utils/nftDescription";
 import { useMemo } from "react";
 
 interface CollectionCardProps {
@@ -110,7 +111,7 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
                   variant={{ base: "body3", md: "body2" }}
                   wordBreak="break-word"
                 >
-                  {description}
+                  {extractNftDescription(description)}
                 </Text>
               )}
             </Flex>

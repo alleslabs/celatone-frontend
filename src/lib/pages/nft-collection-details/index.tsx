@@ -37,6 +37,7 @@ import {
 import { zHexAddr32 } from "lib/types";
 import { zBechAddr32 } from "lib/types";
 import { isHexModuleAddress } from "lib/utils";
+import { extractNftDescription } from "lib/utils/nftDescription";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
@@ -51,7 +52,6 @@ import { ActivitiesFull, ActivitiesSequencer } from "./components/tables";
 import { CollectionMutateEvents } from "./components/tables/CollectionMutateEvents";
 import { useNftCollectionData } from "./data";
 import { TabIndex, zCollectionDetailQueryParams } from "./types";
-
 const InvalidCollection = () => (
   <InvalidState title="Collection does not exist" />
 );
@@ -132,7 +132,8 @@ const CollectionDetailsBody = ({
     return <ErrorFetching dataName="collection information" />;
   if (!collection) return <InvalidCollection />;
 
-  const { description, name, uri } = collection;
+  const { name, uri } = collection;
+  const collectionDesc = extractNftDescription(collection.description);
   const {
     isUnlimited,
     royalty,
@@ -309,7 +310,7 @@ const CollectionDetailsBody = ({
                 collectionAddressBech={collectionAddressBech}
                 collectionAddressHex={collectionAddressHex}
                 collectionName={name}
-                description={description}
+                description={collectionDesc}
                 mutateEventes={mutateEvents?.total}
                 royalty={royalty}
                 uri={uri}

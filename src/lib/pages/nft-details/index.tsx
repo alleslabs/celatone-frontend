@@ -34,6 +34,7 @@ import { getIpfsUrl } from "lib/services/utils";
 import { zHexAddr32 } from "lib/types";
 import { zBechAddr32 } from "lib/types";
 import { truncate } from "lib/utils";
+import { extractNftDescription } from "lib/utils/nftDescription";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -99,9 +100,12 @@ const NftDetailsBody = ({
   if (isCollectionLoading || isNftLoading) return <Loading />;
   if (!collection || !nft) return <InvalidNft />;
 
-  const { description: collectionDesc, name: collectionName } = collection;
+  const { name: collectionName } = collection;
   const { isBurned, ownerAddress, uri } = nft;
-  const description = nft.description || metadata?.description;
+  const description = extractNftDescription(
+    nft.description || metadata?.description || ""
+  );
+  const collectionDesc = extractNftDescription(collection.description);
 
   const displayCollectionName =
     collectionName.length > 20

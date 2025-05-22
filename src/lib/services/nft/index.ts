@@ -199,7 +199,6 @@ export const useNftByTokenId = (
     [
       CELATONE_QUERY_KEYS.NFT_BY_TOKEN_ID,
       collectionAddressHex,
-      collectionAddressBech,
       tokenId,
       tier,
       apiEndpoint,

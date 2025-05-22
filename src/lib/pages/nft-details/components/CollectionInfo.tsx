@@ -19,7 +19,7 @@ export const CollectionInfo = ({
       About {collectionName} Collection
     </Text>
     <Text color="gray.400" display="inline" mb={1} mt={2} variant="body2">
-      {description ?? "No description was provided by the creator."}
+      {description || "No description was provided by the creator."}
     </Text>
     <AppLink href={`/nft-collections/${collectionAddress}`}>
       <Text
