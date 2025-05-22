@@ -172,7 +172,7 @@ export const useNftCollectionData = (
       collection,
       collectionInfos: {
         ...collectionInfos,
-        royalty: collectionRoyaltyInfoEvm?.royaltyPercentage ?? 0,
+        royalty: collectionRoyaltyInfoEvm ?? 0,
       },
       isLoading: isCollectionLoading,
     };

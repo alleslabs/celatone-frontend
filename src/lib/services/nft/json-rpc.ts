@@ -98,17 +98,24 @@ export const getNftRoyaltyInfoEvm = async (
   endpoint: string,
   collectionAddress: HexAddr,
   tokenId: string
-) => {
-  const iface = new Interface(ERC721ViewAbi);
-  const data = iface.encodeFunctionData("royaltyInfo", [tokenId, 100]);
-  const result = await getEthCall(
-    endpoint,
-    null,
-    collectionAddress as HexAddr20,
-    data
-  );
-  return parseWithError(
-    zNftRoyaltyInfoEvm,
-    iface.decodeFunctionResult("royaltyInfo", result).toArray()
-  );
+): Promise<number> => {
+  try {
+    const iface = new Interface(ERC721ViewAbi);
+    // when price is 100, what is the royalty percentage?
+    const data = iface.encodeFunctionData("royaltyInfo", [tokenId, 100]);
+    const result = await getEthCall(
+      endpoint,
+      null,
+      collectionAddress as HexAddr20,
+      data
+    );
+
+    const { royaltyPercentage } = parseWithError(
+      zNftRoyaltyInfoEvm,
+      iface.decodeFunctionResult("royaltyInfo", result).toArray()
+    );
+    return royaltyPercentage;
+  } catch {
+    return 0;
+  }
 };
