@@ -131,6 +131,7 @@ export const useNftsSequencer = (
   const {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
+  const { isSequencerTier } = useTierConfig();
 
   const queryfn = useCallback(
     async (pageParam: Option<string>) =>
@@ -155,7 +156,7 @@ export const useNftsSequencer = (
     ],
     ({ pageParam }) => queryfn(pageParam),
     {
-      enabled,
+      enabled: enabled && isSequencerTier,
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
       refetchOnWindowFocus: false,
       retry: 1,
