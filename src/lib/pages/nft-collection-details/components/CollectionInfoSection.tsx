@@ -117,7 +117,7 @@ export const CollectionInfoSection = ({
         >
           <Flex flexDir={infoDirection} gap={infoGap}>
             <Text fontWeight={600} minW={24} variant="body2">
-              Collection
+              {isMoveEnabled ? "Collection" : "Contract"}
             </Text>
             <ExplorerLink
               ampCopierSection="collection-information"

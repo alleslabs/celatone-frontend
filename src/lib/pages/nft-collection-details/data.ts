@@ -163,12 +163,10 @@ export const useNftCollectionData = (
               collectionInfosWasm?.description || collection.description,
           }
         : null,
-      collectionInfos: collectionInfosWasm
-        ? {
-            ...collectionInfosDefault,
-            royalty: Number(collectionInfosWasm.royaltyInfo?.share ?? 0) * 100,
-          }
-        : undefined,
+      collectionInfos: {
+        ...collectionInfosDefault,
+        royalty: Number(collectionInfosWasm?.royaltyInfo?.share ?? 0) * 100,
+      },
       isLoading: isCollectionLoading || isCollectionInfosWasmLoading,
     };
 
