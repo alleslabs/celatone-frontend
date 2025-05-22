@@ -9,6 +9,7 @@ import type {
 
 import { useEvmConfig, useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { useResourcesByAddressRest } from "lib/services/move/resource";
+import { useNftRoyaltyInfoEvmSequencer } from "lib/services/nft";
 import {
   useNftCollectionByCollectionAddress,
   useNftCollectionInfosWasm,
@@ -127,6 +128,11 @@ export const useNftCollectionData = (
     isFetching: isCollectionInfosWasmLoading,
   } = useNftCollectionInfosWasm(collectionAddressBech);
 
+  const { data: collectionRoyaltyInfoEvm } = useNftRoyaltyInfoEvmSequencer(
+    collectionAddressHex,
+    collectionAddressBech
+  );
+
   if (isMoveEnabled)
     return {
       collection,
@@ -164,7 +170,10 @@ export const useNftCollectionData = (
   if (isEvmEnabled) {
     return {
       collection,
-      collectionInfos,
+      collectionInfos: {
+        ...collectionInfos,
+        royalty: collectionRoyaltyInfoEvm?.royaltyPercentage ?? 0,
+      },
       isLoading: isCollectionLoading,
     };
   }

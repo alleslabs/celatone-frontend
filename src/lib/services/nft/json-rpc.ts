@@ -3,8 +3,10 @@ import type { HexAddr, HexAddr20 } from "lib/types";
 
 import { Interface } from "ethers";
 import { zHexAddr } from "lib/types";
+import { parseWithError } from "lib/utils";
 
 import { getEthCall } from "../evm/json-rpc";
+import { zNftRoyaltyInfoEvm } from "../types/nft";
 
 const ERC721ViewAbi = [
   {
@@ -105,5 +107,8 @@ export const getNftRoyaltyInfoEvm = async (
     collectionAddress as HexAddr20,
     data
   );
-  return iface.decodeFunctionResult("royaltyInfo", result);
+  return parseWithError(
+    zNftRoyaltyInfoEvm,
+    iface.decodeFunctionResult("royaltyInfo", result).toArray()
+  );
 };

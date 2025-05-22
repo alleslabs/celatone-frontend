@@ -4,6 +4,7 @@ import {
   zAddr,
   zBechAddr,
   zHexAddr,
+  zHexAddr20,
   zHexAddr32,
   zPagination,
   zRemark,
@@ -163,3 +164,10 @@ export const zNftInfoWasmRest = z
     }),
   })
   .transform(({ data }) => snakeToCamel(data));
+
+export const zNftRoyaltyInfoEvm = z
+  .tuple([zHexAddr20, z.bigint().transform(Number)])
+  .transform((val) => ({
+    receiverAddress: val[0],
+    royaltyPercentage: val[1],
+  }));

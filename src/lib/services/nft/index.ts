@@ -474,17 +474,26 @@ export const useNftsByAccountByCollectionSequencer = (
   );
 };
 
-export const useNftRoyaltyInfoEvmSequencer = (collectionAddress: HexAddr) => {
+export const useNftRoyaltyInfoEvmSequencer = (
+  collectionAddressHex: HexAddr,
+  collectionAddressBech: BechAddr32
+) => {
   const evmConfig = useEvmConfig({ shouldRedirect: false });
+  const { data: nfts } = useNftsSequencer(collectionAddressBech, 1);
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.NFT_ROYALTY_INFO_EVM, collectionAddress],
-    async () => {
+    [CELATONE_QUERY_KEYS.NFT_ROYALTY_INFO_EVM, collectionAddressHex, nfts],
+    () => {
       if (!evmConfig.enabled)
         throw new Error("EVM is not enabled (useNftRoyaltyInfo)");
 
-      // TODO
-      return getNftRoyaltyInfoEvm(evmConfig.jsonRpc, collectionAddress, "a52");
+      if (!nfts || nfts.length === 0 || !nfts[0].tokenId) return null;
+
+      return getNftRoyaltyInfoEvm(
+        evmConfig.jsonRpc,
+        collectionAddressHex,
+        nfts[0].tokenId
+      );
     },
     { enabled: evmConfig.enabled }
   );
