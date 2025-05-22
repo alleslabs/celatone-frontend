@@ -487,8 +487,7 @@ export const useNftRoyaltyInfoEvmSequencer = (
       if (!evmConfig.enabled)
         throw new Error("EVM is not enabled (useNftRoyaltyInfo)");
 
-      if (!nfts || nfts.length === 0 || !nfts[0].tokenId)
-        throw new Error("NFT is not found (useNftRoyaltyInfo)");
+      if (!nfts || nfts.length === 0 || !nfts[0].tokenId) return 0;
 
       return getNftRoyaltyInfoEvm(
         evmConfig.jsonRpc,
