@@ -53,7 +53,7 @@ export const getNftCollectionByCollectionAddressSequencer = async (
         collectionAddressBech
       );
 
-    // Remove this when backend fix the `/indexer/nft/v1/collections` endpoint
+    // TEMPORARY PATCH: Remove this when backend fix the `/indexer/nft/v1/collections` endpoint
     const { data: nftsResponse } = await axios.get(
       `${endpoint}/indexer/nft/v1/tokens/by_collection/${encodeURI(collectionAddressBech)}`,
       {
@@ -64,7 +64,7 @@ export const getNftCollectionByCollectionAddressSequencer = async (
     );
     const currentSupply = parseWithError(zNftsResponseSequencer, nftsResponse)
       .pagination.total;
-    // end of remove
+    // end of patch
 
     return {
       creatorAddress: collection.creator,
@@ -74,12 +74,16 @@ export const getNftCollectionByCollectionAddressSequencer = async (
       uri: collection.uri,
     };
   } catch {
-    if (isMove) {
-      // Fallback to lite version if the collection is not found (Support Move only)
-      return getCollectionByCollectionAddressMoveRest(
-        endpoint,
-        collectionAddressHex
-      );
+    try {
+      if (isMove) {
+        // Fallback to lite version if the collection is not found (Support Move only)
+        return await getCollectionByCollectionAddressMoveRest(
+          endpoint,
+          collectionAddressHex
+        );
+      }
+    } catch {
+      // ignore and return null below
     }
 
     return null;

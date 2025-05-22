@@ -171,13 +171,13 @@ export const useSearchHandler = (
 
     return false;
   }, [
-    isNft,
+    debouncedKeyword,
+    isEvm,
     isLiteTier,
     isMove,
-    debouncedKeyword,
+    isNft,
     isWasm,
     validateContractAddress,
-    isEvm,
   ]);
 
   const { data: nftCollectionData, isFetching: nftCollectionFetching } =

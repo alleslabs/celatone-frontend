@@ -38,6 +38,7 @@ import { zHexAddr32 } from "lib/types";
 import { zBechAddr32 } from "lib/types";
 import { isHexModuleAddress } from "lib/utils";
 import { extractNftDescription } from "lib/utils/nftDescription";
+import { isUndefined } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
@@ -128,9 +129,9 @@ const CollectionDetailsBody = ({
   );
 
   if (isCollectionDataLoading) return <Loading withBorder />;
-  if (!collection || !collectionInfos)
+  if (isUndefined(collection) || isUndefined(collectionInfos))
     return <ErrorFetching dataName="collection information" />;
-  if (!collection) return <InvalidCollection />;
+  if (collection === null) return <InvalidCollection />;
 
   const { name, uri } = collection;
   const collectionDesc = extractNftDescription(collection.description);

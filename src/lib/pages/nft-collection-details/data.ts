@@ -3,7 +3,7 @@ import type {
   BechAddr32,
   HexAddr,
   HexAddr32,
-  Nullable,
+  Nullish,
   Option,
 } from "lib/types";
 
@@ -44,7 +44,7 @@ interface CollectionInfosResponse {
 }
 
 interface CollectionDataResponse extends CollectionInfosResponse {
-  collection: Nullable<CollectionByCollectionAddressResponse>;
+  collection: Nullish<CollectionByCollectionAddressResponse>;
 }
 
 // MOVE
@@ -109,7 +109,7 @@ export const useNftCollectionData = (
   // ############################################################
   // ########################## Base ############################
   // ############################################################
-  const { data: collection = null, isLoading: isCollectionLoading } =
+  const { data: collection, isLoading: isCollectionLoading } =
     useNftCollectionByCollectionAddress(
       collectionAddressBech,
       collectionAddressHex
@@ -128,7 +128,10 @@ export const useNftCollectionData = (
     isFetching: isCollectionInfosWasmLoading,
   } = useNftCollectionInfosWasm(collectionAddressBech);
 
-  const { data: collectionRoyaltyInfoEvm } = useNftRoyaltyInfoEvmSequencer(
+  const {
+    data: collectionRoyaltyInfoEvm,
+    isFetching: isCollectionInfosEvmLoading,
+  } = useNftRoyaltyInfoEvmSequencer(
     collectionAddressHex,
     collectionAddressBech
   );
@@ -140,7 +143,7 @@ export const useNftCollectionData = (
       isLoading: isCollectionLoading || isCollectionInfosMoveLoading,
     };
 
-  const collectionInfos: CollectionInfos = {
+  const collectionInfosDefault: CollectionInfos = {
     isUnlimited: false,
     royalty: 0,
     supplies: {
@@ -160,27 +163,29 @@ export const useNftCollectionData = (
               collectionInfosWasm?.description || collection.description,
           }
         : null,
-      collectionInfos: {
-        ...collectionInfos,
-        royalty: Number(collectionInfosWasm?.royaltyInfo?.share ?? 0) * 100,
-      },
+      collectionInfos: collectionInfosWasm
+        ? {
+            ...collectionInfosDefault,
+            royalty: Number(collectionInfosWasm.royaltyInfo?.share ?? 0) * 100,
+          }
+        : undefined,
       isLoading: isCollectionLoading || isCollectionInfosWasmLoading,
     };
 
   if (isEvmEnabled) {
     return {
       collection,
-      collectionInfos: {
-        ...collectionInfos,
-        royalty: collectionRoyaltyInfoEvm ?? 0,
-      },
-      isLoading: isCollectionLoading,
+      collectionInfos: !isUndefined(collectionRoyaltyInfoEvm)
+        ? {
+            ...collectionInfosDefault,
+            royalty: collectionRoyaltyInfoEvm,
+          }
+        : undefined,
+      isLoading: isCollectionLoading || isCollectionInfosEvmLoading,
     };
   }
 
-  return {
-    collection,
-    collectionInfos,
-    isLoading: isCollectionLoading,
-  };
+  throw new Error(
+    "Required at least one VM to get collection data (useNftCollectionData)"
+  );
 };

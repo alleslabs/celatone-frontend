@@ -486,7 +486,8 @@ export const useNftRoyaltyInfoEvmSequencer = (
       if (!evmConfig.enabled)
         throw new Error("EVM is not enabled (useNftRoyaltyInfo)");
 
-      if (!nfts || nfts.length === 0 || !nfts[0].tokenId) return null;
+      if (!nfts || nfts.length === 0 || !nfts[0].tokenId)
+        throw new Error("NFT is not found (useNftRoyaltyInfo)");
 
       return getNftRoyaltyInfoEvm(
         evmConfig.jsonRpc,
@@ -494,6 +495,6 @@ export const useNftRoyaltyInfoEvmSequencer = (
         nfts[0].tokenId
       );
     },
-    { enabled: evmConfig.enabled }
+    { enabled: evmConfig.enabled, refetchOnWindowFocus: false, retry: 1 }
   );
 };
