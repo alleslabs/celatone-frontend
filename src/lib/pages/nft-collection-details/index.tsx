@@ -29,7 +29,7 @@ import { TierSwitcher } from "lib/components/TierSwitcher";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useNfts } from "lib/services/nft";
+import { useNfts, useNftsSequencer } from "lib/services/nft";
 import {
   useNftCollectionActivities,
   useNftCollectionMutateEvents,
@@ -80,12 +80,18 @@ const CollectionDetailsBody = ({
     isLoading: isCollectionDataLoading,
   } = useNftCollectionData(collectionAddressBech, collectionAddressHex);
 
-  const { data: nfts, isFetching: isNftsLoading } = useNfts(
+  const { data: nftsFull, isFetching: isNftsLoadingFull } = useNfts(
     collectionAddressBech,
     collectionAddressHex,
     6,
     0
   );
+
+  const { data: nftsSequencer, isFetching: isNftsLoadingSequencer } =
+    useNftsSequencer(collectionAddressBech, 6);
+
+  const nfts = isFullTier ? nftsFull?.items : nftsSequencer;
+  const isNftsLoading = isFullTier ? isNftsLoadingFull : isNftsLoadingSequencer;
 
   // Enable when isFullTier is true
   const { data: activities } = useNftCollectionActivities(
@@ -296,7 +302,7 @@ const CollectionDetailsBody = ({
               />
               <CollectionSuppliesOverview
                 isLoading={isNftsLoading}
-                nfts={nfts?.items}
+                nfts={nfts}
                 totalCount={currentSupply}
                 onViewMore={handleTabChange(TabIndex.Supplies)}
               />

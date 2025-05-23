@@ -1,19 +1,26 @@
 import type { BechAddr32, HexAddr32 } from "lib/types";
 
-import { useMetadata, useNfts } from "lib/services/nft";
+import { useTierConfig } from "lib/app-provider";
+import { useMetadata, useNfts, useNftsSequencer } from "lib/services/nft";
 
 export const useGetFirstNftAsCollectionImage = (
   collectionAddressBech: BechAddr32,
   collectionAddressHex: HexAddr32
 ) => {
-  // Note: Use limit 10 and offset 0 for the sake of performance when user gets into the details page
-  const { data: nfts } = useNfts(
+  const { isFullTier } = useTierConfig();
+
+  // Note: Use limit 6 for the sake of performance when user gets into the details page
+  const { data: nftsFull } = useNfts(
     collectionAddressBech,
     collectionAddressHex,
-    10,
+    6,
     0
   );
 
-  const { data: metadata } = useMetadata(nfts?.items?.[0]?.uri ?? "");
+  const { data: nftsSequencer } = useNftsSequencer(collectionAddressBech, 6);
+
+  const nfts = isFullTier ? nftsFull?.items : nftsSequencer;
+
+  const { data: metadata } = useMetadata(nfts?.[0]?.uri ?? "");
   return metadata?.image;
 };
