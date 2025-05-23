@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
+  useEvmConfig,
   useInternalNavigate,
   useMobile,
   useMoveConfig,
@@ -36,6 +37,8 @@ import {
 import { zHexAddr32 } from "lib/types";
 import { zBechAddr32 } from "lib/types";
 import { isHexModuleAddress } from "lib/utils";
+import { extractNftDescription } from "lib/utils/nftDescription";
+import { isUndefined } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
@@ -48,9 +51,8 @@ import { CollectionSuppliesSequencer } from "./components/CollectionSuppliesSequ
 import { CollectionSupplyInfo } from "./components/CollectionSupplyInfo";
 import { ActivitiesFull, ActivitiesSequencer } from "./components/tables";
 import { CollectionMutateEvents } from "./components/tables/CollectionMutateEvents";
-import { useCollectionData } from "./data";
+import { useNftCollectionData } from "./data";
 import { TabIndex, zCollectionDetailQueryParams } from "./types";
-
 const InvalidCollection = () => (
   <InvalidState title="Collection does not exist" />
 );
@@ -65,6 +67,7 @@ const CollectionDetailsBody = ({
   const navigate = useInternalNavigate();
   const { isFullTier } = useTierConfig();
   const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
+  const { enabled: isEvmEnabled } = useEvmConfig({ shouldRedirect: false });
   const formatAddresses = useFormatAddresses();
 
   const formattedAddresses = formatAddresses(collectionAddress);
@@ -75,7 +78,7 @@ const CollectionDetailsBody = ({
     collection,
     collectionInfos,
     isLoading: isCollectionDataLoading,
-  } = useCollectionData(collectionAddressBech, collectionAddressHex);
+  } = useNftCollectionData(collectionAddressBech, collectionAddressHex);
 
   const { data: nftsFull, isFetching: isNftsLoadingFull } = useNfts(
     collectionAddressBech,
@@ -126,11 +129,12 @@ const CollectionDetailsBody = ({
   );
 
   if (isCollectionDataLoading) return <Loading withBorder />;
-  if (!collection || !collectionInfos)
+  if (isUndefined(collection) || isUndefined(collectionInfos))
     return <ErrorFetching dataName="collection information" />;
-  if (!collection) return <InvalidCollection />;
+  if (collection === null) return <InvalidCollection />;
 
-  const { description, name, uri } = collection;
+  const { name, uri } = collection;
+  const collectionDesc = extractNftDescription(collection.description);
   const {
     isUnlimited,
     royalty,
@@ -193,16 +197,24 @@ const CollectionDetailsBody = ({
             mt={{ base: 2, md: 0 }}
           >
             <Text color="text.dark" variant="body2">
-              Collection address:
+              {isMoveEnabled ? "Collection address:" : "Collection contract:"}
             </Text>
-            <Tooltip label="View as Account Address">
+            <Tooltip
+              label={
+                isMoveEnabled
+                  ? "View as Account Address"
+                  : "View as Contract Address"
+              }
+            >
               <ExplorerLink
                 ampCopierSection="collection-addresss-top"
                 fixedHeight={false}
                 maxWidth="full"
                 textFormat="normal"
                 type="contract_address"
-                value={collectionAddress}
+                value={
+                  isEvmEnabled ? collectionAddressHex : collectionAddressBech
+                }
               />
             </Tooltip>
           </Flex>
@@ -265,7 +277,7 @@ const CollectionDetailsBody = ({
           <CustomTab
             count={activities?.total}
             hidden={!isMoveEnabled}
-            isDisabled={!activities?.total}
+            isDisabled={(!activities?.total && isFullTier) || !isMoveEnabled}
             onClick={handleTabChange(TabIndex.Activities)}
           >
             Activities
@@ -299,7 +311,7 @@ const CollectionDetailsBody = ({
                 collectionAddressBech={collectionAddressBech}
                 collectionAddressHex={collectionAddressHex}
                 collectionName={name}
-                desc={description}
+                description={collectionDesc}
                 mutateEventes={mutateEvents?.total}
                 royalty={royalty}
                 uri={uri}
@@ -353,7 +365,7 @@ const CollectionDetailsBody = ({
 const CollectionDetails = () => {
   useTierConfig({ minTier: "sequencer" });
   const router = useRouter();
-  const { validateContractAddress } = useValidateAddress();
+  const { isSomeValidAddress } = useValidateAddress();
   const validated = zCollectionDetailQueryParams.safeParse(router.query);
 
   useEffect(() => {
@@ -364,7 +376,7 @@ const CollectionDetails = () => {
 
   if (
     !validated.success ||
-    (validateContractAddress(validated.data.collectionAddress) !== null &&
+    (!isSomeValidAddress(validated.data.collectionAddress) &&
       !isHexModuleAddress(validated.data.collectionAddress))
   )
     return <InvalidCollection />;

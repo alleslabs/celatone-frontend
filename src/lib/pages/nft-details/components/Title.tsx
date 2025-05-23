@@ -10,7 +10,8 @@ interface TitleProps {
   collectionAddress: HexAddr32;
   displayCollectionName: string;
   isBurned: boolean;
-  nftAddress: HexAddr32;
+  nftAddress?: HexAddr32;
+  nftName?: string;
   tokenId: string;
 }
 
@@ -19,9 +20,11 @@ export const Title = ({
   displayCollectionName,
   isBurned,
   nftAddress,
+  nftName,
   tokenId,
 }: TitleProps) => {
   const isMobile = useMobile();
+
   return (
     <Flex direction="column" w="full">
       {isBurned && (
@@ -44,10 +47,12 @@ export const Title = ({
             variant={{ base: "h6", md: "h5" }}
             wordBreak="break-word"
           >
-            {tokenId}
+            {nftName || tokenId}
           </Heading>
         </Flex>
-        {!isMobile && <ViewResourceButton nftAddress={nftAddress} />}
+        {!isMobile && nftAddress && (
+          <ViewResourceButton nftAddress={nftAddress} />
+        )}
       </Flex>
     </Flex>
   );

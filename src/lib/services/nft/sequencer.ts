@@ -33,7 +33,6 @@ export const getNftsSequencerLoop = async (
         {
           params: {
             "pagination.key": paginationKey,
-            "pagination.reverse": true,
           },
         }
       )

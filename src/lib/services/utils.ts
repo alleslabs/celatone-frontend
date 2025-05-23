@@ -33,14 +33,12 @@ const callQueryFn = async <T>(
 export const handleQueryByTier = async <R>({
   queryFull,
   queryLite,
-  queryMesa,
   querySequencer,
   threshold = "lite",
   tier,
 }: {
   queryFull?: () => Promise<R>;
   queryLite?: () => Promise<R>;
-  queryMesa?: () => Promise<R>;
   querySequencer?: () => Promise<R>;
   threshold: ChainConfig["tier"];
   tier: ChainConfig["tier"];
@@ -59,8 +57,6 @@ export const handleQueryByTier = async <R>({
       return callQueryFn("full", queryFull);
     case "lite":
       return callQueryFn("lite", queryLite);
-    case "mesa":
-      return callQueryFn("mesa", queryMesa);
     case "sequencer":
       return callQueryFn("sequencer", querySequencer);
     default:

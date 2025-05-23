@@ -1,10 +1,16 @@
 import type { BechAddr32, HexAddr32 } from "lib/types";
 
 import { Flex, Heading, Link, Text } from "@chakra-ui/react";
-import { useMobile, useMoveConfig, useTierConfig } from "lib/app-provider";
+import {
+  useEvmConfig,
+  useMobile,
+  useMoveConfig,
+  useTierConfig,
+} from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useNftCollectionCreator } from "lib/services/nft-collection";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -15,7 +21,7 @@ interface CollectionInfoSectionProps {
   collectionAddressBech: BechAddr32;
   collectionAddressHex: HexAddr32;
   collectionName: string;
-  desc: string;
+  description: string;
   mutateEventes?: number;
   onClickActivities: () => void;
   onClickMutateEvents: () => void;
@@ -28,7 +34,7 @@ export const CollectionInfoSection = ({
   collectionAddressBech,
   collectionAddressHex,
   collectionName,
-  desc,
+  description,
   mutateEventes,
   onClickActivities,
   onClickMutateEvents,
@@ -38,6 +44,9 @@ export const CollectionInfoSection = ({
   const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
   const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
+  const { enabled: isEvmEnabled } = useEvmConfig({ shouldRedirect: false });
+  const formatAddresses = useFormatAddresses();
+
   const { data: collectionCreator, isLoading } = useNftCollectionCreator(
     collectionAddressBech,
     collectionAddressHex
@@ -47,6 +56,7 @@ export const CollectionInfoSection = ({
   if (!collectionCreator) return null;
 
   const { creatorAddress, height, timestamp, txhash } = collectionCreator;
+  const formattedCreatorAddress = formatAddresses(creatorAddress);
   const infoDirection = isMobile ? "column" : "row";
   const infoGap = isMobile ? 1 : 4;
   return (
@@ -81,7 +91,11 @@ export const CollectionInfoSection = ({
               fixedHeight
               showCopyOnHover
               type="user_address"
-              value={creatorAddress}
+              value={
+                isEvmEnabled
+                  ? formattedCreatorAddress.hex
+                  : formattedCreatorAddress.address
+              }
             />
           </LabelText>
           <LabelText label="Created transaction">
@@ -103,7 +117,7 @@ export const CollectionInfoSection = ({
         >
           <Flex flexDir={infoDirection} gap={infoGap}>
             <Text fontWeight={600} minW={24} variant="body2">
-              Collection
+              {isMoveEnabled ? "Collection" : "Contract"}
             </Text>
             <ExplorerLink
               ampCopierSection="collection-information"
@@ -112,9 +126,12 @@ export const CollectionInfoSection = ({
               showCopyOnHover
               textFormat="normal"
               type="user_address"
-              value={collectionAddressBech}
+              value={
+                isEvmEnabled ? collectionAddressHex : collectionAddressBech
+              }
             />
           </Flex>
+
           <Flex flexDir={infoDirection} gap={infoGap}>
             <Text fontWeight={600} minW={24} variant="body2">
               Name
@@ -129,42 +146,46 @@ export const CollectionInfoSection = ({
               {collectionName || "Untitled collection"}
             </Text>
           </Flex>
-          <Flex flexDir={infoDirection} gap={infoGap}>
-            <Text fontWeight={600} minW={24} variant="body2">
-              Description
-            </Text>
-            <Text color="text.dark" variant="body2" wordBreak="break-word">
-              {desc || "No description was provided by the creator."}
-            </Text>
-          </Flex>
-          <Flex flexDir={infoDirection} gap={infoGap}>
-            <Text fontWeight={600} minW={24} variant="body2">
-              Uri
-            </Text>
-            {uri ? (
-              <Link
-                href={uri}
-                target="_blank"
-                variant="body2"
-                wordBreak="break-all"
-              >
-                {uri}
-              </Link>
-            ) : (
-              <Text color="text.dark" variant="body2" wordBreak="break-word">
-                No URI was provided by the creator.
-              </Text>
-            )}
-          </Flex>
 
           {isMoveEnabled && (
             <Flex flexDir={infoDirection} gap={infoGap}>
               <Text fontWeight={600} minW={24} variant="body2">
-                Royalty
+                Description
               </Text>
-              <Text variant="body2">{royalty}%</Text>
+              <Text color="text.dark" variant="body2" wordBreak="break-word">
+                {description || "No description was provided by the creator."}
+              </Text>
             </Flex>
           )}
+
+          {isMoveEnabled && (
+            <Flex flexDir={infoDirection} gap={infoGap}>
+              <Text fontWeight={600} minW={24} variant="body2">
+                Uri
+              </Text>
+              {uri ? (
+                <Link
+                  href={uri}
+                  target="_blank"
+                  variant="body2"
+                  wordBreak="break-all"
+                >
+                  {uri}
+                </Link>
+              ) : (
+                <Text color="text.dark" variant="body2" wordBreak="break-word">
+                  No URI was provided by the creator.
+                </Text>
+              )}
+            </Flex>
+          )}
+
+          <Flex flexDir={infoDirection} gap={infoGap}>
+            <Text fontWeight={600} minW={24} variant="body2">
+              Royalty
+            </Text>
+            <Text variant="body2">{royalty}%</Text>
+          </Flex>
         </Flex>
       </Flex>
       <Flex flexDir={infoDirection} gap={{ base: 4, md: 8 }}>

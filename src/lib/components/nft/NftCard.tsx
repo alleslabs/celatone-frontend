@@ -1,15 +1,17 @@
-import type { HexAddr32, Nullable, Option } from "lib/types";
+import type { Addr, HexAddr32, Nullable, Option } from "lib/types";
 
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
+import { useEvmConfig, useMoveConfig } from "lib/app-provider";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useMetadata } from "lib/services/nft";
 import { getIpfsUrl } from "lib/services/utils";
 
 import { AppLink } from "../AppLink";
 
 interface NftCardProps {
-  collectionAddress: HexAddr32;
+  collectionAddress: Addr;
   collectionName: Option<string>;
   nftAddress: Nullable<HexAddr32>;
   showCollection?: boolean;
@@ -18,7 +20,7 @@ interface NftCardProps {
 }
 
 export const NftCard = ({
-  collectionAddress,
+  collectionAddress: collectionAddressParam,
   collectionName,
   nftAddress,
   showCollection = false,
@@ -26,13 +28,20 @@ export const NftCard = ({
   uri,
 }: NftCardProps) => {
   const { data: metadata } = useMetadata(uri);
-  const image = metadata?.image ? getIpfsUrl(metadata.image) : undefined;
+
+  const { enabled: isEvmEnabled } = useEvmConfig({ shouldRedirect: false });
+  const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
+  const formatAddresses = useFormatAddresses();
+
+  const formattedCollectionAddress = formatAddresses(collectionAddressParam);
+  const collectionAddress = isEvmEnabled
+    ? formattedCollectionAddress.hex
+    : formattedCollectionAddress.address;
 
   return (
     <Flex direction="column" minW="full">
       <AppLink
-        style={{ pointerEvents: nftAddress ? "auto" : "none" }}
-        href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
+        href={`/nft-collections/${collectionAddress}/nft/${isMoveEnabled ? nftAddress : tokenId}`}
         onClick={() => track(AmpEvent.USE_NFT_CARD, { showCollection })}
       >
         <Box mb={2} paddingBottom="100%" position="relative" width="100%">
@@ -46,7 +55,7 @@ export const NftCard = ({
             left={0}
             objectFit="contain"
             position="absolute"
-            src={image}
+            src={metadata?.image ? getIpfsUrl(metadata.image) : undefined}
             top={0}
             width="100%"
           />
