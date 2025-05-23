@@ -70,7 +70,8 @@ export const NavDrawer = () => {
         navMenuTmp = getNavDrawerSequencer(
           govConfig.enabled,
           wasmConfig.enabled,
-          moveConfig.enabled
+          moveConfig.enabled,
+          nftConfig.enabled
         );
         break;
       default:
