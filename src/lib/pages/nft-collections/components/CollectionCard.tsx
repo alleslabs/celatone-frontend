@@ -1,4 +1,5 @@
 import type { Collection } from "lib/services/types";
+import type { BechAddr32, HexAddr32 } from "lib/types";
 
 import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { useEvmConfig, useMobile } from "lib/app-provider";
@@ -11,6 +12,8 @@ import { getIpfsUrl } from "lib/services/utils";
 import { extractNftDescription } from "lib/utils/nftDescription";
 import { useMemo } from "react";
 
+import { useGetFirstNftAsCollectionImage } from "../data";
+
 interface CollectionCardProps {
   collectionInfo: Collection;
 }
@@ -22,10 +25,9 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
   const { enabled: isEvmEnabled } = useEvmConfig({ shouldRedirect: false });
   const formatAddresses = useFormatAddresses();
 
+  const formattedCollection = formatAddresses(collectionInfo.collectionAddress);
+
   const { collectionAddress, creator } = useMemo(() => {
-    const formattedCollection = formatAddresses(
-      collectionInfo.collectionAddress
-    );
     const formattedCreator = collectionInfo.creator
       ? formatAddresses(collectionInfo.creator)
       : { address: undefined, hex: undefined };
@@ -37,11 +39,19 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
       creator: formattedCreator[addressKey],
     };
   }, [
-    formatAddresses,
-    collectionInfo.collectionAddress,
     collectionInfo.creator,
+    formatAddresses,
     isEvmEnabled,
+    formattedCollection,
   ]);
+
+  const firstNftImage = useGetFirstNftAsCollectionImage(
+    formattedCollection.address as BechAddr32,
+    formattedCollection.hex as HexAddr32
+  );
+
+  // Note: Use collection image from metadata if available, otherwise use first nft image
+  const collectionImage = metadata?.image || firstNftImage;
 
   return (
     <AppLink href={`/nft-collections/${collectionAddress}`}>
@@ -65,7 +75,7 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
             h={{ base: 28, md: 40 }}
             minW={{ base: 28, md: 40 }}
             objectFit="contain"
-            src={metadata?.image ? getIpfsUrl(metadata.image) : undefined}
+            src={collectionImage ? getIpfsUrl(collectionImage) : undefined}
             w={{ base: 28, md: 40 }}
           />
           <Flex

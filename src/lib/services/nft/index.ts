@@ -114,9 +114,7 @@ export const useNfts = (
         tier,
       }),
     {
-      // NOTE: Disable the query when tier is not full for now
-      // bring it back when we update our kvindexer
-      enabled: tier === "full" ? enabled : false,
+      enabled,
       refetchOnWindowFocus: false,
       retry: 1,
     }
