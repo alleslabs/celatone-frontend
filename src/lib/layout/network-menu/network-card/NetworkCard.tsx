@@ -1,13 +1,9 @@
 import type { Option } from "lib/types";
 
 import { Box, Flex, Text } from "@chakra-ui/react";
-import {
-  useCelatoneApp,
-  useChainConfigs,
-  useMobile,
-  useSelectChain,
-} from "lib/app-provider";
+import { useCelatoneApp, useChainConfigs, useMobile } from "lib/app-provider";
 import { observer } from "mobx-react-lite";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
 import { NetworkImage } from "../NetworkImage";
@@ -55,18 +51,23 @@ export const NetworkCard = observer(
     onClose,
     setCursor,
   }: NetworkCardProps) => {
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
     const { chainConfigs } = useChainConfigs();
     const isMobile = useMobile();
     const { currentChainId } = useCelatoneApp();
-    const selectChain = useSelectChain();
 
     const handleClick = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        selectChain(chainId);
+        const redirectionEndpoint =
+          pathname.replace(`/${currentChainId}`, `/${chainId}`) +
+          `?${searchParams.toString()}`;
+
+        window.location.href = redirectionEndpoint;
         onClose();
       },
-      [selectChain, chainId, onClose]
+      [chainId, currentChainId, onClose, pathname, searchParams]
     );
 
     const isSelected = chainId === currentChainId;
