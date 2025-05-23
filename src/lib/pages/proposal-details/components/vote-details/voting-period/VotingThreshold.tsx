@@ -78,19 +78,20 @@ export const VotingThreshold = ({
           </Flex>
           <Flex align="center" gap={12}>
             <Flex direction="column" flex="2 2 0" gap={4}>
+              <VpPercentThreshold isCompact={false} votesInfo={votesInfo} />
               <VoteThresholdBar
                 isCompact={false}
                 threshold={threshold}
                 votesInfo={votesInfo}
               />
-              <VpPercentThreshold isCompact={false} votesInfo={votesInfo} />
+              <VotingSummaryAlert />
             </Flex>
             <Flex
               borderLeft="1px solid var(--chakra-colors-gray-700)"
               direction="column"
               flex="1 1 0"
               gap={2}
-              h="fit-content"
+              h="100%"
               pl={6}
             >
               <VotingResult
@@ -107,7 +108,6 @@ export const VotingThreshold = ({
               />
             </Flex>
           </Flex>
-          <VotingSummaryAlert />
         </>
       )}
     </Flex>
