@@ -1,5 +1,6 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { extractParams } from "lib/pages/proposal-details/utils";
 
@@ -11,6 +12,19 @@ import { VoteThresholdBadge } from "../../VoteThresholdBadge";
 import { VoteThresholdBar } from "../../VoteThresholdBar";
 import { VpPercentThreshold } from "../../VpPercentThreshold";
 import { VotingResult } from "./VotingResult";
+
+const VotingSummaryAlert = () => (
+  <Flex alignItems="center" gap={2}>
+    <CustomIcon boxSize={4} color="gray.500" name="info-circle-solid" />
+    <Text color="gray.500" variant="body2">
+      The percentages shown on the bar{" "}
+      <Text as="span" color="gray.500" fontWeight={700}>
+        exclude Abstain votes
+      </Text>
+      . Only Yes, No, and No with veto votes are considered.
+    </Text>
+  </Flex>
+);
 
 export const VotingThreshold = ({
   isLoading,
@@ -49,6 +63,7 @@ export const VotingThreshold = ({
             votesInfo={votesInfo}
           />
           <VpPercentThreshold isCompact votesInfo={votesInfo} />
+          <VotingSummaryAlert />
         </>
       ) : (
         <>
@@ -92,6 +107,7 @@ export const VotingThreshold = ({
               />
             </Flex>
           </Flex>
+          <VotingSummaryAlert />
         </>
       )}
     </Flex>
