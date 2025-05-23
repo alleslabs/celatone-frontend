@@ -102,8 +102,8 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       '@initia/react-app-shell':
-        specifier: 1.0.9
-        version: 1.0.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: 1.1.0
+        version: 1.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@initia/react-wallet-widget':
         specifier: 1.6.3
         version: 1.6.3(wviymr35qcrrm3q6tmsun2q62i)
@@ -2403,8 +2403,8 @@ packages:
   '@initia/opinit.proto@1.0.0':
     resolution: {integrity: sha512-I/VG4PFLEdGyb0qAxKImbA2le1SXeDlBtGRu/0qAiEq70OxEViQm2s3/Cme2vjBxS6Kx5vanyRHcOAhzWfSRXw==}
 
-  '@initia/react-app-shell@1.0.9':
-    resolution: {integrity: sha512-YyHQ9a1JrfTOIgvBbStXwoJXR+TG2cQjIBoYzDRQ1pTyPuZz6ySVCySFmKR6JKjX5h1F6MsZZmWj6P5Ua8tuqA==}
+  '@initia/react-app-shell@1.1.0':
+    resolution: {integrity: sha512-oc3PWZ42kFqoSuwN8LHhImUSZuPLyJdZcKEosXUK0327hs+a5Xnup/mSsLFQ3xitkXd+5BPZsnMmpouN1tacvg==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -13426,7 +13426,7 @@ snapshots:
       long: 5.3.1
       protobufjs: 7.4.0
 
-  '@initia/react-app-shell@1.0.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@initia/react-app-shell@1.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
