@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 import { CollectionList } from "./CollectionList";
 
-export const Collections = () => {
+export const CollectionsFull = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebounce(searchKeyword);
 

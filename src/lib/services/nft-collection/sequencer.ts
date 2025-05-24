@@ -16,15 +16,29 @@ import type {
   Activity,
   CollectionByCollectionAddressResponse,
   CollectionCreatorResponse,
+  CollectionsResponseSequencer,
 } from "../types";
 
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import {
   zCollectionByCollectionAddressResponseSequencer,
   zCollectionsByAccountAddressResponseSequencer,
+  zCollectionsResponseSequencer,
   zNftsResponseSequencer,
 } from "../types";
-import { getCollectionByCollectionAddressRest } from "./rest";
+import { getCollectionByCollectionAddressMoveRest } from "./rest";
+
+// ####### NFT COLLECTION #######
+const getNftCollectionByCollectionAddressBaseSequencer = async (
+  endpoint: string,
+  collectionAddressBech: BechAddr32
+) => {
+  const { data } = await axios.get(
+    `${endpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddressBech)}`
+  );
+
+  return parseWithError(zCollectionByCollectionAddressResponseSequencer, data);
+};
 
 export const getNftCollectionByCollectionAddressSequencer = async (
   endpoint: string,
@@ -33,16 +47,13 @@ export const getNftCollectionByCollectionAddressSequencer = async (
   isMove: boolean
 ): Promise<Nullable<CollectionByCollectionAddressResponse>> => {
   try {
-    const { data: collectionResponse } = await axios.get(
-      `${endpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddressBech)}`
-    );
+    const { collection } =
+      await getNftCollectionByCollectionAddressBaseSequencer(
+        endpoint,
+        collectionAddressBech
+      );
 
-    const collection = parseWithError(
-      zCollectionByCollectionAddressResponseSequencer,
-      collectionResponse
-    );
-
-    // Remove this when backend fix the `/indexer/nft/v1/collections` endpoint
+    // TEMPORARY PATCH: Remove this when backend fix the `/indexer/nft/v1/collections` endpoint
     const { data: nftsResponse } = await axios.get(
       `${endpoint}/indexer/nft/v1/tokens/by_collection/${encodeURI(collectionAddressBech)}`,
       {
@@ -53,44 +64,33 @@ export const getNftCollectionByCollectionAddressSequencer = async (
     );
     const currentSupply = parseWithError(zNftsResponseSequencer, nftsResponse)
       .pagination.total;
-    // end of remove
+    // end of patch
 
     return {
-      ...collection,
+      creatorAddress: collection.creator,
       currentSupply,
+      description: collection.description,
+      name: collection.name,
+      uri: collection.uri,
     };
   } catch {
-    if (isMove) {
-      // Fallback to lite version if the collection is not found (Support Move only)
-      return getCollectionByCollectionAddressRest(
-        endpoint,
-        collectionAddressHex
-      );
+    try {
+      if (isMove) {
+        // Fallback to lite version if the collection is not found (Support Move only)
+        return await getCollectionByCollectionAddressMoveRest(
+          endpoint,
+          collectionAddressHex
+        );
+      }
+    } catch {
+      // ignore and return null below
     }
 
     return null;
   }
 };
 
-export const getNftCollectionsByAccountAddressSequencer = async (
-  endpoint: string,
-  accountAddress: HexAddr
-) =>
-  axios
-    .get(
-      `${endpoint}/indexer/nft/v1/collections/by_account/${encodeURI(accountAddress)}`,
-      {
-        params: {
-          "pagination.count_total": false,
-          "pagination.reverse": true,
-        },
-      }
-    )
-    .then(({ data }) =>
-      parseWithError(zCollectionsByAccountAddressResponseSequencer, data)
-    );
-
-export const getNftCollectionCreatorSequencer = async (
+export const getNftCollectionCreatorByCollectionAddressSequencer = async (
   endpoint: string,
   prefix: string,
   collectionAddress: BechAddr32
@@ -169,3 +169,86 @@ export const getNftCollectionActivitiesSequencer = async (
     pagination: txsByCollectionAddress.pagination,
   };
 };
+
+// ####### NFT COLLECTIONS #######
+export const getNftCollectionsSequencer = async (
+  endpoint: string,
+  limit: number,
+  paginationKey: Option<string>
+) => {
+  const { data } = await axios.get(`${endpoint}/indexer/nft/v1/collections`, {
+    params: {
+      "pagination.key": paginationKey,
+      "pagination.limit": limit,
+    },
+  });
+  return parseWithError(zCollectionsResponseSequencer, data);
+};
+
+export const getNftCollecitonsByNameSequencer = async (
+  endpoint: string,
+  name: string,
+  paginationKey: Option<string>
+) => {
+  const { data } = await axios.get(
+    `${endpoint}/indexer/nft/v1/collections/by_name/${encodeURI(name)}`,
+    {
+      params: {
+        "pagination.key": paginationKey,
+      },
+    }
+  );
+
+  return parseWithError(zCollectionsResponseSequencer, data);
+};
+
+export const getNftCollectionsByCollectionAddressSequencer = async (
+  endpoint: string,
+  collectionAddressBech: BechAddr32
+): Promise<CollectionsResponseSequencer> => {
+  try {
+    const { collection } =
+      await getNftCollectionByCollectionAddressBaseSequencer(
+        endpoint,
+        collectionAddressBech
+      );
+
+    if (collection) {
+      return {
+        collections: [collection],
+        pagination: {
+          nextKey: null,
+          total: 1,
+        },
+      };
+    }
+
+    throw new Error("No collection found");
+  } catch {
+    return {
+      collections: [],
+      pagination: {
+        nextKey: null,
+        total: 0,
+      },
+    };
+  }
+};
+
+export const getNftCollectionsByAccountAddressSequencer = async (
+  endpoint: string,
+  accountAddress: HexAddr
+) =>
+  axios
+    .get(
+      `${endpoint}/indexer/nft/v1/collections/by_account/${encodeURI(accountAddress)}`,
+      {
+        params: {
+          "pagination.count_total": false,
+          "pagination.reverse": true,
+        },
+      }
+    )
+    .then(({ data }) =>
+      parseWithError(zCollectionsByAccountAddressResponseSequencer, data)
+    );

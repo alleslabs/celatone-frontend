@@ -2,11 +2,13 @@ import { useNftConfig, useTierConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import { CelatoneSeo } from "lib/components/Seo";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 
-import { Collections } from "./components/Collections";
+import { CollectionsFull } from "./components/CollectionsFull";
+import { CollectionsSequencer } from "./components/CollectionsSequencer";
 
 const NftCollections = () => {
-  useTierConfig({ minTier: "full" });
+  useTierConfig({ minTier: "sequencer" });
   useNftConfig({ shouldRedirect: true });
   return (
     <PageContainer>
@@ -16,7 +18,10 @@ const NftCollections = () => {
         subtitle="These are the most recently NFT collections created on this network"
         title="NFT collections"
       />
-      <Collections />
+      <TierSwitcher
+        full={<CollectionsFull />}
+        sequencer={<CollectionsSequencer />}
+      />
     </PageContainer>
   );
 };

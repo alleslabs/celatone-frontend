@@ -310,7 +310,7 @@ export const useContractQueryRest = (
       contractAddress,
       msg,
     ],
-    async () => getContractQueryRest(restEndpoint, contractAddress, msg),
+    () => getContractQueryRest(restEndpoint, contractAddress, msg),
     {
       refetchOnWindowFocus: false,
       retry: 1,

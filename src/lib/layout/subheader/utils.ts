@@ -29,7 +29,11 @@ export const getSubHeaderLite = (isGov: boolean, isWasm: boolean) => {
   return base;
 };
 
-export const getSubHeaderSequencer = (isGov: boolean, isWasm: boolean) => {
+export const getSubHeaderSequencer = (
+  isGov: boolean,
+  isWasm: boolean,
+  isNft: boolean
+) => {
   const base: SubHeaderMenuInfo[] = [
     { icon: "home", name: "Overview", slug: "/" },
     { icon: "file", name: "Transactions", slug: "/txs" },
@@ -52,6 +56,13 @@ export const getSubHeaderSequencer = (isGov: boolean, isWasm: boolean) => {
 
   if (isWasm)
     base.push({ icon: "code" as IconKeys, name: "Codes", slug: "/codes" });
+
+  if (isNft)
+    base.push({
+      icon: "collection" as IconKeys,
+      name: "NFTs",
+      slug: "/nft-collections",
+    });
 
   return base;
 };

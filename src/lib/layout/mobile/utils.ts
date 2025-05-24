@@ -61,7 +61,8 @@ export const getNavDrawerLite = (
 export const getNavDrawerSequencer = (
   isGov: boolean,
   isWasm: boolean,
-  isMove: boolean
+  isMove: boolean,
+  isNft: boolean
 ): MenuInfo[] => [
   {
     category: "Overview",
@@ -117,6 +118,15 @@ export const getNavDrawerSequencer = (
               icon: "query" as IconKeys,
               name: "View module",
               slug: "/interact",
+            },
+          ]
+        : []),
+      ...(isNft
+        ? [
+            {
+              icon: "collection" as IconKeys,
+              name: "NFT collections",
+              slug: "/nft-collections",
             },
           ]
         : []),

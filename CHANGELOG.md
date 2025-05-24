@@ -39,7 +39,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1333](https://github.com/alleslabs/celatone-frontend/pull/1333) Support NFT collection details, NFT details on WASM and EVM
+
 ### Improvements
+
+- [#1334](https://github.com/alleslabs/celatone-frontend/pull/1334) Upgrade Initia react-app-shell package
 
 ### Bug fixes
 

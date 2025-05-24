@@ -30,9 +30,9 @@ export const TxsFull = ({ nftAddress }: TxsFullProps) => {
   });
 
   const { data: transactions, isLoading } = useNftTransactions(
+    nftAddress,
     pageSize,
     offset,
-    nftAddress,
     { onSuccess: ({ total }) => setTotalData(total) }
   );
 

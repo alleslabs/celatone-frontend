@@ -1,4 +1,4 @@
-import type { Trait } from "lib/types";
+import type { HexAddr32, Option, Trait } from "lib/types";
 
 import {
   Flex,
@@ -16,18 +16,18 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 
 interface AttributesModalProps {
-  address: string;
   attributes: Trait[];
   isOpen: boolean;
+  nftAddress: Option<HexAddr32>;
   onClose: () => void;
   title: string;
   tokenId: string;
 }
 
 export const AttributesModal = ({
-  address,
   attributes,
   isOpen,
+  nftAddress,
   onClose,
   title,
   tokenId,
@@ -58,12 +58,14 @@ export const AttributesModal = ({
               </Text>
               <Text>{tokenId}</Text>
             </Flex>
-            <Flex gap="12px">
-              <Text fontWeight={700} variant="body2" w="100px">
-                NFT Address:
-              </Text>
-              <ExplorerLink type="user_address" value={address} />
-            </Flex>
+            {nftAddress && (
+              <Flex gap="12px">
+                <Text fontWeight={700} variant="body2" w="100px">
+                  NFT Address:
+                </Text>
+                <ExplorerLink type="user_address" value={nftAddress} />
+              </Flex>
+            )}
           </Stack>
 
           <Stack spacing="8px">

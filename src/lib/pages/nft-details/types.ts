@@ -3,6 +3,6 @@ import { z } from "zod";
 
 export const zNftDetailQueryParams = z.object({
   collectionAddress: zHexAddr32,
-  nftAddress: zHexAddr32,
+  tokenId: z.string(),
 });
 export type NftDetailQueryParams = z.infer<typeof zNftDetailQueryParams>;

@@ -9,7 +9,10 @@ import {
   useCurrentChain,
   useMoveConfig,
   useTierConfig,
+  useValidateAddress,
+  useWasmConfig,
 } from "lib/app-provider";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 
 import type {
   ActivitiesResponse,
@@ -28,11 +31,15 @@ import {
   getNftCollections,
   getNftCollectionsByAccountAddress,
 } from "./api";
+import { getCollectionByCollectionAddressWasmRest } from "./rest";
 import {
+  getNftCollecitonsByNameSequencer,
   getNftCollectionActivitiesSequencer,
   getNftCollectionByCollectionAddressSequencer,
-  getNftCollectionCreatorSequencer,
+  getNftCollectionCreatorByCollectionAddressSequencer,
   getNftCollectionsByAccountAddressSequencer,
+  getNftCollectionsByCollectionAddressSequencer,
+  getNftCollectionsSequencer,
 } from "./sequencer";
 
 export const useNftCollections = (
@@ -48,13 +55,63 @@ export const useNftCollections = (
 
   return useQuery(
     [CELATONE_QUERY_KEYS.NFT_COLLECTIONS, apiEndpoint, limit, offset, search],
-    async () => getNftCollections(apiEndpoint, limit, offset, search),
+    () => getNftCollections(apiEndpoint, limit, offset, search),
     {
       refetchOnWindowFocus: false,
       retry: 1,
       ...options,
     }
   );
+};
+
+export const useNftCollectionsSequencer = (limit: number, search?: string) => {
+  const {
+    chainConfig: { rest: restEndpoint },
+  } = useCelatoneApp();
+  const formatAddresses = useFormatAddresses();
+  const { isSomeValidAddress } = useValidateAddress();
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery(
+      [
+        CELATONE_QUERY_KEYS.NFT_COLLECTIONS_SEQUENCER,
+        restEndpoint,
+        limit,
+        search ?? "",
+      ],
+      ({ pageParam }) => {
+        if (search) {
+          if (isSomeValidAddress(search)) {
+            const formattedAddress = formatAddresses(search);
+            return getNftCollectionsByCollectionAddressSequencer(
+              restEndpoint,
+              formattedAddress.address as BechAddr32
+            );
+          }
+
+          return getNftCollecitonsByNameSequencer(
+            restEndpoint,
+            search,
+            pageParam
+          );
+        }
+
+        return getNftCollectionsSequencer(restEndpoint, limit, pageParam);
+      },
+      {
+        getNextPageParam: (lastPage) =>
+          lastPage.pagination.nextKey ?? undefined,
+        refetchOnWindowFocus: false,
+      }
+    );
+
+  return {
+    data: data?.pages.flatMap((page) => page.collections),
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  };
 };
 
 export const useNftCollectionByCollectionAddress = (
@@ -103,6 +160,27 @@ export const useNftCollectionByCollectionAddress = (
   );
 };
 
+export const useNftCollectionInfosWasm = (collectionAddress: BechAddr32) => {
+  const { enabled } = useWasmConfig({ shouldRedirect: false });
+  const {
+    chainConfig: { rest: restEndpoint },
+  } = useCelatoneApp();
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.NFT_COLLECTION_INFOS_BY_COLLECTION_ADDRESS_WASM,
+      collectionAddress,
+    ],
+    () =>
+      getCollectionByCollectionAddressWasmRest(restEndpoint, collectionAddress),
+    {
+      enabled,
+      refetchOnWindowFocus: false,
+      retry: 1,
+    }
+  );
+};
+
 export const useNftCollectionCreator = (
   collectionAddressBech: BechAddr32,
   collectionAddressHex: HexAddr32
@@ -132,7 +210,7 @@ export const useNftCollectionCreator = (
             collectionAddressHex
           ),
         querySequencer: () =>
-          getNftCollectionCreatorSequencer(
+          getNftCollectionCreatorByCollectionAddressSequencer(
             restEndpoint,
             bech32Prefix,
             collectionAddressBech

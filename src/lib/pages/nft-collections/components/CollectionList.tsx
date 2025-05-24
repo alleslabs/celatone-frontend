@@ -1,8 +1,10 @@
 import type { Collection } from "lib/services/types";
 import type { Option } from "lib/types";
 
-import { GridItem, SimpleGrid } from "@chakra-ui/react";
+import { Button, Flex, GridItem, SimpleGrid } from "@chakra-ui/react";
+import { useCurrentChain, useTierConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import { ConnectWalletBtn } from "lib/components/button/ConnectWallet";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 
@@ -17,8 +19,39 @@ export const CollectionList = ({
   collections,
   isLoading,
 }: CollectionListProps) => {
+  const { isFullTier } = useTierConfig();
+  const { address } = useCurrentChain();
+
   if (isLoading) return <Loading />;
-  if (!collections) return <ErrorFetching dataName="collections" />;
+  if (!collections)
+    return isFullTier ? (
+      <ErrorFetching dataName="collections" />
+    ) : (
+      <EmptyState
+        hasBorderTop
+        imageVariant="error"
+        message="This feature is not supported on this rollup at the moment. It will be available once it's upgraded to the latest version."
+        my={12}
+        py={8}
+        withBorder={false}
+      >
+        <Flex alignItems="center" direction="row" gap={2}>
+          {address ? (
+            <>
+              For now, go to
+              <AppLink href={`/accounts/${address}/nfts`}>
+                <Button>Your account details</Button>
+              </AppLink>
+              to see your NFTs
+            </>
+          ) : (
+            <>
+              For now, <ConnectWalletBtn /> to see your NFTs
+            </>
+          )}
+        </Flex>
+      </EmptyState>
+    );
   if (!collections.length)
     return (
       <EmptyState
@@ -32,9 +65,7 @@ export const CollectionList = ({
     <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={{ base: 4, xl: 8 }}>
       {collections.map((collection) => (
         <GridItem key={collection.collectionAddress}>
-          <AppLink href={`/nft-collections/${collection.collectionAddress}`}>
-            <CollectionCard collectionInfo={collection} />
-          </AppLink>
+          <CollectionCard collectionInfo={collection} />
         </GridItem>
       ))}
     </SimpleGrid>
