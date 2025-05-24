@@ -31,8 +31,8 @@ export const getRouteOptions = (
       };
     case "NFT address":
       return {
-        pathname: "/nft-collections/[collectionAddress]/nft/[nftAddress]",
-        query: ["collectionAddress", "nftAddress"],
+        pathname: "/nft-collections/[collectionAddress]/nft/[tokenId]",
+        query: ["collectionAddress", "tokenId"],
       };
     case "NFT collection address":
       return {
