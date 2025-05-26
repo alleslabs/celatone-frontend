@@ -17,7 +17,6 @@ export const NftInfoItem = ({
     align={{ base: "start", md: isCentered ? "center" : "start" }}
     direction={{ base: "column", md: "row" }}
     gap={{ base: 0, md: 2 }}
-    height={{ md: 6 }}
     mb={{ base: 2, md: 0 }}
   >
     <Text

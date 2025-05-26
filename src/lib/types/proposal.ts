@@ -12,13 +12,13 @@ import type {
 import { z } from "zod";
 
 export enum ProposalStatus {
+  DEPOSIT_PERIOD = "DepositPeriod",
+  VOTING_PERIOD = "VotingPeriod",
+  PASSED = "Passed",
+  FAILED = "Failed",
+  REJECTED = "Rejected",
   CANCELLED = "Cancelled",
   DEPOSIT_FAILED = "Inactive",
-  DEPOSIT_PERIOD = "DepositPeriod",
-  FAILED = "Failed",
-  PASSED = "Passed",
-  REJECTED = "Rejected",
-  VOTING_PERIOD = "VotingPeriod",
 }
 export const zProposalStatus = z.nativeEnum(ProposalStatus);
 

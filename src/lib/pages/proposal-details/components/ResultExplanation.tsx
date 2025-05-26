@@ -147,16 +147,8 @@ export const ResultExplanation = ({
     if (noWithVetoTotalRatio >= vetoThreshold)
       return (
         <Text variant="body2">
-          The proposal has{" "}
-          <span
-            style={{
-              fontWeight: 700,
-            }}
-          >
-            successfully met
-          </span>{" "}
-          the voting quorum. However, the &ldquo;No with veto&rdquo; vote
-          proportion currently constitutes{" "}
+          The proposal has met the voting quorum, but &ldquo;No with veto&rdquo;
+          vote currently constitutes{" "}
           <span
             style={{
               fontWeight: 700,
@@ -164,16 +156,22 @@ export const ResultExplanation = ({
           >
             {formatPrettyPercent(noWithVetoTotalRatio)}
           </span>{" "}
-          of the total votes, including &ldquo;Abstain&rdquo;, which exceeds the{" "}
+          of the total votes, including{" "}
           <span
             style={{
-              fontWeight: 700,
+              color: "var(--chakra-colors-gray-500)",
             }}
           >
-            {formatPrettyPercent(vetoThreshold)} threshold
+            Abstain
+            <br />
+            (this may differ from the value shown on the bar, which excludes{" "}
+            <span style={{ fontWeight: 700 }}>Abstain</span>)
           </span>
-          . If the proposal concludes with this voting outcome, it will be
-          rejected regardless of &ldquo;Yes&rdquo; votes.
+          <br />
+          <br />
+          Since the veto threshold of {formatPrettyPercent(vetoThreshold)} has
+          been exceeded, the proposal will be <Rejected />, regardless of the
+          number of &ldquo;Yes&rdquo; votes, if this outcome holds.
         </Text>
       );
 

@@ -43,7 +43,11 @@ const SubHeader = () => {
         );
       case "mesa":
       case "sequencer":
-        return getSubHeaderSequencer(govConfig.enabled, wasmConfig.enabled);
+        return getSubHeaderSequencer(
+          govConfig.enabled,
+          wasmConfig.enabled,
+          nftConfig.enabled
+        );
       case "lite":
       default:
         return getSubHeaderLite(govConfig.enabled, wasmConfig.enabled);

@@ -121,7 +121,7 @@ export const ValidatorVotesTable = ({
     },
   });
 
-  const { data, isLoading } = useProposalValidatorVotes(
+  const { data, isLoading, refetch } = useProposalValidatorVotes(
     id,
     pageSize,
     offset,
@@ -195,6 +195,7 @@ export const ValidatorVotesTable = ({
   const handleOnAnswerFilterChange = (newAnswer: ProposalVoteType) => {
     setCurrentPage(1);
     setAnswerFilter(newAnswer);
+    refetch();
   };
 
   return (

@@ -120,7 +120,7 @@ const DEFAULT_COMPONENT_CONFIG: ComponentConfig = {
       bg: "gray.700",
     },
     depositPeriod: {
-      bg: "primary.darker",
+      bg: "secondary.darker",
     },
     failed: {
       bg: "error.dark",
@@ -132,7 +132,7 @@ const DEFAULT_COMPONENT_CONFIG: ComponentConfig = {
       bg: "error.dark",
     },
     votingPeriod: {
-      bg: "secondary.darker",
+      bg: "primary.darker",
     },
   },
   recentBlocks: {

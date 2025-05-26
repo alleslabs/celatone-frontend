@@ -39,6 +39,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+- [#1334](https://github.com/alleslabs/celatone-frontend/pull/1334) Upgrade Initia react-app-shell package
+
+### Bug fixes
+
+## v1.12.1
+
+### Features
+
+- [#1333](https://github.com/alleslabs/celatone-frontend/pull/1333) Support NFT collection details, NFT details on WASM and EVM
 - [#1329](https://github.com/alleslabs/celatone-frontend/pull/1329) Support contract txs sequencer tier by indexer
 
 ### Improvements
@@ -49,6 +60,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#1327](https://github.com/alleslabs/celatone-frontend/pull/1327) Support show scrollbar when table overflow
 
 ### Bug fixes
+
+- [#1330](https://github.com/alleslabs/celatone-frontend/pull/1330) Fallback Tx list to show N/A when tx is too large
 
 ## v1.12.0
 

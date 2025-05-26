@@ -35,7 +35,7 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
   const isMobileOverview = isMobile && !!onViewMore;
 
   return (
-    <Box mt={8}>
+    <Box mt={[4, 8]}>
       {isMobileOverview ? (
         <MobileTitle
           count={undefined}

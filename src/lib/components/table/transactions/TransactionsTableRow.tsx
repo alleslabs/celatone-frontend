@@ -20,6 +20,12 @@ interface TransactionsTableRowProps {
   transaction: Transaction;
 }
 
+const NARow = () => (
+  <TableRow>
+    <Text color="gray.600">N/A</Text>
+  </TableRow>
+);
+
 export const TransactionsTableRow = ({
   showAction,
   showRelations,
@@ -30,6 +36,8 @@ export const TransactionsTableRow = ({
 }: TransactionsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const isAccordion = transaction.messages.length > 1;
+  const isTxHasNoData = transaction.height === 0;
+
   return (
     <Box minW="min-content" w="full">
       <Grid
@@ -62,33 +70,51 @@ export const TransactionsTableRow = ({
             </Badge>
           )}
         </TableRow>
-        {showSuccess && (
+        {showSuccess &&
+          (isTxHasNoData ? (
+            <NARow />
+          ) : (
+            <TableRow>
+              {transaction.success ? (
+                <CustomIcon color="success.main" name="check" />
+              ) : (
+                <CustomIcon color="error.main" name="close" />
+              )}
+            </TableRow>
+          ))}
+        {isTxHasNoData ? (
           <TableRow>
-            {transaction.success ? (
-              <CustomIcon color="success.main" name="check" />
-            ) : (
-              <CustomIcon color="error.main" name="close" />
-            )}
+            <Text color="gray.600">
+              Unable to load data due to large transaction size
+            </Text>
+          </TableRow>
+        ) : (
+          <TableRow>
+            <ActionMessages transaction={transaction} />
           </TableRow>
         )}
-        <TableRow>
-          <ActionMessages transaction={transaction} />
-        </TableRow>
-        {showRelations && (
+        {showRelations &&
+          (isTxHasNoData ? (
+            <NARow />
+          ) : (
+            <TableRow>
+              <RelationChip isSigner={transaction.isSigner} />
+            </TableRow>
+          ))}
+        {isTxHasNoData ? (
+          <NARow />
+        ) : (
           <TableRow>
-            <RelationChip isSigner={transaction.isSigner} />
+            <ExplorerLink
+              showCopyOnHover
+              type="user_address"
+              value={transaction.sender}
+            />
           </TableRow>
         )}
-        <TableRow>
-          <ExplorerLink
-            showCopyOnHover
-            type="user_address"
-            value={transaction.sender}
-          />
-        </TableRow>
         {showTimestamp && (
           <>
-            {transaction.created ? (
+            {transaction.created && !isTxHasNoData ? (
               <TableRow>
                 <Flex direction="column" gap={1}>
                   <Text variant="body3">{formatUTC(transaction.created)}</Text>
@@ -98,7 +124,7 @@ export const TransactionsTableRow = ({
                 </Flex>
               </TableRow>
             ) : (
-              <TableRow>N/A</TableRow>
+              <NARow />
             )}
           </>
         )}

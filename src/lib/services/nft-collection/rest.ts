@@ -1,14 +1,17 @@
-import type { HexAddr, HexAddr32 } from "lib/types";
+import type { BechAddr32, HexAddr, HexAddr32 } from "lib/types";
 
 import { zHexAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
 import { z } from "zod";
 
-import type { CollectionByCollectionAddressResponse } from "../types";
-
 import { getMoveViewJsonRest } from "../move/module/rest";
+import {
+  type CollectionByCollectionAddressResponse,
+  zCollectionByCollectionAddressResponseWasm,
+} from "../types";
+import { getContractQueryRest } from "../wasm/contract/rest";
 
-export const getCollectionByCollectionAddressRest = async (
+export const getCollectionByCollectionAddressMoveRest = (
   endpoint: string,
   collectionAddress: HexAddr32
 ) =>
@@ -55,3 +58,16 @@ export const getCollectionByCollectionAddressRest = async (
       uri,
     })
   );
+
+export const getCollectionByCollectionAddressWasmRest = async (
+  endpoint: string,
+  collectionAddress: BechAddr32
+) => {
+  const result = await getContractQueryRest(
+    endpoint,
+    collectionAddress,
+    JSON.stringify({ collection_info: {} })
+  );
+
+  return parseWithError(zCollectionByCollectionAddressResponseWasm, result);
+};

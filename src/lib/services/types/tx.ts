@@ -140,21 +140,91 @@ const zLog = z
   .transform<Log>((val) => val);
 
 const zTxResponse = z
-  .object({
-    code: z.number(),
-    codespace: z.string(),
-    data: z.string(),
-    events: z.array(zEvent),
-    gas_used: z.string(),
-    gas_wanted: z.string(),
-    height: z.string(),
-    info: z.string(),
-    logs: z.array(zLog),
-    raw_log: z.string(),
-    timestamp: zUtcDate,
-    tx: zTx,
-    txhash: z.string(),
-  })
+  .preprocess(
+    (val) => {
+      if (
+        typeof val === "object" &&
+        val !== null &&
+        "tx" in val &&
+        val.tx === null
+      ) {
+        // NOTE: this is a dummy data when tx is too large
+        return {
+          ...val,
+          timestamp: "2025-05-08T10:45:54Z",
+          tx: {
+            auth_info: {
+              fee: {
+                amount: [
+                  {
+                    amount: "1111",
+                    denom: "uinit",
+                  },
+                ],
+                gas_limit: "11111",
+                granter: "",
+                payer: "",
+              },
+              signer_infos: [
+                {
+                  mode_info: {
+                    single: {
+                      mode: "SIGN_MODE_LEGACY_AMINO_JSON",
+                    },
+                  },
+                  public_key: {
+                    "@type": "/initia.crypto.v1beta1.ethsecp256k1.PubKey",
+                    key: "Axdt0OtFq4TF/TA4EnlF4J0Lv6E+9jFccR2/ULQVXP2a",
+                  },
+                  sequence: "1",
+                },
+              ],
+              tip: null,
+            },
+            body: {
+              extension_options: [],
+              memo: "",
+              messages: [
+                {
+                  "@type": "/cosmos.bank.v1beta1.MsgSend",
+                  amount: [
+                    {
+                      amount: "10000",
+                      denom: "uinit",
+                    },
+                  ],
+                  from_address: "init1randomaddress1234567890abcdefg",
+                  to_address: "init1randomaddress1234567890abcdefg",
+                },
+              ],
+              non_critical_extension_options: [],
+              timeout_height: "0",
+            },
+            signatures: [
+              "zCUd/XYWvwU+vbZLi6CXWIyrZhUXCK3brhjRO7NDyQh8/WaJBgSihFTX4wJilDLuYBGfnQjPFGydZSeJPyGY3w==",
+            ],
+          },
+        };
+      }
+
+      return val;
+    },
+    z.object({
+      code: z.number(),
+      codespace: z.string(),
+      data: z.string(),
+      events: z.array(zEvent),
+      gas_used: z.string(),
+      gas_wanted: z.string(),
+      height: z.string(),
+      info: z.string(),
+      logs: z.array(zLog),
+      raw_log: z.string(),
+      timestamp: zUtcDate,
+      tx: zTx,
+      txhash: z.string(),
+    })
+  )
   .transform((val) => ({
     ...snakeToCamel(val),
     logs: val.logs,

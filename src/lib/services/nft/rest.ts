@@ -1,4 +1,4 @@
-import type { HexAddr, HexAddr32 } from "lib/types";
+import type { BechAddr32, HexAddr, HexAddr32 } from "lib/types";
 
 import { zHexAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
@@ -6,12 +6,15 @@ import { parseWithError } from "lib/utils";
 import type { Nft } from "../types";
 
 import { getMoveViewJsonRest } from "../move/module/rest";
-import { zNftInfoRest } from "../types";
+import { zNftInfoMoveRest, zNftInfoWasmRest } from "../types";
+import { getContractQueryRest } from "../wasm/contract/rest";
+import { getNftOwnerEvm } from "./json-rpc";
+import { getNftUriEvm } from "./json-rpc";
 
-export const getNftHolderRest = async (
-  endpoint: string,
-  nftAddress: HexAddr32
-) =>
+// ############################################################
+// ########################## MOVE ############################
+// ############################################################
+const getNftHolderMoveRest = async (endpoint: string, nftAddress: HexAddr32) =>
   getMoveViewJsonRest(
     endpoint,
     "0x1" as HexAddr,
@@ -21,7 +24,7 @@ export const getNftHolderRest = async (
     [`"${nftAddress}"`]
   ).then((data) => parseWithError(zHexAddr, data));
 
-export const getNftInfoRest = async (endpoint: string, nftAddress: HexAddr32) =>
+const getNftInfoMoveRest = async (endpoint: string, nftAddress: HexAddr32) =>
   getMoveViewJsonRest(
     endpoint,
     "0x1" as HexAddr,
@@ -29,15 +32,15 @@ export const getNftInfoRest = async (endpoint: string, nftAddress: HexAddr32) =>
     "nft_info",
     [],
     [`"${nftAddress}"`]
-  ).then((data) => parseWithError(zNftInfoRest, data));
+  ).then((data) => parseWithError(zNftInfoMoveRest, data));
 
-export const getNftByNftAddressRest = async (
+export const getNftByNftAddressMoveRest = async (
   endpoint: string,
   nftAddress: HexAddr32
 ) =>
   Promise.all([
-    getNftHolderRest(endpoint, nftAddress),
-    getNftInfoRest(endpoint, nftAddress),
+    getNftHolderMoveRest(endpoint, nftAddress),
+    getNftInfoMoveRest(endpoint, nftAddress),
   ]).then<Nft>(([holder, info]) => ({
     collectionAddress: info.collection,
     collectionName: undefined,
@@ -48,3 +51,68 @@ export const getNftByNftAddressRest = async (
     tokenId: info.tokenId,
     uri: info.uri,
   }));
+
+// ############################################################
+// ########################## WASM ############################
+// ############################################################
+const getNftInfoWasmRest = async (
+  endpoint: string,
+  collectionAddress: BechAddr32,
+  tokenId: string
+) => {
+  const result = await getContractQueryRest(
+    endpoint,
+    collectionAddress,
+    JSON.stringify({
+      all_nft_info: {
+        token_id: tokenId,
+      },
+    })
+  );
+
+  return parseWithError(zNftInfoWasmRest, result);
+};
+
+export const getNftByTokenIdWasmRest = async (
+  endpoint: string,
+  collectionAddress: BechAddr32,
+  tokenId: string
+): Promise<Nft> => {
+  const info = await getNftInfoWasmRest(endpoint, collectionAddress, tokenId);
+
+  return {
+    collectionAddress,
+    collectionName: undefined,
+    description: undefined,
+    isBurned: false,
+    nftAddress: null,
+    ownerAddress: info.access.owner,
+    tokenId,
+    uri: info.info.tokenUri,
+  };
+};
+
+// ############################################################
+// ########################## EVM #############################
+// ############################################################
+export const getNftByTokenIdEvmRest = async (
+  endpoint: string,
+  collectionAddress: HexAddr,
+  tokenId: string
+): Promise<Nft> => {
+  const [uri, owner] = await Promise.all([
+    getNftUriEvm(endpoint, collectionAddress, tokenId),
+    getNftOwnerEvm(endpoint, collectionAddress, tokenId),
+  ]);
+
+  return {
+    collectionAddress: collectionAddress as HexAddr32,
+    collectionName: undefined,
+    description: undefined,
+    isBurned: false,
+    nftAddress: null,
+    ownerAddress: owner,
+    tokenId,
+    uri,
+  };
+};

@@ -1,4 +1,4 @@
-import type { HexAddr32, Trait } from "lib/types";
+import type { HexAddr32, Option, Trait } from "lib/types";
 
 import {
   Badge,
@@ -18,7 +18,7 @@ import { AttributesModal } from "./AttributesModal";
 
 interface AttributesProps {
   attributes: Trait[];
-  nftAddress: HexAddr32;
+  nftAddress: Option<HexAddr32>;
   tokenId: string;
 }
 
@@ -81,9 +81,9 @@ export const Attributes = ({
         </Button>
       )}
       <AttributesModal
-        address={nftAddress}
         attributes={attributes}
         isOpen={isOpen}
+        nftAddress={nftAddress}
         title="Attributes"
         tokenId={tokenId}
         onClose={onClose}

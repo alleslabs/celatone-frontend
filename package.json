@@ -1,6 +1,6 @@
 {
   "name": "celatone",
-  "version": "1.12.0",
+  "version": "1.12.1",
   "author": "Alles Labs",
   "contributors": [
     {
@@ -74,7 +74,7 @@
     "@hookform/resolvers": "^3.9.0",
     "@initia/initia.js": "1.0.6",
     "@initia/initia.proto": "1.0.0",
-    "@initia/react-app-shell": "1.0.9",
+    "@initia/react-app-shell": "1.1.0",
     "@initia/react-wallet-widget": "1.6.13",
     "@initia/utils": "1.6.3",
     "@interchain-ui/react": "1.23.9",
