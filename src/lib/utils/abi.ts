@@ -99,8 +99,8 @@ export const serializeAbiDataJson = (
     serializeArgJson({ type, value: abiData.args[index] })
   );
 
-  const serializedTypeArgs = fn.generic_type_params.map((_, index) =>
-    abiData.typeArgs[index] ? JSON.stringify(abiData.typeArgs[index]) : ""
+  const serializedTypeArgs = fn.generic_type_params.map(
+    (_, index) => abiData.typeArgs[index] ?? ""
   );
 
   return {
