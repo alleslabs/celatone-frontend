@@ -46,6 +46,10 @@ const Meta = () => {
         content={FALLBACK_THEME.branding.seo.image}
         property="twitter:image"
       />
+      <meta
+        content="1pxs24lWnpcBI8d_INsnTvixVDOSXFi5wqfn6f3jlSo"
+        name="google-site-verification"
+      />
     </>
   );
 };
