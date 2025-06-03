@@ -273,16 +273,22 @@ const zEvmVerifyError = z
     (val) => JSON.parse(String(val)),
     z.object({
       code: z.string(),
-      details: z.union([
-        z.preprocess(
-          (val) => JSON.parse(String(val)),
+      details: z.preprocess(
+        (val) => {
+          try {
+            return JSON.parse(String(val));
+          } catch {
+            return val;
+          }
+        },
+        z.union([
           z.object({
             compiled_results: zCompiledResults,
             required_bytecode: z.string(),
-          })
-        ),
-        z.string(),
-      ]),
+          }),
+          z.string(),
+        ])
+      ),
       message: z.string(),
     })
   )
