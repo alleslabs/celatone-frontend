@@ -47,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1338](https://github.com/alleslabs/celatone-frontend/pull/1338) Fix custom network form number input
+
 ## v1.12.1
 
 ### Features

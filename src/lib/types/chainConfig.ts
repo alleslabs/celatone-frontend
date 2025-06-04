@@ -87,17 +87,17 @@ const zExtraConfig = z.object({
 });
 
 export const zGasConfigCosts = z.object({
-  cosmos_send: z.number().optional(),
-  ibc_transfer: z.number().optional(),
+  cosmos_send: zNumberInput.optional(),
+  ibc_transfer: zNumberInput.optional(),
 });
 
 export const zFeeToken = z.object({
-  average_gas_price: z.number().optional(),
+  average_gas_price: zNumberInput.optional(),
   denom: z.string().trim(),
-  fixed_min_gas_price: z.number().optional(),
+  fixed_min_gas_price: zNumberInput.optional(),
   gas_costs: zGasConfigCosts.optional(),
-  high_gas_price: z.number().optional(),
-  low_gas_price: z.number().optional(),
+  high_gas_price: zNumberInput.optional(),
+  low_gas_price: zNumberInput.optional(),
 });
 
 const zFeeConfig = z.object({
