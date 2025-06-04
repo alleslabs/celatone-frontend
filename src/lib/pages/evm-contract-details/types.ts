@@ -41,8 +41,3 @@ export const zEvmContractDetailsQueryParams = z.object({
       .transform(() => TabIndex.Overview),
   ]),
 });
-
-export enum TxsTabIndex {
-  Cosmos = "cosmos",
-  Evm = "evm",
-}

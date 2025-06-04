@@ -10,6 +10,8 @@ import {
   useMobile,
 } from "lib/app-provider";
 import { AssetsSection } from "lib/components/asset";
+import { CosmosEvmTxs } from "lib/components/cosmos-evm-txs";
+import { CosmosEvmTxsTab } from "lib/components/cosmos-evm-txs/types";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -32,9 +34,8 @@ import type { InteractTabsIndex } from "./types";
 import { EvmContractDetailsContractInfo } from "./components/evm-contract-details-contract-info";
 import { EvmContractDetailsOverview } from "./components/evm-contract-details-overview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
-import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
 import { InteractEvmContract } from "./components/interact-evm-contract";
-import { TabIndex, TxsTabIndex, zEvmContractDetailsQueryParams } from "./types";
+import { TabIndex, zEvmContractDetailsQueryParams } from "./types";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
@@ -85,8 +86,10 @@ const EvmContractDetailsBody = ({
     contractAddressBechAddr
   );
 
-  const [overviewTabIndex, setOverviewTabIndex] = useState(TxsTabIndex.Cosmos);
-  const [tableTabIndex, setTableTabIndex] = useState(TxsTabIndex.Cosmos);
+  const [overviewTabIndex, setOverviewTabIndex] = useState(
+    CosmosEvmTxsTab.Cosmos
+  );
+  const [tableTabIndex, setTableTabIndex] = useState(CosmosEvmTxsTab.Cosmos);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -208,10 +211,11 @@ const EvmContractDetailsBody = ({
               <AssetsSection address={contractAddressBechAddr} />
             </TabPanel>
             <TabPanel p={0} pt={8}>
-              <EvmContractDetailsTxs
+              <CosmosEvmTxs
                 address={contractAddressBechAddr}
                 setTab={setTableTabIndex}
                 tab={tableTabIndex}
+                type="contract"
               />
             </TabPanel>
           </TabPanels>

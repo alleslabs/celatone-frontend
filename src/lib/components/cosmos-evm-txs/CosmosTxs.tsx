@@ -1,60 +1,51 @@
 import type { BechAddr20 } from "lib/types";
 
-import { Spinner, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import { EvmTransactionsTable, ViewMore } from "lib/components/table";
+import { TransactionsTable, ViewMore } from "lib/components/table";
+import { useTxsByAddressSequencer } from "lib/services/tx";
 
-import { useContractDetailsEvmTxs } from "../data";
-
-interface EvmContractDetailsEvmTxsProps {
+interface CosmosTxsProps {
   address: BechAddr20;
   onViewMore?: () => void;
+  type: "account" | "contract";
 }
 
-export const EvmContractDetailsEvmTxs = ({
-  address,
-  onViewMore,
-}: EvmContractDetailsEvmTxsProps) => {
+export const CosmosTxs = ({ address, onViewMore, type }: CosmosTxsProps) => {
   const {
-    cosmosTxsCount,
     data,
     fetchNextPage,
     hasNextPage,
     isError,
     isFetchingNextPage,
     isLoading,
-  } = useContractDetailsEvmTxs(address);
+  } = useTxsByAddressSequencer(address, undefined);
 
   return (
     <>
-      <EvmTransactionsTable
+      <TransactionsTable
         emptyState={
           data === undefined ? (
-            <ErrorFetching dataName="evm transactions" />
+            <ErrorFetching dataName="cosmos transactions" />
           ) : (
             <EmptyState
               imageVariant="empty"
-              message="There are no EVM transactions on this contract."
+              message={`There are no transactions on this ${type}.`}
             />
           )
         }
-        evmTransactions={!onViewMore ? data : data?.slice(0, 5)}
         isLoading={isLoading}
-        showTimestamp
+        showRelations={false}
+        transactions={!onViewMore ? data : data?.slice(0, 5)}
       />
       {data && (
         <>
           {!onViewMore && (
             <>
               <Text color="text.dark" mt={2} variant="body2">
-                {isFetchingNextPage ? (
-                  <Spinner as="span" mr={1} size="xs" />
-                ) : (
-                  data.length
-                )}{" "}
-                EVM Txs found from {cosmosTxsCount ?? 0} Cosmos Txs
+                {data.length} Cosmos transactions found
               </Text>
               {isError && (
                 <Text color="warning.main" mt={2} variant="body2">
@@ -73,7 +64,7 @@ export const EvmContractDetailsEvmTxs = ({
                 <LoadNext
                   fetchNextPage={fetchNextPage}
                   isFetchingNextPage={isFetchingNextPage}
-                  text="Load more transactions"
+                  text="Load more 10 transactions"
                 />
               )}
             </>
