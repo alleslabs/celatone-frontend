@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#1333](https://github.com/alleslabs/celatone-frontend/pull/1333) Support NFT collection details, NFT details on WASM and EVM
+- [#1339](https://github.com/alleslabs/celatone-frontend/pull/1339) Filter slingy tx on lite version
 
 ### Improvements
 
@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1333](https://github.com/alleslabs/celatone-frontend/pull/1333) Support NFT collection details, NFT details on WASM and EVM
 - [#1329](https://github.com/alleslabs/celatone-frontend/pull/1329) Support contract txs sequencer tier by indexer
 
 ### Improvements
