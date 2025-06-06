@@ -207,7 +207,8 @@ export const EvmContractVerifyBody = ({
     mutate(
       {
         chainId: currentChainId,
-        compilerVersion,
+        // add "v" prefix to compiler version
+        compilerVersion: `v${compilerVersion}`,
         contractAddress,
         licenseType,
         option,

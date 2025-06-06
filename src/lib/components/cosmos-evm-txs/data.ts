@@ -8,7 +8,7 @@ import {
 } from "lib/services/tx";
 import { useEffect, useState } from "react";
 
-export const useContractDetailsEvmTxs = (address: BechAddr20) => {
+export const useCosmosEvmTxs = (address: BechAddr20) => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
 
   const [evmTxs, setEvmTxs] = useState<TxDataWithTimeStampJsonRpc[]>();

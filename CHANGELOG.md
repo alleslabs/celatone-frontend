@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1337](https://github.com/alleslabs/celatone-frontend/pull/1337) Support EVM transactions on account details
 - [#1339](https://github.com/alleslabs/celatone-frontend/pull/1339) Filter slingy tx on lite version
 
 ### Improvements
