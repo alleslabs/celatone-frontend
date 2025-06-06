@@ -173,6 +173,8 @@ const GasFeeDetails = ({
   useEffect(() => {
     if (!gasPrice) return;
 
+    const gasPriceNumber = Number(gasPrice);
+
     if (gasConfig === GasPriceConfiguration.CUSTOM) {
       const isCustomValueEqual =
         fixedMinGasPrice === lowGasPrice &&
@@ -186,10 +188,10 @@ const GasFeeDetails = ({
     }
 
     if (gasConfig === GasPriceConfiguration.STANDARD) {
-      setValue("fixed_min_gas_price", gasPrice);
-      setValue("low_gas_price", gasPrice);
-      setValue("average_gas_price", gasPrice);
-      setValue("high_gas_price", gasPrice);
+      setValue("fixed_min_gas_price", gasPriceNumber);
+      setValue("low_gas_price", gasPriceNumber);
+      setValue("average_gas_price", gasPriceNumber);
+      setValue("high_gas_price", gasPriceNumber);
       trigger();
     }
   }, [

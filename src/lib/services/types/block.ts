@@ -113,6 +113,8 @@ export const zBlockDataResponseRest = zBlockRest
   }>((val) => {
     // 1. Create Tx Hashes
     const txHashes = val.block.data.txs.map(createTxHash);
+    // if txHashes length is the tx length + 1, then the first hash is slingy data
+    const offset = txHashes.length === val.txs.length + 1 ? 1 : 0;
 
     // 2. Parse Tx to Transaction
     const transactions = val.txs.map((tx, idx) => {
@@ -140,7 +142,7 @@ export const zBlockDataResponseRest = zBlockRest
         actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
         created: val.block.header.time,
         furtherAction: MsgFurtherAction.NONE,
-        hash: txHashes[idx],
+        hash: txHashes[idx + offset],
         height: val.block.header.height,
         isEvm,
         isIbc,

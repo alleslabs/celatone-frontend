@@ -40,12 +40,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1337](https://github.com/alleslabs/celatone-frontend/pull/1337) Support EVM transactions on account details
+- [#1339](https://github.com/alleslabs/celatone-frontend/pull/1339) Filter slingy tx on lite version
 
 ### Improvements
 
 - [#1334](https://github.com/alleslabs/celatone-frontend/pull/1334) Upgrade Initia react-app-shell package
 
 ### Bug fixes
+
+- [#1338](https://github.com/alleslabs/celatone-frontend/pull/1338) Fix custom network form number input
 
 ## v1.12.1
 
