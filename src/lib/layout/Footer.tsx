@@ -6,6 +6,7 @@ import { Flex, Image, Text } from "@chakra-ui/react";
 import { trackSocial } from "lib/amplitude";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import { INITIA_WEBSITE_URL } from "lib/data";
 import Link from "next/link";
 
 import { InformationFooter } from "./InformationFooter";
@@ -20,7 +21,7 @@ const socialMenu: SocialMenuType[] = [
   {
     icon: "website",
     slug: "website",
-    url: "https://initia.xyz",
+    url: INITIA_WEBSITE_URL,
   },
   {
     icon: "github",
