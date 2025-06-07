@@ -1,32 +1,54 @@
 import type { IconKeys } from "lib/components/icon";
 
-import { Flex, Skeleton, Text } from "@chakra-ui/react";
+import { Box, Flex, Skeleton, Text } from "@chakra-ui/react";
 import { trackWebsite } from "lib/amplitude";
-import { useTierConfig } from "lib/app-provider";
+import { useCelatoneApp, useInitiaL1, useTierConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { USER_GUIDE_DOCS_LINK } from "lib/data";
+import { INITIA_WEBSITE_URL, USER_GUIDE_DOCS_LINK } from "lib/data";
 import { useLatestBlockRest } from "lib/services/block";
+import { useChainProfile } from "lib/services/chain-config";
 import { useOverviewsStats } from "lib/services/stats";
 import Link from "next/link";
+import { useMemo } from "react";
 
 const FOOTER_BUTTONS = [
   {
     href: `${USER_GUIDE_DOCS_LINK}/introduction/overview`,
     icon: "document" as IconKeys,
-    onClick: () =>
-      trackWebsite(`${USER_GUIDE_DOCS_LINK}/introduction/overview`),
     text: "View doc",
   },
 ];
 
 export const InformationFooter = () => {
   const { isFullTier } = useTierConfig();
+  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
+  const {
+    chainConfig: { prettyName },
+  } = useCelatoneApp();
+  const { data: chainProfile } = useChainProfile();
   const { data: overviewsStats, isLoading: isLoadingFull } =
     useOverviewsStats(isFullTier);
   const { data: latestHeight, isLoading: isLoadingLite } = useLatestBlockRest();
 
   const latest = isFullTier ? overviewsStats?.latestBlock : latestHeight;
   const isLoading = isFullTier ? isLoadingFull : isLoadingLite;
+
+  const footerButtons = useMemo(() => {
+    const website = isInitiaL1
+      ? INITIA_WEBSITE_URL
+      : chainProfile?.[prettyName]?.social?.website;
+
+    if (!website) return FOOTER_BUTTONS;
+
+    return [
+      ...FOOTER_BUTTONS,
+      {
+        href: website,
+        icon: "website" as IconKeys,
+        text: `Visit ${prettyName}`,
+      },
+    ];
+  }, [chainProfile, isInitiaL1, prettyName]);
 
   return (
     <Flex
@@ -68,14 +90,14 @@ export const InformationFooter = () => {
           </>
         )}
       </Flex>
-      <Flex>
-        {FOOTER_BUTTONS.map(({ href, icon, onClick, text }) => (
+      <Box>
+        {footerButtons.map(({ href, icon, text }) => (
           <Link
             key={text}
             href={href}
             rel="noopener noreferrer"
             target="_blank"
-            onClick={onClick}
+            onClick={() => trackWebsite(href)}
           >
             <Flex
               _hover={{ background: "gray.800" }}
@@ -94,7 +116,7 @@ export const InformationFooter = () => {
             </Flex>
           </Link>
         ))}
-      </Flex>
+      </Box>
     </Flex>
   );
 };

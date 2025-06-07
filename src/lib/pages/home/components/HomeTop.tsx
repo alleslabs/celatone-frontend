@@ -2,11 +2,11 @@ import type { Nullish } from "lib/types";
 
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
-import { UserDocsLink } from "lib/components/UserDocsLink";
 import { d0Formatter } from "lib/utils";
 
 import { CardInfo } from "./CardInfo";
 import { DevShortcuts } from "./DevShortcuts";
+import { VisitSiteLink } from "./VisitSiteLink";
 
 const txInfo = {
   title: "Total transactions",
@@ -71,7 +71,7 @@ export const HomeTop = ({
             </Text>{" "}
             Overview
           </Heading>
-          <UserDocsLink href="introduction/overview" isButton />
+          <VisitSiteLink />
         </Flex>
         <Flex direction={{ base: "column", md: "row" }} gap={4}>
           <CardInfo
