@@ -43,6 +43,7 @@ export const useOpenTxTab = (type: "rest" | "tx-page") => {
 
   return useCallback(
     (txHash: Option<string>) => {
+      if (!txHash) return;
       openNewTab(`${baseUrl}/${txHash}`);
     },
     [baseUrl]
