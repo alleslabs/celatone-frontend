@@ -12,25 +12,27 @@ import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
 import { useCallback } from "react";
 
-import { TxsTabIndex } from "../types";
-import { EvmContractDetailsCosmosTxs } from "./EvmContractDetailsCosmosTxs";
-import { EvmContractDetailsEvmTxs } from "./EvmContractDetailsEvmTxs";
+import { CosmosTxs } from "./CosmosTxs";
+import { EvmTxs } from "./EvmTxs";
+import { CosmosEvmTxsTab } from "./types";
 
-interface EvmContractDetailsTxsProps {
+interface CosmosEvmTxsProps {
   address: BechAddr20;
   onViewMore?: () => void;
-  setTab: (tab: TxsTabIndex) => void;
-  tab: TxsTabIndex;
+  setTab: (tab: CosmosEvmTxsTab) => void;
+  tab: CosmosEvmTxsTab;
+  type: "account" | "contract";
 }
 
-export const EvmContractDetailsTxs = ({
+export const CosmosEvmTxs = ({
   address,
   onViewMore,
   setTab,
   tab,
-}: EvmContractDetailsTxsProps) => {
+  type,
+}: CosmosEvmTxsProps) => {
   const handleTabChange = useCallback(
-    (nextTab: TxsTabIndex) => () => {
+    (nextTab: CosmosEvmTxsTab) => () => {
       if (nextTab === tab) return;
       trackUseTab(nextTab);
       setTab(nextTab);
@@ -44,28 +46,24 @@ export const EvmContractDetailsTxs = ({
         Transactions
       </Heading>
       <Tabs
-        index={Object.values(TxsTabIndex).indexOf(tab)}
+        index={Object.values(CosmosEvmTxsTab).indexOf(tab)}
         isLazy
         lazyBehavior="keepMounted"
       >
         <TabList>
-          <CustomTab onClick={handleTabChange(TxsTabIndex.Cosmos)}>
+          <CustomTab onClick={handleTabChange(CosmosEvmTxsTab.Cosmos)}>
             Cosmos
           </CustomTab>
-          <CustomTab onClick={handleTabChange(TxsTabIndex.Evm)}>EVM</CustomTab>
+          <CustomTab onClick={handleTabChange(CosmosEvmTxsTab.Evm)}>
+            EVM
+          </CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={6}>
-            <EvmContractDetailsCosmosTxs
-              address={address}
-              onViewMore={onViewMore}
-            />
+            <CosmosTxs address={address} type={type} onViewMore={onViewMore} />
           </TabPanel>
           <TabPanel p={0} pt={6}>
-            <EvmContractDetailsEvmTxs
-              address={address}
-              onViewMore={onViewMore}
-            />
+            <EvmTxs address={address} type={type} onViewMore={onViewMore} />
           </TabPanel>
         </TabPanels>
       </Tabs>

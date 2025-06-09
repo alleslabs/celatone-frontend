@@ -39,7 +39,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#1333](https://github.com/alleslabs/celatone-frontend/pull/1333) Support NFT collection details, NFT details on WASM and EVM
+### Improvements
+
+### Bug fixes
+
+## v1.12.2
+
+### Features
+
+- [#1340](https://github.com/alleslabs/celatone-frontend/pull/1340) Support Initia and rollup website link on home page and sidebar
+- [#1337](https://github.com/alleslabs/celatone-frontend/pull/1337) Support EVM transactions on account details
+- [#1339](https://github.com/alleslabs/celatone-frontend/pull/1339) Filter slingy tx on lite version
 
 ### Improvements
 
@@ -53,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1333](https://github.com/alleslabs/celatone-frontend/pull/1333) Support NFT collection details, NFT details on WASM and EVM
 - [#1329](https://github.com/alleslabs/celatone-frontend/pull/1329) Support contract txs sequencer tier by indexer
 
 ### Improvements

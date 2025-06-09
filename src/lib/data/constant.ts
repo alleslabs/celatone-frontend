@@ -15,6 +15,10 @@ export const USER_GUIDE_DOCS_LINK = "https://docs.alleslabs.com/user-guide";
 
 export const DEVELOPER_TOOL_DOCS_LINK = "https://docs.alleslabs.com/developers";
 
+export const CHAIN_PROFILE_URL = "https://registry.initia.xyz/profiles.json";
+
+export const INITIA_WEBSITE_URL = "https://initia.xyz";
+
 export const INSTANTIATED_LIST_NAME = "Instantiated by me";
 
 export const SAVED_LIST_NAME = "Saved contracts";
