@@ -7,9 +7,9 @@ import type { Proposal } from "../proposal";
 import type { ExposedFunction, ModuleAbi } from "./abi";
 
 export enum UpgradePolicy {
+  UNSPECIFIED = "UNSPECIFIED",
   COMPATIBLE = "COMPATIBLE",
   IMMUTABLE = "IMMUTABLE",
-  UNSPECIFIED = "UNSPECIFIED",
 }
 
 export interface IndexedModule {
