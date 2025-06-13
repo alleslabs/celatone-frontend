@@ -8,7 +8,7 @@ const NextSitemapConfig = {
       ? [{ allow: "/", userAgent: "*" }]
       : [{ disallow: "/", userAgent: "Googlebot" }],
   },
-  siteUrl: "https://scan.initia.xyz",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
 };
 
 module.exports = NextSitemapConfig;
