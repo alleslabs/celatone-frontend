@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1343](https://github.com/alleslabs/celatone-frontend/pull/1343) Fix upgrade policy issue when publishing a module
+
 ## v1.12.2
 
 ### Features
