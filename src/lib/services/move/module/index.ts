@@ -39,7 +39,7 @@ import { truncate } from "lib/utils";
 import {
   decodeModule,
   decodeScript,
-  getFunctionView,
+  getFunctionViewJson,
   getModuleHistories,
   getModulePublishInfo,
   getModuleRelatedProposals,
@@ -128,7 +128,7 @@ export const useFunctionView = ({
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const queryFn: QueryFunction<string> = () =>
-    getFunctionView(restEndpoint, moduleAddress, moduleName, fn, abiData);
+    getFunctionViewJson(restEndpoint, moduleAddress, moduleName, fn, abiData);
   return useQuery(
     [
       CELATONE_QUERY_KEYS.FUNCTION_VIEW,
