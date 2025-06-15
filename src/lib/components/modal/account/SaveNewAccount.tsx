@@ -1,8 +1,8 @@
-import type { ButtonProps } from "@chakra-ui/react";
 import type { FormStatus } from "lib/components/forms";
 import type { BechAddr } from "lib/types";
+import type { ReactNode } from "react";
 
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -37,16 +37,16 @@ const statusSuccess: FormStatus = {
 
 interface SaveNewAccountModalProps {
   accountAddress?: BechAddr;
-  buttonProps: ButtonProps;
   publicDescription?: string;
   publicName?: string;
+  trigger: ReactNode;
 }
 
 export function SaveNewAccountModal({
   accountAddress,
-  buttonProps,
   publicDescription,
   publicName,
+  trigger,
 }: SaveNewAccountModalProps) {
   const { constants } = useCelatoneApp();
   const { user: exampleUserAddress } = useExampleAddresses();
@@ -180,7 +180,7 @@ export function SaveNewAccountModal({
       otherAction={resetForm}
       otherBtnTitle="Cancel"
       title="Save new account"
-      trigger={<Button as="button" {...buttonProps} />}
+      trigger={trigger}
     >
       <Flex direction="column" gap={6}>
         <ControllerInput
