@@ -15,7 +15,7 @@ interface ArgsFormProps {
 }
 
 const formatErrors = (
-  errors: FormState<Record<string, string>>["errors"]
+  errors: FormState<Record<string, unknown>>["errors"]
 ): [string, string][] =>
   Object.entries(errors).map(([field, error]) => [
     field,
@@ -34,7 +34,7 @@ export const ArgsForm = ({
     formState: { errors, isValid },
     getValues,
     trigger,
-  } = useForm<Record<string, Nullable<string>>>({
+  } = useForm<Record<string, Nullable<unknown>>>({
     defaultValues: initialData,
     delayError: 500,
     mode: "all",

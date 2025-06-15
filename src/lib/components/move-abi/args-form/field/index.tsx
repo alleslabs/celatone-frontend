@@ -15,7 +15,7 @@ import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 import { useCallback, useState } from "react";
 import { useController } from "react-hook-form";
 
-import { ArgFieldWidget } from "./ArgFieldWidget";
+import { ArgFieldWidget } from "./arg-field-widget";
 import { OBJECT_TYPE, STRING_TYPE } from "./constants";
 import { getHelperText, getRules } from "./utils";
 
