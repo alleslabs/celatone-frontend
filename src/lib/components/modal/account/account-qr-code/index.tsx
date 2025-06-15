@@ -73,7 +73,7 @@ export const AccountQrCodeModal = ({
       </Flex>
       <Modal isCentered isOpen={isOpen} size="2xl" onClose={onClose}>
         <ModalOverlay />
-        <ModalContent w={{ base: "full", md: "500px" }}>
+        <ModalContent w={{ base: "full", md: "550px" }}>
           <ModalHeader>
             <CustomIcon boxSize={6} color="gray.600" name="qrcode" />
             <Heading as="h5" variant="h5">
