@@ -87,7 +87,8 @@ export const getArgType = (argType: string) =>
     .replace("0x1::decimal256::Decimal256", "decimal256");
 
 const serializeArgJson = (arg: { type: string; value: Nullable<string> }) => {
-  if (arg.type === "bool") return String(arg.value);
+  if (arg.type === "bool" || arg.type.startsWith("vector"))
+    return String(arg.value);
   return JSON.stringify(arg.value);
 };
 

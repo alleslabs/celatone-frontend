@@ -4,6 +4,7 @@ import type { ControllerRenderProps } from "react-hook-form";
 import { Input, Textarea } from "@chakra-ui/react";
 import { useCurrentChain, useExampleAddresses } from "lib/app-provider";
 import { SelectInput } from "lib/components/forms";
+import { bech32AddressToHex } from "lib/utils";
 
 import {
   DECIMAL_TYPES,
@@ -34,16 +35,16 @@ const getVectorPlaceholder = (
 
   if (UINT_TYPES.includes(elementType)) return "[1, 2, 3]";
   if (elementType === "address" || elementType.startsWith(OBJECT_TYPE))
-    return `[0x1, ${sampleAddress}]`;
+    return `["0x1", "${bech32AddressToHex(sampleAddress)}"]`;
   if (elementType === STRING_TYPE)
-    return "[some first string, some second string]";
+    return '["some first string", "some second string"]';
   if (elementType === "bool") return "[true, false]";
   if (
     FIXED_POINT_TYPES.includes(elementType) ||
     DECIMAL_TYPES.includes(elementType)
   )
-    return "[1, 1.2, 1.23, 12.34]";
-  return `[${elementType}]`;
+    return '["1", "1.2", "1.23", "12.34"]';
+  return `["${elementType}"]`;
 };
 
 const boolOptions = [

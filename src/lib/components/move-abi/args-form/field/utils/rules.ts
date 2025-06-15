@@ -97,8 +97,16 @@ const validateVector = (
 
   let error: Option<string>;
   getVectorElements(value).forEach((elementValue) => {
-    const res = validateElement(elementValue.trim());
-    if (res !== undefined) error = `Invalid element: ${res}`;
+    if (
+      elementType !== "bool" &&
+      (!elementValue.startsWith('"') || !elementValue.endsWith('"'))
+    )
+      error = "Invalid format";
+
+    const err = validateElement(
+      elementType === "bool" ? elementValue : elementValue.slice(1, -1)
+    );
+    if (err !== undefined) error = `Invalid element: ${err}`;
   });
 
   return error;
