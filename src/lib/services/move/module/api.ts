@@ -24,10 +24,10 @@ import {
   libDecode,
   parseJsonABI,
   parseWithError,
-  serializeAbiData,
+  serializeAbiDataJson,
 } from "lib/utils";
 
-export const getFunctionView = async (
+export const getFunctionViewJson = async (
   baseEndpoint: string,
   address: HexAddr,
   moduleName: string,
@@ -35,8 +35,13 @@ export const getFunctionView = async (
   abiData: AbiFormData
 ): Promise<string> => {
   const { data } = await axios.post(
-    `${baseEndpoint}/initia/move/v1/accounts/${address}/modules/${moduleName}/view_functions/${fn.name}`,
-    serializeAbiData(fn, abiData)
+    `${baseEndpoint}/initia/move/v1/view/json`,
+    {
+      address,
+      function_name: fn.name,
+      module_name: moduleName,
+      ...serializeAbiDataJson(fn, abiData),
+    }
   );
   return data.data;
 };
