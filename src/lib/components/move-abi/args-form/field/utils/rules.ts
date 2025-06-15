@@ -9,13 +9,27 @@ import {
   BIG_DECIMAL_TYPE,
   FIXED_POINT_TYPES,
   OBJECT_TYPE,
-  UINT_TYPES,
+  UINT_NUMBER_TYPES,
+  UINT_STRING_TYPES,
 } from "../constants";
 
 const validateNull = (v: Nullable<unknown>) =>
   v !== null ? undefined : "cannot be null";
 
-const validateUint = (uintType: string) => (v: unknown) => {
+const validateUintNumber = (uintType: string) => (v: unknown) => {
+  try {
+    if (typeof v !== "number") throw new Error();
+
+    const value = big(v);
+    const maxValue = big(2).pow(parseInt(uintType.slice(1)));
+    if (value.lt(0) || value.gte(maxValue)) throw new Error();
+    return undefined;
+  } catch {
+    return `Input must be ‘${uintType}’`;
+  }
+};
+
+const validateUintString = (uintType: string) => (v: unknown) => {
   try {
     if (typeof v !== "string") throw new Error();
 
@@ -85,16 +99,19 @@ const validateVector = (
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let validateElement = (_v: unknown): Option<string> => undefined;
-    if (UINT_TYPES.includes(elementType))
-      validateElement = validateUint(elementType);
-    if (elementType === "bool") validateElement = validateBool;
-    if (elementType === "address")
+    if (UINT_NUMBER_TYPES.includes(elementType))
+      validateElement = validateUintNumber(elementType);
+    else if (UINT_STRING_TYPES.includes(elementType))
+      validateElement = validateUintString(elementType);
+    else if (elementType === "bool") validateElement = validateBool;
+    else if (elementType === "address")
       validateElement = validateAddress(isValidArgAddress);
-    if (elementType.startsWith(OBJECT_TYPE))
+    else if (elementType.startsWith(OBJECT_TYPE))
       validateElement = validateAddress(isValidArgObject);
-    if (FIXED_POINT_TYPES.includes(elementType))
+    else if (FIXED_POINT_TYPES.includes(elementType))
       validateElement = validateFixedPoint(getArgType(elementType));
-    if (elementType === BIG_DECIMAL_TYPE) validateElement = validateBigDecimal;
+    else if (elementType === BIG_DECIMAL_TYPE)
+      validateElement = validateBigDecimal;
     // TODO: handle Vector?
 
     let error: Option<string>;
@@ -122,12 +139,20 @@ export const getRules = <T extends FieldValues>(
       null: validateNull,
     };
   }
-  if (UINT_TYPES.includes(type))
+  if (UINT_NUMBER_TYPES.includes(type))
     rules.validate = {
       ...rules.validate,
       [type]: (v: Nullable<string>) => {
         if (v === null) return undefined;
-        return validateUint(type)(v);
+        return validateUintNumber(type)(v);
+      },
+    };
+  if (UINT_STRING_TYPES.includes(type))
+    rules.validate = {
+      ...rules.validate,
+      [type]: (v: Nullable<string>) => {
+        if (v === null) return undefined;
+        return validateUintNumber(type)(v);
       },
     };
   if (type === "bool") {

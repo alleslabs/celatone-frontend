@@ -1,4 +1,11 @@
-export const UINT_TYPES = ["u8", "u16", "u32", "u64", "u128", "u256"];
+export const UINT_NUMBER_TYPES = ["u8", "u16", "u32"];
+
+export const UINT_STRING_TYPES = [
+  "u64",
+  "u128",
+  "u256",
+  "0x1::biguint::BigUint",
+];
 
 export const STRING_TYPE = "0x1::string::String";
 
