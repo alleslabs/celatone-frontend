@@ -60,6 +60,7 @@ export const AccountQrCodeModal = ({
           e.stopPropagation();
           trackUseOtherModal("Account QR code");
           onOpen();
+          setAddressType(AddressType.Bech32);
         }}
       >
         <Tooltip label="View QR code">
