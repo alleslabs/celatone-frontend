@@ -27,8 +27,7 @@ export const useCodeSnippetCli = ({
       argType === "object" ||
       argType === "fixed_point32" ||
       argType === "fixed_point64" ||
-      argType === "decimal128" ||
-      argType === "decimal256"
+      argType === "bigdecimal"
   );
 
   const serializedAbiDataJson = serializeAbiDataJson(fn, abiData);

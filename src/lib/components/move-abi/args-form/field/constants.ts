@@ -9,7 +9,4 @@ export const FIXED_POINT_TYPES = [
   "0x1::fixed_point64::FixedPoint64",
 ];
 
-export const DECIMAL_TYPES = [
-  "0x1::decimal128::Decimal128",
-  "0x1::decimal256::Decimal256",
-];
+export const BIG_DECIMAL_TYPE = "0x1::bigdecimal::BigDecimal";
