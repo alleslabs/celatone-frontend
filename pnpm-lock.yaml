@@ -245,6 +245,9 @@ importers:
       plur:
         specifier: ^5.1.0
         version: 5.1.0
+      qr-code-styling:
+        specifier: ^1.9.2
+        version: 1.9.2
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -8757,6 +8760,13 @@ packages:
 
   pure-rand@6.1.0:
     resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
+
+  qr-code-styling@1.9.2:
+    resolution: {integrity: sha512-RgJaZJ1/RrXJ6N0j7a+pdw3zMBmzZU4VN2dtAZf8ZggCfRB5stEQ3IoDNGaNhYY3nnZKYlYSLl5YkfWN5dPutg==}
+    engines: {node: '>=18.18.0'}
+
+  qrcode-generator@1.5.0:
+    resolution: {integrity: sha512-sqo7otiDq5rA4djRkFI7IjLQqxRrLpIou0d3rqr03JJLUGf5raPh91xCio+lFFbQf0SlcVckStz0EmDEX3EeZA==}
 
   qs@6.13.0:
     resolution: {integrity: sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==}
@@ -21941,6 +21951,12 @@ snapshots:
       - utf-8-validate
 
   pure-rand@6.1.0: {}
+
+  qr-code-styling@1.9.2:
+    dependencies:
+      qrcode-generator: 1.5.0
+
+  qrcode-generator@1.5.0: {}
 
   qs@6.13.0:
     dependencies:

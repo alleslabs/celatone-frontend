@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1344](https://github.com/alleslabs/celatone-frontend/pull/1344) Support QR code on account details page
+
 ### Improvements
 
 ### Bug fixes

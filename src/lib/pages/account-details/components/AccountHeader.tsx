@@ -10,7 +10,9 @@ import {
   RemoveSavedAccountModal,
   SaveNewAccountModal,
 } from "lib/components/modal";
+import { AccountQrCodeModal } from "lib/components/modal/account";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
+import { Tooltip } from "lib/components/Tooltip";
 import { TotalValue } from "lib/components/TotalValue";
 import { useAccountStore } from "lib/providers/store";
 import { observer } from "mobx-react-lite";
@@ -93,23 +95,29 @@ export const AccountHeader = observer(
                 ) : (
                   <SaveNewAccountModal
                     accountAddress={accountAddress}
-                    buttonProps={{
-                      children: "Save account",
-                      leftIcon: (
-                        <CustomIcon boxSize={3} mr={0} name="bookmark" />
-                      ),
-                      size: "sm",
-                      variant: "outline-gray",
-                    }}
                     publicDescription={accountData?.publicInfo?.description}
                     publicName={
                       accountData?.publicInfo?.name ??
                       accountData?.icns?.primaryName
                     }
+                    trigger={
+                      <Tooltip label="Save account">
+                        <IconButton
+                          aria-label="save account"
+                          icon={<CustomIcon boxSize={4} name="bookmark" />}
+                          size="sm"
+                          variant="ghost-gray-icon"
+                        />
+                      </Tooltip>
+                    }
                   />
                 )}
               </>
             )}
+            <AccountQrCodeModal
+              accountBechAddr={accountAddress}
+              accountHexAddr={showHexAddr ? hexAddress : undefined}
+            />
           </Flex>
           <Flex direction="column" gap={1}>
             <Flex
