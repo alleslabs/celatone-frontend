@@ -123,7 +123,7 @@
     "next-seo": "^6.4.0",
     "node-gzip": "^1.1.2",
     "plur": "^5.1.0",
-    "qr-code-styling": "^1.9.2",
+    "qrcode.react": "^4.2.0",
     "react": "^19.1.0",
     "react-ace": "^10.1.0",
     "react-chartjs-2": "^5.2.0",

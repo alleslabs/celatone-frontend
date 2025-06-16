@@ -19,14 +19,10 @@ import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { capitalize } from "lodash";
-import dynamic from "next/dynamic";
+import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 
 import { AddressType, AddressTypeSwitch } from "./AddressTypeSwitch";
-
-const QrCode = dynamic(() => import("lib/components/QrCode"), {
-  ssr: false,
-});
 
 interface AccountQrCodeModalProps {
   accountBechAddr: BechAddr;
@@ -82,7 +78,7 @@ export const AccountQrCodeModal = ({
             </Heading>
           </ModalHeader>
           <ModalCloseButton color="gray.600" />
-          <ModalBody maxH="500px" px={6}>
+          <ModalBody px={6}>
             <Flex
               alignItems="center"
               border="1px solid"
@@ -92,7 +88,23 @@ export const AccountQrCodeModal = ({
               p={6}
             >
               <Text fontWeight={700}>{capitalize(currentChainId)}</Text>
-              <QrCode data={displayAddress} image={image} />
+              <QRCodeSVG
+                style={{ borderRadius: "4px" }}
+                imageSettings={
+                  image
+                    ? {
+                        crossOrigin: "anonymous",
+                        excavate: true,
+                        height: 40,
+                        src: image,
+                        width: 40,
+                      }
+                    : undefined
+                }
+                marginSize={1}
+                size={230}
+                value={displayAddress}
+              />
               <Flex alignItems="center" direction="column" gap={2}>
                 {accountHexAddr && (
                   <AddressTypeSwitch
@@ -100,7 +112,11 @@ export const AccountQrCodeModal = ({
                     onTabChange={setAddressType}
                   />
                 )}
-                <CopyLink type="user_address" value={displayAddress} />
+                <CopyLink
+                  displayTextColor="text.main"
+                  type="user_address"
+                  value={displayAddress}
+                />
               </Flex>
             </Flex>
           </ModalBody>
