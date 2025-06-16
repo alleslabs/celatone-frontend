@@ -21,7 +21,7 @@ interface CopyLinkProps extends FlexProps {
 
 export const CopyLink = ({
   amptrackSection,
-  displayTextColor = "primary.main",
+  displayTextColor,
   isTruncate = false,
   showCopyOnHover = false,
   type,
@@ -68,9 +68,9 @@ export const CopyLink = ({
     >
       <Flex
         _hover={{
-          "& > p": { color: "primary.light" },
+          "& > p": { color: displayTextColor || "primary.light" },
           textDecoration: "underline",
-          textDecorationColor: "primary.light",
+          textDecorationColor: displayTextColor || "primary.light",
         }}
         align="center"
         cursor="pointer"
@@ -85,7 +85,7 @@ export const CopyLink = ({
         {...flexProps}
       >
         <Text
-          color={displayTextColor}
+          color={displayTextColor || "primary.main"}
           display="inline"
           fontFamily="mono"
           transition="all 0.25s ease-in-out"
