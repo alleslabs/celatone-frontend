@@ -17,14 +17,14 @@ export const ViewPermissionAddresses = ({
 }) => {
   const [viewAll, setViewAll] = useState(false);
   const getAddressType = useGetAddressType();
-  const showAddressses =
+  const showAddresses =
     viewAll ||
     (typeof permissionAddresses === "object" &&
       permissionAddresses.length === 1);
 
   return (
     <>
-      {showAddressses &&
+      {showAddresses &&
         permissionAddresses.map((addr) => (
           <ExplorerLink
             key={addr}
