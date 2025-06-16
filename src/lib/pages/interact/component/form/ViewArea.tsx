@@ -28,7 +28,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 
 const MoveCodeSnippet = dynamic(
-  () => import("lib/components/modal/MoveCodeSnippet"),
+  () => import("lib/components/modal/move-code-snippet"),
   {
     ssr: false,
   }
