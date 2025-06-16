@@ -76,6 +76,7 @@ export const getArgType = (argType: string) =>
     .replace("0x1::string::String", "string")
     .replace("0x1::option::Option", "option")
     .replace("0x1::object::Object", "object")
+    .replace("0x1::biguint::BigUint", "biguint")
     .replace("0x1::fixed_point32::FixedPoint32", "fixed_point32")
     .replace("0x1::fixed_point64::FixedPoint64", "fixed_point64")
     .replace("0x1::bigdecimal::BigDecimal", "bigdecimal");
