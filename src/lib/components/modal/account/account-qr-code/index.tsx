@@ -10,7 +10,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { trackUseOtherModal } from "lib/amplitude";
@@ -18,7 +17,6 @@ import { useCelatoneApp } from "lib/app-provider/contexts";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
-import { capitalize } from "lodash";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 
@@ -88,7 +86,9 @@ export const AccountQrCodeModal = ({
               gap={6}
               p={6}
             >
-              <Text fontWeight={700}>{capitalize(currentChainId)}</Text>
+              <Heading as="h6" variant="h6">
+                {currentChainId}
+              </Heading>
               <QRCodeSVG
                 style={{ borderRadius: "4px" }}
                 imageSettings={
