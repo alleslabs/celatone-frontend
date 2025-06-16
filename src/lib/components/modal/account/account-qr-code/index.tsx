@@ -70,7 +70,7 @@ export const AccountQrCodeModal = ({
       </Flex>
       <Modal isCentered isOpen={isOpen} size="2xl" onClose={onClose}>
         <ModalOverlay />
-        <ModalContent w={{ base: "full", md: "550px" }}>
+        <ModalContent w={{ base: "90%", md: "550px" }}>
           <ModalHeader>
             <CustomIcon boxSize={6} color="gray.600" name="qrcode" />
             <Heading as="h5" variant="h5">
@@ -83,6 +83,7 @@ export const AccountQrCodeModal = ({
               alignItems="center"
               border="1px solid"
               borderColor="gray.700"
+              borderRadius="8px"
               direction="column"
               gap={6}
               p={6}
@@ -113,6 +114,9 @@ export const AccountQrCodeModal = ({
                   />
                 )}
                 <CopyLink
+                  style={{
+                    textAlign: "center",
+                  }}
                   displayTextColor="text.main"
                   type="user_address"
                   value={displayAddress}
