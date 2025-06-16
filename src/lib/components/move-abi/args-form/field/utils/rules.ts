@@ -107,7 +107,7 @@ const validateVector = (
     else if (elementType === "address")
       validateElement = validateAddress(isValidArgAddress);
     else if (elementType.startsWith(OBJECT_TYPE))
-      validateElement = validateAddress(isValidArgObject);
+      validateElement = validateObject(isValidArgObject);
     else if (FIXED_POINT_TYPES.includes(elementType))
       validateElement = validateFixedPoint(getArgType(elementType));
     else if (elementType === BIG_DECIMAL_TYPE)
@@ -152,7 +152,7 @@ export const getRules = <T extends FieldValues>(
       ...rules.validate,
       [type]: (v: Nullable<string>) => {
         if (v === null) return undefined;
-        return validateUintNumber(type)(v);
+        return validateUintString(type)(v);
       },
     };
   if (type === "bool") {
