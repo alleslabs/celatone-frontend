@@ -39,6 +39,6 @@ export interface ModuleAbi {
 }
 
 export interface AbiFormData {
-  args: Record<string, Nullable<string>>;
+  args: Record<string, Nullable<unknown>>;
   typeArgs: Record<string, string>;
 }

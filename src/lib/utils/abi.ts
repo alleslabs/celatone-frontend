@@ -70,25 +70,18 @@ export const getAbiInitialData = (length: number) =>
 // ------------------------------------------//
 // -----------------MOVE ARGS----------------//
 // ------------------------------------------//
-export const getVectorElements = (value: string) => {
-  const trimmed = value.split(/\[(.*)\]/)[1].trim();
-  if (trimmed.length === 0) return [];
-  return trimmed.split(",").map((element) => element.trim());
-};
 
 export const getArgType = (argType: string) =>
   argType
     .replace("0x1::string::String", "string")
     .replace("0x1::option::Option", "option")
     .replace("0x1::object::Object", "object")
+    .replace("0x1::biguint::BigUint", "biguint")
     .replace("0x1::fixed_point32::FixedPoint32", "fixed_point32")
     .replace("0x1::fixed_point64::FixedPoint64", "fixed_point64")
-    .replace("0x1::decimal128::Decimal128", "decimal128")
-    .replace("0x1::decimal256::Decimal256", "decimal256");
+    .replace("0x1::bigdecimal::BigDecimal", "bigdecimal");
 
-const serializeArgJson = (arg: { type: string; value: Nullable<string> }) => {
-  if (arg.type === "bool" || arg.type.startsWith("vector"))
-    return String(arg.value);
+const serializeArgJson = (arg: { type: string; value: Nullable<unknown> }) => {
   return JSON.stringify(arg.value);
 };
 
