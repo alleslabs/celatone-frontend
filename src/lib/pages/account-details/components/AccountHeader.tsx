@@ -10,7 +10,9 @@ import {
   RemoveSavedAccountModal,
   SaveNewAccountModal,
 } from "lib/components/modal";
+import { AccountQrCodeModal } from "lib/components/modal/account";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
+import { Tooltip } from "lib/components/Tooltip";
 import { TotalValue } from "lib/components/TotalValue";
 import { useAccountStore } from "lib/providers/store";
 import { observer } from "mobx-react-lite";
@@ -61,55 +63,63 @@ export const AccountHeader = observer(
               isInitiaUsernameDataFetching={isInitiaUsernameDataFetching}
               isInitiaUsernameDataLoading={isInitiaUsernameDataLoading}
             />
-            {!isMobile && (
-              <>
-                {isSaved && accountLocalInfo ? (
-                  <Flex gap={2}>
-                    <EditSavedAccountModal
-                      accountLocalInfo={accountLocalInfo}
-                      triggerElement={
-                        <IconButton
-                          aria-label="edit account"
-                          icon={<CustomIcon boxSize={4} name="edit" />}
-                          size="sm"
-                          variant="ghost-gray-icon"
-                        />
+            <Flex alignItems="center" gap={2}>
+              {!isMobile && (
+                <>
+                  {isSaved && accountLocalInfo ? (
+                    <Flex gap={2}>
+                      <EditSavedAccountModal
+                        accountLocalInfo={accountLocalInfo}
+                        triggerElement={
+                          <IconButton
+                            aria-label="edit account"
+                            icon={<CustomIcon boxSize={4} name="edit" />}
+                            size="sm"
+                            variant="ghost-gray-icon"
+                          />
+                        }
+                      />
+                      <RemoveSavedAccountModal
+                        accountLocalInfo={accountLocalInfo}
+                        trigger={
+                          <IconButton
+                            aria-label="remove account"
+                            icon={
+                              <CustomIcon boxSize={4} name="bookmark-solid" />
+                            }
+                            size="sm"
+                            variant="ghost-gray-icon"
+                          />
+                        }
+                      />
+                    </Flex>
+                  ) : (
+                    <SaveNewAccountModal
+                      accountAddress={accountAddress}
+                      publicDescription={accountData?.publicInfo?.description}
+                      publicName={
+                        accountData?.publicInfo?.name ??
+                        accountData?.icns?.primaryName
                       }
-                    />
-                    <RemoveSavedAccountModal
-                      accountLocalInfo={accountLocalInfo}
                       trigger={
-                        <IconButton
-                          aria-label="remove account"
-                          icon={
-                            <CustomIcon boxSize={4} name="bookmark-solid" />
-                          }
-                          size="sm"
-                          variant="ghost-gray-icon"
-                        />
+                        <Tooltip label="Save account">
+                          <IconButton
+                            aria-label="save account"
+                            icon={<CustomIcon boxSize={4} name="bookmark" />}
+                            size="sm"
+                            variant="ghost-gray-icon"
+                          />
+                        </Tooltip>
                       }
                     />
-                  </Flex>
-                ) : (
-                  <SaveNewAccountModal
-                    accountAddress={accountAddress}
-                    buttonProps={{
-                      children: "Save account",
-                      leftIcon: (
-                        <CustomIcon boxSize={3} mr={0} name="bookmark" />
-                      ),
-                      size: "sm",
-                      variant: "outline-gray",
-                    }}
-                    publicDescription={accountData?.publicInfo?.description}
-                    publicName={
-                      accountData?.publicInfo?.name ??
-                      accountData?.icns?.primaryName
-                    }
-                  />
-                )}
-              </>
-            )}
+                  )}
+                </>
+              )}
+              <AccountQrCodeModal
+                accountBechAddr={accountAddress}
+                accountHexAddr={showHexAddr ? hexAddress : undefined}
+              />
+            </Flex>
           </Flex>
           <Flex direction="column" gap={1}>
             <Flex
