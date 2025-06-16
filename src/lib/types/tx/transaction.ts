@@ -70,7 +70,6 @@ export interface MoveTxFilters {
   isMoveExecute: boolean;
   isMovePublish: boolean;
   isMoveScript: boolean;
-  isMoveUpgrade: boolean;
 }
 
 export interface TxFilters

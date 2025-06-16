@@ -350,7 +350,6 @@ const zBaseTxsResponseItem = z.object({
   is_move_execute: z.boolean().optional(),
   is_move_publish: z.boolean().optional(),
   is_move_script: z.boolean().optional(),
-  is_move_upgrade: z.boolean().optional(),
   // initia
   is_opinit: z.boolean().optional(),
   is_send: z.boolean(),
@@ -421,7 +420,6 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
         isMoveExecute: val.is_move_execute,
         isMovePublish: val.is_move_publish,
         isMoveScript: val.is_move_script,
-        isMoveUpgrade: val.is_move_upgrade,
         isSend: val.is_send,
         isStoreCode: val.is_store_code,
         isUpdateAdmin: val.is_update_admin,
