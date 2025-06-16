@@ -105,7 +105,7 @@ export const formatUTokenWithPrecision = (
  */
 export const formatPrice = (value: USD<BigSource>): string => {
   try {
-    if (value === big(0)) return "$-";
+    if (big(value).eq(0)) return "$ - ";
 
     const price = big(value);
     const lowestThreshold = 0.000001;
