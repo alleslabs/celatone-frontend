@@ -1,7 +1,7 @@
 import type { StdFee } from "@cosmjs/stargate";
 import type { HexAddr } from "lib/types";
 
-import { MsgExecute as MsgExecuteModule } from "@initia/initia.js";
+import { MsgExecuteJSON as MsgExecuteJsonModule } from "@initia/initia.js";
 import { trackTxSucceed } from "lib/amplitude";
 import { executeModuleTx } from "lib/app-fns/tx/move/executeModule";
 import { useCurrentChain, useSignAndBroadcast } from "lib/app-provider/hooks";
@@ -37,7 +37,7 @@ export const useExecuteModuleTx = () => {
       if (!address) throw new Error("No address provided (useExecuteModuleTx)");
 
       const messages = toEncodeObject([
-        new MsgExecuteModule(
+        new MsgExecuteJsonModule(
           address,
           moduleAddress,
           moduleName,

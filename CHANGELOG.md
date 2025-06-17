@@ -43,6 +43,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+## v1.13.0
+
+### Features
+
+- [#1344](https://github.com/alleslabs/celatone-frontend/pull/1344) Support QR code on account details page
+
+### Improvements
+
+- [#1347](https://github.com/alleslabs/celatone-frontend/pull/1347) Remove unused is move upgraded flag
+- [#1346](https://github.com/alleslabs/celatone-frontend/pull/1346) Show $- for zero value instead
+- [#1332](https://github.com/alleslabs/celatone-frontend/pull/1332) Add Abi encode with JSON serialize
+
+### Bug fixes
+
+- [#1343](https://github.com/alleslabs/celatone-frontend/pull/1343) Fix upgrade policy issue when publishing a module
+
 ## v1.12.2
 
 ### Features

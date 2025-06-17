@@ -260,10 +260,10 @@ describe("formatPrice", () => {
   });
   describe("if 0, use 2 decimal points", () => {
     test("from string", () => {
-      expect(formatPrice("0" as USD)).toEqual("$0.00");
+      expect(formatPrice("0" as USD)).toEqual("$ - ");
     });
     test("from number", () => {
-      expect(formatPrice(0 as USD<number>)).toEqual("$0.00");
+      expect(formatPrice(0 as USD<number>)).toEqual("$ - ");
     });
   });
   describe("> 1", () => {

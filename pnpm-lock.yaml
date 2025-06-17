@@ -11,9 +11,6 @@ importers:
 
   .:
     dependencies:
-      '@alleslabs/legacy-bcs':
-        specifier: 0.0.3
-        version: 0.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@alleslabs/shared':
         specifier: 1.0.0-dev7
         version: 1.0.0-dev7
@@ -105,8 +102,8 @@ importers:
         specifier: 1.1.0
         version: 1.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@initia/react-wallet-widget':
-        specifier: 1.6.3
-        version: 1.6.3(wviymr35qcrrm3q6tmsun2q62i)
+        specifier: 1.6.13
+        version: 1.6.13(6de2l4eqabyskanvsytvqarsey)
       '@initia/utils':
         specifier: 1.6.3
         version: 1.6.3(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.1)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.0)(@keplr-wallet/types@0.12.215(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.2.3)(ramda@0.30.1)(rxjs@7.8.1)(zod@3.24.2)
@@ -245,6 +242,9 @@ importers:
       plur:
         specifier: ^5.1.0
         version: 5.1.0
+      qrcode.react:
+        specifier: ^4.2.0
+        version: 4.2.0(react@19.1.0)
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -419,10 +419,6 @@ packages:
 
   '@adraffy/ens-normalize@1.10.1':
     resolution: {integrity: sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==}
-
-  '@alleslabs/legacy-bcs@0.0.3':
-    resolution: {integrity: sha512-93dSIOMsviBYqGP3sXO04vbTwLR8LOlb40fy24f851Ii8Bwi/W7fnIie9GAyo2F1JzRcUd5oo9YequhcA7LejQ==}
-    engines: {node: '>=14'}
 
   '@alleslabs/shared@1.0.0-dev7':
     resolution: {integrity: sha512-ckjGvmhFlQKKk36lb9zd6CJkasTWlNEfFTHOvGJyn+WqLR4olUm65pr9LkPeBMGgX3/pQnIb8T7/4TZQ7754Cw==}
@@ -2388,6 +2384,10 @@ packages:
     resolution: {integrity: sha512-1zJg8yL686n1aJzr7z38xZjonisqyUlMWuMlNYNZPk4d6a8+a3jeir9TvBw+lcqWMs3//vBi6iBvbIza0JSrvA==}
     engines: {node: '>=20'}
 
+  '@initia/initia.js@1.0.8':
+    resolution: {integrity: sha512-fwpmaHu7ovtOrw2d+qLpInvW/SPdtlBHSTEH0/y3yoBL4F/FUqCo0byhSTMONTkLmKxg3WxB+C0GsRNjYLIzKA==}
+    engines: {node: '>=20'}
+
   '@initia/initia.proto@0.2.6':
     resolution: {integrity: sha512-khiCPUxZTkyAl+SQbQCOlcJId/a0ToUhG+ChrVXN9a+1ypPz5355j2UP2IvnUf+lAix/+zzdekcqO/Lig7htAQ==}
 
@@ -2396,9 +2396,6 @@ packages:
 
   '@initia/opinit.proto@0.0.11':
     resolution: {integrity: sha512-Op9GIlXiV1xhUIjVQ2TFE9a3X8iyFVNtJNHCM34gwLQHJktDNm2KCoW4eHh6pkn4//ECRVH7zuKgV8TdZWogCw==}
-
-  '@initia/opinit.proto@0.0.8':
-    resolution: {integrity: sha512-MddIGje1CX2lT+jezpWDQv7ex/wLbAK9qCHu+RM/kY13yOwzMeeD539Au2llVB4LWwPEkd0h71HwxJWE78IE1A==}
 
   '@initia/opinit.proto@1.0.0':
     resolution: {integrity: sha512-I/VG4PFLEdGyb0qAxKImbA2le1SXeDlBtGRu/0qAiEq70OxEViQm2s3/Cme2vjBxS6Kx5vanyRHcOAhzWfSRXw==}
@@ -2409,18 +2406,45 @@ packages:
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@initia/react-wallet-widget@1.6.3':
-    resolution: {integrity: sha512-fh2XQq5f/ngBEYZzET8V3Hiqyi52HQYlJQUlhAHHwoilsZAcPJs6FWmJJ0XmosyLP4jux0gx3YGZFpz8oL//NA==}
+  '@initia/react-wallet-widget@1.6.13':
+    resolution: {integrity: sha512-QGCs1c8k2qEP58canzaSPgh/dqcarTQzg+ZeYLBragc3Q3AlojX18fMYATPaaG4n4c7/WAnkft3SYFRlvSKHUw==}
     peerDependencies:
       '@cosmjs/proto-signing': ^0.33.1
-      '@initia/initia.js': ^1.0.4
-      '@initia/utils': ^1.6.3
-      '@initia/wallet-widget': ^1.6.3
+      '@initia/initia.js': ^1.0.8
+      '@initia/utils': ^1.6.13
+      '@initia/wallet-widget': ^1.6.13
       '@keplr-wallet/types': ^0.12.211
       cosmjs-types: ^0.9.0
       ethers: ^6.13.5
       react: ^19.1.0
       rxjs: ^7.8.2
+
+  '@initia/utils@1.6.13':
+    resolution: {integrity: sha512-uQ80MP9bFY2riAonuI5b7dqvfj6Hz+X4uHOWr+6FB/iaSrzCnW9WfLSTcaAgZjkqHTF3T4V8wexTcAtcTIqYVA==}
+    peerDependencies:
+      '@cosmjs/amino': ^0.33.1
+      '@cosmjs/encoding': ^0.33.1
+      '@cosmjs/proto-signing': ^0.33.1
+      '@cosmjs/stargate': ^0.33.1
+      '@initia/initia-registry-types': ^1.0.1
+      '@initia/initia.js': ^1.0.8
+      '@initia/initia.proto': ^1.0.0
+      '@initia/opinit.proto': ^1.0.0
+      '@keplr-wallet/types': ^0.12.211
+      '@msgpack/msgpack': ^3.1.1
+      '@mysten/bcs': ^1.5.0
+      '@noble/hashes': ^1.7.1
+      '@types/ramda': ^0.30.2
+      bech32: ^2.0.0
+      bignumber.js: ^9.1.2
+      change-case: ^5.4.4
+      cosmjs-types: ^0.9.0
+      ethers: ^6.13.5
+      ky: ^1.8.0
+      long: ^5.3.1
+      ramda: ^0.30.1
+      rxjs: ^7.8.2
+      zod: ^3.24.2
 
   '@initia/utils@1.6.3':
     resolution: {integrity: sha512-zrVOAmQtlrwnSRhlfxixjlOrRTWyMpx0PXRG8HcjcXSmuz4/8jbwUtRqIvwJkqUetz9AALdcz04bP7hW94Sp7g==}
@@ -2449,8 +2473,8 @@ packages:
       rxjs: ^7.8.2
       zod: ^3.24.2
 
-  '@initia/wallet-widget@1.6.3':
-    resolution: {integrity: sha512-pJ4O3bi62amWi6krW4YP+Uv3BdUWezZXQh+xWqTKnsBhY8emNI4neT/yZN6B15/msrfFnbRIZ+remUNapk+FLw==}
+  '@initia/wallet-widget@1.6.13':
+    resolution: {integrity: sha512-cf9DZyPtzcXrl/jO3tZENBxReA4pvO1Zmpitlx9sICM6mzY50sRzHyjv2tqoOFwCN/Z902M0i/2XWfs/RtZtjA==}
 
   '@interchain-ui/react@1.23.9':
     resolution: {integrity: sha512-Y4hAZySumphxOlCGQ94u7+0vSwunPnYVt5CW1mHjIQ7PqYQ5kp4xX3gRnBckcieoRQJ7f2Zgjw7r+Fy72TCPcw==}
@@ -2618,8 +2642,8 @@ packages:
   '@kurkle/color@0.3.4':
     resolution: {integrity: sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==}
 
-  '@layerzerolabs/lz-v2-utilities@3.0.92':
-    resolution: {integrity: sha512-PZ3YqjB/MpoKenlW0aEArPirtISgkKhtTzeHUS5OLTZqRjfhw712K7EFgYWfyL+Zz3lmz2OZL+mNwOV7JqdYoA==}
+  '@layerzerolabs/lz-v2-utilities@3.0.94':
+    resolution: {integrity: sha512-GLfeXdb8EJ2QYN9YznQXIshswwryIAtlYUHVtDfyQPLeAkSl8YXKG4bltJxzail5Tw130wNTjD8BLVcbHGVFlg==}
 
   '@ledgerhq/devices@8.4.4':
     resolution: {integrity: sha512-sz/ryhe/R687RHtevIE9RlKaV8kkKykUV4k29e7GAVwzHX1gqG+O75cu1NCJUHLbp3eABV5FdvZejqRUlLis9A==}
@@ -2659,9 +2683,6 @@ packages:
   '@msgpack/msgpack@3.1.0':
     resolution: {integrity: sha512-igBxaq5JHWdJ0lDyKkCo00pDu+bNVuBAs/cHra6a3ndCw6vlZK9BGLuG7Fvmar/DXK2uJ25zvgcAZEl+AvLpjQ==}
     engines: {node: '>= 18'}
-
-  '@mysten/bcs@0.10.1':
-    resolution: {integrity: sha512-cQDb7Rhz2J82ZqgVQiHykuwKUlgiLWS2bjoajPPW0uvXlb75qrgKuaxh1UzsaRhHy3egk/APc0xjiZoqdbzB4w==}
 
   '@mysten/bcs@1.2.0':
     resolution: {integrity: sha512-LuKonrGdGW7dq/EM6U2L9/as7dFwnhZnsnINzB/vu08Xfrj0qzWwpLOiXagAa5yZOPLK7anRZydMonczFkUPzA==}
@@ -4196,8 +4217,8 @@ packages:
   '@tanstack/query-core@4.36.1':
     resolution: {integrity: sha512-DJSilV5+ytBP1FbFcEJovv4rnnm/CokuVvrBEtW/Va9DvuJ3HksbXUJEpI0aV1KtuL4ZoO9AVE6PyNLzF7tLeA==}
 
-  '@tanstack/query-core@5.75.4':
-    resolution: {integrity: sha512-pcqOUgWG9oGlzkfRQQMMsEFmtQu0wq81A414CtELZGq+ztVwSTAaoB3AZRAXQJs88LmNMk2YpUKuQbrvzNDyRg==}
+  '@tanstack/query-core@5.76.0':
+    resolution: {integrity: sha512-FN375hb8ctzfNAlex5gHI6+WDXTNpe0nbxp/d2YJtnP+IBM6OUm7zcaoCW6T63BawGOYZBbKC0iPvr41TteNVg==}
 
   '@tanstack/react-query@4.36.1':
     resolution: {integrity: sha512-y7ySVHFyyQblPl3J3eQBWpXZkliroki3ARnBKsdJchlgt7yJLRDUcf4B8soufgiYt3pEQIkBWBx1N9/ZPIeUWw==}
@@ -4211,8 +4232,8 @@ packages:
       react-native:
         optional: true
 
-  '@tanstack/svelte-query@5.75.4':
-    resolution: {integrity: sha512-nHO7k9uTBFjC+HTTDMS2OdVfcimOgGT59CdgDJvbIziIyjv1/GutWhLUpot5j6OQ6b533ldivPmVPIjyTjkA7Q==}
+  '@tanstack/svelte-query@5.76.0':
+    resolution: {integrity: sha512-Y3tarQGErGJl/MbYfeV8GNGyToP55rmCORvqpqPMtx930QdlhDK9hcuVhLvRuWcxhhK+Cnhmi9S8iV67VdmMVQ==}
     peerDependencies:
       svelte: ^3.54.0 || ^4.0.0 || ^5.0.0
 
@@ -5083,8 +5104,8 @@ packages:
   base-x@3.0.10:
     resolution: {integrity: sha512-7d0s06rR9rYaIWHkpfLIFICM/tkSVdoPC9qYAQRpxn9DdKNWNsKC0uk++akckyLq16Tx2WIinnZ6WRriAt6njQ==}
 
-  base-x@4.0.0:
-    resolution: {integrity: sha512-FuwxlW4H5kh37X/oW59pwTzzTKRzfrrQwhmyspRM7swOEZcHtDZSCt45U6oKgtuFE+WYPblePMVIPR4RZrh/hw==}
+  base-x@4.0.1:
+    resolution: {integrity: sha512-uAZ8x6r6S3aUM9rbHGVOIsR15U/ZSc82b3ymnCPsT45Gk1DDvhDPdIgB5MrhirZWt+5K0EEPQH985kNqZgNPFw==}
 
   base-x@5.0.0:
     resolution: {integrity: sha512-sMW3VGSX1QWVFA6l8U62MLKz29rRfpTlYdCqLdpLo1/Yd4zZwSbnUaDfciIAowAqvq7YFnWq9hrhdg1KYgc1lQ==}
@@ -8758,6 +8779,11 @@ packages:
   pure-rand@6.1.0:
     resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
 
+  qrcode.react@4.2.0:
+    resolution: {integrity: sha512-QpgqWi8rD9DsS9EP3z7BT+5lY5SFhsqGjpgW5DY/i3mK4M9DTBNz3ErMi8BWYEfI3L0d8GIbGmcdFAS1uIRGjA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
   qs@6.13.0:
     resolution: {integrity: sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==}
     engines: {node: '>=0.6'}
@@ -9775,10 +9801,6 @@ packages:
     resolution: {integrity: sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==}
     engines: {node: '>=0.6.0'}
 
-  tmp@0.2.3:
-    resolution: {integrity: sha512-nZD7m9iCPC5g0pYmcaxogYKggSfLsdxl8of3Q/oIbqCqLLIO9IAF0GWjX1z9NZRHPiXv8Wex4yDCaZsgEw0Y8w==}
-    engines: {node: '>=14.14'}
-
   tmpl@1.0.5:
     resolution: {integrity: sha512-3f0uOEAQwIqGuWW2MVzYg8fV/QNnc/IpuJNG837rLuczAaLVHslWHZQj4IGiEl5Hs3kkbhwL9Ab7Hrsmuj+Smw==}
 
@@ -10522,31 +10544,6 @@ snapshots:
   '@adobe/css-tools@4.4.1': {}
 
   '@adraffy/ens-normalize@1.10.1': {}
-
-  '@alleslabs/legacy-bcs@0.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@initia/initia.proto': 0.2.6
-      '@initia/opinit.proto': 0.0.8
-      '@ledgerhq/hw-transport': 6.31.4
-      '@ledgerhq/hw-transport-webhid': 6.30.0
-      '@ledgerhq/hw-transport-webusb': 6.29.4
-      '@mysten/bcs': 0.10.1
-      axios: 1.7.9
-      bech32: 2.0.0
-      bignumber.js: 9.1.2
-      bip32: 2.0.6
-      bip39: 3.1.0
-      jscrypto: 1.0.3
-      keccak256: 1.0.6
-      long: 5.2.3
-      ripemd160: 2.0.2
-      secp256k1: 5.0.1
-      tmp: 0.2.3
-      ws: 7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - utf-8-validate
 
   '@alleslabs/shared@1.0.0-dev7':
     dependencies:
@@ -13391,6 +13388,32 @@ snapshots:
       - typescript
       - utf-8-validate
 
+  '@initia/initia.js@1.0.8(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@bitcoinerlab/secp256k1': 1.2.0
+      '@initia/initia.proto': 0.2.6
+      '@initia/opinit.proto': 0.0.11
+      '@ledgerhq/hw-transport': 6.31.4
+      '@ledgerhq/hw-transport-webhid': 6.30.0
+      '@ledgerhq/hw-transport-webusb': 6.29.4
+      '@mysten/bcs': 1.2.0
+      axios: 1.7.9
+      bech32: 2.0.0
+      bignumber.js: 9.1.2
+      bip32: 5.0.0-rc.0(typescript@5.3.3)
+      bip39: 3.1.0
+      jscrypto: 1.0.3
+      keccak256: 1.0.6
+      ripemd160: 2.0.2
+      secp256k1: 5.0.1
+      semver: 7.7.1
+      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - typescript
+      - utf-8-validate
+
   '@initia/initia.proto@0.2.6':
     dependencies:
       '@improbable-eng/grpc-web': 0.15.0(google-protobuf@3.21.4)
@@ -13412,13 +13435,6 @@ snapshots:
       long: 5.3.1
       protobufjs: 7.4.0
 
-  '@initia/opinit.proto@0.0.8':
-    dependencies:
-      '@improbable-eng/grpc-web': 0.15.0(google-protobuf@3.21.4)
-      google-protobuf: 3.21.4
-      long: 5.3.1
-      protobufjs: 7.4.0
-
   '@initia/opinit.proto@1.0.0':
     dependencies:
       '@improbable-eng/grpc-web': 0.15.0(google-protobuf@3.21.4)
@@ -13431,17 +13447,43 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  '@initia/react-wallet-widget@1.6.3(wviymr35qcrrm3q6tmsun2q62i)':
+  '@initia/react-wallet-widget@1.6.13(6de2l4eqabyskanvsytvqarsey)':
     dependencies:
       '@cosmjs/proto-signing': 0.32.4
       '@initia/initia.js': 1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
       '@initia/utils': 1.6.3(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.1)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.0)(@keplr-wallet/types@0.12.215(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.2.3)(ramda@0.30.1)(rxjs@7.8.1)(zod@3.24.2)
-      '@initia/wallet-widget': 1.6.3(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bufferutil@4.0.9)(change-case@5.4.4)(starknet@6.11.0)(svelte@4.2.19)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      '@initia/wallet-widget': 1.6.13(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bufferutil@4.0.9)(change-case@5.4.4)(starknet@6.11.0)(svelte@4.2.19)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
       '@keplr-wallet/types': 0.12.215(starknet@6.11.0)
       cosmjs-types: 0.9.0
       ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       react: 19.1.0
       rxjs: 7.8.1
+
+  '@initia/utils@1.6.13(@cosmjs/amino@0.33.1)(@cosmjs/encoding@0.33.1)(@cosmjs/proto-signing@0.33.1)(@cosmjs/stargate@0.33.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.1)(@initia/initia.js@1.0.8(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.0)(@keplr-wallet/types@0.12.215(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.3.1)(ramda@0.30.1)(rxjs@7.8.2)(zod@3.24.2)':
+    dependencies:
+      '@cosmjs/amino': 0.33.1
+      '@cosmjs/encoding': 0.33.1
+      '@cosmjs/proto-signing': 0.33.1
+      '@cosmjs/stargate': 0.33.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      '@initia/initia-registry-types': 1.0.1
+      '@initia/initia.js': 1.0.8(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
+      '@initia/initia.proto': 1.0.0
+      '@initia/opinit.proto': 1.0.0
+      '@keplr-wallet/types': 0.12.215(starknet@6.11.0)
+      '@msgpack/msgpack': 3.1.0
+      '@mysten/bcs': 1.2.0
+      '@noble/hashes': 1.7.1
+      '@types/ramda': 0.30.2
+      bech32: 2.0.0
+      bignumber.js: 9.1.2
+      change-case: 5.4.4
+      cosmjs-types: 0.9.0
+      ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+      ky: 1.8.0
+      long: 5.3.1
+      ramda: 0.30.1
+      rxjs: 7.8.2
+      zod: 3.24.2
 
   '@initia/utils@1.6.3(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.1)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.0)(@keplr-wallet/types@0.12.215(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.2.3)(ramda@0.30.1)(rxjs@7.8.1)(zod@3.24.2)':
     dependencies:
@@ -13469,33 +13511,7 @@ snapshots:
       rxjs: 7.8.1
       zod: 3.24.2
 
-  '@initia/utils@1.6.3(@cosmjs/amino@0.33.1)(@cosmjs/encoding@0.33.1)(@cosmjs/proto-signing@0.33.1)(@cosmjs/stargate@0.33.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.1)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.0)(@keplr-wallet/types@0.12.215(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.3.1)(ramda@0.30.1)(rxjs@7.8.2)(zod@3.24.2)':
-    dependencies:
-      '@cosmjs/amino': 0.33.1
-      '@cosmjs/encoding': 0.33.1
-      '@cosmjs/proto-signing': 0.33.1
-      '@cosmjs/stargate': 0.33.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@initia/initia-registry-types': 1.0.1
-      '@initia/initia.js': 1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
-      '@initia/initia.proto': 1.0.0
-      '@initia/opinit.proto': 1.0.0
-      '@keplr-wallet/types': 0.12.215(starknet@6.11.0)
-      '@msgpack/msgpack': 3.1.0
-      '@mysten/bcs': 1.2.0
-      '@noble/hashes': 1.7.1
-      '@types/ramda': 0.30.2
-      bech32: 2.0.0
-      bignumber.js: 9.1.2
-      change-case: 5.4.4
-      cosmjs-types: 0.9.0
-      ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      ky: 1.8.0
-      long: 5.3.1
-      ramda: 0.30.1
-      rxjs: 7.8.2
-      zod: 3.24.2
-
-  '@initia/wallet-widget@1.6.3(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bufferutil@4.0.9)(change-case@5.4.4)(starknet@6.11.0)(svelte@4.2.19)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)':
+  '@initia/wallet-widget@1.6.13(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bufferutil@4.0.9)(change-case@5.4.4)(starknet@6.11.0)(svelte@4.2.19)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)':
     dependencies:
       '@cosmjs/amino': 0.33.1
       '@cosmjs/crypto': 0.33.1
@@ -13506,14 +13522,14 @@ snapshots:
       '@cosmjs/utils': 0.33.1
       '@initia/icons-svelte': 1.0.0(svelte@4.2.19)
       '@initia/initia-registry-types': 1.0.1
-      '@initia/initia.js': 1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
+      '@initia/initia.js': 1.0.8(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
       '@initia/initia.proto': 1.0.0
       '@initia/opinit.proto': 1.0.0
-      '@initia/utils': 1.6.3(@cosmjs/amino@0.33.1)(@cosmjs/encoding@0.33.1)(@cosmjs/proto-signing@0.33.1)(@cosmjs/stargate@0.33.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.1)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.0)(@keplr-wallet/types@0.12.215(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.3.1)(ramda@0.30.1)(rxjs@7.8.2)(zod@3.24.2)
+      '@initia/utils': 1.6.13(@cosmjs/amino@0.33.1)(@cosmjs/encoding@0.33.1)(@cosmjs/proto-signing@0.33.1)(@cosmjs/stargate@0.33.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.1)(@initia/initia.js@1.0.8(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.0)(@keplr-wallet/types@0.12.215(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.3.1)(ramda@0.30.1)(rxjs@7.8.2)(zod@3.24.2)
       '@keplr-wallet/types': 0.12.215(starknet@6.11.0)
-      '@layerzerolabs/lz-v2-utilities': 3.0.92
+      '@layerzerolabs/lz-v2-utilities': 3.0.94
       '@noble/hashes': 1.7.1
-      '@tanstack/svelte-query': 5.75.4(svelte@4.2.19)
+      '@tanstack/svelte-query': 5.76.0(svelte@4.2.19)
       bignumber.js: 9.1.2
       cosmjs-types: 0.9.0
       date-fns: 4.1.0
@@ -13876,7 +13892,7 @@ snapshots:
 
   '@kurkle/color@0.3.4': {}
 
-  '@layerzerolabs/lz-v2-utilities@3.0.92':
+  '@layerzerolabs/lz-v2-utilities@3.0.94':
     dependencies:
       '@ethersproject/abi': 5.8.0
       '@ethersproject/address': 5.8.0
@@ -13938,10 +13954,6 @@ snapshots:
       react-dom: 19.1.0(react@19.1.0)
 
   '@msgpack/msgpack@3.1.0': {}
-
-  '@mysten/bcs@0.10.1':
-    dependencies:
-      bs58: 5.0.0
 
   '@mysten/bcs@1.2.0':
     dependencies:
@@ -16360,7 +16372,7 @@ snapshots:
 
   '@tanstack/query-core@4.36.1': {}
 
-  '@tanstack/query-core@5.75.4': {}
+  '@tanstack/query-core@5.76.0': {}
 
   '@tanstack/react-query@4.36.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
@@ -16370,9 +16382,9 @@ snapshots:
     optionalDependencies:
       react-dom: 19.1.0(react@19.1.0)
 
-  '@tanstack/svelte-query@5.75.4(svelte@4.2.19)':
+  '@tanstack/svelte-query@5.76.0(svelte@4.2.19)':
     dependencies:
-      '@tanstack/query-core': 5.75.4
+      '@tanstack/query-core': 5.76.0
       svelte: 4.2.19
 
   '@testing-library/dom@9.3.4':
@@ -17423,7 +17435,7 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  base-x@4.0.0: {}
+  base-x@4.0.1: {}
 
   base-x@5.0.0: {}
 
@@ -17597,7 +17609,7 @@ snapshots:
 
   bs58@5.0.0:
     dependencies:
-      base-x: 4.0.0
+      base-x: 4.0.1
 
   bs58@6.0.0:
     dependencies:
@@ -21942,6 +21954,10 @@ snapshots:
 
   pure-rand@6.1.0: {}
 
+  qrcode.react@4.2.0(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+
   qs@6.13.0:
     dependencies:
       side-channel: 1.1.0
@@ -23235,8 +23251,6 @@ snapshots:
   tmp@0.0.33:
     dependencies:
       os-tmpdir: 1.0.2
-
-  tmp@0.2.3: {}
 
   tmpl@1.0.5: {}
 

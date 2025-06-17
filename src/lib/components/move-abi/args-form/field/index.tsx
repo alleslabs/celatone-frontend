@@ -15,7 +15,7 @@ import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 import { useCallback, useState } from "react";
 import { useController } from "react-hook-form";
 
-import { ArgFieldWidget } from "./ArgFieldWidget";
+import { ArgFieldWidget } from "./arg-field-widget";
 import { OBJECT_TYPE, STRING_TYPE } from "./constants";
 import { getHelperText, getRules } from "./utils";
 
@@ -31,15 +31,11 @@ export const ArgFieldTemplate = ({
   param,
 }: ArgFieldTemplateProps) => {
   const [isEditted, setIsEditted] = useState(false);
-  const { validateContractAddress, validateUserAddress } = useValidateAddress();
+  const { validateContractAddress } = useValidateAddress();
 
   const isValidArgAddress = useCallback(
-    (input: string) =>
-      validateUserAddress(input) === null ||
-      validateContractAddress(input) === null ||
-      isHexWalletAddress(input) ||
-      isHexModuleAddress(input),
-    [validateContractAddress, validateUserAddress]
+    (input: string) => isHexWalletAddress(input) || isHexModuleAddress(input),
+    []
   );
   const isValidArgObject = useCallback(
     (input: string) =>

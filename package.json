@@ -1,6 +1,6 @@
 {
   "name": "celatone",
-  "version": "1.12.2",
+  "version": "1.13.0",
   "author": "Alles Labs",
   "contributors": [
     {
@@ -45,7 +45,6 @@
     "@chain-registry/types": "0.45.20"
   },
   "dependencies": {
-    "@alleslabs/legacy-bcs": "0.0.3",
     "@alleslabs/shared": "1.0.0-dev7",
     "@amplitude/analytics-browser": "^2.3.3",
     "@amplitude/analytics-types": "^2.3.0",
@@ -76,7 +75,7 @@
     "@initia/initia.js": "1.0.6",
     "@initia/initia.proto": "1.0.0",
     "@initia/react-app-shell": "1.1.0",
-    "@initia/react-wallet-widget": "1.6.3",
+    "@initia/react-wallet-widget": "1.6.13",
     "@initia/utils": "1.6.3",
     "@interchain-ui/react": "1.23.9",
     "@monaco-editor/react": "^4.6.0",
@@ -123,6 +122,7 @@
     "next-seo": "^6.4.0",
     "node-gzip": "^1.1.2",
     "plur": "^5.1.0",
+    "qrcode.react": "^4.2.0",
     "react": "^19.1.0",
     "react-ace": "^10.1.0",
     "react-chartjs-2": "^5.2.0",
