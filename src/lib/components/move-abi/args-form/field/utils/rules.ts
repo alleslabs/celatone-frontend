@@ -2,7 +2,7 @@ import type { Nullable, Option } from "lib/types";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
 import big from "big.js";
-import { getArgType } from "lib/utils";
+import { getArgType, isBech32Address } from "lib/utils";
 import { parseInt } from "lodash";
 
 import {
@@ -49,7 +49,9 @@ const validateAddress =
   (isValidArgAddress: (input: string) => boolean) => (v: unknown) =>
     typeof v === "string" && isValidArgAddress(v)
       ? undefined
-      : "Invalid address";
+      : isBech32Address(v as string)
+        ? "Only support hex address"
+        : "Invalid address";
 
 const validateObject =
   (isValidArgObject: (input: string) => boolean) => (v: unknown) =>
