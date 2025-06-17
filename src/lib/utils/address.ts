@@ -111,3 +111,12 @@ export const toChecksumAddress = <T extends string>(address: T): T => {
   }
   return checksumAddress as T;
 };
+
+export const isBech32Address = (address: string) => {
+  try {
+    fromBech32(address);
+    return true;
+  } catch {
+    return false;
+  }
+};
