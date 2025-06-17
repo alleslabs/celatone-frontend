@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1347](https://github.com/alleslabs/celatone-frontend/pull/1347) Remove unused is move upgraded flag
 - [#1346](https://github.com/alleslabs/celatone-frontend/pull/1346) Show $- for zero value instead
 
 ### Bug fixes

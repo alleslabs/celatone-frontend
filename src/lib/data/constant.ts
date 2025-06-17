@@ -64,7 +64,6 @@ export const DEFAULT_MOVE_TX_FILTERS: MoveTxFilters = {
   isMoveExecute: false,
   isMovePublish: false,
   isMoveScript: false,
-  isMoveUpgrade: false,
 };
 
 export const DEFAULT_INITIA_TX_FILTERS: InitiaTxFilters = {

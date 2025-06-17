@@ -16,8 +16,6 @@ export const displayActionValue = (isActionName: string) => {
       return "Publish module";
     case "isMoveScript":
       return "Run script";
-    case "isMoveUpgrade":
-      return "Upgrade module";
     case "isOpinit":
       return "OPInit";
     case "isSend":
