@@ -1,4 +1,7 @@
-import { CELATONE_API_OVERRIDE as api } from "env";
+import {
+  SCAN_API_OVERRIDE as api,
+  INITIA_API_OVERRIDE as initiaApi,
+} from "env";
 
 import { useCelatoneApp } from "../contexts";
 
@@ -42,7 +45,7 @@ export const useBaseApiRoute = (
     case "accounts":
       return `${api}/v1/${chain}/${currentChainId}/accounts`;
     case "assets":
-      return `${api}/v1/${chain}/${currentChainId}/assets`;
+      return `${initiaApi}/v1/${chain}/${currentChainId}/assets`;
     case "blocks":
       return `${api}/v1/${chain}/${currentChainId}/blocks`;
     case "codes":

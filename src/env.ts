@@ -13,8 +13,9 @@ export const DUMMY_MNEMONIC = (() => {
   return mnemonic;
 })();
 
-export const CELATONE_API_OVERRIDE =
-  process.env.NEXT_PUBLIC_CELATONE_API_OVERRIDE;
+export const SCAN_API_OVERRIDE = process.env.NEXT_PUBLIC_SCAN_API_OVERRIDE;
+
+export const INITIA_API_OVERRIDE = process.env.NEXT_PUBLIC_INITIA_API_OVERRIDE;
 
 export const CELATONE_VERIFICATION_API =
   process.env.NEXT_PUBLIC_CELATONE_VERIFICATION_API ?? "";
