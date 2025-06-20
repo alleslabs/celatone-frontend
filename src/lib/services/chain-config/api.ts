@@ -2,18 +2,18 @@ import type { Option } from "lib/types";
 import type { ChainProfile } from "lib/types/chainProfile";
 
 import axios from "axios";
-import { SCAN_API_OVERRIDE } from "env";
 import { CHAIN_PROFILE_URL } from "lib/data";
 import { zChainConfig } from "lib/types";
 import { zChainProfile } from "lib/types/chainProfile";
 import { parseWithError } from "lib/utils";
 
 export const getApiChainConfigs = (
+  endpoint: string,
   networkTypes: string[],
   chain: Option<string>
 ) =>
   axios
-    .get(`${SCAN_API_OVERRIDE}/v1/chains`, {
+    .get(endpoint, {
       params: {
         chain,
         network_types: networkTypes.join(","),

@@ -11,10 +11,15 @@ import { getApiChainConfigs, getChainProfile } from "./api";
 export const useApiChainConfigs = (
   networkTypes: string[],
   chain: Option<string>
-) =>
-  useQuery(
+) => {
+  const isInitia = useInitia();
+  const endpoint = isInitia
+    ? `${SCAN_API_OVERRIDE}/v1/chains`
+    : `${SCAN_API_OVERRIDE}/v1/configs`;
+
+  return useQuery(
     [CELATONE_QUERY_KEYS.CHAIN_CONFIGS, networkTypes, chain],
-    () => getApiChainConfigs(networkTypes, chain),
+    () => getApiChainConfigs(endpoint, networkTypes, chain),
     {
       enabled: isUrl(String(SCAN_API_OVERRIDE)),
       refetchOnMount: false,
@@ -23,6 +28,7 @@ export const useApiChainConfigs = (
       staleTime: Infinity,
     }
   );
+};
 
 export const useChainProfile = () => {
   const isInitia = useInitia();

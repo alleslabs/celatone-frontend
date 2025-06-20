@@ -15,6 +15,7 @@ export const useBaseApiRoute = (
     | "cosmwasm"
     | "icns_address"
     | "icns_names"
+    | "initia-api-assets"
     | "legacy.accounts"
     | "modules"
     | "move_modules"
@@ -45,7 +46,7 @@ export const useBaseApiRoute = (
     case "accounts":
       return `${api}/v1/${chain}/${currentChainId}/accounts`;
     case "assets":
-      return `${initiaApi}/v1/${chain}/${currentChainId}/assets`;
+      return `${api}/v1/${chain}/${currentChainId}/assets`;
     case "blocks":
       return `${api}/v1/${chain}/${currentChainId}/blocks`;
     case "codes":
@@ -58,6 +59,8 @@ export const useBaseApiRoute = (
       return `${api}/icns/address`;
     case "icns_names":
       return `${api}/icns/names`;
+    case "initia-api-assets":
+      return `${initiaApi}/v1/${chain}/${currentChainId}/assets`;
     case "legacy.accounts":
       return `${api}/accounts/${chain}/${currentChainId}`;
     case "modules":
