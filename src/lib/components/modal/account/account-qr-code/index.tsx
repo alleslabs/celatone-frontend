@@ -102,6 +102,7 @@ export const AccountQrCodeModal = ({
                       }
                     : undefined
                 }
+                level="H"
                 marginSize={1}
                 size={230}
                 value={displayAddress}
