@@ -441,6 +441,7 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
 
 export const zAccountTxsResponse = z.object({
   items: z.array(zAccountTxsResponseItem),
+  total: z.number().nonnegative(),
 });
 export type AccountTxsResponse = z.infer<typeof zAccountTxsResponse>;
 
