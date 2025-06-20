@@ -144,7 +144,7 @@ export enum AmpEvent {
   USE_MODULE_SELECTION_INPUT_FILL = "Use Module Selection Input Fill",
   USE_MODULE_SELECTION_MODULE = "Use Module Selection Module",
   USE_MODULE_TABLE_CTA = "Use Module Table CTA",
-  USE_MY_PUBLISHED_MODULES_CTA = "Use My Publised Modules CTA",
+  USE_MY_PUBLISHED_MODULES_CTA = "Use My Published Modules CTA",
   USE_NAMESPACE_TAB = "Use Namespace Tab",
   USE_NAVIGATING_BUTTON = "Use Navigating Button",
   USE_NFT_CARD = "Use NFT Card",

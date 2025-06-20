@@ -6,7 +6,7 @@ import { getWallets } from "lib/utils";
 
 import { getCustomedSigningCosmwasm } from "./options";
 
-// Remark: The avaliable wallet list won't change after the app is loaded.
+// Remark: The available wallet list won't change after the app is loaded.
 // So we have to revisit this later if we have another solution.
 export const CosmosKitProvider = ({
   children,
