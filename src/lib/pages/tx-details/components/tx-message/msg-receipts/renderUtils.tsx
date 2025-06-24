@@ -21,6 +21,7 @@ type HtmlType = "explorer" | "json";
 interface CommonReceiptHtmlArgs<T extends HtmlType, V> {
   fallback?: string;
   linkType?: LinkType;
+  textLabel?: string;
   type: T;
   value: Option<Nullable<V>>;
 }
@@ -29,6 +30,7 @@ interface CommonReceiptHtmlArgs<T extends HtmlType, V> {
 export const getCommonReceiptHtml = <T extends HtmlType>({
   fallback,
   linkType = "invalid_address",
+  textLabel,
   type,
   value,
 }: CommonReceiptHtmlArgs<T, T extends "json" ? object : string>) => {
@@ -69,6 +71,7 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
           maxWidth="full"
           showCopyOnHover
           textFormat="normal"
+          textLabel={textLabel}
           type={linkType}
           value={value as string}
           wordBreak="break-word"
