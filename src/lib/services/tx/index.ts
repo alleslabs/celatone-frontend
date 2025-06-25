@@ -12,6 +12,7 @@ import type {
   TxFilters,
 } from "lib/types";
 
+import { decodeTransaction } from "@initia/tx-decoder";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
@@ -75,6 +76,7 @@ export const useTxData = (
   txHash: Option<string>,
   enabled = true
 ): UseQueryResult<TxData> => {
+  const { bech32Prefix } = useCurrentChain();
   const {
     chainConfig: { rest: restEndpoint },
     currentChainId,
@@ -92,18 +94,27 @@ export const useTxData = (
         ? await getTxData(endpoint, hash)
         : await getTxDataRest(endpoint, hash);
 
-      const { txResponse } = txData;
+      const { rawTxResponse, txResponse } = txData;
+
+      const signer = convertAccountPubkeyToAccountAddress(
+        txResponse.tx.authInfo.signerInfos[0].publicKey,
+        bech32Prefix
+      );
 
       const logs = extractTxLogs(txResponse);
+
+      const decodedTx = decodeTransaction(rawTxResponse);
 
       return {
         ...txResponse,
         chainId: currentChainId,
+        decodedTx,
         isTxFailed: Boolean(txResponse.code),
         logs,
+        signer,
       };
     },
-    [currentChainId, endpoint, isFullTier]
+    [bech32Prefix, currentChainId, endpoint, isFullTier]
   );
 
   return useQuery(

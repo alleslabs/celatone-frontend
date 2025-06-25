@@ -20,6 +20,7 @@ export type LinkType =
   | "code_id"
   | "evm_contract_address"
   | "evm_tx_hash"
+  | "module_name"
   | "pool_id"
   | "proposal_id"
   | "task_id"
@@ -36,6 +37,7 @@ interface ExplorerLinkProps extends FlexProps {
   rightIcon?: ReactNode;
   showCopyOnHover?: boolean;
   textFormat?: "ellipsis" | "normal" | "truncate";
+  textLabel?: string;
   textVariant?: TextProps["variant"];
   type: LinkType;
   value: string;
@@ -71,6 +73,9 @@ export const getNavigationUrl = ({
       break;
     case "invalid_address":
       return "";
+    case "module_name":
+      url = "/modules";
+      break;
     case "pool_id":
       url = "/pools";
       break;
@@ -181,6 +186,7 @@ export const ExplorerLink = ({
   rightIcon = null,
   showCopyOnHover = false,
   textFormat = "truncate",
+  textLabel,
   textVariant = "body2",
   type,
   value,
@@ -196,7 +202,8 @@ export const ExplorerLink = ({
       value: copyValue || value,
       wasmEnabled,
     }),
-    getValueText(value === address, textFormat === "truncate", value),
+    textLabel ??
+      getValueText(value === address, textFormat === "truncate", value),
   ];
 
   const link = externalLink ?? internalLink;

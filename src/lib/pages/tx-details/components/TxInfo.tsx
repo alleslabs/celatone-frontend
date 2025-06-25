@@ -5,7 +5,6 @@ import type { Option, Ratio } from "lib/types";
 import { chakra, Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import {
@@ -50,6 +49,7 @@ export const TxInfo = ({
     assetInfos,
     movePoolInfos
   );
+
   return (
     <Container {...flexProps}>
       <LabelText label="Network">{txData.chainId}</LabelText>
@@ -59,6 +59,13 @@ export const TxInfo = ({
           showCopyOnHover
           type="block_height"
           value={txData.height}
+        />
+      </LabelText>
+      <LabelText label="Signer">
+        <ExplorerLink
+          showCopyOnHover
+          type="user_address"
+          value={txData.signer}
         />
       </LabelText>
       <LabelText label="Transaction fee">
@@ -85,11 +92,6 @@ export const TxInfo = ({
           </Text>
         )}
       </LabelText>
-      <UserDocsLink
-        cta="Read more about Txs"
-        href="general/transactions/detail-page"
-        mt={0}
-      />
     </Container>
   );
 };

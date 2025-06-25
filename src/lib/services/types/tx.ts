@@ -1,5 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
+import type { DecodedTx } from "@initia/tx-decoder";
 import type {
+  BechAddr20,
   Message,
   Transaction,
   TransactionWithSignerPubkey,
@@ -234,7 +236,9 @@ export type TxResponse = z.infer<typeof zTxResponse>;
 
 export interface TxData extends TxResponse {
   chainId: string;
+  decodedTx: DecodedTx;
   isTxFailed: boolean;
+  signer: BechAddr20;
 }
 
 export const zTxsResponseItemFromRest =
@@ -327,13 +331,24 @@ export type TxsByHashResponseSequencer = z.infer<
   typeof zTxsByHashResponseSequencer
 >;
 
-export const zTxByHashResponseRest = z
-  .object({
-    tx_response: zTxResponse,
-  })
-  .transform((val) => ({
-    txResponse: val.tx_response,
-  }));
+export const zTxByHashResponseRest = z.preprocess(
+  (arg: unknown) => {
+    const val = arg as Record<string, unknown>;
+    return {
+      raw_tx_response: val.tx_response,
+      tx_response: val.tx_response,
+    };
+  },
+  z
+    .object({
+      raw_tx_response: z.any(),
+      tx_response: zTxResponse,
+    })
+    .transform((val) => ({
+      rawTxResponse: val.raw_tx_response,
+      txResponse: val.tx_response,
+    }))
+);
 
 const zBaseTxsResponseItem = z.object({
   created: zUtcDate,
