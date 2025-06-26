@@ -1,7 +1,7 @@
 import type { Option } from "lib/types";
 
 import { useQuery } from "@tanstack/react-query";
-import { SCAN_API_OVERRIDE } from "env";
+import { CHAIN, SCAN_API_OVERRIDE } from "env";
 import { useInitia } from "lib/app-provider";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import { isUrl } from "lib/utils";
@@ -12,10 +12,10 @@ export const useApiChainConfigs = (
   networkTypes: string[],
   chain: Option<string>
 ) => {
-  const isInitia = useInitia();
-  const endpoint = isInitia
-    ? `${SCAN_API_OVERRIDE}/v1/chains`
-    : `${SCAN_API_OVERRIDE}/v1/configs`;
+  const endpoint =
+    CHAIN === "initia"
+      ? `${SCAN_API_OVERRIDE}/v1/chains`
+      : `${SCAN_API_OVERRIDE}/v1/configs`;
 
   return useQuery(
     [CELATONE_QUERY_KEYS.CHAIN_CONFIGS, networkTypes, chain],
