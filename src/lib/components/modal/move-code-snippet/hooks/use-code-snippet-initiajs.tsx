@@ -25,9 +25,14 @@ export const useCodeSnippetInitiaJs = ({
   const showArgsJson = serializedAbiDataJson.args.length > 0;
   const formatedArgsJson = JSON.stringify(serializedAbiDataJson.args);
 
-  const executeCodeSnippet = `import { LCDClient, Wallet, MnemonicKey, MsgExecute } from '@initia/initia.js';
+  const executeCodeSnippet = `import {
+    RESTClient,
+    Wallet,
+    MnemonicKey,
+    MsgExecuteJSON,
+  } from '@initia/initia.js';
 
-  const lcd = new LCDClient('${restEndpoint}', {
+  const client = new RESTClient('${restEndpoint}', {
     chainId: '${currentChainId}',
     gasPrices: '${gasPriceStr}',
     gasAdjustment: '2.0',
@@ -35,7 +40,7 @@ export const useCodeSnippetInitiaJs = ({
   const key = new MnemonicKey({
     mnemonic: "<MNEMONIC>",
   });
-  const wallet = new Wallet(lcd, key);
+  const wallet = new Wallet(client, key);
   const msg = new MsgExecuteJSON(
     key.accAddress,
     '${moduleAddress}',
@@ -50,13 +55,13 @@ export const useCodeSnippetInitiaJs = ({
         msgs: [msg],
     });
   
-    const broadcastResult = await lcd.tx.broadcast(signedTx);
+    const broadcastResult = await client.tx.broadcast(signedTx);
     console.log(broadcastResult);
   };
   execute();`;
 
-  const viewCodeSnippet = `import { LCDClient } from '@initia/initia.js'
-      const lcd = new LCDClient('${restEndpoint}', {
+  const viewCodeSnippet = `import { RESTClient } from '@initia/initia.js'
+      const client = new RESTClient('${restEndpoint}', {
           chainId: '${currentChainId}',
       });
       const moduleAddress =
@@ -64,7 +69,7 @@ export const useCodeSnippetInitiaJs = ({
       const moduleName = "${moduleName}";
       const fnName = "${fn.name}";
       const viewModule = async (moduleAddress, moduleName, fnName) => {
-          const viewResult = await lcd.move.viewJSON(
+          const viewResult = await client.move.viewJSON(
               moduleAddress,
               moduleName,
               fnName,
