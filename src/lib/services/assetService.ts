@@ -11,7 +11,7 @@ export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
   const isInitia = useInitia();
   const assetsApiRoute = useBaseApiRoute("assets");
   const initiaAssetsApiRoute = useBaseApiRoute("initia-api-assets");
-  const endpoint = isInitia ? assetsApiRoute : initiaAssetsApiRoute;
+  const endpoint = isInitia ? initiaAssetsApiRoute : assetsApiRoute;
 
   const {
     chainConfig: { registry },
