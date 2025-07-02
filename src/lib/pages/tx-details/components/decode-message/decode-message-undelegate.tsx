@@ -1,15 +1,18 @@
 import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { Coin } from "@initia/initia.js";
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TokenImageRender } from "lib/components/token";
+import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import { useAssetInfos } from "lib/services/assetService";
+import { zValidatorAddr } from "lib/types";
 import {
   coinToTokenWithValue,
   formatTokenWithValue,
+  formatUTC,
   getTokenLabel,
+  parseUnixToDateOpt,
 } from "lib/utils";
 import { useState } from "react";
 
@@ -21,94 +24,104 @@ import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodeMessageSwapProps extends TxMsgData {
+interface DecodeMessageUndelegateProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "swap";
+    action: "undelegate";
   };
 }
 
-export const DecodeMessageSwap = ({
+export const DecodeMessageUndelegate = ({
   decodedMessage,
   isSingleMsg,
   log,
   msgBody,
-}: DecodeMessageSwapProps) => {
+}: DecodeMessageUndelegateProps) => {
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
+  const coin = data.coins[0];
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
+  const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
+  const tokenWithValue = formatTokenWithValue(token);
 
-  const tokenIn = coinToTokenWithValue(data.denomIn, data.amountIn, assetInfos);
-  const tokenInWithValue = formatTokenWithValue(tokenIn);
-  const coinIn = new Coin(data.denomIn, data.amountIn);
-
-  const tokenOut = coinToTokenWithValue(
-    data.denomOut,
-    data.amountOut,
-    assetInfos
-  );
-  const tokenOutWithValue = formatTokenWithValue(tokenOut);
-  const coinOut = new Coin(data.denomOut, data.amountOut);
+  const parsedUnlockTimestamp = parseUnixToDateOpt(data.unlockTimestamp);
 
   return (
     <Flex direction="column">
       <DecodeMessageHeader
         gap={2}
-        iconName="swap"
+        iconName="delegate"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Swap"
+        label="Unstake"
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
         <Flex align="center" gap={1}>
           <TokenImageRender
-            alt={getTokenLabel(data.denomIn, data.amountIn)}
+            alt={getTokenLabel(token.denom, token.symbol)}
             boxSize={4}
-            logo={tokenIn.logo}
+            logo={token.logo}
           />
-          <Text>{tokenInWithValue}</Text>
+          <Text>{tokenWithValue}</Text>
         </Flex>
-        <Flex gap={2}>
-          <Text color="text.dark">for</Text>
-          <Flex align="center" gap={1}>
-            <TokenImageRender
-              alt={getTokenLabel(data.denomOut, data.amountOut)}
-              boxSize={4}
-              logo={tokenOut.logo}
-            />
-            <Text>{tokenOutWithValue}</Text>
-          </Flex>
-        </Flex>
+        <Text color="text.dark">from</Text>
+        <ValidatorBadge
+          badgeSize={4}
+          hasLabel={false}
+          sx={{
+            width: "fit-content",
+          }}
+          validator={{
+            identity: data.validator?.description.identity,
+            moniker: data.validator?.description.moniker,
+            validatorAddress: zValidatorAddr.parse(data.validatorAddress),
+          }}
+        />
         <Flex gap={2}>
           <Text color="text.dark">by</Text>
           <ExplorerLink
             showCopyOnHover
             textVariant="body1"
-            type={getAddressType(data.from)}
-            value={data.from}
+            type={getAddressType(data.delegatorAddress)}
+            value={data.delegatorAddress}
           />
         </Flex>
       </DecodeMessageHeader>
       <DecodeMessageBody isExpand={expand} log={log}>
-        <DecodeMessageRow title="Sender">
+        <DecodeMessageRow title="Delegator">
           <ExplorerLink
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
-            type={getAddressType(data.from)}
-            value={data.from}
+            type={getAddressType(data.delegatorAddress)}
+            value={data.delegatorAddress}
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="From">
-          <CoinsComponent coins={[coinIn]} />
+        <DecodeMessageRow title="From validator">
+          <ValidatorBadge
+            badgeSize={4}
+            sx={{
+              width: "fit-content",
+            }}
+            validator={{
+              identity: data.validator?.description.identity,
+              moniker: data.validator?.description.moniker,
+              validatorAddress: zValidatorAddr.parse(data.validatorAddress),
+            }}
+          />
         </DecodeMessageRow>
-        <DecodeMessageRow title="To">
-          <CoinsComponent coins={[coinOut]} />
+        <DecodeMessageRow title="Amount">
+          <CoinsComponent coins={data.coins} />
         </DecodeMessageRow>
+        {parsedUnlockTimestamp && (
+          <DecodeMessageRow title="Unlock timestamp">
+            {formatUTC(parsedUnlockTimestamp)}
+          </DecodeMessageRow>
+        )}
         <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>

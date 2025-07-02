@@ -8,18 +8,18 @@ import type { TxMsgData } from "../tx-message";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 
-interface DecodeMessageNftMintProps extends TxMsgData {
+interface DecodeMessageNftBurnProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "nft_mint";
+    action: "nft_burn";
   };
 }
 
-export const DecodeMessageNftMint = ({
+export const DecodeMessageNftBurn = ({
   decodedMessage,
   isSingleMsg,
   log,
   msgBody,
-}: DecodeMessageNftMintProps) => {
+}: DecodeMessageNftBurnProps) => {
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { isIbc, isOp } = decodedMessage;
 
@@ -32,7 +32,7 @@ export const DecodeMessageNftMint = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="NFT Mint"
+        label="NFT Burn"
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >

@@ -21,18 +21,18 @@ import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodeMessageWithdrawDelegatorRewardProps extends TxMsgData {
+interface DecodedMessageRedelegateProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "withdraw_delegator_reward";
+    action: "redelegate";
   };
 }
 
-export const DecodeMessageWithdrawDelegatorReward = ({
+export const DecodedMessageRedelegate = ({
   decodedMessage,
   isSingleMsg,
   log,
   msgBody,
-}: DecodeMessageWithdrawDelegatorRewardProps) => {
+}: DecodedMessageRedelegateProps) => {
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
@@ -45,12 +45,12 @@ export const DecodeMessageWithdrawDelegatorReward = ({
     <Flex direction="column">
       <DecodeMessageHeader
         gap={2}
-        iconName="assets-solid"
+        iconName="delegate"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Claim"
+        label="Redelegate"
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
@@ -70,9 +70,22 @@ export const DecodeMessageWithdrawDelegatorReward = ({
             width: "fit-content",
           }}
           validator={{
-            identity: data.validator?.description.identity,
-            moniker: data.validator?.description.moniker,
-            validatorAddress: zValidatorAddr.parse(data.validatorAddress),
+            identity: data.validatorSrc?.description.identity,
+            moniker: data.validatorSrc?.description.moniker,
+            validatorAddress: zValidatorAddr.parse(data.validatorSrcAddress),
+          }}
+        />
+        <Text color="text.dark">to</Text>
+        <ValidatorBadge
+          badgeSize={4}
+          hasLabel={false}
+          sx={{
+            width: "fit-content",
+          }}
+          validator={{
+            identity: data.validatorDst?.description.identity,
+            moniker: data.validatorDst?.description.moniker,
+            validatorAddress: zValidatorAddr.parse(data.validatorDstAddress),
           }}
         />
         <Flex gap={2}>
@@ -103,9 +116,22 @@ export const DecodeMessageWithdrawDelegatorReward = ({
               width: "fit-content",
             }}
             validator={{
-              identity: data.validator?.description.identity,
-              moniker: data.validator?.description.moniker,
-              validatorAddress: zValidatorAddr.parse(data.validatorAddress),
+              identity: data.validatorSrc?.description.identity,
+              moniker: data.validatorSrc?.description.moniker,
+              validatorAddress: zValidatorAddr.parse(data.validatorSrcAddress),
+            }}
+          />
+        </DecodeMessageRow>
+        <DecodeMessageRow title="To validator">
+          <ValidatorBadge
+            badgeSize={4}
+            sx={{
+              width: "fit-content",
+            }}
+            validator={{
+              identity: data.validatorDst?.description.identity,
+              moniker: data.validatorDst?.description.moniker,
+              validatorAddress: zValidatorAddr.parse(data.validatorDstAddress),
             }}
           />
         </DecodeMessageRow>

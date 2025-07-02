@@ -11,6 +11,7 @@ interface DecodeMessageHeaderProps extends FlexProps {
   iconName: IconKeys;
   isExpand: boolean;
   isIbc: boolean;
+  isOpinit: boolean;
   isSingleMsg: boolean;
   label: string;
   onClick: () => void;
@@ -22,6 +23,7 @@ export const DecodeMessageHeader = ({
   iconName,
   isExpand,
   isIbc,
+  isOpinit,
   isSingleMsg,
   label,
   onClick,
@@ -57,7 +59,7 @@ export const DecodeMessageHeader = ({
       onClick();
     }}
   >
-    <Flex align="center" {...props}>
+    <Flex align="center" flexWrap="wrap" {...props}>
       <Tag gap={1} variant="gray">
         <CustomIcon boxSize={3} name={iconName} />
         <Text fontWeight={700} variant="body2">
@@ -65,6 +67,16 @@ export const DecodeMessageHeader = ({
         </Text>
       </Tag>
       {children}
+      {isIbc && (
+        <Tag minW="hug-content" size="md" variant="secondary">
+          IBC
+        </Tag>
+      )}
+      {isOpinit && (
+        <Tag minW="hug-content" size="md" variant="teal">
+          OPInit
+        </Tag>
+      )}
     </Flex>
     <CustomIcon
       boxSize={4}
