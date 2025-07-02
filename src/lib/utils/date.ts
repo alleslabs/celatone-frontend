@@ -26,6 +26,13 @@ export const parseNanosecondsToDate = (date: string): Date =>
 export const parseDateOpt = (dateOpt: Option<string>): Option<Date> =>
   dateOpt ? parseDate(dateOpt) : undefined;
 
+export const parseUnixToDateOpt = (
+  unix: Option<number | string>
+): Option<Date> =>
+  unix !== undefined && !Number.isNaN(unix)
+    ? dayjs.unix(Number(unix)).toDate()
+    : undefined;
+
 // TODO: remove default fn
 export const parseDateDefault = (dateOpt: Option<string>): Date =>
   dateOpt ? parseDate(dateOpt) : getDefaultDate();

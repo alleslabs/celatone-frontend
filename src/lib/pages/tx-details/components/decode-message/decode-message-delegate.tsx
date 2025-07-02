@@ -10,7 +10,9 @@ import { zValidatorAddr } from "lib/types";
 import {
   coinToTokenWithValue,
   formatTokenWithValue,
+  formatUTC,
   getTokenLabel,
+  parseUnixToDateOpt,
 } from "lib/utils";
 import { useState } from "react";
 
@@ -18,21 +20,22 @@ import type { TxMsgData } from "../tx-message";
 
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { DecodeMessageBody } from "./decode-message-body";
+import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodeMessageWithdrawDelegatorRewardProps extends TxMsgData {
+interface DecodeMessageDelegateProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "withdraw_delegator_reward";
+    action: "delegate";
   };
 }
 
-export const DecodeMessageWithdrawDelegatorReward = ({
+export const DecodeMessageDelegate = ({
   decodedMessage,
   isSingleMsg,
   log,
   msgBody,
-}: DecodeMessageWithdrawDelegatorRewardProps) => {
+}: DecodeMessageDelegateProps) => {
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
@@ -41,16 +44,19 @@ export const DecodeMessageWithdrawDelegatorReward = ({
   const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
   const tokenWithValue = formatTokenWithValue(token);
 
+  const isLocked = msgBody["@type"] === "/initia.move.v1.MsgExecute";
+  const parsedReleaseTimestamp = parseUnixToDateOpt(data.releaseTimestamp);
+
   return (
     <Flex direction="column">
       <DecodeMessageHeader
         gap={2}
-        iconName="assets-solid"
+        iconName="delegate"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Claim"
+        label={isLocked ? "Lock stake" : "Stake"}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
@@ -62,7 +68,7 @@ export const DecodeMessageWithdrawDelegatorReward = ({
           />
           <Text>{tokenWithValue}</Text>
         </Flex>
-        <Text color="text.dark">from</Text>
+        <Text color="text.dark">to</Text>
         <ValidatorBadge
           badgeSize={4}
           hasLabel={false}
@@ -86,7 +92,7 @@ export const DecodeMessageWithdrawDelegatorReward = ({
         </Flex>
       </DecodeMessageHeader>
       <DecodeMessageBody isExpand={expand} log={log}>
-        <DecodeMessageRow title="Claimer">
+        <DecodeMessageRow title="Delegator">
           <ExplorerLink
             maxWidth="full"
             showCopyOnHover
@@ -96,7 +102,7 @@ export const DecodeMessageWithdrawDelegatorReward = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="From validator">
+        <DecodeMessageRow title="Validator">
           <ValidatorBadge
             badgeSize={4}
             sx={{
@@ -112,6 +118,12 @@ export const DecodeMessageWithdrawDelegatorReward = ({
         <DecodeMessageRow title="Amount">
           <CoinsComponent coins={data.coins} />
         </DecodeMessageRow>
+        {parsedReleaseTimestamp && (
+          <DecodeMessageRow title="Release timestamp">
+            {formatUTC(parsedReleaseTimestamp)}
+          </DecodeMessageRow>
+        )}
+        <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>
   );

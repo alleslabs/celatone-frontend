@@ -1,115 +1,45 @@
 import type { DecodedMessage } from "@initia/tx-decoder";
-import type { AssetInfos, Coin, Option } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TokenImageRender } from "lib/components/token";
-import { useAssetInfos } from "lib/services/assetService";
-import {
-  coinToTokenWithValue,
-  formatTokenWithValue,
-  getTokenLabel,
-} from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
-import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodeMessageSendProps extends TxMsgData {
+interface DecodeMessageObjectTransferProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "send";
+    action: "object_transfer";
   };
 }
 
-const DecodeMessageSendSingleCoinHeader = ({
-  assetInfos,
-  coin,
-}: {
-  assetInfos: Option<AssetInfos>;
-  coin: Coin;
-}) => {
-  const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
-  const tokenWithValue = formatTokenWithValue(token);
-
-  return (
-    <>
-      <TokenImageRender
-        alt={getTokenLabel(token.denom, token.symbol)}
-        boxSize={4}
-        logo={token.logo}
-      />
-      <Text>{tokenWithValue}</Text>
-    </>
-  );
-};
-
-const DecodeMessageSendMultipleCoinsHeader = ({
-  assetInfos,
-  coins,
-}: {
-  assetInfos: Option<AssetInfos>;
-  coins: Coin[];
-}) => (
-  <>
-    <Flex>
-      {coins.map((coin) => {
-        const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
-        return (
-          <TokenImageRender
-            alt={getTokenLabel(token.denom, token.symbol)}
-            boxSize={4}
-            logo={token.logo}
-            marginInlineEnd="-4px"
-          />
-        );
-      })}
-    </Flex>
-    <Text>{coins.length} assets</Text>
-  </>
-);
-
-export const DecodeMessageSend = ({
+export const DecodeMessageObjectTransfer = ({
   decodedMessage,
   isSingleMsg,
   log,
   msgBody,
-}: DecodeMessageSendProps) => {
+}: DecodeMessageObjectTransferProps) => {
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
-  const { data: assetInfos } = useAssetInfos({ withPrices: false });
 
   return (
     <Flex direction="column">
       <DecodeMessageHeader
         gap={2}
-        iconName="send"
+        iconName="collection"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Send"
+        label="NFT Transfer"
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={2}>
-          {data.coins.length > 1 ? (
-            <DecodeMessageSendMultipleCoinsHeader
-              assetInfos={assetInfos}
-              coins={data.coins}
-            />
-          ) : (
-            <DecodeMessageSendSingleCoinHeader
-              assetInfos={assetInfos}
-              coin={data.coins[0]}
-            />
-          )}
-        </Flex>
         <Flex gap={2}>
           <Text color="text.dark">from</Text>
           <ExplorerLink
@@ -150,9 +80,8 @@ export const DecodeMessageSend = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Amount">
-          <CoinsComponent coins={data.coins} />
-        </DecodeMessageRow>
+        <DecodeMessageRow title="Collection">-</DecodeMessageRow>
+        <DecodeMessageRow title="NFT">-</DecodeMessageRow>
       </DecodeMessageBody>
     </Flex>
   );

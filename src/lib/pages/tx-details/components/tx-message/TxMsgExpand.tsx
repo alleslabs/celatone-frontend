@@ -44,6 +44,7 @@ export const TxMsgExpand = ({
   const { isEvm, isIbc, isOpinit } = getTxBadges(type, log);
 
   let msgIcon: IconKeys = "file";
+  let msgLabel: string = "";
   let content: ReactNode;
   switch (type) {
     case "/cosmos.bank.v1beta1.MsgSend":
@@ -61,9 +62,10 @@ export const TxMsgExpand = ({
             ? "assets"
             : formatTokenWithValue(singleToken);
         msgIcon = "send";
+        msgLabel = "Send";
         content = (
           <Flex display="inline" gap={1}>
-            Send {assetText} to{" "}
+            {assetText} to{" "}
             <ExplorerLink
               ampCopierSection="tx_page_message_header_send_address"
               showCopyOnHover
@@ -78,9 +80,10 @@ export const TxMsgExpand = ({
     case "/cosmos.gov.v1.MsgSubmitProposal":
     case "/cosmos.gov.v1beta1.MsgSubmitProposal":
       msgIcon = "submit-proposal";
+      msgLabel = "Submit proposal";
       content = (
         <Flex display="inline" gap={1}>
-          Submit proposal {(body.is_expedited as boolean) && " expedited "}
+          {(body.is_expedited as boolean) && " expedited "}
           {log && (
             <>
               ID{" "}
@@ -100,9 +103,10 @@ export const TxMsgExpand = ({
       break;
     case "/cosmos.gov.v1beta1.MsgVote":
       msgIcon = "vote";
+      msgLabel = "Vote";
       content = (
         <Flex display="inline" gap={1}>
-          Vote{" "}
+          {" "}
           <span style={{ fontWeight: 700 }}>
             {voteOption[body.option as VoteOption]}
           </span>{" "}
@@ -119,9 +123,10 @@ export const TxMsgExpand = ({
       break;
     case "/cosmos.staking.v1beta1.MsgDelegate":
       msgIcon = "delegate";
+      msgLabel = "Delegate";
       content = (
         <Flex display="inline" gap={1}>
-          Delegate by{" "}
+          by{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_delegator"
             showCopyOnHover
@@ -142,9 +147,10 @@ export const TxMsgExpand = ({
       break;
     case "/cosmwasm.wasm.v1.MsgClearAdmin":
       msgIcon = "admin-clear";
+      msgLabel = "Clear admin";
       content = (
         <Flex display="inline" gap={1}>
-          Clear admin on{" "}
+          on{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_contract"
             showCopyOnHover
@@ -157,9 +163,10 @@ export const TxMsgExpand = ({
       break;
     case "/cosmwasm.wasm.v1.MsgExecuteContract":
       msgIcon = "execute";
+      msgLabel = "Execute";
       content = (
         <Flex display="inline" gap={1}>
-          Execute{" "}
+          {" "}
           <span style={{ fontWeight: 700 }}>
             {Object.keys(body.msg as Record<string, unknown>)[0]}
           </span>{" "}
@@ -176,9 +183,10 @@ export const TxMsgExpand = ({
       break;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract":
       msgIcon = "instantiate";
+      msgLabel = "Instantiate";
       content = (
         <Flex display="inline" gap={1}>
-          Instantiate{" "}
+          {" "}
           {log && (
             <ExplorerLink
               ampCopierSection="tx_page_message_header_contract"
@@ -204,9 +212,10 @@ export const TxMsgExpand = ({
       break;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
       msgIcon = "instantiate";
+      msgLabel = "Instantiate2";
       content = (
         <Flex display="inline" gap={1}>
-          Instantiate2{" "}
+          {" "}
           {log && (
             <ExplorerLink
               ampCopierSection="tx_page_message_header_contract"
@@ -232,9 +241,10 @@ export const TxMsgExpand = ({
       break;
     case "/cosmwasm.wasm.v1.MsgMigrateContract":
       msgIcon = "migrate";
+      msgLabel = "Migrate";
       content = (
         <Flex display="inline" gap={1}>
-          Migrate{" "}
+          {" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_contract"
             showCopyOnHover
@@ -257,9 +267,10 @@ export const TxMsgExpand = ({
       const codeId = findAttr(log?.events, "store_code", "code_id") ?? "";
 
       msgIcon = "upload";
+      msgLabel = "Upload wasm";
       content = (
         <Flex display="inline" gap={1}>
-          Upload Wasm{" "}
+          {" "}
           {log && (
             <>
               {" "}
@@ -281,9 +292,10 @@ export const TxMsgExpand = ({
     }
     case "/cosmwasm.wasm.v1.MsgUpdateAdmin":
       msgIcon = "admin-edit";
+      msgLabel = "Update admin";
       content = (
         <Flex display="inline" gap={1}>
-          Update admin on{" "}
+          on{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_contract"
             showCopyOnHover
@@ -302,8 +314,11 @@ export const TxMsgExpand = ({
         </Flex>
       );
       break;
+    case "/initia.move.v1.MsgExecute":
+      msgLabel = `${body.module_name}::${body.function_name}`;
+      break;
     default: {
-      content = extractMsgType(type);
+      msgLabel = extractMsgType(type);
       break;
     }
   }
@@ -344,43 +359,42 @@ export const TxMsgExpand = ({
         fontWeight={500}
         gap={2}
       >
-        <CustomIcon
-          boxSize={4}
-          color="primary.main"
-          m={0}
-          mt={{ base: 1, md: 0 }}
-          name={msgIcon}
-        />
+        <Tag gap={1} variant="gray">
+          <CustomIcon boxSize={3} name={msgIcon} />
+          <Text fontWeight={700} variant="body2">
+            {msgLabel}
+          </Text>
+        </Tag>
         <Text wordBreak="break-all">{content}</Text>
         {!isMobile && isIbc && (
-          <Tag minW="hug-content" mx={2} size="md" variant="secondary">
+          <Tag minW="hug-content" size="md" variant="secondary">
             IBC
           </Tag>
         )}
         {!isMobile && isOpinit && (
-          <Tag minW="hug-content" mx={2} size="md" variant="teal">
+          <Tag minW="hug-content" size="md" variant="teal">
             OPInit
           </Tag>
         )}
         {!isMobile && isEvm && (
-          <Tag minW="hug-content" mx={2} size="md" variant="primary-light">
+          <Tag minW="hug-content" size="md" variant="primary-light">
             EVM
           </Tag>
         )}
       </Flex>
       <Flex align="center">
         {isMobile && isIbc && (
-          <Tag minW="hug-content" mx={2} size="sm" variant="secondary">
+          <Tag minW="hug-content" size="sm" variant="secondary">
             IBC
           </Tag>
         )}
         {isMobile && isOpinit && (
-          <Tag minW="hug-content" mx={2} size="md" variant="teal">
+          <Tag minW="hug-content" size="md" variant="teal">
             OPInit
           </Tag>
         )}
         {isMobile && isEvm && (
-          <Tag minW="hug-content" mx={2} size="md" variant="primary-light">
+          <Tag minW="hug-content" size="md" variant="primary-light">
             EVM
           </Tag>
         )}

@@ -1,0 +1,64 @@
+import type { DecodedMessage } from "@initia/tx-decoder";
+
+import { Flex, Text } from "@chakra-ui/react";
+import { TokenImageRender } from "lib/components/token";
+import { useAssetInfos } from "lib/services/assetService";
+import {
+  coinToTokenWithValue,
+  formatTokenWithValue,
+  getTokenLabel,
+} from "lib/utils";
+import { useState } from "react";
+
+import type { TxMsgData } from "../tx-message";
+
+import { DecodeMessageBody } from "./decode-message-body";
+import { DecodeMessageHeader } from "./decode-message-header";
+
+interface DecodeMessageIbcTransferProps extends TxMsgData {
+  decodedMessage: DecodedMessage & {
+    action: "ibc_transfer";
+  };
+}
+
+export const DecodeMessageIbcTransfer = ({
+  decodedMessage,
+  isSingleMsg,
+  log,
+  msgBody,
+}: DecodeMessageIbcTransferProps) => {
+  const [expand, setExpand] = useState(!!isSingleMsg);
+  const { data, isIbc, isOp } = decodedMessage;
+  const { data: assetInfos } = useAssetInfos({ withPrices: false });
+  const token = coinToTokenWithValue(data.denom, data.amount, assetInfos);
+  const tokenWithValue = formatTokenWithValue(token);
+
+  return (
+    <Flex direction="column">
+      <DecodeMessageHeader
+        gap={2}
+        iconName="swap"
+        isExpand={expand}
+        isIbc={isIbc}
+        isOpinit={isOp}
+        isSingleMsg={!!isSingleMsg}
+        label="Bridge"
+        type={msgBody["@type"]}
+        onClick={() => setExpand(!expand)}
+      >
+        <Flex align="center" gap={1}>
+          <TokenImageRender
+            alt={getTokenLabel(token.denom, token.symbol)}
+            boxSize={4}
+            logo={token.logo}
+          />
+          <Text>{tokenWithValue}</Text>
+        </Flex>
+        <Text color="text.dark">from</Text>
+      </DecodeMessageHeader>
+      <DecodeMessageBody isExpand={expand} log={log}>
+        body
+      </DecodeMessageBody>
+    </Flex>
+  );
+};

@@ -12,7 +12,7 @@ import type {
   TxFilters,
 } from "lib/types";
 
-import { decodeTransaction } from "@initia/tx-decoder";
+import { TxDecoder } from "@initia/tx-decoder";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
@@ -33,7 +33,7 @@ import {
   extractTxLogs,
   isTxHash,
 } from "lib/utils";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 import type {
   AccountTxsResponse,
@@ -83,6 +83,10 @@ export const useTxData = (
   } = useCelatoneApp();
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("txs");
+  const txDecoder = useMemo(
+    () => new TxDecoder({ restUrl: restEndpoint }),
+    [restEndpoint]
+  );
 
   const endpoint = isFullTier ? apiEndpoint : restEndpoint;
 
@@ -102,9 +106,7 @@ export const useTxData = (
       );
 
       const logs = extractTxLogs(txResponse);
-
-      const decodedTx = decodeTransaction(rawTxResponse);
-
+      const decodedTx = await txDecoder.decodeTransaction(rawTxResponse);
       return {
         ...txResponse,
         chainId: currentChainId,
@@ -114,7 +116,7 @@ export const useTxData = (
         signer,
       };
     },
-    [bech32Prefix, currentChainId, endpoint, isFullTier]
+    [bech32Prefix, currentChainId, endpoint, isFullTier, txDecoder]
   );
 
   return useQuery(
