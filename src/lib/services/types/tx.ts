@@ -396,7 +396,10 @@ export const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>(
     isInstantiate: val.is_instantiate ?? false,
     isOpinit: val.is_opinit ?? false,
     isSigner: false,
-    messages: snakeToCamel(val.messages),
+    messages: snakeToCamel(val.messages).map((msg) => ({
+      ...msg,
+      type: msg["@type"],
+    })),
     sender: val.sender,
     success: val.success,
   })
@@ -456,6 +459,7 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
 
 export const zAccountTxsResponse = z.object({
   items: z.array(zAccountTxsResponseItem),
+  total: z.number().nonnegative(),
 });
 export type AccountTxsResponse = z.infer<typeof zAccountTxsResponse>;
 
