@@ -309,7 +309,7 @@ export const fromLogs: TestCase = {
       '[{"events":[{"type":"message","attributes":[{"key":"action","value":"/cosmwasm.wasm.v1.MsgMigrateContract"},{"key":"module","value":"wasm"},{"key":"sender","value":"osmo18rf2vketuhfvrw0n986mghms33ahm884wsrfsj"}]},{"type":"migrate","attributes":[{"key":"code_id","value":"17"},{"key":"_contract_address","value":"osmo1cvtzwsj8lam9at8vfgxfnveyzjne8eecqjnsh6k3jvt3l7ve6zms3wtpd0"}]}]}]',
     timestamp: parseDate("2023-06-29T06:09:47Z"),
     tx: {
-      authInfo: {
+      auth_info: {
         fee: {
           amount: [
             {
@@ -317,18 +317,18 @@ export const fromLogs: TestCase = {
               denom: "uosmo",
             },
           ],
-          gasLimit: "195164",
+          gas_limit: "195164",
           granter: "",
           payer: "",
         },
-        signerInfos: [
+        signer_infos: [
           {
-            modeInfo: {
+            mode_info: {
               single: {
                 mode: SignMode["SIGN_MODE_DIRECT" as keyof typeof SignMode],
               },
             },
-            publicKey: {
+            public_key: {
               "@type": "/cosmos.crypto.secp256k1.PubKey",
               key: "AjpLfngY/rc6Nk4GWQx6HcxHah8KM77D9q01vk83wnF2",
             },
@@ -337,7 +337,7 @@ export const fromLogs: TestCase = {
         ],
       },
       body: {
-        extensionOptions: [],
+        extension_options: [],
         memo: "",
         messages: [
           {
@@ -349,8 +349,8 @@ export const fromLogs: TestCase = {
             sender: "osmo18rf2vketuhfvrw0n986mghms33ahm884wsrfsj",
           },
         ],
-        nonCriticalExtensionOptions: [],
-        timeoutHeight: "0",
+        non_critical_extension_options: [],
+        timeout_height: "0",
       },
       signatures: [
         "DM+IN6kxlRXC688E37pSkpW86LM0t8LlWDbf+j6sOP52S3fNtpULJwV7w1G+CKiet0pOcZp2GVImUfvpEszCtw==",
@@ -463,7 +463,7 @@ export const fromLogsTxFailed: TestCase = {
       "failed to execute message; message index: 0: was (1000uosmo), need (400000000uosmo): minimum deposit is too small",
     timestamp: parseDate("2022-09-06T09:03:15Z"),
     tx: {
-      authInfo: {
+      auth_info: {
         fee: {
           amount: [
             {
@@ -471,18 +471,18 @@ export const fromLogsTxFailed: TestCase = {
               denom: "uosmo",
             },
           ],
-          gasLimit: "9000000",
+          gas_limit: "9000000",
           granter: "",
           payer: "",
         },
-        signerInfos: [
+        signer_infos: [
           {
-            modeInfo: {
+            mode_info: {
               single: {
                 mode: SignMode["SIGN_MODE_DIRECT" as keyof typeof SignMode],
               },
             },
-            publicKey: {
+            public_key: {
               "@type": "/cosmos.crypto.secp256k1.PubKey",
               key: "A0KHudvOKFXLps3gbcvvMwLy7Tm05wUfuGmNKiszslQ4",
             },
@@ -491,7 +491,7 @@ export const fromLogsTxFailed: TestCase = {
         ],
       },
       body: {
-        extensionOptions: [],
+        extension_options: [],
         memo: "",
         messages: [
           {
@@ -524,8 +524,8 @@ export const fromLogsTxFailed: TestCase = {
             proposer: "osmo1g2gdzhhqv38qau8nn295zvegsnfv6u4jm6umj7",
           },
         ],
-        nonCriticalExtensionOptions: [],
-        timeoutHeight: "0",
+        non_critical_extension_options: [],
+        timeout_height: "0",
       },
       signatures: [
         "zY1Ay6HtIikozz45EtXZJ2OuNTrGHpBFDcZVsrqX56MwI7Ffz+JKIJw0QHaURCKFjAnEa48dG6VC2+U9/NxHxg==",
@@ -819,7 +819,7 @@ export const fromEvents: TestCase = {
     rawLog: "",
     timestamp: parseDate("2024-01-16T16:51:20Z"),
     tx: {
-      authInfo: {
+      auth_info: {
         fee: {
           amount: [
             {
@@ -827,18 +827,18 @@ export const fromEvents: TestCase = {
               denom: "uinit",
             },
           ],
-          gasLimit: "760770",
+          gas_limit: "760770",
           granter: "",
           payer: "",
         },
-        signerInfos: [
+        signer_infos: [
           {
-            modeInfo: {
+            mode_info: {
               single: {
                 mode: SignMode["SIGN_MODE_DIRECT" as keyof typeof SignMode],
               },
             },
-            publicKey: {
+            public_key: {
               "@type": "/cosmos.crypto.secp256k1.PubKey",
               key: "AjpLfngY/rc6Nk4GWQx6HcxHah8KM77D9q01vk83wnF2",
             },
@@ -847,7 +847,7 @@ export const fromEvents: TestCase = {
         ],
       },
       body: {
-        extensionOptions: [],
+        extension_options: [],
         memo: "",
         messages: [
           {
@@ -859,8 +859,8 @@ export const fromEvents: TestCase = {
             upgrade_policy: "ARBITRARY",
           },
         ],
-        nonCriticalExtensionOptions: [],
-        timeoutHeight: "0",
+        non_critical_extension_options: [],
+        timeout_height: "0",
       },
       signatures: [
         "THA48YPvYrty2OrQakrTpQWanP/BG9rCjDGgdAJ0TpB4xBezWiX5VTFl7EiCx6pF7T0nAf/bznL4l3LcKLGa5g==",
@@ -1020,7 +1020,7 @@ export const fromEventsTxFailed: TestCase = {
       "failed to execute message; message index: 0: VM failure: status OUT_OF_GAS of type Execution, location=0000000000000000000000002ab506311ffe3aaf8871f84a7ba8a685e025dbba::ed25519, function=1, code_offset=12",
     timestamp: parseDate("2024-01-26T07:05:00Z"),
     tx: {
-      authInfo: {
+      auth_info: {
         fee: {
           amount: [
             {
@@ -1028,18 +1028,18 @@ export const fromEventsTxFailed: TestCase = {
               denom: "uinit",
             },
           ],
-          gasLimit: "5000000",
+          gas_limit: "5000000",
           granter: "",
           payer: "",
         },
-        signerInfos: [
+        signer_infos: [
           {
-            modeInfo: {
+            mode_info: {
               single: {
                 mode: SignMode["SIGN_MODE_DIRECT" as keyof typeof SignMode],
               },
             },
-            publicKey: {
+            public_key: {
               "@type": "/cosmos.crypto.secp256k1.PubKey",
               key: "A5vqpm4KH4Qz7T2DC31p3nZ8nK5M6ZrnDa4PcE6zg/Y0",
             },
@@ -1048,7 +1048,7 @@ export const fromEventsTxFailed: TestCase = {
         ],
       },
       body: {
-        extensionOptions: [],
+        extension_options: [],
         memo: "",
         messages: [
           {
@@ -1061,8 +1061,8 @@ export const fromEventsTxFailed: TestCase = {
             type_args: [],
           },
         ],
-        nonCriticalExtensionOptions: [],
-        timeoutHeight: "0",
+        non_critical_extension_options: [],
+        timeout_height: "0",
       },
       signatures: [
         "2CXCevdXDrBhyMqVuh3QRwvnWrgecv6bJ2FBOv9o/JhrAF1i7HnXkoTF21fDWMgUbtHFeZvYSpU+ebTiT9+2ew==",

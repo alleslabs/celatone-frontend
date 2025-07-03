@@ -10,15 +10,18 @@ import { EventBox } from "../tx-message/EventBox";
 
 interface DecodeMessageBodyProps {
   children: ReactNode;
+  compact: boolean;
   isExpand: boolean;
   log: Option<Log>;
 }
 
 export const DecodeMessageBody = ({
   children,
+  compact,
   isExpand,
   log,
 }: DecodeMessageBodyProps) => {
+  if (compact) return null;
   return (
     <Flex
       direction="column"

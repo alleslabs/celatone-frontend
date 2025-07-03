@@ -42,7 +42,7 @@ export const TxInfoMobile = ({
     withPrices: true,
   });
 
-  const feeCoin = txData.tx.authInfo.fee?.amount[0];
+  const feeCoin = txData.tx.auth_info.fee?.amount[0];
   const feeToken = computeCosmosFee(
     feeCoin,
     txData.gasUsed,

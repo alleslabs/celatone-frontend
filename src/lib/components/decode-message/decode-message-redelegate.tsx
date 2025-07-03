@@ -28,6 +28,7 @@ interface DecodedMessageRedelegateProps extends TxMsgData {
 }
 
 export const DecodedMessageRedelegate = ({
+  compact,
   decodedMessage,
   isSingleMsg,
   log,
@@ -44,6 +45,7 @@ export const DecodedMessageRedelegate = ({
   return (
     <Flex direction="column">
       <DecodeMessageHeader
+        compact={compact}
         gap={2}
         iconName="delegate"
         isExpand={expand}
@@ -98,7 +100,7 @@ export const DecodedMessageRedelegate = ({
           />
         </Flex>
       </DecodeMessageHeader>
-      <DecodeMessageBody isExpand={expand} log={log}>
+      <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Claimer">
           <ExplorerLink
             maxWidth="full"

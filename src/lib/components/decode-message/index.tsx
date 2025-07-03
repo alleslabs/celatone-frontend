@@ -15,6 +15,7 @@ import { DecodeMessageUndelegate } from "./decode-message-undelegate";
 import { DecodeMessageWithdrawDelegatorReward } from "./decode-message-withdraw-delegator-reward";
 
 interface DecodeMessageProps extends TxMsgData {
+  compact: boolean;
   decodedMessage: DecodedMessage;
 }
 

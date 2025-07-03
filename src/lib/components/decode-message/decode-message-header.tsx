@@ -8,6 +8,7 @@ import { CustomIcon } from "lib/components/icon";
 
 interface DecodeMessageHeaderProps extends FlexProps {
   children: ReactNode;
+  compact: boolean;
   iconName: IconKeys;
   isExpand: boolean;
   isIbc: boolean;
@@ -20,6 +21,7 @@ interface DecodeMessageHeaderProps extends FlexProps {
 
 export const DecodeMessageHeader = ({
   children,
+  compact,
   iconName,
   isExpand,
   isIbc,
@@ -31,22 +33,27 @@ export const DecodeMessageHeader = ({
   ...props
 }: DecodeMessageHeaderProps) => (
   <Flex
-    _after={{
-      bg: "gray.700",
-      bottom: 0,
-      content: '""',
-      h: "1px",
-      left: "50%",
-      position: "absolute",
-      transform: "translateX(-50%)",
-      w: "99%",
-    }}
-    _hover={{ backgroundColor: "gray.800" }}
+    _after={
+      compact
+        ? {}
+        : {
+            bg: "gray.700",
+            bottom: 0,
+            content: '""',
+            h: "1px",
+            left: "50%",
+            position: "absolute",
+            transform: "translateX(-50%)",
+            w: "99%",
+          }
+    }
+    _hover={compact ? {} : { backgroundColor: "gray.800" }}
     align="center"
-    borderRadius="8px"
+    borderRadius={compact ? "0px" : "8px"}
     cursor="pointer"
     justify="space-between"
-    p="16px 8px"
+    overflow={compact ? "hidden" : "unset"}
+    p={compact ? "" : "16px 8px"}
     position="relative"
     transition="all 0.25s ease-in-out"
     onClick={() => {
@@ -59,8 +66,8 @@ export const DecodeMessageHeader = ({
       onClick();
     }}
   >
-    <Flex align="center" flexWrap="wrap" {...props}>
-      <Tag gap={1} variant="gray">
+    <Flex align="center" flexWrap={compact ? "nowrap" : "wrap"} {...props}>
+      <Tag gap={1} minWidth="auto" variant="gray">
         <CustomIcon boxSize={3} name={iconName} />
         <Text fontWeight={700} variant="body2">
           {label}
@@ -78,13 +85,15 @@ export const DecodeMessageHeader = ({
         </Tag>
       )}
     </Flex>
-    <CustomIcon
-      boxSize={4}
-      color="gray.600"
-      m={0}
-      name="chevron-down"
-      transform={isExpand ? "rotate(180deg)" : "rotate(0)"}
-      transition="all 0.25s ease-in-out"
-    />
+    {!compact && (
+      <CustomIcon
+        boxSize={4}
+        color="gray.600"
+        m={0}
+        name="chevron-down"
+        transform={isExpand ? "rotate(180deg)" : "rotate(0)"}
+        transition="all 0.25s ease-in-out"
+      />
+    )}
   </Flex>
 );

@@ -31,6 +31,7 @@ interface DecodeMessageDelegateProps extends TxMsgData {
 }
 
 export const DecodeMessageDelegate = ({
+  compact,
   decodedMessage,
   isSingleMsg,
   log,
@@ -50,6 +51,7 @@ export const DecodeMessageDelegate = ({
   return (
     <Flex direction="column">
       <DecodeMessageHeader
+        compact={compact}
         gap={2}
         iconName="delegate"
         isExpand={expand}
@@ -91,7 +93,7 @@ export const DecodeMessageDelegate = ({
           />
         </Flex>
       </DecodeMessageHeader>
-      <DecodeMessageBody isExpand={expand} log={log}>
+      <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Delegator">
           <ExplorerLink
             maxWidth="full"

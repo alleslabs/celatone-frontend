@@ -43,7 +43,9 @@ const DecodeMessageSendSingleCoinHeader = ({
         boxSize={4}
         logo={token.logo}
       />
-      <Text>{tokenWithValue}</Text>
+      <Text isTruncated whiteSpace="nowrap">
+        {tokenWithValue}
+      </Text>
     </>
   );
 };
@@ -69,11 +71,12 @@ const DecodeMessageSendMultipleCoinsHeader = ({
         );
       })}
     </Flex>
-    <Text>{coins.length} assets</Text>
+    <Text whiteSpace="nowrap">{coins.length} assets</Text>
   </>
 );
 
 export const DecodeMessageSend = ({
+  compact,
   decodedMessage,
   isSingleMsg,
   log,
@@ -85,8 +88,9 @@ export const DecodeMessageSend = ({
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" w="full">
       <DecodeMessageHeader
+        compact={compact}
         gap={2}
         iconName="send"
         isExpand={expand}
@@ -97,7 +101,7 @@ export const DecodeMessageSend = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={2}>
+        <Flex align="center" flexWrap="nowrap" gap={2} minWidth={0}>
           {data.coins.length > 1 ? (
             <DecodeMessageSendMultipleCoinsHeader
               assetInfos={assetInfos}
@@ -110,26 +114,28 @@ export const DecodeMessageSend = ({
             />
           )}
         </Flex>
-        <Flex gap={2}>
-          <Text color="text.dark">from</Text>
-          <ExplorerLink
-            showCopyOnHover
-            textVariant="body1"
-            type={getAddressType(data.from)}
-            value={data.from}
-          />
-        </Flex>
+        {!compact && (
+          <Flex gap={2}>
+            <Text color="text.dark">from</Text>
+            <ExplorerLink
+              showCopyOnHover
+              textVariant={compact ? "body2" : "body1"}
+              type={getAddressType(data.from)}
+              value={data.from}
+            />
+          </Flex>
+        )}
         <Flex gap={2}>
           <Text color="text.dark">to</Text>
           <ExplorerLink
             showCopyOnHover
-            textVariant="body1"
+            textVariant={compact ? "body2" : "body1"}
             type={getAddressType(data.to)}
             value={data.to}
           />
         </Flex>
       </DecodeMessageHeader>
-      <DecodeMessageBody isExpand={expand} log={log}>
+      <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
             maxWidth="full"

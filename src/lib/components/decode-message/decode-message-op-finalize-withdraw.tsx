@@ -20,18 +20,19 @@ import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodeMessageOpDepositProps extends TxMsgData {
+interface DecodeMessageOpFinalizeWithdrawProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "op_deposit";
+    action: "op_finalize_withdraw";
   };
 }
 
-export const DecodeMessageOpDeposit = ({
+export const DecodeMessageOpFinalizeWithdraw = ({
+  compact,
   decodedMessage,
   isSingleMsg,
   log,
   msgBody,
-}: DecodeMessageOpDepositProps) => {
+}: DecodeMessageOpFinalizeWithdrawProps) => {
   const { chainId } = useCurrentChain();
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
@@ -43,13 +44,14 @@ export const DecodeMessageOpDeposit = ({
   return (
     <Flex direction="column">
       <DecodeMessageHeader
+        compact={compact}
         gap={2}
         iconName="swap"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Bridge"
+        label="OP Withdraw"
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
@@ -61,14 +63,14 @@ export const DecodeMessageOpDeposit = ({
           />
           <Text>{tokenWithValue}</Text>
         </Flex>
-        <Text color="text.dark">to</Text>
+        <Text color="text.dark">from</Text>
       </DecodeMessageHeader>
-      <DecodeMessageBody isExpand={expand} log={log}>
+      <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Bridge ID">
           <Text>{data.bridgeId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="From network">
-          <Text>{chainId}</Text>
+          <Text>-</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
@@ -80,7 +82,7 @@ export const DecodeMessageOpDeposit = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="To network">-</DecodeMessageRow>
+        <DecodeMessageRow title="To network">{chainId}</DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink
             maxWidth="full"

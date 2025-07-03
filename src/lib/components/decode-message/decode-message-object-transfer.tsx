@@ -18,6 +18,7 @@ interface DecodeMessageObjectTransferProps extends TxMsgData {
 }
 
 export const DecodeMessageObjectTransfer = ({
+  compact,
   decodedMessage,
   isSingleMsg,
   log,
@@ -30,6 +31,7 @@ export const DecodeMessageObjectTransfer = ({
   return (
     <Flex direction="column">
       <DecodeMessageHeader
+        compact={compact}
         gap={2}
         iconName="collection"
         isExpand={expand}
@@ -59,7 +61,7 @@ export const DecodeMessageObjectTransfer = ({
           />
         </Flex>
       </DecodeMessageHeader>
-      <DecodeMessageBody isExpand={expand} log={log}>
+      <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
             maxWidth="full"

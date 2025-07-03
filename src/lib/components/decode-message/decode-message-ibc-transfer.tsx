@@ -22,6 +22,7 @@ interface DecodeMessageIbcTransferProps extends TxMsgData {
 }
 
 export const DecodeMessageIbcTransfer = ({
+  compact,
   decodedMessage,
   isSingleMsg,
   log,
@@ -36,6 +37,7 @@ export const DecodeMessageIbcTransfer = ({
   return (
     <Flex direction="column">
       <DecodeMessageHeader
+        compact={compact}
         gap={2}
         iconName="swap"
         isExpand={expand}
@@ -56,7 +58,7 @@ export const DecodeMessageIbcTransfer = ({
         </Flex>
         <Text color="text.dark">from</Text>
       </DecodeMessageHeader>
-      <DecodeMessageBody isExpand={expand} log={log}>
+      <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         body
       </DecodeMessageBody>
     </Flex>

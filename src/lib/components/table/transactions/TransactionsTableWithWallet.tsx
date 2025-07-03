@@ -1,4 +1,4 @@
-import type { Option, Transaction } from "lib/types";
+import type { Option, TransactionWithTxResponse } from "lib/types";
 
 import { useCurrentChain } from "lib/app-provider";
 import { DisconnectedState } from "lib/components/state";
@@ -10,7 +10,7 @@ interface TransactionsTableWithWalletProps {
   isLoading: boolean;
   showActions: boolean;
   showRelations: boolean;
-  transactions: Option<Transaction[]>;
+  transactions: Option<TransactionWithTxResponse[]>;
 }
 
 export const TransactionsTableWithWallet = ({

@@ -1,5 +1,5 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
-import type { Event } from "lib/services/types";
+import type { Event, RawTxResponse, TxResponse } from "lib/services/types";
 import type { BechAddr, Option, Pubkey } from "lib/types";
 
 import { z } from "zod";
@@ -43,6 +43,11 @@ export interface Transaction {
   sender: BechAddr;
   success: boolean;
 }
+
+export type TransactionWithTxResponse = Transaction & {
+  rawTxResponse: Option<RawTxResponse>;
+  txResponse: Option<TxResponse>;
+};
 
 export type TransactionWithSignerPubkey = Omit<Transaction, "sender"> & {
   signerPubkey: Pubkey;

@@ -28,6 +28,7 @@ interface DecodeMessageSwapProps extends TxMsgData {
 }
 
 export const DecodeMessageSwap = ({
+  compact,
   decodedMessage,
   isSingleMsg,
   log,
@@ -53,6 +54,7 @@ export const DecodeMessageSwap = ({
   return (
     <Flex direction="column">
       <DecodeMessageHeader
+        compact={compact}
         gap={2}
         iconName="swap"
         isExpand={expand}
@@ -92,7 +94,7 @@ export const DecodeMessageSwap = ({
           />
         </Flex>
       </DecodeMessageHeader>
-      <DecodeMessageBody isExpand={expand} log={log}>
+      <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
             maxWidth="full"

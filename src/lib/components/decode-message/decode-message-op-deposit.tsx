@@ -20,18 +20,19 @@ import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodeMessageOpFinalizeWithdrawProps extends TxMsgData {
+interface DecodeMessageOpDepositProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "op_finalize_withdraw";
+    action: "op_deposit";
   };
 }
 
-export const DecodeMessageOpFinalizeWithdraw = ({
+export const DecodeMessageOpDeposit = ({
+  compact,
   decodedMessage,
   isSingleMsg,
   log,
   msgBody,
-}: DecodeMessageOpFinalizeWithdrawProps) => {
+}: DecodeMessageOpDepositProps) => {
   const { chainId } = useCurrentChain();
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
@@ -43,13 +44,14 @@ export const DecodeMessageOpFinalizeWithdraw = ({
   return (
     <Flex direction="column">
       <DecodeMessageHeader
+        compact={compact}
         gap={2}
         iconName="swap"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="OP Withdraw"
+        label="Bridge"
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
@@ -61,14 +63,14 @@ export const DecodeMessageOpFinalizeWithdraw = ({
           />
           <Text>{tokenWithValue}</Text>
         </Flex>
-        <Text color="text.dark">from</Text>
+        <Text color="text.dark">to</Text>
       </DecodeMessageHeader>
-      <DecodeMessageBody isExpand={expand} log={log}>
+      <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Bridge ID">
           <Text>{data.bridgeId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="From network">
-          <Text>-</Text>
+          <Text>{chainId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
@@ -80,7 +82,7 @@ export const DecodeMessageOpFinalizeWithdraw = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="To network">{chainId}</DecodeMessageRow>
+        <DecodeMessageRow title="To network">-</DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink
             maxWidth="full"

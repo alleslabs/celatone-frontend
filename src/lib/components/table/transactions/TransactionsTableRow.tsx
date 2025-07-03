@@ -1,9 +1,11 @@
-import type { Transaction } from "lib/types";
+import type { TransactionWithTxResponse } from "lib/types";
 
 import { Badge, Box, Flex, Grid, Text, useDisclosure } from "@chakra-ui/react";
 import { ActionMessages } from "lib/components/action-msg/ActionMessages";
+import { DecodeMessage } from "lib/components/decode-message";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { useTxDecoder } from "lib/services/tx";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { AccordionTx } from "../AccordionTx";
@@ -17,7 +19,7 @@ interface TransactionsTableRowProps {
   showSuccess: boolean;
   showTimestamp: boolean;
   templateColumns: string;
-  transaction: Transaction;
+  transaction: TransactionWithTxResponse;
 }
 
 const NARow = () => (
@@ -37,6 +39,8 @@ export const TransactionsTableRow = ({
   const { isOpen, onToggle } = useDisclosure();
   const isAccordion = transaction.messages.length > 1;
   const isTxHasNoData = transaction.height === 0;
+  const { rawTxResponse, txResponse } = transaction;
+  const { data: decodedTx } = useTxDecoder(rawTxResponse);
 
   return (
     <Box minW="min-content" w="full">
@@ -82,7 +86,7 @@ export const TransactionsTableRow = ({
               )}
             </TableRow>
           ))}
-        {isTxHasNoData ? (
+        {isTxHasNoData || !decodedTx ? (
           <TableRow>
             <Text color="gray.600">
               Unable to load data due to large transaction size
@@ -90,7 +94,17 @@ export const TransactionsTableRow = ({
           </TableRow>
         ) : (
           <TableRow>
-            <ActionMessages transaction={transaction} />
+            {txResponse ? (
+              <DecodeMessage
+                compact
+                decodedMessage={decodedTx.messages[0].decodedMessage}
+                isSingleMsg
+                log={undefined}
+                msgBody={txResponse.tx.body.messages[0]}
+              />
+            ) : (
+              <ActionMessages transaction={transaction} />
+            )}
           </TableRow>
         )}
         {showRelations &&

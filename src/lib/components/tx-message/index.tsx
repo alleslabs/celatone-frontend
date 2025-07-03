@@ -8,6 +8,7 @@ import { TxMsgDetails } from "./TxMsgDetails";
 import { TxMsgExpand } from "./TxMsgExpand";
 
 export interface TxMsgData {
+  compact: boolean;
   isSingleMsg?: boolean;
   log: Option<Log>;
   msgBody: MessageResponse;
@@ -23,7 +24,7 @@ export const TxMessage = ({ isSingleMsg, ...txMsgData }: TxMsgData) => {
         onClick={() => setExpand((prev) => !prev)}
         {...txMsgData}
       />
-      <TxMsgDetails isExpand={expand} {...txMsgData} />
+      {<TxMsgDetails isExpand={expand} {...txMsgData} />}
     </Flex>
   );
 };

@@ -12,13 +12,13 @@ import {
 } from "@chakra-ui/react";
 import { useEvmConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
+import { DecodeMessage } from "lib/components/decode-message";
 import { CustomIcon } from "lib/components/icon";
 import { useState } from "react";
 
+import { TxMessage } from "../../../components/tx-message";
 import { BalanceChanges } from "./balance-changes";
-import { DecodeMessage } from "./decode-message";
 import { EvmRelatedTxSection } from "./evm-related-tx-section";
-import { TxMessage } from "./tx-message";
 
 interface MessageSectionProps {
   relatedEvmTxHash: Nullish<string>;
@@ -88,6 +88,7 @@ export const MessageSection = ({
               decodedTx.messages[idx] ? (
                 <DecodeMessage
                   key={JSON.stringify(msg) + idx.toString()}
+                  compact={false}
                   decodedMessage={decodedTx.messages[idx].decodedMessage}
                   isSingleMsg={messages.length === 1}
                   log={logs[idx]}
@@ -96,6 +97,7 @@ export const MessageSection = ({
               ) : (
                 <TxMessage
                   key={JSON.stringify(msg) + idx.toString()}
+                  compact={false}
                   isSingleMsg={messages.length === 1}
                   log={logs[idx]}
                   msgBody={msg}
