@@ -43,6 +43,10 @@ import type {
   BlockTxsResponse,
   RawTxResponse,
   TxData,
+<<<<<<< HEAD
+=======
+  TxsResponse,
+>>>>>>> abdb52010 (feat(utils): add tx with tx response)
   TxsResponseItemFromRest,
   TxsResponseWithTxResponse,
 } from "../types";
@@ -78,6 +82,7 @@ import {
 } from "./sequencer";
 
 export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
+<<<<<<< HEAD
   const evm = useEvmConfig({ shouldRedirect: false });
   const { txDecoder } = useTxDecoderContext();
 
@@ -94,6 +99,23 @@ export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
         : txDecoder.decodeTransaction(rawTxResponse),
     enabled: !!rawTxResponse,
   });
+=======
+  const {
+    chainConfig: { rest: restEndpoint },
+  } = useCelatoneApp();
+  const txDecoder = useMemo(
+    () => new TxDecoder({ restUrl: restEndpoint }),
+    [restEndpoint]
+  );
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.TX_DECODER, rawTxResponse?.txhash],
+    async () => txDecoder.decodeTransaction(rawTxResponse),
+    {
+      enabled: !!rawTxResponse,
+    }
+  );
+>>>>>>> abdb52010 (feat(utils): add tx with tx response)
 };
 
 export const useTxData = (
@@ -128,9 +150,13 @@ export const useTxData = (
       );
 
       const logs = extractTxLogs(rawTxResponse);
+<<<<<<< HEAD
       const decodedTx = await (evm.enabled
         ? txDecoder.decodeEvmTransaction(rawTxResponse)
         : txDecoder.decodeTransaction(rawTxResponse));
+=======
+      const decodedTx = await txDecoder.decodeTransaction(rawTxResponse);
+>>>>>>> abdb52010 (feat(utils): add tx with tx response)
       return {
         ...txResponse,
         chainId: currentChainId,
@@ -164,8 +190,13 @@ export const useTxs = (limit: number, offset: number) => {
   const { enabled: moveEnable } = useMoveConfig({ shouldRedirect: false });
   const isInitia = useInitia();
 
+<<<<<<< HEAD
   return useQuery<TxsResponseWithTxResponse>({
     queryKey: [
+=======
+  return useQuery<TxsResponseWithTxResponse>(
+    [
+>>>>>>> abdb52010 (feat(utils): add tx with tx response)
       CELATONE_QUERY_KEYS.TXS,
       endpoint,
       limit,
@@ -358,7 +389,12 @@ export const useTxsCountByAddress = (
 export const useTxsByContractAddressRest = (
   address: BechAddr32,
   limit: number,
+<<<<<<< HEAD
   offset: number
+=======
+  offset: number,
+  options: UseQueryOptions<TxsResponseWithTxResponse> = {}
+>>>>>>> abdb52010 (feat(utils): add tx with tx response)
 ) => {
   const {
     chainConfig: { rest: restEndpoint },
@@ -384,8 +420,13 @@ export const useTxsByContractAddressRest = (
     [address, restEndpoint, limit, offset, bech32Prefix]
   );
 
+<<<<<<< HEAD
   return useQuery<TxsResponseWithTxResponse>({
     queryKey: [
+=======
+  return useQuery<TxsResponseWithTxResponse>(
+    [
+>>>>>>> abdb52010 (feat(utils): add tx with tx response)
       CELATONE_QUERY_KEYS.TXS_BY_CONTRACT_ADDRESS_REST,
       restEndpoint,
       address,
@@ -404,7 +445,11 @@ export const useTxsByAddressRest = (
   search: Option<string>,
   limit: number,
   offset: number,
+<<<<<<< HEAD
   options: Partial<UseQueryOptions<TxsResponseWithTxResponse>> = {}
+=======
+  options: UseQueryOptions<TxsResponseWithTxResponse> = {}
+>>>>>>> abdb52010 (feat(utils): add tx with tx response)
 ) => {
   const {
     chainConfig: { rest: restEndpoint },
@@ -452,8 +497,13 @@ export const useTxsByAddressRest = (
     };
   }, [address, restEndpoint, limit, offset, bech32Prefix, search]);
 
+<<<<<<< HEAD
   return useQuery<TxsResponseWithTxResponse>({
     queryKey: [
+=======
+  return useQuery<TxsResponseWithTxResponse>(
+    [
+>>>>>>> abdb52010 (feat(utils): add tx with tx response)
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_REST,
       restEndpoint,
       address,
