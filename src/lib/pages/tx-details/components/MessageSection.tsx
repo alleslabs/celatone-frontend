@@ -102,10 +102,6 @@ export const MessageSection = ({
                 <TxMessage
                   key={JSON.stringify(msg) + idx.toString()}
                   compact={false}
-<<<<<<< HEAD
-=======
-                  isSingleMsg={messages.length === 1}
->>>>>>> abdb52010 (feat(utils): add tx with tx response)
                   log={logs[idx]}
                   msgBody={msg}
                   msgCount={messages.length}
