@@ -17,10 +17,11 @@ interface DecodeMessageNftBurnProps extends TxMsgData {
 export const DecodeMessageNftBurn = ({
   compact,
   decodedMessage,
-  isSingleMsg,
   log,
   msgBody,
+  msgCount,
 }: DecodeMessageNftBurnProps) => {
+  const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { isIbc, isOp } = decodedMessage;
 
@@ -35,6 +36,7 @@ export const DecodeMessageNftBurn = ({
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
         label="NFT Burn"
+        msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >

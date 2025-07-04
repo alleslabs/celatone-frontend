@@ -3,6 +3,7 @@ import type { DecodedTx } from "@initia/tx-decoder";
 import type {
   BechAddr20,
   Message,
+  SnakeToCamelCaseNested,
   Transaction,
   TransactionWithSignerPubkey,
   TransactionWithTxResponse,
@@ -219,9 +220,14 @@ const zTxResponse = zRawTxResponse.transform((val) => ({
   ...snakeToCamel(val),
   logs: val.logs,
   timestamp: zUtcDate.parse(val.timestamp),
-  tx: val.tx,
 }));
-export type TxResponse = z.infer<typeof zTxResponse>;
+export type TxResponse = Omit<
+  SnakeToCamelCaseNested<z.infer<typeof zRawTxResponse>>,
+  "logs" | "timestamp"
+> & {
+  logs: Log[];
+  timestamp: Date;
+};
 
 export interface TxData extends TxResponse {
   chainId: string;
@@ -232,7 +238,7 @@ export interface TxData extends TxResponse {
 
 export const zTxsResponseItemFromRest = z.preprocess(
   (args: unknown) => {
-    const val = args as Record<string, unknown>;
+    const val = args as TxResponse;
     return {
       item: val,
       rawTxResponse: val,
@@ -277,7 +283,7 @@ export const zTxsResponseItemFromRest = z.preprocess(
         isOpinit,
         isSigner: true,
         messages,
-        signerPubkey: val.tx.auth_info.signer_infos[0].public_key,
+        signerPubkey: val.tx.authInfo.signerInfos[0].publicKey,
         success: val.code === 0,
       };
     }),
@@ -358,7 +364,7 @@ const zBaseTxsResponseItem = z.preprocess(
     const val = arg as Record<string, unknown>;
     return {
       ...val,
-      raw_tx_response: val.tx_response,
+      raw_tx_response: val?.tx_response,
     };
   },
   z.object({
@@ -382,10 +388,10 @@ const zBaseTxsResponseItem = z.preprocess(
     is_store_code: z.boolean().optional(),
     is_update_admin: z.boolean().optional(),
     messages: z.any().array(),
-    raw_tx_response: zRawTxResponse,
+    raw_tx_response: zRawTxResponse.optional(),
     sender: zBechAddr,
     success: z.boolean(),
-    tx_response: zTxResponse,
+    tx_response: zTxResponse.optional(),
   })
 );
 
@@ -448,7 +454,7 @@ export const zTxsResponseWithTxResponseItem =
     isSigner: false,
     messages: snakeToCamel(val.messages).map((msg) => ({
       ...msg,
-      // type: msg["@type"],
+      type: msg["@type"],
     })),
     rawTxResponse: val.raw_tx_response,
     sender: val.sender,
@@ -464,54 +470,63 @@ export type TxsResponseWithTxResponse = z.infer<
   typeof zTxsResponseWithTxResponse
 >;
 
-const zAccountTxsResponseItem = zBaseTxsResponseItem
-  .innerType()
-  .extend({
-    is_signer: z.boolean(),
-  })
-  .transform<TransactionWithTxResponse>((val) => ({
-    actionMsgType: getActionMsgType([
-      val.is_send,
-      val.is_execute,
-      val.is_instantiate,
-      val.is_store_code,
-      val.is_migrate,
-      val.is_update_admin,
-      val.is_clear_admin,
-      // TODO: implement Move msg type
-    ]),
-    created: val.created,
-    furtherAction: getMsgFurtherAction(
-      val.messages.length,
-      {
-        isClearAdmin: val.is_clear_admin,
-        isExecute: val.is_execute,
-        isIbc: val.is_ibc,
-        isInstantiate: val.is_instantiate,
-        isMigrate: val.is_migrate,
-        isMoveExecute: val.is_move_execute,
-        isMovePublish: val.is_move_publish,
-        isMoveScript: val.is_move_script,
-        isSend: val.is_send,
-        isStoreCode: val.is_store_code,
-        isUpdateAdmin: val.is_update_admin,
-      },
-      val.success,
-      val.is_signer
-    ),
-    hash: parseTxHash(val.hash),
-    height: val.height,
-    isEvm: val.is_evm ?? false,
-    isIbc: val.is_ibc,
-    isInstantiate: val.is_instantiate ?? false,
-    isOpinit: val.is_opinit ?? false,
-    isSigner: val.is_signer,
-    messages: snakeToCamel(val.messages),
-    rawTxResponse: val.raw_tx_response,
-    sender: val.sender,
-    success: val.success,
-    txResponse: val.tx_response,
-  }));
+const zAccountTxsResponseItem = z.preprocess(
+  (arg: unknown) => {
+    const val = arg as Record<string, unknown>;
+    return {
+      ...val,
+      raw_tx_response: val?.tx_response,
+    };
+  },
+  zBaseTxsResponseItem
+    .innerType()
+    .extend({
+      is_signer: z.boolean(),
+    })
+    .transform<TransactionWithTxResponse>((val) => ({
+      actionMsgType: getActionMsgType([
+        val.is_send,
+        val.is_execute,
+        val.is_instantiate,
+        val.is_store_code,
+        val.is_migrate,
+        val.is_update_admin,
+        val.is_clear_admin,
+        // TODO: implement Move msg type
+      ]),
+      created: val.created,
+      furtherAction: getMsgFurtherAction(
+        val.messages.length,
+        {
+          isClearAdmin: val.is_clear_admin,
+          isExecute: val.is_execute,
+          isIbc: val.is_ibc,
+          isInstantiate: val.is_instantiate,
+          isMigrate: val.is_migrate,
+          isMoveExecute: val.is_move_execute,
+          isMovePublish: val.is_move_publish,
+          isMoveScript: val.is_move_script,
+          isSend: val.is_send,
+          isStoreCode: val.is_store_code,
+          isUpdateAdmin: val.is_update_admin,
+        },
+        val.success,
+        val.is_signer
+      ),
+      hash: parseTxHash(val.hash),
+      height: val.height,
+      isEvm: val.is_evm ?? false,
+      isIbc: val.is_ibc,
+      isInstantiate: val.is_instantiate ?? false,
+      isOpinit: val.is_opinit ?? false,
+      isSigner: val.is_signer,
+      messages: snakeToCamel(val.messages),
+      rawTxResponse: val.raw_tx_response,
+      sender: val.sender,
+      success: val.success,
+      txResponse: val.tx_response,
+    }))
+);
 
 export const zAccountTxsResponse = z.object({
   items: z.array(zAccountTxsResponseItem),

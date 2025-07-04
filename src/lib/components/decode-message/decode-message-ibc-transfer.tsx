@@ -17,17 +17,18 @@ import { DecodeMessageHeader } from "./decode-message-header";
 
 interface DecodeMessageIbcTransferProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "ibc_transfer";
+    action: "ibc_ft_send";
   };
 }
 
 export const DecodeMessageIbcTransfer = ({
   compact,
   decodedMessage,
-  isSingleMsg,
   log,
   msgBody,
+  msgCount,
 }: DecodeMessageIbcTransferProps) => {
+  const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
@@ -45,16 +46,17 @@ export const DecodeMessageIbcTransfer = ({
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
         label="Bridge"
+        msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1}>
+        <Flex align="center" gap={1} minWidth="fit-content">
           <TokenImageRender
             alt={getTokenLabel(token.denom, token.symbol)}
             boxSize={4}
             logo={token.logo}
           />
-          <Text>{tokenWithValue}</Text>
+          <Text whiteSpace="nowrap">{tokenWithValue}</Text>
         </Flex>
         <Text color="text.dark">from</Text>
       </DecodeMessageHeader>

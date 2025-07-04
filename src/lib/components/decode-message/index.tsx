@@ -28,7 +28,7 @@ export const DecodeMessage = ({
       return (
         <DecodeMessageDelegate decodedMessage={decodedMessage} {...props} />
       );
-    case "ibc_transfer":
+    case "ibc_ft_send":
       return (
         <DecodeMessageIbcTransfer decodedMessage={decodedMessage} {...props} />
       );

@@ -79,7 +79,7 @@ export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const txDecoder = useMemo(
-    () => new TxDecoder({ restUrl: restEndpoint }),
+    () => new TxDecoder({ registryUrls: [], restUrl: restEndpoint }),
     [restEndpoint]
   );
 
@@ -104,7 +104,7 @@ export const useTxData = (
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("txs");
   const txDecoder = useMemo(
-    () => new TxDecoder({ restUrl: restEndpoint }),
+    () => new TxDecoder({ registryUrls: [], restUrl: restEndpoint }),
     [restEndpoint]
   );
 

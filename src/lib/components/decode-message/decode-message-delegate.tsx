@@ -33,10 +33,11 @@ interface DecodeMessageDelegateProps extends TxMsgData {
 export const DecodeMessageDelegate = ({
   compact,
   decodedMessage,
-  isSingleMsg,
   log,
   msgBody,
+  msgCount,
 }: DecodeMessageDelegateProps) => {
+  const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
@@ -49,7 +50,7 @@ export const DecodeMessageDelegate = ({
   const parsedReleaseTimestamp = parseUnixToDateOpt(data.releaseTimestamp);
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" maxW="inherit">
       <DecodeMessageHeader
         compact={compact}
         gap={2}
@@ -59,16 +60,17 @@ export const DecodeMessageDelegate = ({
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
         label={isLocked ? "Lock stake" : "Stake"}
+        msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1}>
+        <Flex align="center" gap={1} minWidth="fit-content">
           <TokenImageRender
             alt={getTokenLabel(token.denom, token.symbol)}
             boxSize={4}
             logo={token.logo}
           />
-          <Text>{tokenWithValue}</Text>
+          <Text whiteSpace="nowrap">{tokenWithValue}</Text>
         </Flex>
         <Text color="text.dark">to</Text>
         <ValidatorBadge
@@ -83,15 +85,17 @@ export const DecodeMessageDelegate = ({
             validatorAddress: zValidatorAddr.parse(data.validatorAddress),
           }}
         />
-        <Flex gap={2}>
-          <Text color="text.dark">by</Text>
-          <ExplorerLink
-            showCopyOnHover
-            textVariant="body1"
-            type={getAddressType(data.delegatorAddress)}
-            value={data.delegatorAddress}
-          />
-        </Flex>
+        {!compact && (
+          <Flex align="center" gap={2}>
+            <Text color="text.dark">by</Text>
+            <ExplorerLink
+              showCopyOnHover
+              textVariant="body1"
+              type={getAddressType(data.delegatorAddress)}
+              value={data.delegatorAddress}
+            />
+          </Flex>
+        )}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Delegator">

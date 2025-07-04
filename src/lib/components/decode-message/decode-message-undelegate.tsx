@@ -33,10 +33,11 @@ interface DecodeMessageUndelegateProps extends TxMsgData {
 export const DecodeMessageUndelegate = ({
   compact,
   decodedMessage,
-  isSingleMsg,
   log,
   msgBody,
+  msgCount,
 }: DecodeMessageUndelegateProps) => {
+  const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
@@ -58,16 +59,17 @@ export const DecodeMessageUndelegate = ({
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
         label="Unstake"
+        msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1}>
+        <Flex align="center" gap={1} minWidth="fit-content">
           <TokenImageRender
             alt={getTokenLabel(token.denom, token.symbol)}
             boxSize={4}
             logo={token.logo}
           />
-          <Text>{tokenWithValue}</Text>
+          <Text whiteSpace="nowrap">{tokenWithValue}</Text>
         </Flex>
         <Text color="text.dark">from</Text>
         <ValidatorBadge
@@ -82,15 +84,17 @@ export const DecodeMessageUndelegate = ({
             validatorAddress: zValidatorAddr.parse(data.validatorAddress),
           }}
         />
-        <Flex gap={2}>
-          <Text color="text.dark">by</Text>
-          <ExplorerLink
-            showCopyOnHover
-            textVariant="body1"
-            type={getAddressType(data.delegatorAddress)}
-            value={data.delegatorAddress}
-          />
-        </Flex>
+        {!compact && (
+          <Flex align="center" gap={2}>
+            <Text color="text.dark">by</Text>
+            <ExplorerLink
+              showCopyOnHover
+              textVariant="body1"
+              type={getAddressType(data.delegatorAddress)}
+              value={data.delegatorAddress}
+            />
+          </Flex>
+        )}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Delegator">

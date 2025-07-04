@@ -20,10 +20,11 @@ interface DecodeMessageObjectTransferProps extends TxMsgData {
 export const DecodeMessageObjectTransfer = ({
   compact,
   decodedMessage,
-  isSingleMsg,
   log,
   msgBody,
+  msgCount,
 }: DecodeMessageObjectTransferProps) => {
+  const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
@@ -39,23 +40,24 @@ export const DecodeMessageObjectTransfer = ({
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
         label="NFT Transfer"
+        msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex gap={2}>
+        <Flex align="center" gap={2} minWidth="fit-content">
           <Text color="text.dark">from</Text>
           <ExplorerLink
             showCopyOnHover
-            textVariant="body1"
+            textVariant={compact ? "body2" : "body1"}
             type={getAddressType(data.from)}
             value={data.from}
           />
         </Flex>
-        <Flex gap={2}>
+        <Flex align="center" gap={2}>
           <Text color="text.dark">to</Text>
           <ExplorerLink
             showCopyOnHover
-            textVariant="body1"
+            textVariant={compact ? "body2" : "body1"}
             type={getAddressType(data.to)}
             value={data.to}
           />

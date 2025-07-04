@@ -17,10 +17,11 @@ interface DecodeMessageNftMintProps extends TxMsgData {
 export const DecodeMessageNftMint = ({
   compact,
   decodedMessage,
-  isSingleMsg,
   log,
   msgBody,
+  msgCount,
 }: DecodeMessageNftMintProps) => {
+  const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { isIbc, isOp } = decodedMessage;
 
@@ -35,6 +36,7 @@ export const DecodeMessageNftMint = ({
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
         label="NFT Mint"
+        msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >

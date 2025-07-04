@@ -1,6 +1,14 @@
 import type { TransactionWithTxResponse } from "lib/types";
 
-import { Badge, Box, Flex, Grid, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  Flex,
+  Grid,
+  Spinner,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { ActionMessages } from "lib/components/action-msg/ActionMessages";
 import { DecodeMessage } from "lib/components/decode-message";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -40,7 +48,8 @@ export const TransactionsTableRow = ({
   const isAccordion = transaction.messages.length > 1;
   const isTxHasNoData = transaction.height === 0;
   const { rawTxResponse, txResponse } = transaction;
-  const { data: decodedTx } = useTxDecoder(rawTxResponse);
+  const { data: decodedTx, isFetching: isDecodedTxFetching } =
+    useTxDecoder(rawTxResponse);
 
   return (
     <Box minW="min-content" w="full">
@@ -88,19 +97,23 @@ export const TransactionsTableRow = ({
           ))}
         {isTxHasNoData || !decodedTx ? (
           <TableRow>
-            <Text color="gray.600">
-              Unable to load data due to large transaction size
-            </Text>
+            {isDecodedTxFetching ? (
+              <Spinner boxSize={4} />
+            ) : (
+              <Text color="gray.600">
+                Unable to load data due to large transaction size
+              </Text>
+            )}
           </TableRow>
         ) : (
-          <TableRow>
+          <TableRow maxW="100%">
             {txResponse ? (
               <DecodeMessage
                 compact
                 decodedMessage={decodedTx.messages[0].decodedMessage}
-                isSingleMsg
                 log={undefined}
                 msgBody={txResponse.tx.body.messages[0]}
+                msgCount={txResponse.tx.body.messages.length}
               />
             ) : (
               <ActionMessages transaction={transaction} />
@@ -154,10 +167,12 @@ export const TransactionsTableRow = ({
             <AccordionTx
               key={index.toString() + msg.type}
               allowFurtherAction={showAction}
-              isSigner={transaction.isSigner}
+              decodedMessage={decodedTx?.messages?.[index]?.decodedMessage}
               message={msg}
+              msgCount={transaction.messages.length}
               msgIndex={index}
               txHash={transaction.hash}
+              txResponse={txResponse}
             />
           ))}
         </Grid>
