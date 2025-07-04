@@ -100,6 +100,7 @@ export const TransactionsTableRow = ({
                 decodedMessage={decodedTx.messages[0].decodedMessage}
                 isSingleMsg
                 log={undefined}
+                metadata={decodedTx.metadata}
                 msgBody={txResponse.tx.body.messages[0]}
               />
             ) : (

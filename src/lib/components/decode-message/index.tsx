@@ -1,4 +1,4 @@
-import type { DecodedMessage } from "@initia/tx-decoder";
+import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 
 import { TxMessage, type TxMsgData } from "../tx-message";
 import { DecodeMessageDelegate } from "./decode-message-delegate";
@@ -17,10 +17,12 @@ import { DecodeMessageWithdrawDelegatorReward } from "./decode-message-withdraw-
 interface DecodeMessageProps extends TxMsgData {
   compact: boolean;
   decodedMessage: DecodedMessage;
+  metadata: Metadata;
 }
 
 export const DecodeMessage = ({
   decodedMessage,
+  metadata,
   ...props
 }: DecodeMessageProps) => {
   switch (decodedMessage.action) {
@@ -31,21 +33,26 @@ export const DecodeMessage = ({
     case "ibc_ft_receive":
     case "ibc_ft_send":
       return <DecodeMessageIbcFt decodedMessage={decodedMessage} {...props} />;
+    case "ibc_nft_receive":
+    case "ibc_nft_send":
+      return <>please handle this</>;
     case "nft_burn":
-      // TODO: Missing nft metadata
       return (
         <DecodeMessageNftBurn decodedMessage={decodedMessage} {...props} />
       );
     case "nft_mint":
-      // TODO: Missing nft metadata
       return (
-        <DecodeMessageNftMint decodedMessage={decodedMessage} {...props} />
+        <DecodeMessageNftMint
+          decodedMessage={decodedMessage}
+          metadata={metadata}
+          {...props}
+        />
       );
     case "object_transfer":
-      // TODO Missing nft metadata
       return (
         <DecodeMessageObjectTransfer
           decodedMessage={decodedMessage}
+          metadata={metadata}
           {...props}
         />
       );

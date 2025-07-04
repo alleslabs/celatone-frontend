@@ -12,13 +12,13 @@ import {
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
   type BechAddr,
   type BechAddr32,
   type HexAddr,
   type HexAddr32,
   type Option,
-  zHexAddr32,
 } from "lib/types";
 import { useCallback } from "react";
 
@@ -193,8 +193,12 @@ export const useNftByTokenId = (
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
+  const formatAddresses = useFormatAddresses();
+
   // Nft address is available for Move VM only
-  const nftAddress = moveConfig.enabled ? zHexAddr32.parse(tokenId) : undefined;
+  const nftAddress = moveConfig.enabled
+    ? (formatAddresses(tokenId).hex as HexAddr32)
+    : undefined;
 
   return useQuery(
     [
@@ -299,10 +303,13 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
   );
 };
 
-export const useMetadata = (uri: string) =>
+export const useMetadata = (uri?: string) =>
   useQuery<Metadata>(
     [CELATONE_QUERY_KEYS.NFT_METADATA, uri],
-    () => getMetadata(uri),
+    () => {
+      if (!uri) throw new Error("URI is required (useMetadata)");
+      return getMetadata(uri);
+    },
     {
       enabled: !!uri,
       refetchOnWindowFocus: false,

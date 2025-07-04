@@ -92,6 +92,7 @@ export const MessageSection = ({
                   decodedMessage={decodedTx.messages[idx].decodedMessage}
                   isSingleMsg={messages.length === 1}
                   log={logs[idx]}
+                  metadata={decodedTx.metadata}
                   msgBody={msg}
                 />
               ) : (
