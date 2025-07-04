@@ -15,19 +15,19 @@ import type { TxMsgData } from "../tx-message";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 
-interface DecodeMessageIbcTransferProps extends TxMsgData {
+interface DecodeMessageIbcFtProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "ibc_transfer";
+    action: "ibc_ft_receive" | "ibc_ft_send";
   };
 }
 
-export const DecodeMessageIbcTransfer = ({
+export const DecodeMessageIbcFt = ({
   compact,
   decodedMessage,
   isSingleMsg,
   log,
   msgBody,
-}: DecodeMessageIbcTransferProps) => {
+}: DecodeMessageIbcFtProps) => {
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
