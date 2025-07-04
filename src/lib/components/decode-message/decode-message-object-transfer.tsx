@@ -17,17 +17,18 @@ interface DecodeMessageObjectTransferProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
     action: "object_transfer";
   };
-  metadata: Metadata;
+  metadata?: Metadata;
 }
 
 export const DecodeMessageObjectTransfer = ({
   compact,
   decodedMessage,
-  isSingleMsg,
   log,
   metadata,
   msgBody,
+  msgCount,
 }: DecodeMessageObjectTransferProps) => {
+  const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
   const {
@@ -36,7 +37,7 @@ export const DecodeMessageObjectTransfer = ({
     isOp,
   } = decodedMessage;
 
-  const nftMetadata = metadata[object];
+  const nftMetadata = metadata?.[object];
 
   const { data } = useMetadata(nftMetadata?.tokenUri);
 
@@ -51,10 +52,11 @@ export const DecodeMessageObjectTransfer = ({
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
         label={nftMetadata ? "NFT Transfer" : "Object Transfer"}
+        msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex gap={2}>
+        <Flex gap={2} minWidth="fit-content">
           {nftMetadata && (
             <>
               <NftImage
@@ -74,16 +76,16 @@ export const DecodeMessageObjectTransfer = ({
           <Text color="text.dark">from</Text>
           <ExplorerLink
             showCopyOnHover
-            textVariant="body1"
+            textVariant={compact ? "body2" : "body1"}
             type={getAddressType(from)}
             value={from}
           />
         </Flex>
-        <Flex gap={2}>
+        <Flex align="center" gap={2}>
           <Text color="text.dark">to</Text>
           <ExplorerLink
             showCopyOnHover
-            textVariant="body1"
+            textVariant={compact ? "body2" : "body1"}
             type={getAddressType(to)}
             value={to}
           />

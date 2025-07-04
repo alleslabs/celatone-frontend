@@ -29,10 +29,11 @@ interface TxMsgExpandProps extends TxMsgData {
 }
 
 export const TxMsgExpand = ({
+  compact,
   isExpand,
-  isSingleMsg,
   log,
   msgBody,
+  msgCount,
   onClick,
 }: TxMsgExpandProps) => {
   const isMobile = useMobile();
@@ -315,7 +316,7 @@ export const TxMsgExpand = ({
       );
       break;
     case "/initia.move.v1.MsgExecute":
-      msgLabel = `${body.module_name}::${body.function_name}`;
+      msgLabel = `${body.moduleName}::${body.functionName}`;
       break;
     default: {
       msgLabel = extractMsgType(type);
@@ -325,29 +326,34 @@ export const TxMsgExpand = ({
 
   return (
     <Flex
-      _after={{
-        bg: "gray.700",
-        bottom: 0,
-        content: '""',
-        h: "1px",
-        left: "50%",
-        position: "absolute",
-        transform: "translateX(-50%)",
-        w: "99%",
-      }}
-      _hover={{ backgroundColor: "gray.800" }}
+      _after={
+        compact
+          ? {}
+          : {
+              bg: "gray.700",
+              bottom: 0,
+              content: '""',
+              h: "1px",
+              left: "50%",
+              position: "absolute",
+              transform: "translateX(-50%)",
+              w: "99%",
+            }
+      }
+      _hover={compact ? {} : { backgroundColor: "gray.800" }}
       align="center"
-      borderRadius="8px"
+      borderRadius={compact ? "0px" : "8px"}
       cursor="pointer"
       justify="space-between"
-      p="16px 8px"
+      overflow={compact ? "hidden" : "unset"}
+      p={compact ? "" : "16px 8px"}
       position="relative"
       transition="all 0.25s ease-in-out"
       onClick={() => {
         track(AmpEvent.USE_TX_MSG_EXPAND, {
           action: isExpand ? "collapse" : "expand",
           ibc: isIbc,
-          isSingleMsg,
+          isSingleMsg: msgCount === 1,
           msg: type,
         });
         onClick();
@@ -355,6 +361,7 @@ export const TxMsgExpand = ({
     >
       <Flex
         align={{ base: "start", md: "center" }}
+        flexWrap={compact ? "nowrap" : "wrap"}
         fontSize="16px"
         fontWeight={500}
         gap={2}
@@ -398,14 +405,16 @@ export const TxMsgExpand = ({
             EVM
           </Tag>
         )}
-        <CustomIcon
-          boxSize={4}
-          color="gray.600"
-          m={0}
-          name="chevron-down"
-          transform={isExpand ? "rotate(180deg)" : "rotate(0)"}
-          transition="all 0.25s ease-in-out"
-        />
+        {!compact && (
+          <CustomIcon
+            boxSize={4}
+            color="gray.600"
+            m={0}
+            name="chevron-down"
+            transform={isExpand ? "rotate(180deg)" : "rotate(0)"}
+            transition="all 0.25s ease-in-out"
+          />
+        )}
       </Flex>
     </Flex>
   );

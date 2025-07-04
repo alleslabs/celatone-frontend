@@ -29,10 +29,11 @@ interface DecodeMessageOpDepositProps extends TxMsgData {
 export const DecodeMessageOpDeposit = ({
   compact,
   decodedMessage,
-  isSingleMsg,
   log,
   msgBody,
+  msgCount,
 }: DecodeMessageOpDepositProps) => {
+  const isSingleMsg = msgCount === 1;
   const { chainId } = useCurrentChain();
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
@@ -52,16 +53,17 @@ export const DecodeMessageOpDeposit = ({
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
         label="Bridge"
+        msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1}>
+        <Flex align="center" gap={1} minWidth="fit-content">
           <TokenImageRender
             alt={getTokenLabel(token.denom, token.symbol)}
             boxSize={4}
             logo={token.logo}
           />
-          <Text>{tokenWithValue}</Text>
+          <Text whiteSpace="nowrap">{tokenWithValue}</Text>
         </Flex>
         <Text color="text.dark">to</Text>
       </DecodeMessageHeader>

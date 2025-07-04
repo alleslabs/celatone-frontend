@@ -43,9 +43,7 @@ const DecodeMessageSendSingleCoinHeader = ({
         boxSize={4}
         logo={token.logo}
       />
-      <Text isTruncated whiteSpace="nowrap">
-        {tokenWithValue}
-      </Text>
+      <Text whiteSpace="nowrap">{tokenWithValue}</Text>
     </>
   );
 };
@@ -78,10 +76,11 @@ const DecodeMessageSendMultipleCoinsHeader = ({
 export const DecodeMessageSend = ({
   compact,
   decodedMessage,
-  isSingleMsg,
   log,
   msgBody,
+  msgCount,
 }: DecodeMessageSendProps) => {
+  const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
@@ -98,10 +97,11 @@ export const DecodeMessageSend = ({
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
         label="Send"
+        msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" flexWrap="nowrap" gap={2} minWidth={0}>
+        <Flex align="center" flexWrap="nowrap" gap={2} minWidth="fit-content">
           {data.coins.length > 1 ? (
             <DecodeMessageSendMultipleCoinsHeader
               assetInfos={assetInfos}
@@ -115,7 +115,7 @@ export const DecodeMessageSend = ({
           )}
         </Flex>
         {!compact && (
-          <Flex gap={2}>
+          <Flex align="center" gap={2}>
             <Text color="text.dark">from</Text>
             <ExplorerLink
               showCopyOnHover
@@ -125,7 +125,7 @@ export const DecodeMessageSend = ({
             />
           </Flex>
         )}
-        <Flex gap={2}>
+        <Flex align="center" gap={2}>
           <Text color="text.dark">to</Text>
           <ExplorerLink
             showCopyOnHover

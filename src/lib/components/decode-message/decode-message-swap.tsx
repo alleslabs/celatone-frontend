@@ -30,10 +30,11 @@ interface DecodeMessageSwapProps extends TxMsgData {
 export const DecodeMessageSwap = ({
   compact,
   decodedMessage,
-  isSingleMsg,
   log,
   msgBody,
+  msgCount,
 }: DecodeMessageSwapProps) => {
+  const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
@@ -62,37 +63,40 @@ export const DecodeMessageSwap = ({
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
         label="Swap"
+        msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1}>
+        <Flex align="center" gap={1} minWidth="fit-content">
           <TokenImageRender
             alt={getTokenLabel(data.denomIn, data.amountIn)}
             boxSize={4}
             logo={tokenIn.logo}
           />
-          <Text>{tokenInWithValue}</Text>
+          <Text whiteSpace="nowrap">{tokenInWithValue}</Text>
         </Flex>
-        <Flex gap={2}>
+        <Flex align="center" gap={2} minWidth="fit-content">
           <Text color="text.dark">for</Text>
-          <Flex align="center" gap={1}>
+          <Flex align="center" gap={1} minWidth="fit-content">
             <TokenImageRender
               alt={getTokenLabel(data.denomOut, data.amountOut)}
               boxSize={4}
               logo={tokenOut.logo}
             />
-            <Text>{tokenOutWithValue}</Text>
+            <Text whiteSpace="nowrap">{tokenOutWithValue}</Text>
           </Flex>
         </Flex>
-        <Flex gap={2}>
-          <Text color="text.dark">by</Text>
-          <ExplorerLink
-            showCopyOnHover
-            textVariant="body1"
-            type={getAddressType(data.from)}
-            value={data.from}
-          />
-        </Flex>
+        {!compact && (
+          <Flex align="center" gap={2}>
+            <Text color="text.dark">by</Text>
+            <ExplorerLink
+              showCopyOnHover
+              textVariant="body1"
+              type={getAddressType(data.from)}
+              value={data.from}
+            />
+          </Flex>
+        )}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Sender">

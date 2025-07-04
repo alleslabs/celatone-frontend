@@ -24,10 +24,11 @@ interface DecodeMessageIbcFtProps extends TxMsgData {
 export const DecodeMessageIbcFt = ({
   compact,
   decodedMessage,
-  isSingleMsg,
   log,
   msgBody,
+  msgCount,
 }: DecodeMessageIbcFtProps) => {
+  const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
@@ -45,16 +46,17 @@ export const DecodeMessageIbcFt = ({
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
         label="Bridge"
+        msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1}>
+        <Flex align="center" gap={1} minWidth="fit-content">
           <TokenImageRender
             alt={getTokenLabel(token.denom, token.symbol)}
             boxSize={4}
             logo={token.logo}
           />
-          <Text>{tokenWithValue}</Text>
+          <Text whiteSpace="nowrap">{tokenWithValue}</Text>
         </Flex>
         <Text color="text.dark">from</Text>
       </DecodeMessageHeader>

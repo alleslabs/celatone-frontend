@@ -17,7 +17,7 @@ import { DecodeMessageWithdrawDelegatorReward } from "./decode-message-withdraw-
 interface DecodeMessageProps extends TxMsgData {
   compact: boolean;
   decodedMessage: DecodedMessage;
-  metadata: Metadata;
+  metadata?: Metadata;
 }
 
 export const DecodeMessage = ({

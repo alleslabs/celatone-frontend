@@ -17,17 +17,18 @@ interface DecodeMessageNftMintProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
     action: "nft_mint";
   };
-  metadata: Metadata;
+  metadata?: Metadata;
 }
 
 export const DecodeMessageNftMint = ({
   compact,
   decodedMessage,
-  isSingleMsg,
   log,
   metadata,
   msgBody,
+  msgCount,
 }: DecodeMessageNftMintProps) => {
+  const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const {
     data: { collectionAddress, from, tokenAddress },
@@ -36,7 +37,7 @@ export const DecodeMessageNftMint = ({
   } = decodedMessage;
   const getAddressType = useGetAddressType();
 
-  const tokenUri = metadata[tokenAddress]?.tokenUri;
+  const tokenUri = metadata?.[tokenAddress]?.tokenUri;
 
   const { data } = useMetadata(tokenUri);
 
@@ -51,6 +52,7 @@ export const DecodeMessageNftMint = ({
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
         label="NFT Mint"
+        msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
