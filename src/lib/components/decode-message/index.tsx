@@ -2,7 +2,7 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { TxMessage, type TxMsgData } from "../tx-message";
 import { DecodeMessageDelegate } from "./decode-message-delegate";
-import { DecodeMessageIbcTransfer } from "./decode-message-ibc-transfer";
+import { DecodeMessageIbcFt } from "./decode-message-ibc-ft";
 import { DecodeMessageNftBurn } from "./decode-message-nft-burn";
 import { DecodeMessageNftMint } from "./decode-message-nft-mint";
 import { DecodeMessageObjectTransfer } from "./decode-message-object-transfer";
@@ -28,10 +28,9 @@ export const DecodeMessage = ({
       return (
         <DecodeMessageDelegate decodedMessage={decodedMessage} {...props} />
       );
+    case "ibc_ft_receive":
     case "ibc_ft_send":
-      return (
-        <DecodeMessageIbcTransfer decodedMessage={decodedMessage} {...props} />
-      );
+      return <DecodeMessageIbcFt decodedMessage={decodedMessage} {...props} />;
     case "nft_burn":
       // TODO: Missing nft metadata
       return (

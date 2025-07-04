@@ -25,6 +25,7 @@ import {
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
+import { INITIA_REGISTRY_URLS } from "lib/data";
 import { createQueryFnWithTimeout } from "lib/services/utils";
 import { zHexAddr20 } from "lib/types";
 import {
@@ -79,7 +80,11 @@ export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const txDecoder = useMemo(
-    () => new TxDecoder({ registryUrls: [], restUrl: restEndpoint }),
+    () =>
+      new TxDecoder({
+        registryUrls: INITIA_REGISTRY_URLS,
+        restUrl: restEndpoint,
+      }),
     [restEndpoint]
   );
 
@@ -104,7 +109,11 @@ export const useTxData = (
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("txs");
   const txDecoder = useMemo(
-    () => new TxDecoder({ registryUrls: [], restUrl: restEndpoint }),
+    () =>
+      new TxDecoder({
+        registryUrls: INITIA_REGISTRY_URLS,
+        restUrl: restEndpoint,
+      }),
     [restEndpoint]
   );
 
