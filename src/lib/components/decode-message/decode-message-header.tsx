@@ -3,6 +3,7 @@ import type { IconKeys } from "lib/components/icon";
 
 import { Flex, Tag, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
+import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { type ReactNode, useRef, useState } from "react";
 
@@ -34,14 +35,14 @@ export const DecodeMessageHeader = ({
   type,
   ...props
 }: DecodeMessageHeaderProps) => {
+  const isMobile = useMobile();
   const [isHoverText, setIsHoverText] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const isOverflowContent = ref.current
-    ? ref.current.scrollWidth > ref.current.clientWidth
-    : false;
-
-  const isHoverOverflowContent = isHoverText && isOverflowContent;
+  const isHoverOverflowContent =
+    isHoverText && !isMobile && ref.current
+      ? ref.current.scrollWidth > ref.current.clientWidth
+      : false;
 
   return (
     <Flex
@@ -87,7 +88,9 @@ export const DecodeMessageHeader = ({
     >
       <Flex
         align="center"
-        flexWrap={compact && !isHoverOverflowContent ? "nowrap" : "wrap"}
+        flexWrap={
+          compact && !isHoverOverflowContent && !isMobile ? "nowrap" : "wrap"
+        }
         {...props}
       >
         <Tag gap={1} minWidth="auto" variant="gray">
