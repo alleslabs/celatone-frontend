@@ -44,7 +44,7 @@ export const DecodedMessageRedelegate = ({
   const tokenWithValue = formatTokenWithValue(token);
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" maxW="inherit">
       <DecodeMessageHeader
         compact={compact}
         gap={2}

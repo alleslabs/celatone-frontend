@@ -3,6 +3,7 @@ import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 import { TxMessage, type TxMsgData } from "../tx-message";
 import { DecodeMessageDelegate } from "./decode-message-delegate";
 import { DecodeMessageIbcFt } from "./decode-message-ibc-ft";
+import { DecodeMessageIbcNft } from "./decode-message-ibc-nft";
 import { DecodeMessageNftBurn } from "./decode-message-nft-burn";
 import { DecodeMessageNftMint } from "./decode-message-nft-mint";
 import { DecodeMessageObjectTransfer } from "./decode-message-object-transfer";
@@ -32,10 +33,18 @@ export const DecodeMessage = ({
       );
     case "ibc_ft_receive":
     case "ibc_ft_send":
+      // TODO: class ID, token IDs, timeout height, timeout timestamp
       return <DecodeMessageIbcFt decodedMessage={decodedMessage} {...props} />;
     case "ibc_nft_receive":
     case "ibc_nft_send":
-      return <>please handle this</>;
+      // TODO: Missing NFT image, timeout height, timeout timestamp
+      return (
+        <DecodeMessageIbcNft
+          decodedMessage={decodedMessage}
+          metadata={metadata}
+          {...props}
+        />
+      );
     case "nft_burn":
       return (
         <DecodeMessageNftBurn decodedMessage={decodedMessage} {...props} />
@@ -57,12 +66,10 @@ export const DecodeMessage = ({
         />
       );
     case "op_deposit":
-      // TODO: Miss rollup id
       return (
         <DecodeMessageOpDeposit decodedMessage={decodedMessage} {...props} />
       );
     case "op_finalize_withdraw":
-      // TODO: Miss rollup id
       return (
         <DecodeMessageOpFinalizeWithdraw
           decodedMessage={decodedMessage}

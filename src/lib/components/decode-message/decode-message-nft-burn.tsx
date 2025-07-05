@@ -28,7 +28,7 @@ export const DecodeMessageNftBurn = ({
   const { data, isIbc, isOp } = decodedMessage;
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" maxW="inherit">
       <DecodeMessageHeader
         compact={compact}
         gap={2}
@@ -42,7 +42,7 @@ export const DecodeMessageNftBurn = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1}>
+        <Flex align="center" gap={2}>
           <ExplorerLink
             showCopyOnHover
             textFormat="truncate"

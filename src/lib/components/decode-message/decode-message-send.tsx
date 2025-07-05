@@ -87,7 +87,7 @@ export const DecodeMessageSend = ({
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
 
   return (
-    <Flex direction="column" w="full">
+    <Flex direction="column" w="100%">
       <DecodeMessageHeader
         compact={compact}
         gap={2}

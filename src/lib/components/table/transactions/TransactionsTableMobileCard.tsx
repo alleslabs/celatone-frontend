@@ -77,6 +77,7 @@ export const TransactionsTableMobileCard = ({
                 compact
                 decodedMessage={decodedTx.messages[0].decodedMessage}
                 log={undefined}
+                metadata={decodedTx.metadata}
                 msgBody={txResponse.tx.body.messages[0]}
                 msgCount={txResponse.tx.body.messages.length}
               />

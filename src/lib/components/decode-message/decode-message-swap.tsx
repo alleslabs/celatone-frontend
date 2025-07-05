@@ -53,7 +53,7 @@ export const DecodeMessageSwap = ({
   const coinOut = new Coin(data.denomOut, data.amountOut);
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" maxW="inherit">
       <DecodeMessageHeader
         compact={compact}
         gap={2}

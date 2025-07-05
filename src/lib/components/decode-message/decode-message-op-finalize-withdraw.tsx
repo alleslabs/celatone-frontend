@@ -43,7 +43,7 @@ export const DecodeMessageOpFinalizeWithdraw = ({
   const tokenWithValue = formatTokenWithValue(token);
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" maxW="inherit">
       <DecodeMessageHeader
         compact={compact}
         gap={2}
@@ -65,14 +65,17 @@ export const DecodeMessageOpFinalizeWithdraw = ({
           />
           <Text whiteSpace="nowrap">{tokenWithValue}</Text>
         </Flex>
-        <Text color="text.dark">from</Text>
+        <Flex align="center" gap={2}>
+          <Text color="text.dark">from</Text>
+          <Text whiteSpace="nowrap">{data.srcChainId}</Text>
+        </Flex>
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Bridge ID">
           <Text>{data.bridgeId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="From network">
-          <Text>-</Text>
+          <Text>{data.srcChainId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink

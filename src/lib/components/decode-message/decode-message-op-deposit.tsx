@@ -43,7 +43,7 @@ export const DecodeMessageOpDeposit = ({
   const tokenWithValue = formatTokenWithValue(token);
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" maxW="inherit">
       <DecodeMessageHeader
         compact={compact}
         gap={2}
@@ -65,7 +65,10 @@ export const DecodeMessageOpDeposit = ({
           />
           <Text whiteSpace="nowrap">{tokenWithValue}</Text>
         </Flex>
-        <Text color="text.dark">to</Text>
+        <Flex align="center" gap={2}>
+          <Text color="text.dark">to</Text>
+          <Text whiteSpace="nowrap">{data.dstChainId}</Text>
+        </Flex>
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Bridge ID">
@@ -84,7 +87,9 @@ export const DecodeMessageOpDeposit = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="To network">-</DecodeMessageRow>
+        <DecodeMessageRow title="To network">
+          {data.dstChainId}
+        </DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink
             maxWidth="full"

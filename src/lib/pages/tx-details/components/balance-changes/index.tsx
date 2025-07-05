@@ -1,4 +1,7 @@
-import type { BalanceChanges as TotalBalanceChanges } from "@initia/tx-decoder";
+import type {
+  Metadata,
+  BalanceChanges as TotalBalanceChanges,
+} from "@initia/tx-decoder";
 
 import { Stack, TableContainer } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
@@ -9,14 +12,34 @@ import { BalanceChangesTableHeader } from "./balance-changes-table-header";
 import { BalanceChangesTableRow } from "./balance-changes-table-row";
 
 interface BalanceChangesProps {
+  metadata?: Metadata;
   totalBalanceChanges: TotalBalanceChanges;
 }
 
 export const BalanceChanges = ({
+  metadata,
   totalBalanceChanges,
 }: BalanceChangesProps) => {
   const isMobile = useMobile();
   const templateColumns = "230px 1fr";
+
+  const addresses = Array.from(
+    new Set([
+      ...Object.keys(totalBalanceChanges.ft),
+      ...Object.keys(totalBalanceChanges.object),
+    ])
+  );
+
+  const mapped = addresses.map((address) => {
+    const ftChange = totalBalanceChanges.ft[address];
+    const objectChange = totalBalanceChanges.object[address];
+
+    return {
+      address,
+      ftChange,
+      objectChange,
+    };
+  });
 
   return isMobile ? (
     <MobileTableContainer>
@@ -32,11 +55,13 @@ export const BalanceChanges = ({
     <TableContainer>
       <BalanceChangesTableHeader templateColumns={templateColumns} />
       <Stack>
-        {Object.entries(totalBalanceChanges.ft).map(([address, changes]) => (
+        {mapped.map(({ address, ftChange, objectChange }) => (
           <BalanceChangesTableRow
             key={address}
             address={address}
-            changes={changes}
+            ftChange={ftChange}
+            metadata={metadata}
+            objectChange={objectChange}
             templateColumns={templateColumns}
           />
         ))}

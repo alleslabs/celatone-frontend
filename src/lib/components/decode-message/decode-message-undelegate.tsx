@@ -49,7 +49,7 @@ export const DecodeMessageUndelegate = ({
   const parsedUnlockTimestamp = parseUnixToDateOpt(data.unlockTimestamp);
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" maxW="inherit">
       <DecodeMessageHeader
         compact={compact}
         gap={2}

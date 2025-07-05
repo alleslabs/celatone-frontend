@@ -1,70 +1,52 @@
-import type { DecodedMessage } from "@initia/tx-decoder";
+import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { Coin } from "@initia/initia.js";
 import { useGetAddressType } from "lib/app-provider";
-import { TokenImageRender } from "lib/components/token";
-import { useAssetInfos } from "lib/services/assetService";
-import {
-  coinToTokenWithValue,
-  formatTokenWithValue,
-  getTokenLabel,
-} from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
 import { ExplorerLink } from "../ExplorerLink";
-import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
+import JsonReadOnly from "../json/JsonReadOnly";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodeMessageIbcFtProps extends TxMsgData {
+interface DecodeMessageIbcNftProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "ibc_ft_receive" | "ibc_ft_send";
+    action: "ibc_nft_receive" | "ibc_nft_send";
   };
+  metadata?: Metadata;
 }
 
-export const DecodeMessageIbcFt = ({
+export const DecodeMessageIbcNft = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageIbcFtProps) => {
+}: DecodeMessageIbcNftProps) => {
   const isSingleMsg = msgCount === 1;
-  const getAddressType = useGetAddressType();
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
-  const { data: assetInfos } = useAssetInfos({ withPrices: false });
-  const token = coinToTokenWithValue(data.denom, data.amount, assetInfos);
-  const tokenWithValue = formatTokenWithValue(token);
+  const getAddressType = useGetAddressType();
 
   return (
     <Flex direction="column" maxW="inherit">
       <DecodeMessageHeader
         compact={compact}
         gap={2}
-        iconName="swap"
+        iconName="collection"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Bridge"
+        label="NFT Bridge"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1} minWidth="fit-content">
-          <TokenImageRender
-            alt={getTokenLabel(token.denom, token.symbol)}
-            boxSize={4}
-            logo={token.logo}
-          />
-          <Text whiteSpace="nowrap">{tokenWithValue}</Text>
-        </Flex>
-        {decodedMessage.action === "ibc_ft_send" ? (
+        {decodedMessage.action === "ibc_nft_send" ? (
           <Flex align="center" gap={2}>
             <Text color="text.dark">from</Text>
             <Text>{data.srcChainId}</Text>
@@ -79,7 +61,7 @@ export const DecodeMessageIbcFt = ({
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="From network">
           <Text>
-            {decodedMessage.action === "ibc_ft_send"
+            {decodedMessage.action === "ibc_nft_send"
               ? data.srcChainId
               : data.dstChainId}
           </Text>
@@ -96,7 +78,7 @@ export const DecodeMessageIbcFt = ({
         </DecodeMessageRow>
         <DecodeMessageRow title="To network">
           <Text>
-            {decodedMessage.action === "ibc_ft_send"
+            {decodedMessage.action === "ibc_nft_send"
               ? data.dstChainId
               : data.srcChainId}
           </Text>
@@ -111,27 +93,41 @@ export const DecodeMessageIbcFt = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Amount">
-          <CoinsComponent coins={[new Coin(data.denom, data.amount)]} />
+        <DecodeMessageRow title="Collection">
+          <ExplorerLink
+            showCopyOnHover
+            textFormat="truncate"
+            textLabel={data.collection.name}
+            type="user_address"
+            value={data.collectionId}
+          />
         </DecodeMessageRow>
+        <DecodeMessageRow title="NFT">-</DecodeMessageRow>
         <DecodeMessageRow title="Source channel">
           <Text>
-            {decodedMessage.action === "ibc_ft_send"
+            {decodedMessage.action === "ibc_nft_send"
               ? data.srcChannel
               : data.dstChannel}
           </Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Source port">
           <Text>
-            {decodedMessage.action === "ibc_ft_send"
+            {decodedMessage.action === "ibc_nft_send"
               ? data.srcPort
               : data.dstPort}
           </Text>
         </DecodeMessageRow>
-        {/* // TODO: Class ID */}
-        <DecodeMessageRow title="Class ID">-</DecodeMessageRow>
-        {/* // TODO: Token IDs */}
-        <DecodeMessageRow title="Token IDs">-</DecodeMessageRow>
+        <DecodeMessageRow title="Class ID">
+          <Text>{data.collectionId}</Text>
+        </DecodeMessageRow>
+        <DecodeMessageRow title="Token IDs">
+          <JsonReadOnly
+            canCopy
+            fullWidth
+            isExpandable
+            text={JSON.stringify(data.tokenIds, null, 2)}
+          />
+        </DecodeMessageRow>
         {/* // TODO: Timeout height */}
         <DecodeMessageRow title="Timeout height">-</DecodeMessageRow>
         {/* // TODO: Timeout timestamp */}

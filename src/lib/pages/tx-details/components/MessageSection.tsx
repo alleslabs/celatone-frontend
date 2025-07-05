@@ -108,6 +108,7 @@ export const MessageSection = ({
           </TabPanel>
           <TabPanel px={0}>
             <BalanceChanges
+              metadata={decodedTx.metadata}
               totalBalanceChanges={decodedTx.totalBalanceChanges}
             />
           </TabPanel>

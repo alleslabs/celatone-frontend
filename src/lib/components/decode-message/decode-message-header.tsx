@@ -67,12 +67,18 @@ export const DecodeMessageHeader = ({
       cursor="pointer"
       justify="space-between"
       marginTop={isHoverOverflowContent ? "-30px" : "0px"}
-      maxW="100%"
       overflow={compact && !isHoverOverflowContent ? "hidden" : "visible"}
       p={compact ? (isHoverOverflowContent ? "12px" : "") : "16px 8px"}
       position={isHoverOverflowContent ? "absolute" : "relative"}
       transition={isHoverOverflowContent ? "" : "background 0.25s ease-in-out"}
-      width={ref.current ? ref.current.clientWidth : "100%"}
+      width={
+        isHoverOverflowContent && ref.current
+          ? ref.current.clientWidth
+          : compact
+            ? "100%"
+            : "auto"
+      }
+      zIndex={isHoverOverflowContent ? 1 : "auto"}
       onClick={() => {
         track(AmpEvent.USE_TX_MSG_EXPAND, {
           action: isExpand ? "collapse" : "expand",

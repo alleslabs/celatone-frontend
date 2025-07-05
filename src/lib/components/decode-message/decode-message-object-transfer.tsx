@@ -1,6 +1,6 @@
 import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Stack, Text } from "@chakra-ui/react";
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { useMetadata } from "lib/services/nft";
@@ -8,6 +8,7 @@ import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
+import { AppLink } from "../AppLink";
 import { NftImage } from "../nft/NftImage";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
@@ -38,11 +39,10 @@ export const DecodeMessageObjectTransfer = ({
   } = decodedMessage;
 
   const nftMetadata = metadata?.[object];
-
-  const { data } = useMetadata(nftMetadata?.tokenUri);
+  const { data: nft } = useMetadata(nftMetadata?.tokenUri);
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" maxW="inherit">
       <DecodeMessageHeader
         compact={compact}
         gap={2}
@@ -56,40 +56,52 @@ export const DecodeMessageObjectTransfer = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex gap={2} minWidth="fit-content">
-          {nftMetadata && (
-            <>
+        {nft && nftMetadata && (
+          <Flex align="center" gap={1} minW="fit-content">
+            <AppLink
+              href={`/nft-collections/${nftMetadata.collectionAddress}/nft/${object}`}
+            >
               <NftImage
                 borderRadius="4px"
-                imageUrl={data?.image}
+                height="20px"
+                imageUrl={nft.image}
                 width="20px"
               />
+            </AppLink>
+            <ExplorerLink
+              showCopyOnHover
+              sx={{
+                whiteSpace: "nowrap",
+              }}
+              textFormat="normal"
+              textLabel={nft.name}
+              type="nft_collection"
+              value={`${nftMetadata.collectionAddress}/nft/${object}`}
+            />
+          </Flex>
+        )}
+        {!compact && (
+          <>
+            <Flex align="center" gap={2}>
+              <Text color="text.dark">from</Text>
               <ExplorerLink
                 showCopyOnHover
-                textFormat="normal"
-                textLabel={data?.name}
-                type="nft_collection"
-                value={`${nftMetadata.collectionAddress}/nft/${object}`}
+                textVariant={compact ? "body2" : "body1"}
+                type={getAddressType(from)}
+                value={from}
               />
-            </>
-          )}
-          <Text color="text.dark">from</Text>
-          <ExplorerLink
-            showCopyOnHover
-            textVariant={compact ? "body2" : "body1"}
-            type={getAddressType(from)}
-            value={from}
-          />
-        </Flex>
-        <Flex align="center" gap={2}>
-          <Text color="text.dark">to</Text>
-          <ExplorerLink
-            showCopyOnHover
-            textVariant={compact ? "body2" : "body1"}
-            type={getAddressType(to)}
-            value={to}
-          />
-        </Flex>
+            </Flex>
+            <Flex align="center" gap={2}>
+              <Text color="text.dark">to</Text>
+              <ExplorerLink
+                showCopyOnHover
+                textVariant={compact ? "body2" : "body1"}
+                type={getAddressType(to)}
+                value={to}
+              />
+            </Flex>
+          </>
+        )}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Sender">
@@ -122,26 +134,35 @@ export const DecodeMessageObjectTransfer = ({
             />
           </DecodeMessageRow>
         )}
-        {nftMetadata ? (
-          <DecodeMessageRow title="NFT">
-            <Flex flexDirection="column" gap={2}>
-              <NftImage
-                borderRadius="8px"
-                imageUrl={data?.image}
-                width="150px"
-              />
+        <DecodeMessageRow title="NFT">
+          {nft && nftMetadata ? (
+            <Stack spacing={2}>
+              <AppLink
+                href={`/nft-collections/${nftMetadata.collectionAddress}/nft/${object}`}
+              >
+                <NftImage
+                  borderRadius="8px"
+                  height="150px"
+                  imageUrl={nft.image}
+                />
+              </AppLink>
               <ExplorerLink
                 showCopyOnHover
                 textFormat="normal"
-                textLabel={data?.name}
+                textLabel={nft.name}
                 type="nft_collection"
                 value={`${nftMetadata.collectionAddress}/nft/${object}`}
               />
-            </Flex>
-          </DecodeMessageRow>
-        ) : (
-          <DecodeMessageRow title="Object">{object}</DecodeMessageRow>
-        )}
+            </Stack>
+          ) : (
+            <ExplorerLink
+              showCopyOnHover
+              textFormat="normal"
+              type="user_address"
+              value={object}
+            />
+          )}
+        </DecodeMessageRow>
       </DecodeMessageBody>
     </Flex>
   );

@@ -1,26 +1,70 @@
-import type { FtChange } from "@initia/tx-decoder";
+import type { FtChange, Metadata, ObjectChange } from "@initia/tx-decoder";
 
-import { Divider, Grid, Stack } from "@chakra-ui/react";
+import { Divider, Flex, Grid, Stack, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
 import { useGetAddressType } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { NftImage } from "lib/components/nft/NftImage";
 import { TableRow } from "lib/components/table";
+import { useMetadata } from "lib/services/nft";
 
 import { BalanceChangesToken } from "./balance-changes-token";
 
 interface BalanceChangesTableRowProps {
   address: string;
-  changes: FtChange;
+  ftChange: FtChange;
+  metadata?: Metadata;
+  objectChange: ObjectChange;
   templateColumns: string;
 }
 
+const BalanceChangeNft = ({
+  change,
+  id,
+  metadata,
+}: {
+  change: number;
+  id: string;
+  metadata: Metadata;
+}) => {
+  const data = metadata[id];
+  const { data: nft } = useMetadata(data.tokenUri);
+
+  if (!nft) return null;
+
+  const isPositiveAmount = change > 0;
+  const formattedAmount = `${isPositiveAmount ? "+" : "-"}${" "}${nft?.name}`;
+
+  return (
+    <Flex align="center" gap={1}>
+      <AppLink href={`/nft-collections/${data.collectionAddress}/nft/${id}`}>
+        <NftImage
+          borderRadius="4px"
+          height="20px"
+          imageUrl={nft.image}
+          width="20px"
+        />
+      </AppLink>
+      <Text color={isPositiveAmount ? "success.main" : "error.main"}>
+        {formattedAmount}
+      </Text>
+    </Flex>
+  );
+};
+
 export const BalanceChangesTableRow = ({
   address,
-  changes,
+  ftChange,
+  metadata,
+  objectChange,
   templateColumns,
 }: BalanceChangesTableRowProps) => {
   const getAddressType = useGetAddressType();
-  const changeEntries = Object.entries(changes);
+
+  const ftChangeEntries = ftChange ? Object.entries(ftChange) : [];
+  const objectChangeEntries = objectChange ? Object.entries(objectChange) : [];
+
   return (
     <Grid bg="gray.900" rounded={8} templateColumns={templateColumns}>
       <TableRow borderBottom={0} minH={0} p={4}>
@@ -33,14 +77,30 @@ export const BalanceChangesTableRow = ({
       </TableRow>
       <TableRow borderBottom={0} minH={0} p={4}>
         <Stack w="full">
-          {changeEntries.map(([denom, amount], index) => (
+          {ftChangeEntries.map(([denom, amount], index) => (
             <Stack key={`${address}-${denom}`} gap={3}>
               <BalanceChangesToken coin={new Coin(denom, amount)} />
-              {changeEntries.length - 1 !== index && (
+              {index < ftChangeEntries.length - 1 && (
                 <Divider borderColor="gray.700" />
               )}
             </Stack>
           ))}
+          {ftChangeEntries.length > 0 && objectChangeEntries.length > 0 && (
+            <Divider borderColor="gray.700" />
+          )}
+          {metadata &&
+            objectChangeEntries.map(([id, change], index) => (
+              <Stack key={`${address}-${id}`} gap={3}>
+                <BalanceChangeNft
+                  id={id}
+                  change={Number(change)}
+                  metadata={metadata}
+                />
+                {index < objectChangeEntries.length - 1 && (
+                  <Divider borderColor="gray.700" />
+                )}
+              </Stack>
+            ))}
         </Stack>
       </TableRow>
     </Grid>
