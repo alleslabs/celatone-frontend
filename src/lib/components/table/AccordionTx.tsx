@@ -1,5 +1,5 @@
 import type { GridItemProps } from "@chakra-ui/react";
-import type { DecodedMessage } from "@initia/tx-decoder";
+import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 import type { TxResponse } from "lib/services/types";
 import type { Message } from "lib/types";
 
@@ -23,6 +23,7 @@ interface AccordionTxProps extends RenderButtonProps {
   accordionSpacing?: GridItemProps["pl"];
   allowFurtherAction: boolean;
   decodedMessage?: DecodedMessage;
+  metadata?: Metadata;
   msgCount: number;
   txResponse?: TxResponse;
 }
@@ -47,6 +48,7 @@ export const AccordionTx = ({
   allowFurtherAction,
   decodedMessage,
   message,
+  metadata,
   msgCount,
   msgIndex,
   txHash,
@@ -74,6 +76,7 @@ export const AccordionTx = ({
             compact
             decodedMessage={decodedMessage}
             log={undefined}
+            metadata={metadata}
             msgBody={{
               "@type": message.type,
               ...message,

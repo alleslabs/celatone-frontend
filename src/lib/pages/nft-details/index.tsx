@@ -1,7 +1,6 @@
 import {
   Divider,
   Flex,
-  Image,
   TabList,
   TabPanel,
   TabPanels,
@@ -15,13 +14,13 @@ import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { JsonLink } from "lib/components/JsonLink";
 import { Loading } from "lib/components/Loading";
+import { NftImage } from "lib/components/nft/NftImage";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
   useMetadata,
@@ -30,7 +29,6 @@ import {
   useNftTransactions,
 } from "lib/services/nft";
 import { useNftCollectionByCollectionAddress } from "lib/services/nft-collection";
-import { getIpfsUrl } from "lib/services/utils";
 import { zHexAddr32 } from "lib/types";
 import { zBechAddr32 } from "lib/types";
 import { truncate } from "lib/utils";
@@ -154,7 +152,7 @@ const NftDetailsBody = ({
                 width: "100%",
               }}
             >
-              <Image
+              <NftImage
                 style={{
                   backgroundPosition: "center",
                   borderRadius: "8px",
@@ -167,9 +165,7 @@ const NftDetailsBody = ({
                 }}
                 background="gray.900"
                 borderRadius="8px"
-                fallbackSrc={NFT_IMAGE_PLACEHOLDER}
-                fallbackStrategy="beforeLoadOrError"
-                src={metadata?.image ? getIpfsUrl(metadata?.image) : undefined}
+                imageUrl={metadata?.image}
               />
             </div>
             {!isMobile && (
