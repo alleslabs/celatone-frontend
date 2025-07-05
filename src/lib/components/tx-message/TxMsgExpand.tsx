@@ -2,7 +2,6 @@ import type { Coin } from "@cosmjs/stargate";
 import type { IconKeys } from "lib/components/icon";
 import type { BechAddr } from "lib/types";
 import type { VoteOption } from "lib/utils";
-import type { ReactNode } from "react";
 
 import { Flex, Tag, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
@@ -20,6 +19,7 @@ import {
   getTxBadges,
   voteOption,
 } from "lib/utils";
+import { type ReactNode, useRef, useState } from "react";
 
 import type { TxMsgData } from ".";
 
@@ -43,6 +43,14 @@ export const TxMsgExpand = ({
 
   const { "@type": type, ...body } = msgBody;
   const { isEvm, isIbc, isOpinit } = getTxBadges(type, log);
+
+  const [isHoverText, setIsHoverText] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const isHoverOverflowContent =
+    isHoverText && !isMobile && ref.current
+      ? ref.current.scrollWidth > ref.current.clientWidth
+      : false;
 
   let msgIcon: IconKeys = "file";
   let msgLabel: string = "";
@@ -342,13 +350,17 @@ export const TxMsgExpand = ({
       }
       _hover={compact ? {} : { backgroundColor: "gray.800" }}
       align="center"
-      borderRadius={compact ? "0px" : "8px"}
+      background={isHoverOverflowContent ? "gray.800" : "transparent"}
+      borderRadius={compact && !isHoverOverflowContent ? "0px" : "8px"}
       cursor="pointer"
       justify="space-between"
-      overflow={compact ? "hidden" : "unset"}
-      p={compact ? "" : "16px 8px"}
-      position="relative"
-      transition="all 0.25s ease-in-out"
+      marginTop={isHoverOverflowContent ? "-30px" : "0px"}
+      overflow={compact && !isHoverOverflowContent ? "hidden" : "visible"}
+      p={compact ? (isHoverOverflowContent ? "12px" : "") : "16px 8px"}
+      position={isHoverOverflowContent ? "absolute" : "relative"}
+      transition={isHoverOverflowContent ? "" : "background 0.25s ease-in-out"}
+      width="auto"
+      zIndex={isHoverOverflowContent ? 1 : "auto"}
       onClick={() => {
         track(AmpEvent.USE_TX_MSG_EXPAND, {
           action: isExpand ? "collapse" : "expand",
@@ -358,10 +370,15 @@ export const TxMsgExpand = ({
         });
         onClick();
       }}
+      onMouseOut={() => setIsHoverText(false)}
+      onMouseOver={() => setIsHoverText(true)}
+      ref={ref}
     >
       <Flex
         align={{ base: "start", md: "center" }}
-        flexWrap={compact ? "nowrap" : "wrap"}
+        flexWrap={
+          compact && !isHoverOverflowContent && !isMobile ? "nowrap" : "wrap"
+        }
         fontSize="16px"
         fontWeight={500}
         gap={2}

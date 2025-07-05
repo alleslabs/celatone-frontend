@@ -67,12 +67,12 @@ export const DecodeMessageIbcFt = ({
         {decodedMessage.action === "ibc_ft_send" ? (
           <Flex align="center" gap={2}>
             <Text color="text.dark">from</Text>
-            <Text>{data.srcChainId}</Text>
+            <Text whiteSpace="nowrap">{data.srcChainId}</Text>
           </Flex>
         ) : (
           <Flex align="center" gap={2}>
             <Text color="text.dark">to</Text>
-            <Text>{data.dstChainId}</Text>
+            <Text whiteSpace="nowrap">{data.dstChainId}</Text>
           </Flex>
         )}
       </DecodeMessageHeader>
