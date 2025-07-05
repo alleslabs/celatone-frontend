@@ -21,6 +21,7 @@ export type LinkType =
   | "evm_contract_address"
   | "evm_tx_hash"
   | "module_name"
+  | "nft_collection"
   | "pool_id"
   | "proposal_id"
   | "task_id"
@@ -75,6 +76,9 @@ export const getNavigationUrl = ({
       return "";
     case "module_name":
       url = "/modules";
+      break;
+    case "nft_collection":
+      url = "/nft-collections";
       break;
     case "pool_id":
       url = "/pools";

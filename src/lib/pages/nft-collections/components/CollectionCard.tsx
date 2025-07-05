@@ -1,14 +1,13 @@
 import type { Collection } from "lib/services/types";
 import type { BechAddr32, HexAddr32 } from "lib/types";
 
-import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useEvmConfig, useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
+import { NftImage } from "lib/components/nft/NftImage";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useMetadata } from "lib/services/nft";
-import { getIpfsUrl } from "lib/services/utils";
 import { extractNftDescription } from "lib/utils/nftDescription";
 import { useMemo } from "react";
 
@@ -66,16 +65,14 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
         transition="all .25s ease-in-out"
       >
         <Flex gap={{ base: 4, md: 6 }} maxW="full" overflow="hidden" w="full">
-          <Image
+          <NftImage
             background="gray.900"
             backgroundPosition="center"
             borderRadius="8px"
-            fallbackSrc={NFT_IMAGE_PLACEHOLDER}
-            fallbackStrategy="beforeLoadOrError"
             h={{ base: 28, md: 40 }}
+            imageUrl={collectionImage}
             minW={{ base: 28, md: 40 }}
             objectFit="contain"
-            src={collectionImage ? getIpfsUrl(collectionImage) : undefined}
             w={{ base: 28, md: 40 }}
           />
           <Flex

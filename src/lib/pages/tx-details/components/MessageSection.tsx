@@ -91,6 +91,7 @@ export const MessageSection = ({
                   compact={false}
                   decodedMessage={decodedTx.messages[idx].decodedMessage}
                   log={logs[idx]}
+                  metadata={decodedTx.metadata}
                   msgBody={msg}
                   msgCount={messages.length}
                 />

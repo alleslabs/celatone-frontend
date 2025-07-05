@@ -112,6 +112,7 @@ export const TransactionsTableRow = ({
                 compact
                 decodedMessage={decodedTx.messages[0].decodedMessage}
                 log={undefined}
+                metadata={decodedTx.metadata}
                 msgBody={txResponse.tx.body.messages[0]}
                 msgCount={txResponse.tx.body.messages.length}
               />
@@ -169,6 +170,7 @@ export const TransactionsTableRow = ({
               allowFurtherAction={showAction}
               decodedMessage={decodedTx?.messages?.[index]?.decodedMessage}
               message={msg}
+              metadata={decodedTx?.metadata}
               msgCount={transaction.messages.length}
               msgIndex={index}
               txHash={transaction.hash}
