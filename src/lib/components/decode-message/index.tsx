@@ -88,7 +88,6 @@ export const DecodeMessage = ({
       );
     case "ibc_ft_receive":
     case "ibc_ft_send":
-      // TODO: class ID, token IDs, timeout height, timeout timestamp
       return <DecodeMessageIbcFt decodedMessage={decodedMessage} {...props} />;
     case "ibc_nft_receive":
     case "ibc_nft_send":
