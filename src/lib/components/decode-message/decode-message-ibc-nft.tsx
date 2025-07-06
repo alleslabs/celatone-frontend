@@ -1,13 +1,17 @@
 import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Stack, Text } from "@chakra-ui/react";
 import { useGetAddressType } from "lib/app-provider";
+import { useMetadata } from "lib/services/nft";
+import { formatUTC, parseNanosecondsToDate } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
+import { AppLink } from "../AppLink";
 import { ExplorerLink } from "../ExplorerLink";
 import JsonReadOnly from "../json/JsonReadOnly";
+import { NftImage } from "../nft/NftImage";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
@@ -23,6 +27,7 @@ export const DecodeMessageIbcNft = ({
   compact,
   decodedMessage,
   log,
+  metadata,
   msgBody,
   msgCount,
 }: DecodeMessageIbcNftProps) => {
@@ -30,6 +35,9 @@ export const DecodeMessageIbcNft = ({
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
   const getAddressType = useGetAddressType();
+
+  const tokenUri = metadata?.[data.tokenAddress]?.tokenUri;
+  const { data: nft } = useMetadata(tokenUri);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -46,6 +54,27 @@ export const DecodeMessageIbcNft = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
+        {nft && (
+          <Flex align="center" gap={1} minW="fit-content">
+            <AppLink
+              href={`/nft-collections/${data.collectionId}/nft/${data.tokenAddress}`}
+            >
+              <NftImage
+                borderRadius="4px"
+                height="20px"
+                imageUrl={nft.image}
+                width="20px"
+              />
+            </AppLink>
+            <ExplorerLink
+              showCopyOnHover
+              textFormat="normal"
+              textLabel={nft.name}
+              type="nft_collection"
+              value={`${data.collectionId}/nft/${data.tokenAddress}`}
+            />
+          </Flex>
+        )}
         {decodedMessage.action === "ibc_nft_send" ? (
           <Flex align="center" gap={2}>
             <Text color="text.dark">from</Text>
@@ -102,7 +131,35 @@ export const DecodeMessageIbcNft = ({
             value={data.collectionId}
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="NFT">-</DecodeMessageRow>
+        <DecodeMessageRow title="NFT">
+          {nft ? (
+            <Stack spacing={2}>
+              <AppLink
+                href={`/nft-collections/${data.collectionId}/nft/${data.tokenAddress}`}
+              >
+                <NftImage
+                  borderRadius="8px"
+                  imageUrl={nft.image}
+                  width="150px"
+                />
+              </AppLink>
+              <ExplorerLink
+                showCopyOnHover
+                textFormat="normal"
+                textLabel={nft.name}
+                type="nft_collection"
+                value={`${data.collectionId}/nft/${data.tokenAddress}`}
+              />
+            </Stack>
+          ) : (
+            <ExplorerLink
+              showCopyOnHover
+              textFormat="normal"
+              type="user_address"
+              value={data.tokenAddress}
+            />
+          )}
+        </DecodeMessageRow>
         <DecodeMessageRow title="Source channel">
           <Text>
             {decodedMessage.action === "ibc_nft_send"
@@ -128,10 +185,17 @@ export const DecodeMessageIbcNft = ({
             text={JSON.stringify(data.tokenIds, null, 2)}
           />
         </DecodeMessageRow>
-        {/* // TODO: Timeout height */}
-        <DecodeMessageRow title="Timeout height">-</DecodeMessageRow>
-        {/* // TODO: Timeout timestamp */}
-        <DecodeMessageRow title="Timeout timestamp">-</DecodeMessageRow>
+        <DecodeMessageRow title="Timeout height">
+          <JsonReadOnly
+            canCopy
+            fullWidth
+            isExpandable
+            text={JSON.stringify(data.timeoutHeight, null, 2)}
+          />
+        </DecodeMessageRow>
+        <DecodeMessageRow title="Timeout timestamp">
+          {formatUTC(parseNanosecondsToDate(data.timeoutTimestamp))}
+        </DecodeMessageRow>
       </DecodeMessageBody>
     </Flex>
   );

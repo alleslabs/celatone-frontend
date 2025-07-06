@@ -8,13 +8,16 @@ import { useAssetInfos } from "lib/services/assetService";
 import {
   coinToTokenWithValue,
   formatTokenWithValue,
+  formatUTC,
   getTokenLabel,
+  parseNanosecondsToDate,
 } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
 import { ExplorerLink } from "../ExplorerLink";
+import JsonReadOnly from "../json/JsonReadOnly";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
@@ -128,14 +131,17 @@ export const DecodeMessageIbcFt = ({
               : data.dstPort}
           </Text>
         </DecodeMessageRow>
-        {/* // TODO: Class ID */}
-        <DecodeMessageRow title="Class ID">-</DecodeMessageRow>
-        {/* // TODO: Token IDs */}
-        <DecodeMessageRow title="Token IDs">-</DecodeMessageRow>
-        {/* // TODO: Timeout height */}
-        <DecodeMessageRow title="Timeout height">-</DecodeMessageRow>
-        {/* // TODO: Timeout timestamp */}
-        <DecodeMessageRow title="Timeout timestamp">-</DecodeMessageRow>
+        <DecodeMessageRow title="Timeout height">
+          <JsonReadOnly
+            canCopy
+            fullWidth
+            isExpandable
+            text={JSON.stringify(data.timeoutHeight, null, 2)}
+          />
+        </DecodeMessageRow>
+        <DecodeMessageRow title="Timeout timestamp">
+          {formatUTC(parseNanosecondsToDate(data.timeoutTimestamp))}
+        </DecodeMessageRow>
       </DecodeMessageBody>
     </Flex>
   );
