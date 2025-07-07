@@ -11,7 +11,6 @@ import type {
   TxFilters,
 } from "lib/types";
 
-import { TxDecoder } from "@initia/tx-decoder";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
@@ -25,7 +24,7 @@ import {
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
-import { INITIA_REGISTRY_URLS } from "lib/data";
+import { useTxDecoderContext } from "lib/providers/tx-decoder";
 import { createQueryFnWithTimeout } from "lib/services/utils";
 import { zHexAddr20 } from "lib/types";
 import {
@@ -33,7 +32,7 @@ import {
   extractTxLogs,
   isTxHash,
 } from "lib/utils";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 
 import type {
   AccountTxsResponse,
@@ -76,17 +75,7 @@ import {
 } from "./sequencer";
 
 export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
-  const {
-    chainConfig: { rest: restEndpoint },
-  } = useCelatoneApp();
-  const txDecoder = useMemo(
-    () =>
-      new TxDecoder({
-        registryUrls: INITIA_REGISTRY_URLS,
-        restUrl: restEndpoint,
-      }),
-    [restEndpoint]
-  );
+  const { txDecoder } = useTxDecoderContext();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.TX_DECODER, rawTxResponse?.txhash],
@@ -108,14 +97,7 @@ export const useTxData = (
   } = useCelatoneApp();
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("txs");
-  const txDecoder = useMemo(
-    () =>
-      new TxDecoder({
-        registryUrls: INITIA_REGISTRY_URLS,
-        restUrl: restEndpoint,
-      }),
-    [restEndpoint]
-  );
+  const { txDecoder } = useTxDecoderContext();
 
   const endpoint = isFullTier ? apiEndpoint : restEndpoint;
 
