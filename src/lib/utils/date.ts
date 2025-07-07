@@ -29,7 +29,7 @@ export const parseDateOpt = (dateOpt: Option<string>): Option<Date> =>
 export const parseUnixToDateOpt = (
   unix: Option<number | string>
 ): Option<Date> =>
-  unix !== undefined && !Number.isNaN(unix)
+  unix !== undefined && !Number.isNaN(Number(unix))
     ? dayjs.unix(Number(unix)).toDate()
     : undefined;
 

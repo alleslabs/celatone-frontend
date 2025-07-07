@@ -61,6 +61,7 @@ const DecodeMessageSendMultipleCoinsHeader = ({
         const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
         return (
           <TokenImageRender
+            key={coin.denom}
             alt={getTokenLabel(token.denom, token.symbol)}
             boxSize={4}
             logo={token.logo}
