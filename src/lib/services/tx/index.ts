@@ -40,7 +40,6 @@ import type {
   BlockTxsResponse,
   RawTxResponse,
   TxData,
-  TxsResponse,
   TxsResponseItemFromRest,
   TxsResponseWithTxResponse,
 } from "../types";
@@ -162,7 +161,7 @@ export const useTxData = (
 export const useTxs = (
   limit: number,
   offset: number,
-  options: Pick<UseQueryOptions<TxsResponse>, "onSuccess"> = {}
+  options: Pick<UseQueryOptions<TxsResponseWithTxResponse>, "onSuccess"> = {}
 ) => {
   const endpoint = useBaseApiRoute("txs");
   const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
