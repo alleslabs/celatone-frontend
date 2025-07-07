@@ -395,42 +395,6 @@ const zBaseTxsResponseItem = z.preprocess(
   })
 );
 
-export const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>(
-  (val) => ({
-    actionMsgType: getActionMsgType([
-      val.is_send,
-      val.is_execute,
-      val.is_instantiate,
-      val.is_store_code,
-      val.is_migrate,
-      val.is_update_admin,
-      val.is_clear_admin,
-      // TODO: implement Move msg type
-    ]),
-    created: val.created,
-    furtherAction: MsgFurtherAction.NONE,
-    hash: parseTxHash(val.hash),
-    height: val.height,
-    isEvm: val.is_evm ?? false,
-    isIbc: val.is_ibc,
-    isInstantiate: val.is_instantiate ?? false,
-    isOpinit: val.is_opinit ?? false,
-    isSigner: false,
-    messages: snakeToCamel(val.messages).map((msg) => ({
-      ...msg,
-      // type: msg["@type"],
-    })),
-    sender: val.sender,
-    success: val.success,
-  })
-);
-
-export const zTxsResponse = z.object({
-  items: z.array(zTxsResponseItem),
-  total: z.number().nonnegative(),
-});
-export type TxsResponse = z.infer<typeof zTxsResponse>;
-
 export const zTxsResponseWithTxResponseItem =
   zBaseTxsResponseItem.transform<TransactionWithTxResponse>((val) => ({
     actionMsgType: getActionMsgType([
@@ -454,7 +418,7 @@ export const zTxsResponseWithTxResponseItem =
     isSigner: false,
     messages: snakeToCamel(val.messages).map((msg) => ({
       ...msg,
-      type: msg["@type"],
+      type: msg["type"],
     })),
     rawTxResponse: val.raw_tx_response,
     sender: val.sender,
