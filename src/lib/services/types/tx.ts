@@ -245,7 +245,7 @@ export const zTxsResponseItemFromRest =
 
     const messages = txBody.messages.map<Message>((msg, idx) => ({
       log: logs[idx],
-      type: msg["@type"],
+      type: msg["@type"] ?? msg["type"],
       ...msg,
     }));
 
@@ -383,7 +383,7 @@ export const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>(
     isSigner: false,
     messages: snakeToCamel(val.messages).map((msg) => ({
       ...msg,
-      type: msg["@type"],
+      type: msg["@type"] ?? msg["type"],
     })),
     sender: val.sender,
     success: val.success,
@@ -437,7 +437,10 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
     isInstantiate: val.is_instantiate ?? false,
     isOpinit: val.is_opinit ?? false,
     isSigner: val.is_signer,
-    messages: snakeToCamel(val.messages),
+    messages: snakeToCamel(val.messages).map((msg) => ({
+      ...msg,
+      type: msg["@type"] ?? msg["type"],
+    })),
     sender: val.sender,
     success: val.success,
   }));
