@@ -1,6 +1,7 @@
-import type { HexAddr, HexAddr32 } from "lib/types";
+import type { Addr, HexAddr, HexAddr32 } from "lib/types";
 
 import axios from "axios";
+import { GLYPH_API_URL } from "env";
 import { parseWithError } from "lib/utils";
 
 import {
@@ -84,6 +85,22 @@ export const getMetadata = async (uri: string) => {
     throw error;
   }
 };
+
+export const getGlyphImage = (
+  chainId: string,
+  collectionAddress: Addr,
+  objectAddress: string,
+  width = "",
+  height = ""
+) =>
+  axios
+    .get<Blob>(
+      `${GLYPH_API_URL}/${chainId}/${collectionAddress}/${objectAddress}?width=${width}&height=${height}`,
+      {
+        responseType: "blob",
+      }
+    )
+    .then(({ data }) => data);
 
 export const getNftTxs = async (
   endpoint: string,

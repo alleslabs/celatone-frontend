@@ -24,6 +24,7 @@ import { useCallback } from "react";
 
 import type {
   Metadata,
+  Nft,
   NftMintInfo,
   NftMutateEventsResponse,
   NftsByAccountAddressResponse,
@@ -34,6 +35,7 @@ import type {
 
 import { handleQueryByTier } from "../utils";
 import {
+  getGlyphImage,
   getMetadata,
   getNftByNftAddress,
   getNftMintInfo,
@@ -299,16 +301,44 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
   );
 };
 
-export const useMetadata = (uri: string) =>
-  useQuery<Metadata>(
-    [CELATONE_QUERY_KEYS.NFT_METADATA, uri],
-    () => getMetadata(uri),
+export const useMetadata = (
+  nft: Option<Partial<Nft>>,
+  width = "",
+  height = ""
+) => {
+  const { currentChainId } = useCelatoneApp();
+
+  return useQuery<Metadata>(
+    [CELATONE_QUERY_KEYS.NFT_METADATA, nft],
+    async () => {
+      if (!nft) throw new Error("NFT is required (useMetadata)");
+      const baseUri = await getMetadata(nft.uri ?? "");
+
+      if (
+        baseUri.image.startsWith("ipfs://") &&
+        nft.collectionAddress &&
+        (nft.nftAddress || nft.tokenId)
+      ) {
+        const image: Blob = await getGlyphImage(
+          currentChainId,
+          nft.collectionAddress,
+          nft.nftAddress ?? nft.tokenId ?? "",
+          width,
+          height
+        );
+
+        baseUri.image = URL.createObjectURL(image);
+      }
+
+      return baseUri;
+    },
     {
-      enabled: !!uri,
+      enabled: !!nft,
       refetchOnWindowFocus: false,
       retry: 1,
     }
   );
+};
 
 export const useNftTransactions = (
   nftAddress: Option<HexAddr32>,
