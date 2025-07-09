@@ -6,6 +6,7 @@ import { useEvmConfig, useMoveConfig } from "lib/app-provider";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useMetadata } from "lib/services/nft";
+import { getIpfsUrl } from "lib/services/utils";
 
 import { AppLink } from "../AppLink";
 
@@ -49,7 +50,7 @@ export const NftCard = ({ nft, showCollection = false }: NftCardProps) => {
             left={0}
             objectFit="contain"
             position="absolute"
-            src={metadata?.image}
+            src={metadata?.image ? getIpfsUrl(metadata.image) : undefined}
             top={0}
             width="100%"
           />
