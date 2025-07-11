@@ -95,7 +95,7 @@ export const TransactionsTableRow = ({
               )}
             </TableRow>
           ))}
-        {isTxHasNoData || !decodedTx ? (
+        {isTxHasNoData ? (
           <TableRow>
             {isDecodedTxFetching ? (
               <Spinner boxSize={4} />
@@ -107,7 +107,7 @@ export const TransactionsTableRow = ({
           </TableRow>
         ) : (
           <TableRow maxW="100%">
-            {txResponse ? (
+            {txResponse && decodedTx ? (
               <DecodeMessage
                 compact
                 decodedMessage={decodedTx.messages[0].decodedMessage}

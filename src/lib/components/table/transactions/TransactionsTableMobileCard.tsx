@@ -60,7 +60,7 @@ export const TransactionsTableMobileCard = ({
         </Flex>
       }
       middleContent={
-        isTxHasNoData || !decodedTx ? (
+        isTxHasNoData ? (
           <>
             {isDecodedTxFetching ? (
               <Spinner boxSize={4} />
@@ -72,7 +72,7 @@ export const TransactionsTableMobileCard = ({
           </>
         ) : (
           <>
-            {txResponse ? (
+            {txResponse && decodedTx ? (
               <DecodeMessage
                 compact
                 decodedMessage={decodedTx.messages[0].decodedMessage}
