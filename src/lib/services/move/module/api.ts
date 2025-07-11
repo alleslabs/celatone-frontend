@@ -85,7 +85,7 @@ export const getModulePublishInfo = async (
 ): Promise<ModulePublishInfo> =>
   axios
     .get(
-      `${endpoint}/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/publish_info`,
+      `${endpoint}/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/publish-info`,
       {
         params: {
           is_gov: isGov,

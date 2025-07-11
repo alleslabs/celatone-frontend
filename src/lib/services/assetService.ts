@@ -1,14 +1,17 @@
 import type { AssetInfo, AssetInfos, Option } from "lib/types";
 
 import { useQuery } from "@tanstack/react-query";
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useInitia } from "lib/app-provider";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import { useBaseApiRoute } from "lib/app-provider/hooks/useBaseApiRoute";
 import { getAssetInfos } from "lib/services/asset";
 import { pickBy } from "lodash";
 
 export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
+  const isInitia = useInitia();
   const assetsApiRoute = useBaseApiRoute("assets");
+  const initiaAssetsApiRoute = useBaseApiRoute("initia-api-assets");
+  const endpoint = isInitia ? initiaAssetsApiRoute : assetsApiRoute;
 
   const {
     chainConfig: { registry },
@@ -16,9 +19,9 @@ export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
   const registryAssets = registry?.assets ?? [];
 
   return useQuery<AssetInfos>(
-    [CELATONE_QUERY_KEYS.ASSET_INFOS, assetsApiRoute, withPrices],
+    [CELATONE_QUERY_KEYS.ASSET_INFOS, endpoint, withPrices],
     async () =>
-      getAssetInfos(assetsApiRoute, withPrices).then((assets) => {
+      getAssetInfos(endpoint, withPrices).then((assets) => {
         const assetsMap = assets.reduce<AssetInfos>(
           (acc, asset) => ({ ...acc, [asset.id]: asset }),
           {}
@@ -53,7 +56,7 @@ export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
 
         return assetsMap;
       }),
-    { enabled: Boolean(assetsApiRoute), refetchOnWindowFocus: false, retry: 1 }
+    { enabled: Boolean(endpoint), refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
