@@ -80,7 +80,7 @@ export const TransactionsTableRow = ({
               )}
             </TableRow>
           ))}
-        {isTxHasNoData || !decodedTx ? (
+        {isTxHasNoData ? (
           <TableRow>
             <Text color="gray.600">
               Unable to load data due to large transaction size
