@@ -21,7 +21,6 @@ import type { BalanceInfos } from "../types";
 
 import { useAssetInfos } from "../assetService";
 import { useMovePoolInfos } from "../move/poolService";
-import { getBalances } from "./api";
 import { getBalancesRest } from "./rest";
 
 export const useBalances = (
@@ -39,9 +38,7 @@ export const useBalances = (
     [CELATONE_QUERY_KEYS.BALANCES, endpoint, address, isSei],
     async () => {
       if (!address) throw new Error("address is undefined (useBalances)");
-      return isSei
-        ? getBalances(endpoint, address)
-        : getBalancesRest(endpoint, address);
+      return getBalancesRest(endpoint, address);
     },
     { enabled, refetchOnWindowFocus: false, retry: 1 }
   );
