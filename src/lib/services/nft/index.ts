@@ -33,7 +33,7 @@ import type {
   NftTxsResponse,
 } from "../types";
 
-import { handleQueryByTier } from "../utils";
+import { getIpfsUrl, handleQueryByTier } from "../utils";
 import {
   getGlyphImage,
   getMetadata,
@@ -303,8 +303,8 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
 
 export const useMetadata = (
   nft: Option<Partial<Nft>>,
-  width = "",
-  height = ""
+  width?: string,
+  height?: string
 ) => {
   const { currentChainId } = useCelatoneApp();
 
@@ -319,15 +319,19 @@ export const useMetadata = (
         nft.collectionAddress &&
         (nft.nftAddress || nft.tokenId)
       ) {
-        const image: Blob = await getGlyphImage(
-          currentChainId,
-          nft.collectionAddress,
-          nft.nftAddress ?? nft.tokenId ?? "",
-          width,
-          height
-        );
+        try {
+          const image: Blob = await getGlyphImage(
+            currentChainId,
+            nft.collectionAddress,
+            nft.nftAddress ?? nft.tokenId ?? "",
+            width,
+            height
+          );
 
-        baseUri.image = URL.createObjectURL(image);
+          baseUri.image = URL.createObjectURL(image);
+        } catch {
+          baseUri.image = getIpfsUrl(baseUri.image);
+        }
       }
 
       return baseUri;
