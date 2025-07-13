@@ -16,6 +16,8 @@ export const DUMMY_MNEMONIC = (() => {
 export const CELATONE_API_OVERRIDE =
   process.env.NEXT_PUBLIC_CELATONE_API_OVERRIDE;
 
+export const INITIA_API = process.env.NEXT_PUBLIC_INITIA_API;
+
 export const CELATONE_VERIFICATION_API =
   process.env.NEXT_PUBLIC_CELATONE_VERIFICATION_API ?? "";
 
