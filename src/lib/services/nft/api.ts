@@ -90,21 +90,10 @@ export const getGlyphImage = (
   chainId: string,
   collectionAddress: Addr,
   objectAddress: string,
-  width?: string,
-  height?: string
+  width = "",
+  height = ""
 ) =>
-  axios
-    .get<Blob>(
-      `${GLYPH_API_URL}/${chainId}/${collectionAddress}/${objectAddress}`,
-      {
-        params: {
-          height,
-          width,
-        },
-        responseType: "blob",
-      }
-    )
-    .then(({ data }) => data);
+  `${GLYPH_API_URL}/${chainId}/${collectionAddress}/${objectAddress}?width=${width}&height=${height}`;
 
 export const getNftTxs = async (
   endpoint: string,
