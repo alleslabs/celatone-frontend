@@ -1,4 +1,4 @@
-import { CELATONE_API_OVERRIDE as api } from "env";
+import { CELATONE_API as api, INITIA_API as initiaApi } from "env";
 
 import { useCelatoneApp } from "../contexts";
 
@@ -12,6 +12,7 @@ export const useBaseApiRoute = (
     | "cosmwasm"
     | "icns_address"
     | "icns_names"
+    | "initia-api-assets"
     | "legacy.accounts"
     | "modules"
     | "move_modules"
@@ -55,6 +56,8 @@ export const useBaseApiRoute = (
       return `${api}/icns/address`;
     case "icns_names":
       return `${api}/icns/names`;
+    case "initia-api-assets":
+      return `${initiaApi}/v2/${chain}/${currentChainId}/assets`;
     case "legacy.accounts":
       return `${api}/accounts/${chain}/${currentChainId}`;
     case "modules":
