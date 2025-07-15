@@ -57,7 +57,7 @@ export const useBaseApiRoute = (
     case "icns_names":
       return `${api}/icns/names`;
     case "initia-api-assets":
-      return `${initiaApi}/v1/${chain}/${currentChainId}/assets`;
+      return `${initiaApi}/v2/${chain}/${currentChainId}/assets`;
     case "legacy.accounts":
       return `${api}/accounts/${chain}/${currentChainId}`;
     case "modules":
