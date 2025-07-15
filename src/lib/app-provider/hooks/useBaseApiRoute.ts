@@ -1,4 +1,4 @@
-import { CELATONE_API_OVERRIDE as api, INITIA_API as initiaApi } from "env";
+import { CELATONE_API as api, INITIA_API as initiaApi } from "env";
 
 import { useCelatoneApp } from "../contexts";
 

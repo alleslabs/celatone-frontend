@@ -13,11 +13,11 @@ export const DUMMY_MNEMONIC = (() => {
   return mnemonic;
 })();
 
-export const CELATONE_API_OVERRIDE = (() => {
-  const url = process.env.NEXT_PUBLIC_CELATONE_API_OVERRIDE;
+export const CELATONE_API = (() => {
+  const url = process.env.NEXT_PUBLIC_CELATONE_API;
   if (!url)
     throw new Error(
-      "NEXT_PUBLIC_CELATONE_API_OVERRIDE is empty. Please provide a valid Celatone API base URL."
+      "NEXT_PUBLIC_CELATONE_API is empty. Please provide a valid Celatone API base URL."
     );
   return url;
 })();
