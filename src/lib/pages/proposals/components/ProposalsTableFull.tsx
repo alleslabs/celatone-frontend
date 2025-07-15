@@ -41,6 +41,7 @@ export const ProposalsTableFull = () => {
     pagesQuantity,
     setCurrentPage,
     setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
       currentPage: 1,
@@ -59,7 +60,10 @@ export const ProposalsTableFull = () => {
     proposer,
     statuses,
     types,
-    debouncedSearch
+    debouncedSearch,
+    {
+      onSuccess: ({ total }) => setTotalData(total),
+    }
   );
 
   useEffect(() => {
@@ -190,7 +194,7 @@ export const ProposalsTableFull = () => {
           pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           totalData={proposals.total}
-          onPageChange={(nextPage) => setCurrentPage(nextPage)}
+          onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
