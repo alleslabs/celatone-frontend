@@ -97,7 +97,7 @@ export const zRemarkType = z.enum(["genesis", "governance", "transaction"]);
 export type RemarkType = z.infer<typeof zRemarkType>;
 
 export const zRemark = z.object({
-  type: zRemarkType.nullable(),
+  type: zRemarkType.nullish(),
   value: z.union([z.string(), z.number()]).optional(),
 });
 export type Remark = z.infer<typeof zRemark>;

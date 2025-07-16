@@ -44,7 +44,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1353](https://github.com/alleslabs/celatone-frontend/pull/1353) Update initiajs snippet to match the latest version
+
 ### Bug fixes
+
+- [#1359](https://github.com/alleslabs/celatone-frontend/pull/1359) Remove unwanted 0 prefix for inactive validator
 
 ## v1.13.0
 
