@@ -79,7 +79,13 @@ export const BalanceChangesTableRow = ({
         <Stack w="full">
           {ftChangeEntries.map(([denom, amount], index) => (
             <Stack key={`${address}-${denom}`} gap={3}>
-              <BalanceChangesToken coin={new Coin(denom, amount)} />
+              {amount === "0" ? (
+                <Text color="text.dark" variant="body2">
+                  No balance changes
+                </Text>
+              ) : (
+                <BalanceChangesToken coin={new Coin(denom, amount)} />
+              )}
               {index < ftChangeEntries.length - 1 && (
                 <Divider borderColor="gray.700" />
               )}
