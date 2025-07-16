@@ -1382,13 +1382,6 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.args,
-          }),
-          title: "Args",
-        },
-        {
           title: "Function Name",
           value: details.function_name,
         },
@@ -1423,6 +1416,13 @@ export const generateReceipts = (
             value: details.type_args,
           }),
           title: "Type Args",
+        },
+        {
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.args,
+          }),
+          title: "Args",
         },
       ];
     }
