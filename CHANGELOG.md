@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1360](https://github.com/alleslabs/celatone-frontend/pull/1360) Support Initia API for getting asset info with price
+- [#1356](https://github.com/alleslabs/celatone-frontend/pull/1356) Support get ipfs image from glyph library
 
 ### Improvements
 

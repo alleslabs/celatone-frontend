@@ -12,5 +12,5 @@ export interface MutateEvent {
 export interface Trait {
   displayType?: string;
   traitType: string;
-  value: number | string;
+  value: boolean | number | string;
 }
