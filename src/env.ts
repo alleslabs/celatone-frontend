@@ -22,14 +22,7 @@ export const CELATONE_API = (() => {
   return url;
 })();
 
-export const INITIA_API = (() => {
-  const url = process.env.NEXT_PUBLIC_INITIA_API;
-  if (!url)
-    throw new Error(
-      "NEXT_PUBLIC_INITIA_API is empty. Please provide a valid Initia API base URL."
-    );
-  return url;
-})();
+export const INITIA_API = process.env.NEXT_PUBLIC_INITIA_API;
 
 export const CELATONE_VERIFICATION_API =
   process.env.NEXT_PUBLIC_CELATONE_VERIFICATION_API ?? "";
