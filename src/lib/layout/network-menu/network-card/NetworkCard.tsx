@@ -60,9 +60,14 @@ export const NetworkCard = observer(
     const handleClick = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        const redirectionEndpoint =
-          pathname.replace(`/${currentChainId}`, `/${chainId}`) +
-          `?${searchParams.toString()}`;
+        let redirectionEndpoint = pathname.replace(
+          `/${currentChainId}`,
+          `/${chainId}`
+        );
+
+        if (searchParams.size > 0) {
+          redirectionEndpoint += `?${searchParams.toString()}`;
+        }
 
         window.location.href = redirectionEndpoint;
         onClose();
