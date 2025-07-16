@@ -48,30 +48,30 @@ export const useCodeSnippetCli = ({
     : "";
 
   const executeSnippet = `export WALLET_NAME='<your-wallet-name>'\n
-    export CHAIN_ID='${currentChainId}'\n
-    export RPC_URL='${rpcEndpoint}'\n
-    export MODULE_ADDRESS='${moduleAddress}'\n
-    export MODULE_NAME='${moduleName}'\n
-    export MODULE_FN='${fn.name}'\n
-    ${daemonName} keys add --recover $WALLET_NAME\n
-    ${daemonName} tx move execute $MODULE_ADDRESS \\
-        $MODULE_NAME \\
-        $MODULE_FN \\${typeArgsFlags}${argsFlags}
-        --from $WALLET_NAME \\
-        --chain-id $CHAIN_ID \\
-        --node $RPC_URL \\
-        --gas auto \\
-        --gas-prices ${gasPriceStr} \\
-        --gas-adjustment 1.5`;
+export CHAIN_ID='${currentChainId}'\n
+export RPC_URL='${rpcEndpoint}'\n
+export MODULE_ADDRESS='${moduleAddress}'\n
+export MODULE_NAME='${moduleName}'\n
+export MODULE_FN='${fn.name}'\n
+${daemonName} keys add --recover $WALLET_NAME\n
+${daemonName} tx move execute $MODULE_ADDRESS \\
+    $MODULE_NAME \\
+    $MODULE_FN \\${typeArgsFlags}${argsFlags}
+    --from $WALLET_NAME \\
+    --chain-id $CHAIN_ID \\
+    --node $RPC_URL \\
+    --gas auto \\
+    --gas-prices ${gasPriceStr} \\
+    --gas-adjustment 1.5`;
 
   const viewSnippet = `export MODULE_ADDRESS='${moduleAddress}'\n
-  export MODULE_NAME='${moduleName}'\n
-  export MODULE_FN='${fn.name}'\n
-  export RPC_URL='${rpcEndpoint}'\n
-  ${daemonName} query move view $MODULE_ADDRESS \\
-      $MODULE_NAME \\
-      $MODULE_FN \\${typeArgsFlags}${argsFlags}
-      --node $RPC_URL`;
+export MODULE_NAME='${moduleName}'\n
+export MODULE_FN='${fn.name}'\n
+export RPC_URL='${rpcEndpoint}'\n
+${daemonName} query move view $MODULE_ADDRESS \\
+    $MODULE_NAME \\
+    $MODULE_FN \\${typeArgsFlags}${argsFlags}
+    --node $RPC_URL`;
 
   return {
     executeSnippet,
