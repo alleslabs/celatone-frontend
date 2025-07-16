@@ -79,7 +79,7 @@ export const AccordionTx = ({
             metadata={metadata}
             msgBody={{
               "@type": message.type,
-              ...message,
+              ...message.detail,
             }}
             msgCount={1}
           />
