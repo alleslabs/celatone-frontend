@@ -77,13 +77,13 @@ export const DecodeMessageIbcNft = ({
         )}
         {decodedMessage.action === "ibc_nft_send" ? (
           <Flex align="center" gap={2}>
-            <Text color="text.dark">from</Text>
-            <Text whiteSpace="nowrap">{data.srcChainId}</Text>
+            <Text color="text.dark">to</Text>
+            <Text whiteSpace="nowrap">{data.dstChainId}</Text>
           </Flex>
         ) : (
           <Flex align="center" gap={2}>
-            <Text color="text.dark">to</Text>
-            <Text whiteSpace="nowrap">{data.dstChainId}</Text>
+            <Text color="text.dark">from</Text>
+            <Text whiteSpace="nowrap">{data.srcChainId}</Text>
           </Flex>
         )}
       </DecodeMessageHeader>
