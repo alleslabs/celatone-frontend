@@ -1,11 +1,10 @@
 import type { Option } from "lib/types";
 
-import { Badge, Flex, Image, Text } from "@chakra-ui/react";
+import { Badge, Flex, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
-import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
+import { NftImage } from "lib/components/nft/NftImage";
 import { useMetadata } from "lib/services/nft";
-import { getIpfsUrl } from "lib/services/utils";
 
 interface FilterItemProps {
   collectionName: Option<string>;
@@ -55,12 +54,10 @@ export const FilterItem = ({
             <CustomIcon name="collection" />
           </Flex>
         ) : (
-          <Image
+          <NftImage
             borderRadius="4px"
-            fallbackSrc={NFT_IMAGE_PLACEHOLDER}
-            fallbackStrategy="beforeLoadOrError"
             height="32px"
-            src={metadata?.image ? getIpfsUrl(metadata.image) : undefined}
+            imageUrl={metadata?.image}
             width="32px"
           />
         )}

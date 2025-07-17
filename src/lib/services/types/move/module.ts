@@ -23,7 +23,7 @@ import {
 import { z } from "zod";
 
 import { zProposal, zProposalsResponseItem } from "../proposal";
-import { zTxsResponseItem } from "../tx";
+import { zTxsResponseWithTxResponseItem } from "../tx";
 
 const zBaseModuleRest = z.object({
   abi: z.string(),
@@ -103,7 +103,7 @@ export type ModuleTableCountsResponse = z.infer<
 >;
 
 export const zModuleTxsResponse = z.object({
-  items: z.array(zTxsResponseItem),
+  items: z.array(zTxsResponseWithTxResponseItem),
 });
 export type ModuleTxsResponse = z.infer<typeof zModuleTxsResponse>;
 

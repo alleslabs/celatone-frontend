@@ -37,6 +37,7 @@ export const TokenCard = ({
       gap={2}
       minH="101px"
       p={3}
+      w="100%"
       {...cardProps}
     >
       <Flex alignItems="center" gap={1}>
