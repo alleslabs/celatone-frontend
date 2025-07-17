@@ -56,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1367](https://github.com/alleslabs/celatone-frontend/pull/1367) Fix network card search params replacement
 - [#1357](https://github.com/alleslabs/celatone-frontend/pull/1357) Fix validate uint string rule
 
 ## v1.13.0
