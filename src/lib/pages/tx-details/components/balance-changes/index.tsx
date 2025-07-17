@@ -5,6 +5,7 @@ import type {
 
 import { Stack, TableContainer } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
+import { EmptyState } from "lib/components/state";
 import { MobileTableContainer } from "lib/components/table";
 
 import { BalanceChangesMobileCard } from "./balance-changes-mobile-card";
@@ -51,7 +52,7 @@ export const BalanceChanges = ({
         />
       ))}
     </MobileTableContainer>
-  ) : (
+  ) : mapped.length ? (
     <TableContainer>
       <BalanceChangesTableHeader templateColumns={templateColumns} />
       <Stack>
@@ -67,5 +68,13 @@ export const BalanceChanges = ({
         ))}
       </Stack>
     </TableContainer>
+  ) : (
+    <EmptyState
+      alignItems="flex-start"
+      message="No balances were changed by this transaction."
+      my={0}
+      py={6}
+      textVariant="body2"
+    />
   );
 };

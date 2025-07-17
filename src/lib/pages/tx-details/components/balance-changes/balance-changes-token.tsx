@@ -22,7 +22,10 @@ export const BalanceChangesToken = ({ coin }: BalanceChangesTokenProps) => {
 
   const tokenWithValue = formatUTokenWithPrecision(
     token.amount.abs() as U<Token<Big>>,
-    token.precision ?? 0
+    token.precision ?? 0,
+    false,
+    undefined,
+    true
   );
 
   const isPositiveAmount = token.amount.gte(0);
@@ -39,7 +42,7 @@ export const BalanceChangesToken = ({ coin }: BalanceChangesTokenProps) => {
         color={isPositiveAmount ? "success.main" : "error.main"}
         variant="body2"
       >
-        {formattedAmount} {token.symbol}
+        {formattedAmount} {getTokenLabel(token.denom, token.symbol)}
       </Text>
       {!isUndefined(token.value) && (
         <Text color="text.dark" variant="body3">
