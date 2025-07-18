@@ -3,8 +3,9 @@ import type { Option } from "lib/types";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useCelatoneApp, useChainConfigs, useMobile } from "lib/app-provider";
 import { observer } from "mobx-react-lite";
+import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { useMemo } from "react";
 
 import { NetworkImage } from "../NetworkImage";
 import { NetworkCardCta } from "./NetworkCardCta";
@@ -57,78 +58,67 @@ export const NetworkCard = observer(
     const isMobile = useMobile();
     const { currentChainId } = useCelatoneApp();
 
-    const handleClick = useCallback(
-      (e: React.MouseEvent<HTMLDivElement>) => {
-        e.stopPropagation();
-        let redirectionEndpoint = pathname.replace(
-          `/${currentChainId}`,
-          `/${chainId}`
-        );
-
-        if (searchParams.size > 0) {
-          redirectionEndpoint += `?${searchParams.toString()}`;
-        }
-
-        window.location.href = redirectionEndpoint;
-        onClose();
-      },
-      [chainId, currentChainId, onClose, pathname, searchParams]
-    );
+    const href = useMemo(() => {
+      const path = pathname.replace(`/${currentChainId}`, `/${chainId}`);
+      const queryString = searchParams.toString();
+      return queryString ? `${path}?${queryString}` : path;
+    }, [pathname, currentChainId, chainId, searchParams]);
 
     const isSelected = chainId === currentChainId;
     return (
-      <Flex
-        id={`item-${index}`}
-        _hover={
-          isMobile
-            ? undefined
-            : {
-                "> .icon-wrapper > .icon-container": {
-                  opacity: 1,
-                },
-                background: isSelected ? "gray.700" : "gray.800",
-              }
-        }
-        alignItems="center"
-        background={getCardBackground(index, cursor, isSelected)}
-        borderRadius={8}
-        cursor={getDisplayCursor(isDraggable, isSelected)}
-        gap={4}
-        justifyContent="space-between"
-        position="relative"
-        px={4}
-        py={2}
-        transition="all 0.25s ease-in-out"
-        onClick={handleClick}
-        onMouseMove={() => index !== cursor && setCursor(index)}
-      >
-        <Box
-          bgColor="primary.main"
-          borderRadius="2px"
-          height="60%"
-          left="0px"
-          opacity={isSelected ? 1 : 0}
-          position="absolute"
-          top="20%"
-          width="4px"
-        />
-        <Flex alignItems="center" gap={4}>
-          <NetworkImage chainId={chainId} />
-          <Flex direction="column">
-            <Text fontWeight={600} variant="body2">
-              {chainConfigs[chainId]?.prettyName || chainId}
-            </Text>
-            <Text color="text.dark" variant="body3">
-              {chainId}
-            </Text>
+      <Link href={href} onClick={onClose}>
+        <Flex
+          id={`item-${index}`}
+          _hover={
+            isMobile
+              ? undefined
+              : {
+                  "> .icon-wrapper > .icon-container": {
+                    opacity: 1,
+                  },
+                  background: isSelected ? "gray.700" : "gray.800",
+                }
+          }
+          alignItems="center"
+          background={getCardBackground(index, cursor, isSelected)}
+          borderRadius={8}
+          cursor={getDisplayCursor(isDraggable, isSelected)}
+          gap={4}
+          justifyContent="space-between"
+          position="relative"
+          px={4}
+          py={2}
+          transition="all 0.25s ease-in-out"
+          onMouseMove={() => index !== cursor && setCursor(index)}
+        >
+          <Box
+            bgColor="primary.main"
+            borderRadius="2px"
+            height="60%"
+            left="0px"
+            opacity={isSelected ? 1 : 0}
+            position="absolute"
+            top="20%"
+            width="4px"
+          />
+          <Flex alignItems="center" gap={4}>
+            <NetworkImage chainId={chainId} />
+            <Flex direction="column">
+              <Text fontWeight={600} variant="body2">
+                {chainConfigs[chainId]?.prettyName || chainId}
+              </Text>
+              <Text color="text.dark" variant="body3">
+                {chainId}
+              </Text>
+            </Flex>
           </Flex>
+          <NetworkCardCta
+            chainId={chainId}
+            isDraggable={isDraggable}
+            isSelected={isSelected}
+          />
         </Flex>
-        <NetworkCardCta
-          chainId={chainId}
-          isDraggable={isDraggable}
-          isSelected={isSelected}
-        />
-      </Flex>
+      </Link>
     );
   }
 );
