@@ -1,7 +1,7 @@
 import type { FlexProps } from "@chakra-ui/react";
 import type { TokenWithValue } from "lib/types";
 
-import { Badge, Flex, Text } from "@chakra-ui/react";
+import { Badge, Box, Flex, Text } from "@chakra-ui/react";
 import {
   formatPrice,
   formatUTokenWithPrecision,
@@ -45,22 +45,24 @@ export const TokenCard = ({
           boxSize={6}
           logo={token.logo}
         />
-        <Text className="ellipsis" fontWeight="bold" maxW="91" variant="body2">
+        <Text className="ellipsis" fontWeight="bold" variant="body2">
           {token.symbol}
         </Text>
-        <Badge ml={2} variant="gray">
+        <Badge ml={1} variant="gray">
           {!isUndefined(token.price) ? formatPrice(token.price) : "N/A"}
         </Badge>
-        <Copier
-          amptrackSection={amptrackSection}
-          copyLabel="Token ID copied!"
-          display={{ base: "flex", md: "none" }}
-          ml={1}
-          type={
-            isSupportedToken(token) ? "supported_asset" : "unsupported_asset"
-          }
-          value={token.denom}
-        />
+        <Box w={4}>
+          <Copier
+            amptrackSection={amptrackSection}
+            copyLabel="Token ID copied!"
+            display={{ base: "flex", md: "none" }}
+            ml={1}
+            type={
+              isSupportedToken(token) ? "supported_asset" : "unsupported_asset"
+            }
+            value={token.denom}
+          />
+        </Box>
       </Flex>
       <Flex
         borderTopColor="gray.700"
