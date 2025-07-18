@@ -47,7 +47,8 @@ pnpm i
 NEXT_PUBLIC_DUMMY_MNEMONIC="your mnemonic here"
 NEXT_PUBLIC_SUPPORTED_NETWORK_TYPES=local,devnet,testnet,mainnet
 NEXT_PUBLIC_CHAIN=<chain-name>
-NEXT_PUBLIC_CELATONE_API_OVERRIDE=http://localhost:8080
+NEXT_PUBLIC_INITIA_API=http://localhost:8080
+NEXT_PUBLIC_CELATONE_API=http://localhost:8081
 ```
 
 4. Finally, run the development server

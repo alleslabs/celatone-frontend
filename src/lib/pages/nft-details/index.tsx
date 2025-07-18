@@ -30,7 +30,6 @@ import {
   useNftTransactions,
 } from "lib/services/nft";
 import { useNftCollectionByCollectionAddress } from "lib/services/nft-collection";
-import { getIpfsUrl } from "lib/services/utils";
 import { zHexAddr32 } from "lib/types";
 import { zBechAddr32 } from "lib/types";
 import { truncate } from "lib/utils";
@@ -95,7 +94,7 @@ const NftDetailsBody = ({
     enabled: isFullTier && !!nftAddress,
   });
 
-  const { data: metadata } = useMetadata(nft?.uri ?? "");
+  const { data: metadata } = useMetadata(nft);
 
   if (isCollectionLoading || isNftLoading) return <Loading />;
   if (!collection || !nft) return <InvalidNft />;
@@ -169,7 +168,7 @@ const NftDetailsBody = ({
                 borderRadius="8px"
                 fallbackSrc={NFT_IMAGE_PLACEHOLDER}
                 fallbackStrategy="beforeLoadOrError"
-                src={metadata?.image ? getIpfsUrl(metadata?.image) : undefined}
+                src={metadata?.image}
               />
             </div>
             {!isMobile && (

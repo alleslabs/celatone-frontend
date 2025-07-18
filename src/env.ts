@@ -13,11 +13,21 @@ export const DUMMY_MNEMONIC = (() => {
   return mnemonic;
 })();
 
-export const CELATONE_API_OVERRIDE =
-  process.env.NEXT_PUBLIC_CELATONE_API_OVERRIDE;
+export const CELATONE_API = (() => {
+  const url = process.env.NEXT_PUBLIC_CELATONE_API;
+  if (!url)
+    throw new Error(
+      "NEXT_PUBLIC_CELATONE_API is empty. Please provide a valid Celatone API base URL."
+    );
+  return url;
+})();
+
+export const INITIA_API = process.env.NEXT_PUBLIC_INITIA_API;
 
 export const CELATONE_VERIFICATION_API =
   process.env.NEXT_PUBLIC_CELATONE_VERIFICATION_API ?? "";
 
 export const INITIA_MOVE_DECODER =
   process.env.NEXT_PUBLIC_INITIA_MOVE_DECODER ?? "";
+
+export const GLYPH_API_URL = process.env.NEXT_PUBLIC_GLYPH_API_URL ?? "";

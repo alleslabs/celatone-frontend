@@ -8,7 +8,6 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useMetadata } from "lib/services/nft";
-import { getIpfsUrl } from "lib/services/utils";
 import { extractNftDescription } from "lib/utils/nftDescription";
 import { useMemo } from "react";
 
@@ -21,7 +20,7 @@ interface CollectionCardProps {
 export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
   const isMobile = useMobile();
   const { description, name, uri } = collectionInfo;
-  const { data: metadata } = useMetadata(uri);
+  const { data: metadata } = useMetadata({ uri });
   const { enabled: isEvmEnabled } = useEvmConfig({ shouldRedirect: false });
   const formatAddresses = useFormatAddresses();
 
@@ -51,7 +50,10 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
   );
 
   // Note: Use collection image from metadata if available, otherwise use first nft image
-  const collectionImage = metadata?.image || firstNftImage;
+  const collectionImage =
+    !metadata || metadata.image.startsWith("ipfs://")
+      ? firstNftImage
+      : metadata.image;
 
   return (
     <AppLink href={`/nft-collections/${collectionAddress}`}>
@@ -75,7 +77,7 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
             h={{ base: 28, md: 40 }}
             minW={{ base: 28, md: 40 }}
             objectFit="contain"
-            src={collectionImage ? getIpfsUrl(collectionImage) : undefined}
+            src={collectionImage}
             w={{ base: 28, md: 40 }}
           />
           <Flex
