@@ -3,7 +3,6 @@ import type { AssetInfos, Option } from "lib/types";
 
 import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
-import { EvmToCell } from "lib/components/evm-to-cell";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -14,7 +13,6 @@ import {
   formatUTC,
   formatUTokenWithPrecision,
   getEvmAmount,
-  getEvmToAddress,
   getTokenLabel,
 } from "lib/utils";
 
@@ -36,7 +34,6 @@ export const EvmTransactionsTableRow = ({
   templateColumns,
 }: EvmTransactionsTableRowProps) => {
   const navigate = useInternalNavigate();
-  const toAddress = getEvmToAddress(evmTransaction);
   const { amount, denom } = getEvmAmount(evmTransaction, evmDenom);
 
   const onRowSelect = (txHash: string) =>
@@ -55,20 +52,25 @@ export const EvmTransactionsTableRow = ({
       transition="all 0.25s ease-in-out"
       onClick={() => onRowSelect(formatEvmTxHash(evmTransaction.tx.hash))}
     >
-      <TableRow />
-      <TableRow pr={1}>
+      <TableRow gap={1} pr={1}>
+        {evmTransaction.txReceipt.status ? (
+          <CustomIcon
+            boxSize={4}
+            color="success.main"
+            name="check-circle-solid"
+          />
+        ) : (
+          <CustomIcon
+            boxSize={4}
+            color="error.main"
+            name="close-circle-solid"
+          />
+        )}
         <ExplorerLink
           showCopyOnHover
           type="evm_tx_hash"
           value={formatEvmTxHash(evmTransaction.tx.hash)}
         />
-      </TableRow>
-      <TableRow>
-        {evmTransaction.txReceipt.status ? (
-          <CustomIcon color="success.main" name="check" />
-        ) : (
-          <CustomIcon color="error.main" name="close" />
-        )}
       </TableRow>
       <TableRow>
         <EvmMethodChip
@@ -82,12 +84,6 @@ export const EvmTransactionsTableRow = ({
           type="user_address"
           value={evmTransaction.tx.from}
         />
-      </TableRow>
-      <TableRow>
-        <CustomIcon boxSize={5} color="gray.600" name="arrow-right" />
-      </TableRow>
-      <TableRow>
-        <EvmToCell isCompact toAddress={toAddress} />
       </TableRow>
       <TableRow
         alignItems="start"
