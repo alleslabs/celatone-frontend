@@ -64,6 +64,12 @@ export const BlocksTableRow = ({
       >
         {blockData.txCount}
       </TableRow>
+      <TableRow
+        color={blockData.txCount === 0 ? "text.dark" : "text.main"}
+        justifyContent="center"
+      >
+        {blockData.txCount}
+      </TableRow>
       <TableRow>
         <Flex direction="column">
           <Text color="text.dark" variant="body2">

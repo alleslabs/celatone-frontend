@@ -29,8 +29,8 @@ export const BlocksTable = ({
   if (!blocks.length) return emptyState;
 
   const templateColumns = showProposer
-    ? "140px 160px minmax(300px,1fr) 120px 280px"
-    : "150px minmax(160px, 1fr) 180px 280px";
+    ? "140px 160px minmax(300px,1fr) 120px 120px 280px"
+    : "150px minmax(160px, 1fr) 180px 180px 280px";
 
   return isMobile ? (
     <MobileTableContainer>

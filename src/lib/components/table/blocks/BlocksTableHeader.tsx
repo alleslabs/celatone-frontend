@@ -19,7 +19,8 @@ export const BlocksTableHeader = ({
     <TableHeader>Block height</TableHeader>
     <TableHeader>Block hash</TableHeader>
     {showProposer && <TableHeader>Proposed by</TableHeader>}
-    <TableHeader textAlign="center">Transactions</TableHeader>
+    <TableHeader textAlign="center">EVM Txs</TableHeader>
+    <TableHeader textAlign="center">Cosmos Txs</TableHeader>
     <TableHeader>Timestamp</TableHeader>
   </Grid>
 );
