@@ -1,6 +1,6 @@
 import type { Block } from "lib/types";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Grid, Stack, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
@@ -19,25 +19,38 @@ export const BlocksTableMobileCard = ({
   return (
     <MobileCardTemplate
       bottomContent={
-        <Flex align="start" gap={4} w="full">
-          <Flex direction="column" flex={1}>
-            <MobileLabel label="Transactions" />
-            <Flex align="end" h={6}>
-              <Text
-                color={blockData.txCount === 0 ? "text.dark" : "text.main"}
-                variant="body2"
-              >
-                {blockData.txCount}
-              </Text>
+        <Stack gap={3}>
+          <Grid gap={3} gridTemplateColumns="1fr 1fr">
+            <Flex direction="column" flex={1}>
+              <MobileLabel label="EVM Txs" />
+              <Flex align="end" h={6}>
+                <Text
+                  color={blockData.txCount === 0 ? "text.dark" : "text.main"}
+                  variant="body2"
+                >
+                  {blockData.txCount}
+                </Text>
+              </Flex>
             </Flex>
-          </Flex>
+            <Flex direction="column" flex={1}>
+              <MobileLabel label="Cosmos Txs" />
+              <Flex align="end" h={6}>
+                <Text
+                  color={blockData.txCount === 0 ? "text.dark" : "text.main"}
+                  variant="body2"
+                >
+                  {blockData.txCount}
+                </Text>
+              </Flex>
+            </Flex>
+          </Grid>
           <Flex direction="column" flex={{ base: 2, sm: 3 }} gap={0}>
             <Text variant="body3">{formatUTC(blockData.timestamp)}</Text>
             <Text color="text.dark" mt="3px" variant="body3">
               {`(${dateFromNow(blockData.timestamp)})`}
             </Text>
           </Flex>
-        </Flex>
+        </Stack>
       }
       middleContent={
         showProposer && <ValidatorBadge validator={blockData.proposer} />
