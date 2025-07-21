@@ -8,17 +8,15 @@ import { TableRow } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
-interface BlocksTableRowProps {
+interface EvmBlocksTableRowProps {
   blockData: Block;
-  showProposer: boolean;
   templateColumns: GridProps["templateColumns"];
 }
 
-export const BlocksTableRow = ({
+export const EvmBlocksTableRow = ({
   blockData,
-  showProposer,
   templateColumns,
-}: BlocksTableRowProps) => {
+}: EvmBlocksTableRowProps) => {
   const navigate = useInternalNavigate();
 
   const onRowSelect = (blockHeight: number) =>
@@ -47,17 +45,18 @@ export const BlocksTableRow = ({
       </TableRow>
       <TableRow>
         <Text fontFamily="mono">
-          {truncate(
-            blockData.hash.toUpperCase(),
-            showProposer ? [6, 6] : [9, 9]
-          )}
+          {truncate(blockData.hash.toUpperCase(), [6, 6])}
         </Text>
       </TableRow>
-      {showProposer && (
-        <TableRow>
-          <ValidatorBadge badgeSize={7} validator={blockData.proposer} />
-        </TableRow>
-      )}
+      <TableRow>
+        <ValidatorBadge badgeSize={7} validator={blockData.proposer} />
+      </TableRow>
+      <TableRow
+        color={blockData.txCount === 0 ? "text.dark" : "text.main"}
+        justifyContent="center"
+      >
+        {blockData.txCount}
+      </TableRow>
       <TableRow
         color={blockData.txCount === 0 ? "text.dark" : "text.main"}
         justifyContent="center"
