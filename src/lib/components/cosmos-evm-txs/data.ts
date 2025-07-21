@@ -27,6 +27,7 @@ export const useCosmosEvmTxs = (address: BechAddr20) => {
     10,
     evmTxs === undefined
   );
+
   const {
     data: newEvmTxHashes,
     isError: isNewEvmHashesError,
@@ -35,6 +36,7 @@ export const useCosmosEvmTxs = (address: BechAddr20) => {
     cosmosTxs?.items.map((tx) => tx.item.hash),
     !isCosmosTxsFetching
   );
+
   const {
     data: newEvmTxsData,
     isError: isNewEvmTxsDataError,
@@ -85,5 +87,35 @@ export const useCosmosEvmTxs = (address: BechAddr20) => {
     isError,
     isFetchingNextPage: isFetching,
     isLoading: isInitialLoading && !isError,
+  };
+};
+
+export const useCosmosEvmTxsV2 = (hashes: string[]) => {
+  const [evmTxs, setEvmTxs] = useState<TxDataWithTimeStampJsonRpc[]>();
+
+  const { data: evmTxHashes } = useEvmTxHashesByCosmosTxHashes(hashes);
+  const { data, isError, isLoading } = useEvmTxsDataJsonRpc(
+    evmTxHashes?.filter((tx) => tx !== null) as string[]
+  );
+
+  useEffect(() => {
+    const newEvmTxs: TxDataWithTimeStampJsonRpc[] = [];
+
+    const sliceValue = evmTxs?.length ?? 0;
+    data?.slice(sliceValue).forEach((tx) => {
+      newEvmTxs.push({
+        ...tx,
+        timestamp: new Date(),
+      });
+    });
+
+    setEvmTxs((evmTxs ?? []).concat(newEvmTxs));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  return {
+    data: evmTxs,
+    isError,
+    isLoading: !isError && evmTxs === undefined && isLoading,
   };
 };
