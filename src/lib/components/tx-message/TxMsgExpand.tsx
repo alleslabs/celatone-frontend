@@ -389,7 +389,15 @@ export const TxMsgExpand = ({
             {msgLabel}
           </Text>
         </Tag>
-        <Text wordBreak="break-all">{content}</Text>
+        {!compact || msgCount === 1 ? (
+          <Text wordBreak="break-all">{content}</Text>
+        ) : (
+          <Tag gap={1} minWidth="auto" variant="gray">
+            <Text fontWeight={700} variant="body2">
+              {msgCount}
+            </Text>
+          </Tag>
+        )}
         {!isMobile && isIbc && (
           <Tag minW="hug-content" size="md" variant="secondary">
             IBC
