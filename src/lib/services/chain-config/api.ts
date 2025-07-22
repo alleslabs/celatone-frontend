@@ -2,6 +2,7 @@ import type { Option } from "lib/types";
 import type { ChainProfile } from "lib/types/chainProfile";
 
 import axios from "axios";
+import { CELATONE_API } from "env";
 import { CHAIN_PROFILE_URL } from "lib/data";
 import { zChainConfig } from "lib/types";
 import { zChainProfile } from "lib/types/chainProfile";
@@ -13,7 +14,7 @@ export const getApiChainConfigs = (
   chain: Option<string>
 ) =>
   axios
-    .get(endpoint, {
+    .get(`${CELATONE_API}/v1/configs`, {
       params: {
         chain,
         network_types: networkTypes.join(","),
