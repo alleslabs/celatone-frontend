@@ -1,4 +1,4 @@
-import type { BechAddr20, BechAddr32 } from "lib/types";
+import type { BechAddr, BechAddr20 } from "lib/types";
 
 import axios from "axios";
 import { parseWithError } from "lib/utils";
@@ -26,7 +26,7 @@ export const getTxsByHashRest = (endpoint: string, txHash: string) =>
 
 export const getTxsByContractAddressRest = (
   endpoint: string,
-  contractAddress: BechAddr32,
+  contractAddress: BechAddr,
   limit: number,
   offset: number
 ) => {

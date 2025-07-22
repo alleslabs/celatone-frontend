@@ -1,7 +1,6 @@
 import type { TransactionWithTxResponse } from "lib/types";
 
 import {
-  Badge,
   Box,
   Flex,
   Grid,
@@ -71,30 +70,30 @@ export const TransactionsTableRow = ({
             />
           )}
         </TableRow>
-        <TableRow pr={1}>
+        <TableRow gap={1} pr={1}>
+          {showSuccess && (
+            <>
+              {transaction.success ? (
+                <CustomIcon
+                  boxSize={3}
+                  color="success.main"
+                  name="check-circle-solid"
+                />
+              ) : (
+                <CustomIcon
+                  boxSize={3}
+                  color="error.main"
+                  name="close-circle-solid"
+                />
+              )}
+            </>
+          )}
           <ExplorerLink
             showCopyOnHover
             type="tx_hash"
             value={transaction.hash.toLocaleUpperCase()}
           />
-          {transaction.messages.length > 1 && (
-            <Badge ml={2} variant="primary-light">
-              {transaction.messages.length}
-            </Badge>
-          )}
         </TableRow>
-        {showSuccess &&
-          (isTxHasNoData ? (
-            <NARow />
-          ) : (
-            <TableRow>
-              {transaction.success ? (
-                <CustomIcon color="success.main" name="check" />
-              ) : (
-                <CustomIcon color="error.main" name="close" />
-              )}
-            </TableRow>
-          ))}
         {isTxHasNoData ? (
           <TableRow>
             {isDecodedTxFetching ? (

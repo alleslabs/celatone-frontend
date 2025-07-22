@@ -57,13 +57,13 @@ export const EvmTransactionsTableRow = ({
       <TableRow gap={1} pr={1}>
         {evmTransaction.txReceipt.status ? (
           <CustomIcon
-            boxSize={4}
+            boxSize={3}
             color="success.main"
             name="check-circle-solid"
           />
         ) : (
           <CustomIcon
-            boxSize={4}
+            boxSize={3}
             color="error.main"
             name="close-circle-solid"
           />
