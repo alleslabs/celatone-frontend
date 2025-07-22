@@ -81,11 +81,7 @@ export const DecodeMessageIbcFt = ({
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="From network">
-          <Text>
-            {decodedMessage.action === "ibc_ft_send"
-              ? data.srcChainId
-              : data.dstChainId}
-          </Text>
+          <Text>{data.srcChainId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
@@ -98,11 +94,7 @@ export const DecodeMessageIbcFt = ({
           />
         </DecodeMessageRow>
         <DecodeMessageRow title="To network">
-          <Text>
-            {decodedMessage.action === "ibc_ft_send"
-              ? data.dstChainId
-              : data.srcChainId}
-          </Text>
+          <Text>{data.dstChainId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink
@@ -118,18 +110,10 @@ export const DecodeMessageIbcFt = ({
           <CoinsComponent coins={[new Coin(data.denom, data.amount)]} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Source channel">
-          <Text>
-            {decodedMessage.action === "ibc_ft_send"
-              ? data.srcChannel
-              : data.dstChannel}
-          </Text>
+          <Text>{data.srcChannel}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Source port">
-          <Text>
-            {decodedMessage.action === "ibc_ft_send"
-              ? data.srcPort
-              : data.dstPort}
-          </Text>
+          <Text>{data.srcPort}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Timeout height">
           <JsonReadOnly
