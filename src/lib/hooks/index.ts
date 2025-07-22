@@ -1,6 +1,7 @@
 export * from "./useCodeFilter";
 export * from "./useDebounce";
 export * from "./useEaster";
+export * from "./useEvmTab";
 export * from "./useExecuteCmds";
 export * from "./useGetFirstNftAsCollectionImage";
 export * from "./useGetMaxLengthError";

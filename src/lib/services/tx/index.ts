@@ -2,7 +2,6 @@ import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import type {
   BechAddr,
   BechAddr20,
-  BechAddr32,
   HexAddr20,
   Nullable,
   Option,
@@ -36,13 +35,14 @@ import {
   extractTxLogs,
   isTxHash,
 } from "lib/utils";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import type {
   AccountTxsResponse,
   BlockTxsResponse,
   RawTxResponse,
   TxData,
+  TxDataWithTimeStampJsonRpc,
   TxsResponseItemFromRest,
   TxsResponseWithTxResponse,
 } from "../types";
@@ -356,7 +356,7 @@ export const useTxsCountByAddress = (
 };
 
 export const useTxsByContractAddressRest = (
-  address: BechAddr32,
+  address: BechAddr,
   limit: number,
   offset: number
 ) => {
@@ -877,6 +877,36 @@ export const useCreatedContractsByEvmTxHash = (
         ]
       : contracts,
     isFetching,
+  };
+};
+
+export const useCosmosEvmTxs = (hashes: string[]) => {
+  const [evmTxs, setEvmTxs] = useState<TxDataWithTimeStampJsonRpc[]>();
+
+  const { data: evmTxHashes } = useEvmTxHashesByCosmosTxHashes(hashes);
+  const { data, isError, isLoading } = useEvmTxsDataJsonRpc(
+    evmTxHashes?.filter((tx) => tx !== null) as string[]
+  );
+
+  useEffect(() => {
+    const newEvmTxs: TxDataWithTimeStampJsonRpc[] = [];
+
+    const sliceValue = evmTxs?.length ?? 0;
+    data?.slice(sliceValue).forEach((tx) => {
+      newEvmTxs.push({
+        ...tx,
+        timestamp: new Date(),
+      });
+    });
+
+    setEvmTxs((evmTxs ?? []).concat(newEvmTxs));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  return {
+    data: evmTxs,
+    isError,
+    isLoading: !isError && evmTxs === undefined && isLoading,
   };
 };
 
