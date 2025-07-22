@@ -21,6 +21,7 @@ import { InvalidState } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
+import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
   useMetadata,
@@ -93,7 +94,7 @@ const NftDetailsBody = ({
     enabled: isFullTier && !!nftAddress,
   });
 
-  const { data: metadata } = useMetadata(nft?.uri ?? "");
+  const { data: metadata } = useMetadata(nft);
 
   if (isCollectionLoading || isNftLoading) return <Loading />;
   if (!collection || !nft) return <InvalidNft />;
@@ -165,7 +166,9 @@ const NftDetailsBody = ({
                 }}
                 background="gray.900"
                 borderRadius="8px"
-                imageUrl={metadata?.image}
+                fallbackSrc={NFT_IMAGE_PLACEHOLDER}
+                fallbackStrategy="beforeLoadOrError"
+                src={metadata?.image}
               />
             </div>
             {!isMobile && (

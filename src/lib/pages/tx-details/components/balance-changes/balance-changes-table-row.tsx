@@ -8,6 +8,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { NftImage } from "lib/components/nft/NftImage";
 import { TableRow } from "lib/components/table";
 import { useMetadata } from "lib/services/nft";
+import { zAddr, zHexAddr32 } from "lib/types";
 
 import { BalanceChangesToken } from "./balance-changes-token";
 
@@ -28,8 +29,13 @@ const BalanceChangeNft = ({
   id: string;
   metadata: Metadata;
 }) => {
-  const data = metadata[id];
-  const { data: nft } = useMetadata(data.tokenUri);
+  const nftMetadata = metadata[id];
+  const { data: nft } = useMetadata({
+    collectionAddress: zAddr.parse(nftMetadata?.collectionAddress),
+    nftAddress: zHexAddr32.parse(id),
+    tokenId: nftMetadata?.tokenId,
+    uri: nftMetadata?.tokenUri,
+  });
 
   if (!nft) return null;
 
@@ -38,11 +44,13 @@ const BalanceChangeNft = ({
 
   return (
     <Flex align="center" gap={1}>
-      <AppLink href={`/nft-collections/${data.collectionAddress}/nft/${id}`}>
+      <AppLink
+        href={`/nft-collections/${nftMetadata.collectionAddress}/nft/${id}`}
+      >
         <NftImage
           borderRadius="4px"
           height="20px"
-          imageUrl={nft.image}
+          src={nft.image}
           width="20px"
         />
       </AppLink>

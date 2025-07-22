@@ -21,6 +21,6 @@ export const useGetFirstNftAsCollectionImage = (
 
   const nfts = isFullTier ? nftsFull?.items : nftsSequencer;
 
-  const { data: metadata } = useMetadata(nfts?.[0]?.uri ?? "");
+  const { data: metadata } = useMetadata(nfts?.[0]);
   return metadata?.image;
 };
