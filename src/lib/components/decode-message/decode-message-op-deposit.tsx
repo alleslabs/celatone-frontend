@@ -74,7 +74,7 @@ export const DecodeMessageOpDeposit = ({
         <DecodeMessageRow title="Bridge ID">
           <Text>{data.bridgeId}</Text>
         </DecodeMessageRow>
-        <DecodeMessageRow title="From network">
+        <DecodeMessageRow title="Source chain">
           <Text>{chainId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
@@ -87,7 +87,7 @@ export const DecodeMessageOpDeposit = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="To network">
+        <DecodeMessageRow title="Destination chain">
           {data.dstChainId}
         </DecodeMessageRow>
         <DecodeMessageRow title="Receiver">

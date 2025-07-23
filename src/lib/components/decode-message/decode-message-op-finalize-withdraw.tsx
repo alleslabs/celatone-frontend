@@ -74,7 +74,7 @@ export const DecodeMessageOpFinalizeWithdraw = ({
         <DecodeMessageRow title="Bridge ID">
           <Text>{data.bridgeId}</Text>
         </DecodeMessageRow>
-        <DecodeMessageRow title="From network">
+        <DecodeMessageRow title="Source chain">
           <Text>{data.srcChainId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
@@ -87,7 +87,7 @@ export const DecodeMessageOpFinalizeWithdraw = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="To network">{chainId}</DecodeMessageRow>
+        <DecodeMessageRow title="Destination chain">{chainId}</DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink
             maxWidth="full"
