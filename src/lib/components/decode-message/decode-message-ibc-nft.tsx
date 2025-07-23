@@ -38,7 +38,7 @@ export const DecodeMessageIbcNft = ({
   const getAddressType = useGetAddressType();
   const nftMetadata = metadata?.[data.tokenAddress];
   const { data: nft } = useMetadata({
-    collectionAddress: zAddr.parse(nftMetadata?.collectionAddress),
+    collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
     nftAddress: zHexAddr32.parse(data.tokenAddress),
     tokenId: nftMetadata?.tokenId,
     uri: nftMetadata?.tokenUri,
