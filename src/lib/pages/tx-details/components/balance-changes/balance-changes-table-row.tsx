@@ -74,7 +74,9 @@ export const BalanceChangesTableRow = ({
     ? Object.entries(ftChange).filter(([, amount]) => amount !== "0")
     : [];
   const objectChangeEntries = objectChange ? Object.entries(objectChange) : [];
+  const count = ftChangeEntries.length + objectChangeEntries.length;
 
+  if (!count) return null;
   return (
     <Grid bg="gray.900" rounded={8} templateColumns={templateColumns}>
       <TableRow borderBottom={0} minH={0} p={4}>
