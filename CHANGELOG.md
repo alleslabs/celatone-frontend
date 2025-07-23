@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1373](https://github.com/alleslabs/celatone-frontend/pull/1373) Fix pagination in Nft page
+
 ## v1.14.0
 
 ### Features
