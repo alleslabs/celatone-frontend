@@ -99,8 +99,8 @@ export const DecodeMessageHeader = ({
         }
         {...props}
       >
-        <Tag gap={1} minWidth="auto" variant="gray">
-          <CustomIcon boxSize={3} name={iconName} />
+        <Tag gap={0.5} minWidth="auto" py={0} variant="gray">
+          <CustomIcon boxSize={3} color="gray.600" name={iconName} />
           <Text fontWeight={700} variant="body2" whiteSpace="nowrap">
             {label}
           </Text>
@@ -108,7 +108,7 @@ export const DecodeMessageHeader = ({
         {!compact || msgCount === 1 ? (
           children
         ) : (
-          <Tag gap={1} minWidth="auto" variant="gray">
+          <Tag gap={0.5} minWidth="auto" variant="gray">
             <Text fontWeight={700} variant="body2">
               {msgCount}
             </Text>
