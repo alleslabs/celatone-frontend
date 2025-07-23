@@ -1,6 +1,6 @@
 import type { Metadata } from "@initia/tx-decoder";
 
-import { Divider, Grid, Stack } from "@chakra-ui/react";
+import { Divider, Grid, Stack, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
