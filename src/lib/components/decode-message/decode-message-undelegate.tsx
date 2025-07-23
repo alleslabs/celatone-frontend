@@ -74,10 +74,12 @@ export const DecodeMessageUndelegate = ({
         <Text color="text.dark">from</Text>
         <ValidatorBadge
           badgeSize={4}
+          fixedHeight={compact}
           hasLabel={false}
           sx={{
             width: "fit-content",
           }}
+          textFormat={!compact ? "normal" : "ellipsis"}
           validator={{
             identity: data.validator?.description.identity,
             moniker: data.validator?.description.moniker,

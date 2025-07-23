@@ -28,7 +28,7 @@ export type LinkType =
   | "tx_hash"
   | AddressReturnType;
 
-interface ExplorerLinkProps extends FlexProps {
+export interface ExplorerLinkProps extends FlexProps {
   ampCopierSection?: string;
   copyValue?: string;
   externalLink?: string;
