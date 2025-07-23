@@ -80,7 +80,7 @@ export const DecodeMessageIbcFt = ({
         )}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
-        <DecodeMessageRow title="From network">
+        <DecodeMessageRow title="Source chain">
           <Text>{data.srcChainId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
@@ -93,7 +93,7 @@ export const DecodeMessageIbcFt = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="To network">
+        <DecodeMessageRow title="Destination chain">
           <Text>{data.dstChainId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
