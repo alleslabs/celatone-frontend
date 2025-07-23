@@ -64,7 +64,7 @@ export const useNfts = (
   limit: number,
   offset: number,
   search = "",
-  enabled = true
+  options?: Pick<UseQueryOptions<NftsResponse>, "enabled" | "onSuccess">
 ) => {
   const { tier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("nfts");
@@ -118,7 +118,8 @@ export const useNfts = (
     {
       // NOTE: use only in full tier for now.
       // There's no place where uses in sequencer
-      enabled: tier === "full" ? enabled : false,
+      ...options,
+      enabled: tier === "full" && options ? options.enabled : false,
       refetchOnWindowFocus: false,
       retry: 1,
     }
