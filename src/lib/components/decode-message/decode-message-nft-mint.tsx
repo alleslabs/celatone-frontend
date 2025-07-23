@@ -42,7 +42,7 @@ export const DecodeMessageNftMint = ({
   const nftMetadata = metadata?.[tokenAddress];
   const { data: nft } = useMetadata({
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
-    nftAddress: zHexAddr32.parse(tokenAddress),
+    nftAddress: zHexAddr32.nullable().parse(tokenAddress),
     tokenId: nftMetadata?.tokenId,
     uri: nftMetadata?.tokenUri,
   });
