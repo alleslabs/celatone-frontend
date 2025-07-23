@@ -84,7 +84,7 @@ export const TxInfoMobile = ({
             </Text>
           )}
         </LabelText>
-        <LabelText flex={1} label="Gas used/wanted">
+        <LabelText flex={1} label="Gas used/requested">
           {`${formatInteger(txData.gasUsed)}/${formatInteger(
             txData.gasWanted
           )}`}
