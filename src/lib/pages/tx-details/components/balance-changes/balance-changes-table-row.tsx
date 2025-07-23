@@ -31,8 +31,8 @@ const BalanceChangeNft = ({
 }) => {
   const nftMetadata = metadata[id];
   const { data: nft } = useMetadata({
-    collectionAddress: zAddr.parse(nftMetadata?.collectionAddress),
-    nftAddress: zHexAddr32.parse(id),
+    collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
+    nftAddress: zHexAddr32.optional().parse(id),
     tokenId: nftMetadata?.tokenId,
     uri: nftMetadata?.tokenUri,
   });
