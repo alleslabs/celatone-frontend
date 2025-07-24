@@ -42,7 +42,7 @@ export const DecodeMessageObjectTransfer = ({
   const nftMetadata = metadata?.[object];
   const { data: nft } = useMetadata({
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
-    nftAddress: zHexAddr32.nullable().parse(object),
+    nftAddress: zHexAddr32.parse(object),
     tokenId: nftMetadata?.tokenId,
     uri: nftMetadata?.tokenUri,
   });
