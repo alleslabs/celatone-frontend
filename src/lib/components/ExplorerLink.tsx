@@ -115,11 +115,20 @@ const getValueText = (
   return isTruncate ? truncate(value) : value;
 };
 
-const getCopyLabel = (type: LinkType) =>
-  type
+const getCopyLabel = (type: LinkType, value: string) => {
+  if (type === "user_address") return "address";
+
+  if (type === "nft_collection") {
+    if (value.includes("/nft/")) {
+      return "nft";
+    }
+  }
+
+  return type
     .split("_")
-    .map((str: string) => str.charAt(0).toUpperCase() + str.slice(1))
+    .map((str: string) => str.charAt(0) + str.slice(1))
     .join(" ");
+};
 
 const LinkRender = ({
   fallbackValue,
@@ -203,7 +212,7 @@ export const ExplorerLink = ({
   const [internalLink, textValue] = [
     getNavigationUrl({
       type,
-      value: copyValue || value,
+      value,
       wasmEnabled,
     }),
     textLabel ??
@@ -235,7 +244,7 @@ export const ExplorerLink = ({
       {...componentProps}
     >
       <LinkRender
-        fallbackValue={copyValue || value}
+        fallbackValue={value}
         hrefLink={link}
         isEllipsis={textFormat === "ellipsis"}
         isInternal={isUndefined(externalLink)}
@@ -247,11 +256,11 @@ export const ExplorerLink = ({
       {rightIcon}
       <Copier
         amptrackSection={ampCopierSection}
-        copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
         display={showCopyOnHover && !isMobile ? "none" : "inline"}
+        hoverLabel={`Copy ${getCopyLabel(type, value)}`}
         ml={1}
         type={type}
-        value={copyValue || value}
+        value={copyValue ?? value}
       />
     </Flex>
   );

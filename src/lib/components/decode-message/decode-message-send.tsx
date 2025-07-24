@@ -57,7 +57,7 @@ const DecodeMessageSendMultipleCoinsHeader = ({
 }) => (
   <>
     <Flex>
-      {coins.map((coin) => {
+      {coins.map((coin, index) => {
         const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
         return (
           <TokenImageRender
@@ -66,6 +66,7 @@ const DecodeMessageSendMultipleCoinsHeader = ({
             boxSize={4}
             logo={token.logo}
             marginInlineEnd="-4px"
+            marginLeft={index > 0 ? "-4px" : "0"}
           />
         );
       })}
