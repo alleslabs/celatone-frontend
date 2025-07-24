@@ -80,6 +80,7 @@ export const DecodeMessageOpDeposit = ({
         </DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink
+            chainId={data.dstChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"

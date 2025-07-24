@@ -2,7 +2,6 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
-import { useGetAddressType } from "lib/app-provider";
 import { TokenImageWithAmount } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
 import {
@@ -35,7 +34,6 @@ export const DecodeMessageIbcFt = ({
   msgCount,
 }: DecodeMessageIbcFtProps) => {
   const isSingleMsg = msgCount === 1;
-  const getAddressType = useGetAddressType();
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
@@ -75,10 +73,11 @@ export const DecodeMessageIbcFt = ({
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
+            chainId={data.srcChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
-            type={getAddressType(data.sender)}
+            type="user_address"
             value={data.sender}
             wordBreak="break-word"
           />
@@ -88,10 +87,11 @@ export const DecodeMessageIbcFt = ({
         </DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink
+            chainId={data.dstChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
-            type={getAddressType(data.receiver)}
+            type="user_address"
             value={data.receiver}
             wordBreak="break-word"
           />

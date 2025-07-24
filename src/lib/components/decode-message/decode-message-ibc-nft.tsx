@@ -98,6 +98,7 @@ export const DecodeMessageIbcNft = ({
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
+            chainId={data.srcChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
@@ -111,6 +112,7 @@ export const DecodeMessageIbcNft = ({
         </DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink
+            chainId={data.dstChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
