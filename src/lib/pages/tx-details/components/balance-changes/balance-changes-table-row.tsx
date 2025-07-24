@@ -73,7 +73,9 @@ export const BalanceChangesTableRow = ({
   const ftChangeEntries = ftChange
     ? Object.entries(ftChange).filter(([, amount]) => amount !== "0")
     : [];
-  const objectChangeEntries = objectChange ? Object.entries(objectChange) : [];
+  const objectChangeEntries = objectChange
+    ? Object.entries(objectChange).filter(([, amount]) => amount !== "0")
+    : [];
   const count = ftChangeEntries.length + objectChangeEntries.length;
 
   if (!count) return null;
