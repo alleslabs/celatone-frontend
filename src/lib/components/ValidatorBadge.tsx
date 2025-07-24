@@ -1,4 +1,5 @@
 import type { ImageProps, SystemStyleObject } from "@chakra-ui/react";
+import type { ExplorerLinkProps } from "lib/components/ExplorerLink";
 import type { Nullable, Validator } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
@@ -9,7 +10,8 @@ import { isNull } from "lodash";
 import { MobileLabel } from "./table/MobileLabel";
 import { ValidatorImage } from "./ValidatorImage";
 
-interface ValidatorBadgeProps {
+interface ValidatorBadgeProps
+  extends Pick<ExplorerLinkProps, "fixedHeight" | "textFormat"> {
   ampCopierSection?: string;
   badgeSize?: ImageProps["boxSize"];
   hasLabel?: boolean;
@@ -21,9 +23,11 @@ interface ValidatorBadgeProps {
 export const ValidatorBadge = ({
   ampCopierSection,
   badgeSize = 10,
+  fixedHeight = true,
   hasLabel = true,
   moreInfo,
   sx,
+  textFormat = "ellipsis",
   validator,
 }: ValidatorBadgeProps) => {
   const isMobile = useMobile();
@@ -47,10 +51,10 @@ export const ValidatorBadge = ({
                 ? `${isValidatorExternalLink}/${validator.validatorAddress}`
                 : undefined
             }
-            fixedHeight
+            fixedHeight={fixedHeight}
             isReadOnly={isNull(isValidatorExternalLink)}
             showCopyOnHover
-            textFormat="ellipsis"
+            textFormat={textFormat}
             type="validator_address"
             value={validator.moniker ?? validator.validatorAddress}
           />
