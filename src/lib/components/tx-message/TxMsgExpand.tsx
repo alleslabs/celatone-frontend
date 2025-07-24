@@ -383,8 +383,8 @@ export const TxMsgExpand = ({
         fontWeight={500}
         gap={2}
       >
-        <Tag gap={1} variant="gray">
-          <CustomIcon boxSize={3} name={msgIcon} />
+        <Tag gap={0.5} minWidth="auto" py={0} variant="gray">
+          <CustomIcon boxSize={3} color="gray.600" name={msgIcon} />
           <Text fontWeight={700} variant="body2">
             {msgLabel}
           </Text>
@@ -392,7 +392,7 @@ export const TxMsgExpand = ({
         {!compact || msgCount === 1 ? (
           <Text wordBreak="break-all">{content}</Text>
         ) : (
-          <Tag gap={1} minWidth="auto" variant="gray">
+          <Tag gap={0.5} minWidth="auto" variant="gray">
             <Text fontWeight={700} variant="body2">
               {msgCount}
             </Text>
