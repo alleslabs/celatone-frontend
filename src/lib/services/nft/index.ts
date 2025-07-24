@@ -119,7 +119,7 @@ export const useNfts = (
       // NOTE: use only in full tier for now.
       // There's no place where uses in sequencer
       ...options,
-      enabled: tier === "full" && options ? options.enabled : false,
+      enabled: tier === "full" && (options?.enabled ?? true),
       refetchOnWindowFocus: false,
       retry: 1,
     }
