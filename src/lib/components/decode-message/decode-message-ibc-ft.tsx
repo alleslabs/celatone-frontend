@@ -3,13 +3,11 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
 import { useGetAddressType } from "lib/app-provider";
-import { TokenImageRender } from "lib/components/token";
+import { TokenImageWithAmount } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
 import {
   coinToTokenWithValue,
-  formatTokenWithValue,
   formatUTC,
-  getTokenLabel,
   parseNanosecondsToDate,
 } from "lib/utils";
 import { useState } from "react";
@@ -42,7 +40,6 @@ export const DecodeMessageIbcFt = ({
   const { data, isIbc, isOp } = decodedMessage;
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const token = coinToTokenWithValue(data.denom, data.amount, assetInfos);
-  const tokenWithValue = formatTokenWithValue(token);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -59,14 +56,7 @@ export const DecodeMessageIbcFt = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1} minWidth="fit-content">
-          <TokenImageRender
-            alt={getTokenLabel(token.denom, token.symbol)}
-            boxSize={4}
-            logo={token.logo}
-          />
-          <Text whiteSpace="nowrap">{tokenWithValue}</Text>
-        </Flex>
+        <TokenImageWithAmount token={token} />
         {decodedMessage.action === "ibc_ft_send" ? (
           <Flex align="center" gap={2}>
             <Text color="text.dark">to</Text>
