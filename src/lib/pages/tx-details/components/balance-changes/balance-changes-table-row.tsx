@@ -70,9 +70,15 @@ export const BalanceChangesTableRow = ({
 }: BalanceChangesTableRowProps) => {
   const getAddressType = useGetAddressType();
 
-  const ftChangeEntries = ftChange ? Object.entries(ftChange) : [];
-  const objectChangeEntries = objectChange ? Object.entries(objectChange) : [];
+  const ftChangeEntries = ftChange
+    ? Object.entries(ftChange).filter(([, amount]) => amount !== "0")
+    : [];
+  const objectChangeEntries = objectChange
+    ? Object.entries(objectChange).filter(([, amount]) => amount !== "0")
+    : [];
+  const count = ftChangeEntries.length + objectChangeEntries.length;
 
+  if (!count) return null;
   return (
     <Grid bg="gray.900" rounded={8} templateColumns={templateColumns}>
       <TableRow borderBottom={0} minH={0} p={4}>
@@ -87,13 +93,7 @@ export const BalanceChangesTableRow = ({
         <Stack w="full">
           {ftChangeEntries.map(([denom, amount], index) => (
             <Stack key={`${address}-${denom}`} gap={3}>
-              {amount === "0" ? (
-                <Text color="text.dark" variant="body2">
-                  No balance changes
-                </Text>
-              ) : (
-                <BalanceChangesToken coin={new Coin(denom, amount)} />
-              )}
+              <BalanceChangesToken coin={new Coin(denom, amount)} />
               {index < ftChangeEntries.length - 1 && (
                 <Divider borderColor="gray.700" />
               )}

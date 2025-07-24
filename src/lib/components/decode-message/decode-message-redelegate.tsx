@@ -69,10 +69,12 @@ export const DecodedMessageRedelegate = ({
         <Text color="text.dark">from</Text>
         <ValidatorBadge
           badgeSize={4}
+          fixedHeight={compact}
           hasLabel={false}
           sx={{
             width: "fit-content",
           }}
+          textFormat={!compact ? "normal" : "ellipsis"}
           validator={{
             identity: data.validatorSrc?.description.identity,
             moniker: data.validatorSrc?.description.moniker,
@@ -82,10 +84,12 @@ export const DecodedMessageRedelegate = ({
         <Text color="text.dark">to</Text>
         <ValidatorBadge
           badgeSize={4}
+          fixedHeight={compact}
           hasLabel={false}
           sx={{
             width: "fit-content",
           }}
+          textFormat={!compact ? "normal" : "ellipsis"}
           validator={{
             identity: data.validatorDst?.description.identity,
             moniker: data.validatorDst?.description.moniker,
