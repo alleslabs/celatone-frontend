@@ -7,6 +7,7 @@ import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { NftImage } from "lib/components/nft/NftImage";
 import { TableRow } from "lib/components/table";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useMetadata } from "lib/services/nft";
 import { zAddr, zHexAddr32 } from "lib/types";
 
@@ -29,10 +30,11 @@ const BalanceChangeNft = ({
   id: string;
   metadata: Metadata;
 }) => {
+  const formatAddresses = useFormatAddresses();
   const nftMetadata = metadata[id];
   const { data: nft } = useMetadata({
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
-    nftAddress: zHexAddr32.parse(id),
+    nftAddress: zHexAddr32.parse(formatAddresses(id).hex),
     tokenId: nftMetadata?.tokenId,
     uri: nftMetadata?.tokenUri,
   });

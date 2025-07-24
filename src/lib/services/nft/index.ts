@@ -312,18 +312,12 @@ export const useMetadata = (
   height?: string
 ) => {
   const { currentChainId } = useCelatoneApp();
-
   return useQuery<Metadata>(
     [CELATONE_QUERY_KEYS.NFT_METADATA, nft],
     async () => {
       if (!nft) throw new Error("NFT is required (useMetadata)");
       const baseUri = await getMetadata(nft.uri ?? "");
-
-      if (
-        baseUri.image.startsWith("ipfs://") &&
-        nft.collectionAddress &&
-        (nft.nftAddress || nft.tokenId)
-      ) {
+      if (baseUri.image && nft.collectionAddress) {
         try {
           const image: Blob = await getGlyphImage(
             currentChainId,
@@ -335,7 +329,9 @@ export const useMetadata = (
 
           baseUri.image = URL.createObjectURL(image);
         } catch {
-          baseUri.image = getIpfsUrl(baseUri.image);
+          if (baseUri.image.startsWith("ipfs://")) {
+            baseUri.image = getIpfsUrl(baseUri.image);
+          }
         }
       }
 
