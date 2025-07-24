@@ -244,7 +244,7 @@ export const ExplorerLink = ({
       {...componentProps}
     >
       <LinkRender
-        fallbackValue={value}
+        fallbackValue={copyValue ?? ""}
         hrefLink={link}
         isEllipsis={textFormat === "ellipsis"}
         isInternal={isUndefined(externalLink)}
