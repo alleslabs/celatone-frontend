@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1350](https://github.com/alleslabs/celatone-frontend/pull/1350) Support new APIs v2
+
 ### Improvements
 
 ### Bug fixes
@@ -60,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#1369](https://github.com/alleslabs/celatone-frontend/pull/1369) Fix token card name spacing
 - [#1367](https://github.com/alleslabs/celatone-frontend/pull/1367) Fix network card search params replacement
+- [#1359](https://github.com/alleslabs/celatone-frontend/pull/1359) Remove unwanted 0 prefix for inactive validator
 - [#1357](https://github.com/alleslabs/celatone-frontend/pull/1357) Fix validate uint string rule
 
 ## v1.13.0
