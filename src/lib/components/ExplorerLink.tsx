@@ -226,8 +226,9 @@ export const ExplorerLink = ({
   ];
 
   const link = externalLink ?? internalLink;
-  const isAvailableCustomChainId = chainId && chainConfigs[chainId];
-  const readOnly = isReadOnly || !link || !isAvailableCustomChainId;
+  const isNotInitiaChainId = chainId && !chainConfigs[chainId];
+  const readOnly = isReadOnly || !link || isNotInitiaChainId;
+
   // TODO: handle auto width
   return readOnly ? (
     <Flex
