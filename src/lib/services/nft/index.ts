@@ -329,9 +329,7 @@ export const useMetadata = (
 
           baseUri.image = URL.createObjectURL(image);
         } catch {
-          if (baseUri.image.startsWith("ipfs://")) {
-            baseUri.image = getIpfsUrl(baseUri.image);
-          }
+          baseUri.image = getIpfsUrl(baseUri.image);
         }
       }
 
