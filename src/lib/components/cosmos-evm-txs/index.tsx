@@ -1,72 +1,144 @@
-import type { BechAddr20 } from "lib/types";
+import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
+import type { Option, TransactionWithTxResponse } from "lib/types";
 
 import {
+  Flex,
   Heading,
-  Stack,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { trackUseTab } from "lib/amplitude";
-import { CustomTab } from "lib/components/CustomTab";
-import { useCallback } from "react";
+import { CosmosEvmTxsTab, useEvmTab } from "lib/hooks";
 
-import { CosmosTxs } from "./CosmosTxs";
-import { EvmTxs } from "./EvmTxs";
-import { CosmosEvmTxsTab } from "./types";
+import { CustomTab } from "../CustomTab";
+import { LoadNext } from "../LoadNext";
+import { EmptyState } from "../state";
+import { EvmTransactionsTable, TransactionsTable, ViewMore } from "../table";
+import { TypeSwitch } from "../TypeSwitch";
 
 interface CosmosEvmTxsProps {
-  address: BechAddr20;
+  cosmosEmptyMessage?: string;
+  cosmosTxs: Option<TransactionWithTxResponse[]>;
+  evmEmptyMessage?: string;
+  evmTxs: Option<TxDataWithTimeStampJsonRpc[]>;
+  fetchNextPage?: () => void;
+  hasNextPage?: boolean;
+  isCosmosTxsLoading: boolean;
+  isEvmTxsLoading: boolean;
+  isFetchingNextPage?: boolean;
   onViewMore?: () => void;
-  setTab: (tab: CosmosEvmTxsTab) => void;
-  tab: CosmosEvmTxsTab;
-  type: "account" | "contract";
 }
 
 export const CosmosEvmTxs = ({
-  address,
+  cosmosEmptyMessage,
+  cosmosTxs,
+  evmEmptyMessage,
+  evmTxs,
+  fetchNextPage,
+  hasNextPage,
+  isCosmosTxsLoading,
+  isEvmTxsLoading,
+  isFetchingNextPage,
   onViewMore,
-  setTab,
-  tab,
-  type,
 }: CosmosEvmTxsProps) => {
-  const handleTabChange = useCallback(
-    (nextTab: CosmosEvmTxsTab) => () => {
-      if (nextTab === tab) return;
-      trackUseTab(nextTab);
-      setTab(nextTab);
-    },
-    [tab, setTab]
-  );
+  const { currentTab, setCurrentTab, tabs } = useEvmTab();
 
   return (
-    <Stack gap={6}>
-      <Heading as="h6" variant="h6">
-        Transactions
-      </Heading>
-      <Tabs
-        index={Object.values(CosmosEvmTxsTab).indexOf(tab)}
-        isLazy
-        lazyBehavior="keepMounted"
+    <Flex direction="column" gap={6}>
+      <Flex
+        align="center"
+        gap={6}
+        justify={{
+          base: "space-between",
+          md: "flex-start",
+        }}
       >
-        <TabList>
-          <CustomTab onClick={handleTabChange(CosmosEvmTxsTab.Cosmos)}>
-            Cosmos
+        <Heading as="h6" variant="h6">
+          Transactions
+        </Heading>
+        <TypeSwitch
+          currentTab={currentTab}
+          disabledScrollToTop
+          tabs={tabs}
+          onTabChange={setCurrentTab}
+        />
+      </Flex>
+      <Tabs isLazy lazyBehavior="keepMounted">
+        <TabList
+          id="cosmos-evm-txs-tab-list"
+          borderBottomWidth="1px"
+          borderColor="gray.700"
+          overflowX="scroll"
+        >
+          <CustomTab
+            count={
+              currentTab === CosmosEvmTxsTab.Evm
+                ? evmTxs?.length
+                : cosmosTxs?.length
+            }
+          >
+            Transactions
           </CustomTab>
-          <CustomTab onClick={handleTabChange(CosmosEvmTxsTab.Evm)}>
-            EVM
-          </CustomTab>
+          <CustomTab>Internal txs</CustomTab>
         </TabList>
         <TabPanels>
-          <TabPanel p={0} pt={6}>
-            <CosmosTxs address={address} type={type} onViewMore={onViewMore} />
+          <TabPanel p={0} pt={{ base: 0, md: 6 }}>
+            {currentTab === CosmosEvmTxsTab.Evm ? (
+              <EvmTransactionsTable
+                emptyState={
+                  <EmptyState
+                    imageVariant="empty"
+                    message={
+                      evmEmptyMessage ?? "There are no EVM transactions."
+                    }
+                  />
+                }
+                evmTransactions={evmTxs}
+                isLoading={isEvmTxsLoading}
+                showTimestamp
+              />
+            ) : (
+              <TransactionsTable
+                emptyState={
+                  <EmptyState
+                    imageVariant="empty"
+                    message={
+                      cosmosEmptyMessage ??
+                      "There are no transactions, or they have been pruned from the REST."
+                    }
+                  />
+                }
+                isLoading={isCosmosTxsLoading}
+                showRelations={false}
+                showSuccess
+                showTimestamp={false}
+                transactions={cosmosTxs}
+              />
+            )}
+            {hasNextPage && (
+              <>
+                {onViewMore ? (
+                  <ViewMore onClick={onViewMore} />
+                ) : (
+                  <>
+                    {fetchNextPage && isFetchingNextPage && (
+                      <LoadNext
+                        fetchNextPage={fetchNextPage}
+                        isFetchingNextPage={isFetchingNextPage}
+                        text="Load more transactions"
+                      />
+                    )}
+                  </>
+                )}
+              </>
+            )}
           </TabPanel>
-          <TabPanel p={0} pt={6}>
-            <EvmTxs address={address} type={type} onViewMore={onViewMore} />
+          <TabPanel p={0} pt={{ base: 0, md: 6 }}>
+            Internal txs
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </Stack>
+    </Flex>
   );
 };
