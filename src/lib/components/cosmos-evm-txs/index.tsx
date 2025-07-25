@@ -15,6 +15,7 @@ import { CustomTab } from "../CustomTab";
 import { LoadNext } from "../LoadNext";
 import { EmptyState } from "../state";
 import { EvmTransactionsTable, TransactionsTable, ViewMore } from "../table";
+import { EvmBlockInternalTransactionsTable } from "../table/evm-block-internal-transactions";
 import { TypeSwitch } from "../TypeSwitch";
 
 interface CosmosEvmTxsProps {
@@ -80,7 +81,9 @@ export const CosmosEvmTxs = ({
           >
             Transactions
           </CustomTab>
-          <CustomTab>Internal txs</CustomTab>
+          {currentTab === CosmosEvmTxsTab.Evm && (
+            <CustomTab>Internal txs</CustomTab>
+          )}
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={{ base: 0, md: 6 }}>
@@ -135,7 +138,7 @@ export const CosmosEvmTxs = ({
             )}
           </TabPanel>
           <TabPanel p={0} pt={{ base: 0, md: 6 }}>
-            Internal txs
+            <EvmBlockInternalTransactionsTable height={9295946} />
           </TabPanel>
         </TabPanels>
       </Tabs>
