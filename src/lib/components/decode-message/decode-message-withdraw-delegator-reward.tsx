@@ -3,15 +3,11 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 import { Flex, Text } from "@chakra-ui/react";
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TokenImageRender } from "lib/components/token";
+import { TokenImageWithAmount } from "lib/components/token";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import { useAssetInfos } from "lib/services/assetService";
 import { zValidatorAddr } from "lib/types";
-import {
-  coinToTokenWithValue,
-  formatTokenWithValue,
-  getTokenLabel,
-} from "lib/utils";
+import { coinToTokenWithValue } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
@@ -41,7 +37,6 @@ export const DecodeMessageWithdrawDelegatorReward = ({
   const coin = data.coins[0];
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
-  const tokenWithValue = formatTokenWithValue(token);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -58,14 +53,7 @@ export const DecodeMessageWithdrawDelegatorReward = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1} minWidth="fit-content">
-          <TokenImageRender
-            alt={getTokenLabel(token.denom, token.symbol)}
-            boxSize={4}
-            logo={token.logo}
-          />
-          <Text whiteSpace="nowrap">{tokenWithValue}</Text>
-        </Flex>
+        <TokenImageWithAmount token={token} />
         <Text color="text.dark">from</Text>
         <ValidatorBadge
           badgeSize={4}

@@ -5,15 +5,13 @@ import type { Option, Ratio } from "lib/types";
 import { chakra, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import { TokenImageRender } from "lib/components/token";
+import { TokenImageWithAmount } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import {
   computeCosmosFee,
   formatInteger,
   formatPrettyPercent,
-  formatTokenWithValue,
-  getTokenLabel,
 } from "lib/utils";
 
 interface TxInfoMobileProps extends FlexProps {
@@ -79,14 +77,7 @@ export const TxInfoMobile = ({
       <Flex>
         <LabelText flex={1} label="Transaction fee">
           {feeToken ? (
-            <Flex align="center" gap={1}>
-              <TokenImageRender
-                alt={getTokenLabel(feeToken.denom, feeToken.symbol)}
-                boxSize={4}
-                logo={feeToken.logo}
-              />
-              <Text variant="body2">{formatTokenWithValue(feeToken)}</Text>
-            </Flex>
+            <TokenImageWithAmount boxSize={4} token={feeToken} />
           ) : (
             <Text color="text.dark" variant="body2">
               No fee

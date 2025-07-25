@@ -76,6 +76,7 @@ export const DecodeMessageNftMint = ({
               />
             </AppLink>
             <ExplorerLink
+              copyValue={tokenAddress}
               showCopyOnHover
               textFormat="normal"
               textLabel={nft.name}

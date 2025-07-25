@@ -2,6 +2,8 @@ import type { BigSource } from "big.js";
 import type { Coin, Token, U, USD } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
+import { useMobile } from "lib/app-provider";
+import { Copier } from "lib/components/copy";
 import { TokenImageRender } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
 import {
@@ -17,6 +19,7 @@ interface BalanceChangesTokenProps {
 }
 
 export const BalanceChangesToken = ({ coin }: BalanceChangesTokenProps) => {
+  const isMobile = useMobile();
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
   const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
 
@@ -32,7 +35,7 @@ export const BalanceChangesToken = ({ coin }: BalanceChangesTokenProps) => {
   const formattedAmount = `${isPositiveAmount ? "+" : "-"}${tokenWithValue}`;
 
   return (
-    <Flex align="center" gap={1}>
+    <Flex className="copier-wrapper" align="center" gap={1}>
       <TokenImageRender
         alt={getTokenLabel(token.denom, token.symbol)}
         boxSize={4}
@@ -49,6 +52,13 @@ export const BalanceChangesToken = ({ coin }: BalanceChangesTokenProps) => {
           ({formatPrice(token.value.abs() as USD<BigSource>)})
         </Text>
       )}
+      <Copier
+        display={!isMobile ? "none" : "inline"}
+        hoverLabel={`Copy token id: ${token.denom}`}
+        ml={1}
+        type="token"
+        value={token.denom}
+      />
     </Flex>
   );
 };

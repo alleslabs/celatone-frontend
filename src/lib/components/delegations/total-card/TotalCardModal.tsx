@@ -16,12 +16,11 @@ import {
 } from "@chakra-ui/react";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
-import { TokenComposition, TokenImageRender } from "lib/components/token";
+import { TokenComposition, TokenImageWithAmount } from "lib/components/token";
 import { big } from "lib/types";
 import {
   compareTokenWithValues,
   formatPrice,
-  getTokenLabel,
   totalValueTokenWithValue,
 } from "lib/utils";
 
@@ -46,12 +45,12 @@ const DelegationTokenCard = ({ token }: { token: TokenWithValue }) => (
     justifyContent="space-between"
     p={{ base: 3, md: "12px 16px" }}
   >
-    <Flex align="center" gap={2}>
-      <TokenImageRender alt={token.denom} boxSize={6} logo={token.logo} />
-      <Text fontWeight={700} variant="body1">
-        {getTokenLabel(token.denom, token.symbol)}
-      </Text>
-    </Flex>
+    <TokenImageWithAmount
+      boxSize={6}
+      fontWeight={700}
+      token={token}
+      variant="body1"
+    />
     <TokenComposition
       alignItems={{ base: "flex-start", md: "flex-end" }}
       token={token}

@@ -114,7 +114,7 @@ export const TxMsgExpand = ({
       msgIcon = "vote";
       msgLabel = "Vote";
       content = (
-        <Flex display="inline" gap={1}>
+        <Flex align="center" gap={1}>
           {" "}
           <span style={{ fontWeight: 700 }}>
             {voteOption[body.option as VoteOption]}
@@ -125,7 +125,7 @@ export const TxMsgExpand = ({
             showCopyOnHover
             textVariant="body1"
             type="proposal_id"
-            value={body.proposal_id as string}
+            value={body.proposalId as string}
           />
         </Flex>
       );
@@ -375,7 +375,7 @@ export const TxMsgExpand = ({
       ref={ref}
     >
       <Flex
-        align={{ base: "start", md: "center" }}
+        align="center"
         flexWrap={
           compact && !isHoverOverflowContent && !isMobile ? "nowrap" : "wrap"
         }
@@ -390,7 +390,13 @@ export const TxMsgExpand = ({
           </Text>
         </Tag>
         {!compact || msgCount === 1 ? (
-          <Text wordBreak="break-all">{content}</Text>
+          <>
+            {typeof content === "string" ? (
+              <Text wordBreak="break-all">{content}</Text>
+            ) : (
+              content
+            )}
+          </>
         ) : (
           <Tag gap={0.5} minWidth="auto" variant="gray">
             <Text fontWeight={700} variant="body2">

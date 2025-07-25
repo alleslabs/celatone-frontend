@@ -4,13 +4,9 @@ import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
 import { useCurrentChain, useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TokenImageRender } from "lib/components/token";
+import { TokenImageWithAmount } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
-import {
-  coinToTokenWithValue,
-  formatTokenWithValue,
-  getTokenLabel,
-} from "lib/utils";
+import { coinToTokenWithValue } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
@@ -40,7 +36,6 @@ export const DecodeMessageOpFinalizeWithdraw = ({
   const { data, isIbc, isOp } = decodedMessage;
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const token = coinToTokenWithValue(data.denom, data.amount, assetInfos);
-  const tokenWithValue = formatTokenWithValue(token);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -57,14 +52,7 @@ export const DecodeMessageOpFinalizeWithdraw = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1} minWidth="fit-content">
-          <TokenImageRender
-            alt={getTokenLabel(token.denom, token.symbol)}
-            boxSize={4}
-            logo={token.logo}
-          />
-          <Text whiteSpace="nowrap">{tokenWithValue}</Text>
-        </Flex>
+        <TokenImageWithAmount token={token} />
         <Flex align="center" gap={2}>
           <Text color="text.dark">from</Text>
           <Text whiteSpace="nowrap">{data.srcChainId}</Text>
@@ -79,6 +67,7 @@ export const DecodeMessageOpFinalizeWithdraw = ({
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
+            chainId={data.srcChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
