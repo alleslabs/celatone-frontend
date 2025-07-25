@@ -24,6 +24,7 @@ import { useCallback } from "react";
 
 import type {
   Metadata,
+  Nft,
   NftMintInfo,
   NftMutateEventsResponse,
   NftsByAccountAddressResponse,
@@ -32,8 +33,9 @@ import type {
   NftTxsResponse,
 } from "../types";
 
-import { handleQueryByTier } from "../utils";
+import { getIpfsUrl, handleQueryByTier } from "../utils";
 import {
+  getGlyphImage,
   getMetadata,
   getNftByNftAddress,
   getNftMintInfo,
@@ -62,7 +64,7 @@ export const useNfts = (
   limit: number,
   offset: number,
   search = "",
-  enabled = true
+  options?: Pick<UseQueryOptions<NftsResponse>, "enabled" | "onSuccess">
 ) => {
   const { tier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("nfts");
@@ -116,7 +118,8 @@ export const useNfts = (
     {
       // NOTE: use only in full tier for now.
       // There's no place where uses in sequencer
-      enabled: tier === "full" ? enabled : false,
+      ...options,
+      enabled: tier === "full" && (options?.enabled ?? true),
       refetchOnWindowFocus: false,
       retry: 1,
     }
@@ -303,19 +306,42 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
   );
 };
 
-export const useMetadata = (uri?: string) =>
-  useQuery<Metadata>(
-    [CELATONE_QUERY_KEYS.NFT_METADATA, uri],
-    () => {
-      if (!uri) throw new Error("URI is required (useMetadata)");
-      return getMetadata(uri);
+export const useMetadata = (
+  nft: Option<Partial<Nft>>,
+  width?: string,
+  height?: string
+) => {
+  const { currentChainId } = useCelatoneApp();
+  return useQuery<Metadata>(
+    [CELATONE_QUERY_KEYS.NFT_METADATA, nft],
+    async () => {
+      if (!nft) throw new Error("NFT is required (useMetadata)");
+      const baseUri = await getMetadata(nft.uri ?? "");
+      if (baseUri.image && nft.collectionAddress) {
+        try {
+          const image: Blob = await getGlyphImage(
+            currentChainId,
+            nft.collectionAddress,
+            nft.nftAddress ?? nft.tokenId ?? "",
+            width,
+            height
+          );
+
+          baseUri.image = URL.createObjectURL(image);
+        } catch {
+          baseUri.image = getIpfsUrl(baseUri.image);
+        }
+      }
+
+      return baseUri;
     },
     {
-      enabled: !!uri,
+      enabled: !!nft,
       refetchOnWindowFocus: false,
       retry: 1,
     }
   );
+};
 
 export const useNftTransactions = (
   nftAddress: Option<HexAddr32>,

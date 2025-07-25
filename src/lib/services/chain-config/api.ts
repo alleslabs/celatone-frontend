@@ -2,17 +2,26 @@ import type { Option } from "lib/types";
 import type { ChainProfile } from "lib/types/chainProfile";
 
 import axios from "axios";
+import { CHAIN, SCAN_API } from "env";
 import { CHAIN_PROFILE_URL } from "lib/data";
 import { zChainConfig } from "lib/types";
 import { zChainProfile } from "lib/types/chainProfile";
-import { parseWithError } from "lib/utils";
+import { isUrl, parseWithError } from "lib/utils";
 
 export const getApiChainConfigs = (
-  endpoint: string,
   networkTypes: string[],
   chain: Option<string>
-) =>
-  axios
+) => {
+  const endpoint =
+    CHAIN === "initia" ? `${SCAN_API}/v1/chains` : `${SCAN_API}/v1/configs`;
+
+  if (!isUrl(String(endpoint))) {
+    throw new Error(
+      `Endpoint is not a valid URL (getApiChainConfigs): ${endpoint}`
+    );
+  }
+
+  return axios
     .get(endpoint, {
       params: {
         chain,
@@ -20,6 +29,7 @@ export const getApiChainConfigs = (
       },
     })
     .then(({ data }) => parseWithError(zChainConfig.array(), data));
+};
 
 export const getChainProfile = () =>
   axios.get(CHAIN_PROFILE_URL).then(({ data }) => {

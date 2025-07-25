@@ -32,8 +32,8 @@ const validateUintNumber = (uintType: string) => (v: unknown) => {
 const validateUintString = (uintType: string) => (v: unknown) => {
   try {
     if (typeof v !== "string") throw new Error();
-
     const value = big(v);
+    if (uintType === "0x1::biguint::BigUint" && value.gte(0)) return undefined;
     const maxValue = big(2).pow(parseInt(uintType.slice(1)));
     if (value.lt(0) || value.gte(maxValue)) throw new Error();
     return undefined;

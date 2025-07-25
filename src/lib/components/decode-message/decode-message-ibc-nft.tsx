@@ -2,7 +2,9 @@ import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 
 import { Flex, Stack, Text } from "@chakra-ui/react";
 import { useGetAddressType } from "lib/app-provider";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useMetadata } from "lib/services/nft";
+import { zAddr, zHexAddr32 } from "lib/types";
 import { formatUTC, parseNanosecondsToDate } from "lib/utils";
 import { useState } from "react";
 
@@ -35,9 +37,14 @@ export const DecodeMessageIbcNft = ({
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
   const getAddressType = useGetAddressType();
-
-  const tokenUri = metadata?.[data.tokenAddress]?.tokenUri;
-  const { data: nft } = useMetadata(tokenUri);
+  const formatAddresses = useFormatAddresses();
+  const nftMetadata = metadata?.[data.tokenAddress];
+  const { data: nft } = useMetadata({
+    collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
+    nftAddress: zHexAddr32.parse(formatAddresses(data.tokenAddress).hex),
+    tokenId: nftMetadata?.tokenId,
+    uri: nftMetadata?.tokenUri,
+  });
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -62,7 +69,7 @@ export const DecodeMessageIbcNft = ({
               <NftImage
                 borderRadius="4px"
                 height="20px"
-                imageUrl={nft.image}
+                src={nft.image}
                 width="20px"
               />
             </AppLink>
@@ -88,15 +95,12 @@ export const DecodeMessageIbcNft = ({
         )}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
-        <DecodeMessageRow title="From network">
-          <Text>
-            {decodedMessage.action === "ibc_nft_send"
-              ? data.srcChainId
-              : data.dstChainId}
-          </Text>
+        <DecodeMessageRow title="Source chain">
+          <Text>{data.srcChainId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
+            chainId={data.srcChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
@@ -105,15 +109,12 @@ export const DecodeMessageIbcNft = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="To network">
-          <Text>
-            {decodedMessage.action === "ibc_nft_send"
-              ? data.dstChainId
-              : data.srcChainId}
-          </Text>
+        <DecodeMessageRow title="Destination chain">
+          <Text>{data.dstChainId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink
+            chainId={data.dstChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
@@ -137,11 +138,7 @@ export const DecodeMessageIbcNft = ({
               <AppLink
                 href={`/nft-collections/${data.collectionId}/nft/${data.tokenAddress}`}
               >
-                <NftImage
-                  borderRadius="8px"
-                  imageUrl={nft.image}
-                  width="150px"
-                />
+                <NftImage borderRadius="8px" src={nft.image} width="150px" />
               </AppLink>
               <ExplorerLink
                 showCopyOnHover
@@ -161,18 +158,10 @@ export const DecodeMessageIbcNft = ({
           )}
         </DecodeMessageRow>
         <DecodeMessageRow title="Source channel">
-          <Text>
-            {decodedMessage.action === "ibc_nft_send"
-              ? data.srcChannel
-              : data.dstChannel}
-          </Text>
+          <Text>{data.srcChannel}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Source port">
-          <Text>
-            {decodedMessage.action === "ibc_nft_send"
-              ? data.srcPort
-              : data.dstPort}
-          </Text>
+          <Text>{data.srcPort}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Class ID">
           <Text>{data.collectionId}</Text>

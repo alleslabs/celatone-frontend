@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { TxMsgData } from "../tx-message";
 
 import { ExplorerLink } from "../ExplorerLink";
+import { NftImage } from "../nft/NftImage";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
@@ -43,12 +44,15 @@ export const DecodeMessageNftBurn = ({
         onClick={() => setExpand(!expand)}
       >
         <Flex align="center" gap={2}>
-          <ExplorerLink
-            showCopyOnHover
-            textFormat="truncate"
-            type="user_address"
-            value={data.tokenAddress}
-          />
+          <Flex align="center" gap={1} minW="fit-content">
+            <NftImage borderRadius="4px" height="20px" width="20px" />
+            <ExplorerLink
+              showCopyOnHover
+              textFormat="truncate"
+              type="user_address"
+              value={data.tokenAddress}
+            />
+          </Flex>
           by
           <ExplorerLink showCopyOnHover type="user_address" value={data.from} />
         </Flex>
@@ -57,13 +61,17 @@ export const DecodeMessageNftBurn = ({
         <DecodeMessageRow title="Burner">
           <ExplorerLink showCopyOnHover type="user_address" value={data.from} />
         </DecodeMessageRow>
-        <DecodeMessageRow title="NFT">
+        <DecodeMessageRow title="Collection">
           <ExplorerLink
             showCopyOnHover
-            textFormat="truncate"
-            type="user_address"
-            value={data.tokenAddress}
+            textFormat="normal"
+            textLabel={data.collection.name}
+            type="nft_collection"
+            value={`${data.collectionAddress}`}
           />
+        </DecodeMessageRow>
+        <DecodeMessageRow title="NFT">
+          <NftImage borderRadius="8px" width="150px" />
         </DecodeMessageRow>
       </DecodeMessageBody>
     </Flex>

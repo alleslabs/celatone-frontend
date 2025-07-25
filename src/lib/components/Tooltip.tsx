@@ -18,6 +18,7 @@ export const Tooltip = ({
   return (
     <ChakraTooltip
       arrowSize={8}
+      background="gray.700"
       hasArrow
       isOpen={isOpen}
       placement={placement}

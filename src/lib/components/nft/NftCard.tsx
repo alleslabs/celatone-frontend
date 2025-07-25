@@ -1,4 +1,4 @@
-import type { Addr, HexAddr32, Nullable, Option } from "lib/types";
+import type { Nft } from "lib/services/types";
 
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
@@ -10,23 +10,18 @@ import { AppLink } from "../AppLink";
 import { NftImage } from "./NftImage";
 
 interface NftCardProps {
-  collectionAddress: Addr;
-  collectionName: Option<string>;
-  nftAddress: Nullable<HexAddr32>;
+  nft: Nft;
   showCollection?: boolean;
-  tokenId: string;
-  uri: string;
 }
 
-export const NftCard = ({
-  collectionAddress: collectionAddressParam,
-  collectionName,
-  nftAddress,
-  showCollection = false,
-  tokenId,
-  uri,
-}: NftCardProps) => {
-  const { data: metadata } = useMetadata(uri);
+export const NftCard = ({ nft, showCollection = false }: NftCardProps) => {
+  const { data: metadata } = useMetadata(nft);
+  const {
+    collectionAddress: collectionAddressParam,
+    collectionName,
+    nftAddress,
+    tokenId,
+  } = nft;
 
   const { enabled: isEvmEnabled } = useEvmConfig({ shouldRedirect: false });
   const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
@@ -49,10 +44,10 @@ export const NftCard = ({
             backgroundPosition="center"
             borderRadius="8px"
             height="100%"
-            imageUrl={metadata?.image}
             left={0}
             objectFit="contain"
             position="absolute"
+            src={metadata?.image}
             top={0}
             width="100%"
           />

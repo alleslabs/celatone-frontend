@@ -20,7 +20,7 @@ interface CollectionCardProps {
 export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
   const isMobile = useMobile();
   const { description, name, uri } = collectionInfo;
-  const { data: metadata } = useMetadata(uri);
+  const { data: metadata } = useMetadata({ uri });
   const { enabled: isEvmEnabled } = useEvmConfig({ shouldRedirect: false });
   const formatAddresses = useFormatAddresses();
 
@@ -50,7 +50,10 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
   );
 
   // Note: Use collection image from metadata if available, otherwise use first nft image
-  const collectionImage = metadata?.image || firstNftImage;
+  const collectionImage =
+    !metadata || metadata.image.startsWith("ipfs://")
+      ? firstNftImage
+      : metadata.image;
 
   return (
     <AppLink href={`/nft-collections/${collectionAddress}`}>
@@ -70,9 +73,9 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
             backgroundPosition="center"
             borderRadius="8px"
             h={{ base: 28, md: 40 }}
-            imageUrl={collectionImage}
             minW={{ base: 28, md: 40 }}
             objectFit="contain"
+            src={collectionImage}
             w={{ base: 28, md: 40 }}
           />
           <Flex

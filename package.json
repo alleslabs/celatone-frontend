@@ -1,6 +1,6 @@
 {
   "name": "celatone",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "author": "Alles Labs",
   "contributors": [
     {
@@ -76,7 +76,7 @@
     "@initia/initia.proto": "1.0.0",
     "@initia/react-app-shell": "1.1.0",
     "@initia/react-wallet-widget": "1.6.13",
-    "@initia/tx-decoder": "^0.1.3",
+    "@initia/tx-decoder": "0.1.5",
     "@initia/utils": "1.6.3",
     "@interchain-ui/react": "1.23.9",
     "@monaco-editor/react": "^4.6.0",

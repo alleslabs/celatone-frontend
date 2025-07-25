@@ -2,14 +2,11 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
-import { useGetAddressType } from "lib/app-provider";
-import { TokenImageRender } from "lib/components/token";
+import { TokenImageWithAmount } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
 import {
   coinToTokenWithValue,
-  formatTokenWithValue,
   formatUTC,
-  getTokenLabel,
   parseNanosecondsToDate,
 } from "lib/utils";
 import { useState } from "react";
@@ -37,12 +34,10 @@ export const DecodeMessageIbcFt = ({
   msgCount,
 }: DecodeMessageIbcFtProps) => {
   const isSingleMsg = msgCount === 1;
-  const getAddressType = useGetAddressType();
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const token = coinToTokenWithValue(data.denom, data.amount, assetInfos);
-  const tokenWithValue = formatTokenWithValue(token);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -59,14 +54,7 @@ export const DecodeMessageIbcFt = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1} minWidth="fit-content">
-          <TokenImageRender
-            alt={getTokenLabel(token.denom, token.symbol)}
-            boxSize={4}
-            logo={token.logo}
-          />
-          <Text whiteSpace="nowrap">{tokenWithValue}</Text>
-        </Flex>
+        <TokenImageWithAmount token={token} />
         {decodedMessage.action === "ibc_ft_send" ? (
           <Flex align="center" gap={2}>
             <Text color="text.dark">to</Text>
@@ -80,36 +68,30 @@ export const DecodeMessageIbcFt = ({
         )}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
-        <DecodeMessageRow title="From network">
-          <Text>
-            {decodedMessage.action === "ibc_ft_send"
-              ? data.srcChainId
-              : data.dstChainId}
-          </Text>
+        <DecodeMessageRow title="Source chain">
+          <Text>{data.srcChainId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
+            chainId={data.srcChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
-            type={getAddressType(data.sender)}
+            type="user_address"
             value={data.sender}
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="To network">
-          <Text>
-            {decodedMessage.action === "ibc_ft_send"
-              ? data.dstChainId
-              : data.srcChainId}
-          </Text>
+        <DecodeMessageRow title="Destination chain">
+          <Text>{data.dstChainId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink
+            chainId={data.dstChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
-            type={getAddressType(data.receiver)}
+            type="user_address"
             value={data.receiver}
             wordBreak="break-word"
           />
@@ -118,18 +100,10 @@ export const DecodeMessageIbcFt = ({
           <CoinsComponent coins={[new Coin(data.denom, data.amount)]} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Source channel">
-          <Text>
-            {decodedMessage.action === "ibc_ft_send"
-              ? data.srcChannel
-              : data.dstChannel}
-          </Text>
+          <Text>{data.srcChannel}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Source port">
-          <Text>
-            {decodedMessage.action === "ibc_ft_send"
-              ? data.srcPort
-              : data.dstPort}
-          </Text>
+          <Text>{data.srcPort}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Timeout height">
           <JsonReadOnly
