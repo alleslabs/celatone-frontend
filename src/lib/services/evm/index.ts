@@ -13,7 +13,12 @@ import { bech32AddressToHex, isHexWalletAddress } from "lib/utils";
 
 import type { ProxyResult } from "./json-rpc/proxy/types";
 
-import { getEthCall, getEvmProxyTarget } from "./json-rpc";
+import {
+  getDebugTraceBlockByNumber,
+  getDebugTraceTransaction,
+  getEthCall,
+  getEvmProxyTarget,
+} from "./json-rpc";
 import {
   getEvmCodesByAddress,
   getEvmContractInfoSequencer,
@@ -142,6 +147,48 @@ export const useGetEvmProxyTarget = (
       refetchOnWindowFocus: false,
       retry: false,
       ...options,
+    }
+  );
+};
+
+export const useDebugTraceTransaction = (txHash: string) => {
+  const {
+    chainConfig: {
+      features: { evm },
+    },
+  } = useCelatoneApp();
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.EVM_DEBUG_TRACE_TRANSACTION,
+      evm.enabled && evm.jsonRpc,
+      txHash,
+    ],
+    async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useDebugTraceTransaction)");
+      return getDebugTraceTransaction(evm.jsonRpc, txHash);
+    }
+  );
+};
+
+export const useDebugTraceBlockByNumber = (height: number) => {
+  const {
+    chainConfig: {
+      features: { evm },
+    },
+  } = useCelatoneApp();
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.EVM_DEBUG_TRACE_BLOCK_BY_NUMBER,
+      evm.enabled && evm.jsonRpc,
+      height,
+    ],
+    async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useDebugTraceBlockByNumber)");
+      return getDebugTraceBlockByNumber(evm.jsonRpc, height);
     }
   );
 };
