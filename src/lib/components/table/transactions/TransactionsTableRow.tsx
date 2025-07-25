@@ -91,27 +91,29 @@ export const TransactionsTableRow = ({
           ))}
         {isTxHasNoData ? (
           <TableRow>
-            {isDecodedTxFetching ? (
-              <Spinner boxSize={4} />
-            ) : (
-              <Text color="gray.600">
-                Unable to load data due to large transaction size
-              </Text>
-            )}
+            <Text color="gray.600">
+              Unable to load data due to large transaction size
+            </Text>
           </TableRow>
         ) : (
           <TableRow maxW="100%">
-            {txResponse && decodedTx ? (
-              <DecodeMessage
-                compact
-                decodedMessage={decodedTx.messages[0].decodedMessage}
-                log={undefined}
-                metadata={decodedTx.metadata}
-                msgBody={txResponse.tx.body.messages[0]}
-                msgCount={txResponse.tx.body.messages.length}
-              />
+            {isDecodedTxFetching ? (
+              <Spinner boxSize={4} />
             ) : (
-              <ActionMessages transaction={transaction} />
+              <>
+                {txResponse && decodedTx ? (
+                  <DecodeMessage
+                    compact
+                    decodedMessage={decodedTx.messages[0].decodedMessage}
+                    log={undefined}
+                    metadata={decodedTx.metadata}
+                    msgBody={txResponse.tx.body.messages[0]}
+                    msgCount={txResponse.tx.body.messages.length}
+                  />
+                ) : (
+                  <ActionMessages transaction={transaction} />
+                )}
+              </>
             )}
           </TableRow>
         )}
