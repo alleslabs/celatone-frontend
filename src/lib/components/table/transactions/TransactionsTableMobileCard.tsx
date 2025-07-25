@@ -1,6 +1,6 @@
 import type { TransactionWithTxResponse } from "lib/types";
 
-import { Flex, Spinner, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -60,15 +60,9 @@ export const TransactionsTableMobileCard = ({
       }
       middleContent={
         isTxHasNoData ? (
-          <>
-            {isDecodedTxFetching ? (
-              <Spinner boxSize={4} />
-            ) : (
-              <Text color="gray.600" variant="body2">
-                Unable to load data due to large transaction size
-              </Text>
-            )}
-          </>
+          <Text color="gray.600" variant="body2">
+            Unable to load data due to large transaction size
+          </Text>
         ) : (
           <TransactionsTableDecodeMessageColumn
             decodedTx={decodedTx}

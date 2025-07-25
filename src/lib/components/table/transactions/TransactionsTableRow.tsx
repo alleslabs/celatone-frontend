@@ -29,6 +29,7 @@ const NARow = () => (
 export const TransactionsTableRow = ({
   showAction,
   showRelations,
+  showSuccess,
   showTimestamp,
   templateColumns,
   transaction,
@@ -67,6 +68,18 @@ export const TransactionsTableRow = ({
             value={transaction.hash.toLocaleUpperCase()}
           />
         </TableRow>
+        {showSuccess &&
+          (isTxHasNoData ? (
+            <NARow />
+          ) : (
+            <TableRow>
+              {transaction.success ? (
+                <CustomIcon color="success.main" name="check" />
+              ) : (
+                <CustomIcon color="error.main" name="close" />
+              )}
+            </TableRow>
+          ))}
         {isTxHasNoData ? (
           <TableRow>
             <Text color="gray.600">
