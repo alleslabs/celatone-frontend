@@ -10,7 +10,7 @@ import {
   zTxsByPoolIdResponse,
   zTxsByPoolIdTxsCountResponse,
   zTxsCountResponse,
-  zTxsResponse,
+  zTxsResponseWithTxResponse,
 } from "../types";
 
 export const getTxData = async (txsApiRoute: string, txHash: string) =>
@@ -36,7 +36,7 @@ export const getTxs = async (
         offset,
       },
     })
-    .then(({ data }) => parseWithError(zTxsResponse, data));
+    .then(({ data }) => parseWithError(zTxsResponseWithTxResponse, data));
 
 export const getTxsByAddress = async (
   endpoint: string,

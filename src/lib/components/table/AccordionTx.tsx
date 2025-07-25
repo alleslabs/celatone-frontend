@@ -1,4 +1,6 @@
 import type { GridItemProps } from "@chakra-ui/react";
+import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
+import type { TxResponse } from "lib/services/types";
 import type { Message } from "lib/types";
 
 import { Flex, SlideFade } from "@chakra-ui/react";
@@ -8,6 +10,7 @@ import { extractMsgType } from "lib/utils";
 import { useState } from "react";
 
 import { AccordionStepperItem } from "../AccordionStepperItem";
+import { DecodeMessage } from "../decode-message";
 import { TableRow } from "./tableComponents";
 
 interface RenderButtonProps {
@@ -19,7 +22,10 @@ interface RenderButtonProps {
 interface AccordionTxProps extends RenderButtonProps {
   accordionSpacing?: GridItemProps["pl"];
   allowFurtherAction: boolean;
-  isSigner?: boolean;
+  decodedMessage?: DecodedMessage;
+  metadata?: Metadata;
+  msgCount: number;
+  txResponse?: TxResponse;
 }
 
 const RenderButton = ({ message, msgIndex, txHash }: RenderButtonProps) => {
@@ -38,12 +44,15 @@ const RenderButton = ({ message, msgIndex, txHash }: RenderButtonProps) => {
 };
 
 export const AccordionTx = ({
-  accordionSpacing = "260px",
+  accordionSpacing = "280px",
   allowFurtherAction,
-  isSigner = false,
+  decodedMessage,
   message,
+  metadata,
+  msgCount,
   msgIndex,
   txHash,
+  txResponse,
 }: AccordionTxProps) => {
   const [showButton, setShowButton] = useState(false);
   return (
@@ -51,9 +60,10 @@ export const AccordionTx = ({
       className="accordion-stepper-wrapper"
       _hover={{ background: "gray.800" }}
       borderBottom="none"
-      gap={3}
+      gap={6}
       h="40px"
       minH={0}
+      overflow="hidden"
       pl={accordionSpacing}
       transition="all 0.25s ease-in-out"
       onMouseEnter={() => setShowButton(true)}
@@ -61,13 +71,27 @@ export const AccordionTx = ({
     >
       <AccordionStepperItem />
       <Flex alignItems="center" gap={1}>
-        <SingleActionMsg
-          messages={[message]}
-          singleMsg
-          success
-          type={extractMsgType(message.type)}
-        />
-        {allowFurtherAction && isSigner && (
+        {txResponse && decodedMessage ? (
+          <DecodeMessage
+            compact
+            decodedMessage={decodedMessage}
+            log={undefined}
+            metadata={metadata}
+            msgBody={{
+              "@type": message.type,
+              ...message.detail,
+            }}
+            msgCount={1}
+          />
+        ) : (
+          <SingleActionMsg
+            messages={[message]}
+            singleMsg
+            success
+            type={extractMsgType(message.type)}
+          />
+        )}
+        {allowFurtherAction && msgCount === 1 && (
           <SlideFade in={showButton} offsetY="20px">
             <RenderButton
               message={message}

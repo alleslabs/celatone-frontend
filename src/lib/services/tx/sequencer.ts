@@ -1,12 +1,9 @@
-import type {
-  Addr,
-  Nullable,
-  Option,
-  TransactionWithSignerPubkey,
-} from "lib/types";
+import type { Addr, Nullable, Option } from "lib/types";
 
 import axios from "axios";
 import { parseWithError } from "lib/utils";
+
+import type { TxsResponseItemFromRest } from "../types";
 
 import {
   zBlockTxsResponseSequencer,
@@ -90,8 +87,8 @@ export const getTxsByHashSequencer = (endpoint: string, txHash: string) => {
 export const getTxsByBlockHeightSequencer = async (
   endpoint: string,
   height: number
-): Promise<TransactionWithSignerPubkey[]> => {
-  const result: TransactionWithSignerPubkey[] = [];
+): Promise<TxsResponseItemFromRest[]> => {
+  const result: TxsResponseItemFromRest[] = [];
 
   const fetchTxsByPaginationKey = async (paginationKey: Nullable<string>) => {
     const fetch = async (endpoint: string, throwErrorIfNoData: boolean) => {
@@ -114,7 +111,7 @@ export const getTxsByBlockHeightSequencer = async (
     };
 
     const res = await queryWithArchivalFallback(endpoint, fetch);
-    result.push(...res.txs);
+    result.push(...res.txs.map((item) => item));
     if (res.pagination.nextKey)
       await fetchTxsByPaginationKey(res.pagination.nextKey);
   };

@@ -1,23 +1,50 @@
+import type { ImageProps, TextProps } from "@chakra-ui/react";
 import type { TokenWithValue } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
+import { useMobile } from "lib/app-provider";
 import { formatTokenWithValue } from "lib/utils";
 
+import { Copier } from "../copy";
 import { TokenImageRender } from "./TokenImageRender";
 
 interface TokenImageWithAmountProps {
+  boxSize?: ImageProps["boxSize"];
+  fontWeight?: TextProps["fontWeight"];
   hasTrailingZeros?: boolean;
+  showCopyOnHover?: boolean;
   token: TokenWithValue;
+  variant?: TextProps["variant"];
 }
 
 export const TokenImageWithAmount = ({
+  boxSize,
+  fontWeight = 400,
   hasTrailingZeros,
+  showCopyOnHover = true,
   token,
-}: TokenImageWithAmountProps) => (
-  <Flex alignItems="center" gap={2}>
-    <TokenImageRender logo={token.logo} />
-    <Text overflowWrap="anywhere" variant="body2">
-      {formatTokenWithValue(token, undefined, hasTrailingZeros)}
-    </Text>
-  </Flex>
-);
+  variant = "body2",
+}: TokenImageWithAmountProps) => {
+  const isMobile = useMobile();
+
+  return (
+    <Flex
+      className="copier-wrapper"
+      alignItems="center"
+      gap={1}
+      minWidth="fit-content"
+    >
+      <TokenImageRender boxSize={boxSize} logo={token.logo} />
+      <Text fontWeight={fontWeight} variant={variant} whiteSpace="nowrap">
+        {formatTokenWithValue(token, undefined, hasTrailingZeros)}
+      </Text>
+      <Copier
+        display={showCopyOnHover && !isMobile ? "none" : "inline"}
+        hoverLabel={`Copy token id: ${token.denom}`}
+        ml={1}
+        type="token"
+        value={token.denom}
+      />
+    </Flex>
+  );
+};
