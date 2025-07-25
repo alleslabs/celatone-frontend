@@ -67,6 +67,7 @@ export const DecodeMessageOpFinalizeWithdraw = ({
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
+            chainId={data.srcChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
