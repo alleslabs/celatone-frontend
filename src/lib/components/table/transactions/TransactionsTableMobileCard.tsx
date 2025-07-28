@@ -61,28 +61,28 @@ export const TransactionsTableMobileCard = ({
       }
       middleContent={
         isTxHasNoData ? (
+          <Text color="gray.600" variant="body2">
+            Unable to load data due to large transaction size
+          </Text>
+        ) : (
           <>
             {isDecodedTxFetching ? (
               <Spinner boxSize={4} />
             ) : (
-              <Text color="gray.600" variant="body2">
-                Unable to load data due to large transaction size
-              </Text>
-            )}
-          </>
-        ) : (
-          <>
-            {txResponse && decodedTx ? (
-              <DecodeMessage
-                compact
-                decodedMessage={decodedTx.messages[0].decodedMessage}
-                log={undefined}
-                metadata={decodedTx.metadata}
-                msgBody={txResponse.tx.body.messages[0]}
-                msgCount={txResponse.tx.body.messages.length}
-              />
-            ) : (
-              <ActionMessages transaction={transaction} />
+              <>
+                {txResponse && decodedTx ? (
+                  <DecodeMessage
+                    compact
+                    decodedMessage={decodedTx.messages[0].decodedMessage}
+                    log={undefined}
+                    metadata={decodedTx.metadata}
+                    msgBody={txResponse.tx.body.messages[0]}
+                    msgCount={txResponse.tx.body.messages.length}
+                  />
+                ) : (
+                  <ActionMessages transaction={transaction} />
+                )}
+              </>
             )}
           </>
         )
