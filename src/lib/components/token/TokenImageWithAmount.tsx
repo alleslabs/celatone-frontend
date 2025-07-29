@@ -18,7 +18,7 @@ interface TokenImageWithAmountProps {
 }
 
 export const TokenImageWithAmount = ({
-  boxSize,
+  boxSize = 4,
   fontWeight = 400,
   hasTrailingZeros,
   showCopyOnHover = true,
