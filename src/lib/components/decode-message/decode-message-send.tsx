@@ -4,13 +4,9 @@ import type { AssetInfos, Coin, Option } from "lib/types";
 import { Flex, Text } from "@chakra-ui/react";
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TokenImageRender } from "lib/components/token";
+import { TokenImageRender, TokenImageWithAmount } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
-import {
-  coinToTokenWithValue,
-  formatTokenWithValue,
-  getTokenLabel,
-} from "lib/utils";
+import { coinToTokenWithValue, getTokenLabel } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
@@ -34,18 +30,7 @@ const DecodeMessageSendSingleCoinHeader = ({
   coin: Coin;
 }) => {
   const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
-  const tokenWithValue = formatTokenWithValue(token);
-
-  return (
-    <>
-      <TokenImageRender
-        alt={getTokenLabel(token.denom, token.symbol)}
-        boxSize={4}
-        logo={token.logo}
-      />
-      <Text whiteSpace="nowrap">{tokenWithValue}</Text>
-    </>
-  );
+  return <TokenImageWithAmount token={token} />;
 };
 
 const DecodeMessageSendMultipleCoinsHeader = ({
@@ -57,7 +42,7 @@ const DecodeMessageSendMultipleCoinsHeader = ({
 }) => (
   <>
     <Flex>
-      {coins.map((coin) => {
+      {coins.map((coin, index) => {
         const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
         return (
           <TokenImageRender
@@ -66,6 +51,7 @@ const DecodeMessageSendMultipleCoinsHeader = ({
             boxSize={4}
             logo={token.logo}
             marginInlineEnd="-4px"
+            marginLeft={index > 0 ? "-4px" : "0"}
           />
         );
       })}

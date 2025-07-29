@@ -5,13 +5,13 @@ import type { Option, Ratio } from "lib/types";
 import { chakra, Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
+import { TokenImageWithAmount } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import {
   computeCosmosFee,
   formatInteger,
   formatPrettyPercent,
-  formatTokenWithValue,
 } from "lib/utils";
 
 interface TxInfoProps extends FlexProps {
@@ -53,7 +53,7 @@ export const TxInfo = ({
   return (
     <Container {...flexProps}>
       <LabelText label="Network">{txData.chainId}</LabelText>
-      <LabelText label="Block height">
+      <LabelText label="Block">
         <ExplorerLink
           ampCopierSection="tx_page_block_height"
           showCopyOnHover
@@ -70,14 +70,14 @@ export const TxInfo = ({
       </LabelText>
       <LabelText label="Transaction fee">
         {feeToken ? (
-          formatTokenWithValue(feeToken)
+          <TokenImageWithAmount boxSize={4} token={feeToken} />
         ) : (
           <Text color="text.dark" variant="body2">
             No fee
           </Text>
         )}
       </LabelText>
-      <LabelText label="Gas used/wanted">
+      <LabelText label="Gas used/requested">
         {`${formatInteger(txData.gasUsed)}/${formatInteger(txData.gasWanted)}`}
       </LabelText>
       {gasRefundRatio && (

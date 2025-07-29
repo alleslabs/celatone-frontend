@@ -7,7 +7,9 @@ import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { NftImage } from "lib/components/nft/NftImage";
 import { TableRow } from "lib/components/table";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useMetadata } from "lib/services/nft";
+import { zAddr, zHexAddr32 } from "lib/types";
 
 import { BalanceChangesToken } from "./balance-changes-token";
 
@@ -28,8 +30,14 @@ const BalanceChangeNft = ({
   id: string;
   metadata: Metadata;
 }) => {
-  const data = metadata[id];
-  const { data: nft } = useMetadata(data.tokenUri);
+  const formatAddresses = useFormatAddresses();
+  const nftMetadata = metadata[id];
+  const { data: nft } = useMetadata({
+    collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
+    nftAddress: zHexAddr32.parse(formatAddresses(id).hex),
+    tokenId: nftMetadata?.tokenId,
+    uri: nftMetadata?.tokenUri,
+  });
 
   if (!nft) return null;
 
@@ -38,11 +46,13 @@ const BalanceChangeNft = ({
 
   return (
     <Flex align="center" gap={1}>
-      <AppLink href={`/nft-collections/${data.collectionAddress}/nft/${id}`}>
+      <AppLink
+        href={`/nft-collections/${nftMetadata.collectionAddress}/nft/${id}`}
+      >
         <NftImage
           borderRadius="4px"
           height="20px"
-          imageUrl={nft.image}
+          src={nft.image}
           width="20px"
         />
       </AppLink>
@@ -62,9 +72,15 @@ export const BalanceChangesTableRow = ({
 }: BalanceChangesTableRowProps) => {
   const getAddressType = useGetAddressType();
 
-  const ftChangeEntries = ftChange ? Object.entries(ftChange) : [];
-  const objectChangeEntries = objectChange ? Object.entries(objectChange) : [];
+  const ftChangeEntries = ftChange
+    ? Object.entries(ftChange).filter(([, amount]) => amount !== "0")
+    : [];
+  const objectChangeEntries = objectChange
+    ? Object.entries(objectChange).filter(([, amount]) => amount !== "0")
+    : [];
+  const count = ftChangeEntries.length + objectChangeEntries.length;
 
+  if (!count) return null;
   return (
     <Grid bg="gray.900" rounded={8} templateColumns={templateColumns}>
       <TableRow borderBottom={0} minH={0} p={4}>
@@ -79,13 +95,7 @@ export const BalanceChangesTableRow = ({
         <Stack w="full">
           {ftChangeEntries.map(([denom, amount], index) => (
             <Stack key={`${address}-${denom}`} gap={3}>
-              {amount === "0" ? (
-                <Text color="text.dark" variant="body2">
-                  No balance changes
-                </Text>
-              ) : (
-                <BalanceChangesToken coin={new Coin(denom, amount)} />
-              )}
+              <BalanceChangesToken coin={new Coin(denom, amount)} />
               {index < ftChangeEntries.length - 1 && (
                 <Divider borderColor="gray.700" />
               )}

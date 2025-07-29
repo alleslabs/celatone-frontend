@@ -23,7 +23,7 @@ export const FilterItem = ({
   onClick,
   uri,
 }: FilterItemProps) => {
-  const { data: metadata } = useMetadata(uri ?? "");
+  const { data: metadata } = useMetadata({ uri });
 
   return (
     <Flex
@@ -57,7 +57,7 @@ export const FilterItem = ({
           <NftImage
             borderRadius="4px"
             height="32px"
-            imageUrl={metadata?.image}
+            src={metadata?.image}
             width="32px"
           />
         )}

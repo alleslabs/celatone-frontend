@@ -70,7 +70,7 @@ export const TransactionsTableRow = ({
             />
           )}
         </TableRow>
-        <TableRow gap={1} pr={1}>
+        <TableRow gap={1}>
           {showSuccess && (
             <>
               {transaction.success ? (

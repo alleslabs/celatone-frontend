@@ -57,7 +57,7 @@ export const zMetadata = z
       .object({
         display_type: z.string().optional(),
         trait_type: z.string(),
-        value: z.union([z.string(), z.number()]),
+        value: z.union([z.string(), z.number(), z.boolean()]),
       })
       .array()
       .optional(),

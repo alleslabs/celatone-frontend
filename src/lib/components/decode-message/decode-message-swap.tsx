@@ -4,13 +4,9 @@ import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TokenImageRender } from "lib/components/token";
+import { TokenImageWithAmount } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
-import {
-  coinToTokenWithValue,
-  formatTokenWithValue,
-  getTokenLabel,
-} from "lib/utils";
+import { coinToTokenWithValue } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
@@ -41,7 +37,6 @@ export const DecodeMessageSwap = ({
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
 
   const tokenIn = coinToTokenWithValue(data.denomIn, data.amountIn, assetInfos);
-  const tokenInWithValue = formatTokenWithValue(tokenIn);
   const coinIn = new Coin(data.denomIn, data.amountIn);
 
   const tokenOut = coinToTokenWithValue(
@@ -49,7 +44,6 @@ export const DecodeMessageSwap = ({
     data.amountOut,
     assetInfos
   );
-  const tokenOutWithValue = formatTokenWithValue(tokenOut);
   const coinOut = new Coin(data.denomOut, data.amountOut);
 
   return (
@@ -67,24 +61,10 @@ export const DecodeMessageSwap = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1} minWidth="fit-content">
-          <TokenImageRender
-            alt={getTokenLabel(data.denomIn, data.amountIn)}
-            boxSize={4}
-            logo={tokenIn.logo}
-          />
-          <Text whiteSpace="nowrap">{tokenInWithValue}</Text>
-        </Flex>
+        <TokenImageWithAmount token={tokenIn} />
         <Flex align="center" gap={2} minWidth="fit-content">
           <Text color="text.dark">for</Text>
-          <Flex align="center" gap={1} minWidth="fit-content">
-            <TokenImageRender
-              alt={getTokenLabel(data.denomOut, data.amountOut)}
-              boxSize={4}
-              logo={tokenOut.logo}
-            />
-            <Text whiteSpace="nowrap">{tokenOutWithValue}</Text>
-          </Flex>
+          <TokenImageWithAmount token={tokenOut} />
         </Flex>
         {!compact && (
           <Flex align="center" gap={2}>

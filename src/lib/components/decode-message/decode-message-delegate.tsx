@@ -3,17 +3,11 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 import { Flex, Text } from "@chakra-ui/react";
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TokenImageRender } from "lib/components/token";
+import { TokenImageWithAmount } from "lib/components/token";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import { useAssetInfos } from "lib/services/assetService";
 import { zValidatorAddr } from "lib/types";
-import {
-  coinToTokenWithValue,
-  formatTokenWithValue,
-  formatUTC,
-  getTokenLabel,
-  parseUnixToDateOpt,
-} from "lib/utils";
+import { coinToTokenWithValue, formatUTC, parseUnixToDateOpt } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
@@ -44,7 +38,6 @@ export const DecodeMessageDelegate = ({
   const coin = data.coins[0];
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
-  const tokenWithValue = formatTokenWithValue(token);
 
   const isLocked = msgBody["@type"] === "/initia.move.v1.MsgExecute";
   const parsedReleaseTimestamp = parseUnixToDateOpt(data.releaseTimestamp);
@@ -64,21 +57,16 @@ export const DecodeMessageDelegate = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Flex align="center" gap={1} minWidth="fit-content">
-          <TokenImageRender
-            alt={getTokenLabel(token.denom, token.symbol)}
-            boxSize={4}
-            logo={token.logo}
-          />
-          <Text whiteSpace="nowrap">{tokenWithValue}</Text>
-        </Flex>
+        <TokenImageWithAmount token={token} />
         <Text color="text.dark">to</Text>
         <ValidatorBadge
           badgeSize={4}
+          fixedHeight={compact}
           hasLabel={false}
           sx={{
             width: "fit-content",
           }}
+          textFormat={!compact ? "normal" : "ellipsis"}
           validator={{
             identity: data.validator?.description.identity,
             moniker: data.validator?.description.moniker,
