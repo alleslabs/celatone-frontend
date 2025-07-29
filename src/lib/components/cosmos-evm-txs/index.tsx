@@ -10,6 +10,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { CosmosEvmTxsTab, useEvmTab } from "lib/hooks";
+import { useEffect, useState } from "react";
 
 import { CustomTab } from "../CustomTab";
 import { LoadNext } from "../LoadNext";
@@ -42,7 +43,14 @@ export const CosmosEvmTxs = ({
   isFetchingNextPage,
   onViewMore,
 }: CosmosEvmTxsProps) => {
+  const [tabIndex, setTabIndex] = useState(0);
   const { currentTab, setCurrentTab, tabs } = useEvmTab();
+
+  useEffect(() => {
+    if (currentTab === CosmosEvmTxsTab.Cosmos) {
+      setTabIndex(0);
+    }
+  }, [currentTab]);
 
   return (
     <Flex direction="column" gap={6}>
@@ -64,7 +72,12 @@ export const CosmosEvmTxs = ({
           onTabChange={setCurrentTab}
         />
       </Flex>
-      <Tabs isLazy lazyBehavior="keepMounted">
+      <Tabs
+        index={tabIndex}
+        isLazy
+        lazyBehavior="keepMounted"
+        onChange={setTabIndex}
+      >
         <TabList
           id="cosmos-evm-txs-tab-list"
           borderBottomWidth="1px"
@@ -80,7 +93,9 @@ export const CosmosEvmTxs = ({
           >
             Transactions
           </CustomTab>
-          <CustomTab>Internal txs</CustomTab>
+          {currentTab === CosmosEvmTxsTab.Evm && (
+            <CustomTab>Internal txs</CustomTab>
+          )}
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={{ base: 0, md: 6 }}>
