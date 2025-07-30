@@ -16,7 +16,7 @@ import { isUndefined } from "lodash";
 
 import { TableRow } from "../tableComponents";
 
-interface EvmBlockInternalTransactionTableRowProps {
+interface EvmInternalTransactionTableRowProps {
   assetInfos: Option<AssetInfos>;
   evmDenom: Option<string>;
   nestedIndex?: number;
@@ -25,14 +25,14 @@ interface EvmBlockInternalTransactionTableRowProps {
   txHash: Option<string>;
 }
 
-export const EvmBlockInternalTransactionTableRow = ({
+export const EvmInternalTransactionTableRow = ({
   assetInfos,
   evmDenom,
   nestedIndex = 0,
   result,
   templateColumns,
   txHash,
-}: EvmBlockInternalTransactionTableRowProps) => {
+}: EvmInternalTransactionTableRowProps) => {
   const token = coinToTokenWithValue(
     evmDenom ?? "",
     result.value?.toString() ?? "0",
@@ -133,7 +133,7 @@ export const EvmBlockInternalTransactionTableRow = ({
         </TableRow>
       </Grid>
       {result.calls?.map((call, index) => (
-        <EvmBlockInternalTransactionTableRow
+        <EvmInternalTransactionTableRow
           key={`${txHash ?? "nested"}-${nestedIndex}-${index}`}
           assetInfos={assetInfos}
           evmDenom={evmDenom}
