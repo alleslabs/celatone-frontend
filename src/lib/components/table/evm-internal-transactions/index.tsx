@@ -8,8 +8,8 @@ import { useEvmParams } from "lib/services/evm";
 import { useMemo } from "react";
 
 import { TableContainer } from "../tableComponents";
-import { EvmBlockInternalTransactionsTableHeader } from "./EvmBlockInternalTransactionsTableHeader";
-import { EvmBlockInternalTransactionTableRow } from "./EvmBlockInternalTransactionsTableRow";
+import { EvmInternalTransactionsTableHeader } from "./EvmInternalTransactionsTableHeader";
+import { EvmInternalTransactionTableRow } from "./EvmInternalTransactionsTableRow";
 
 interface EvmInternalTransactionsTableProps {
   internalTxs: Option<EvmDebugTraceResponse>;
@@ -30,7 +30,7 @@ export const EvmInternalTransactionsTable = ({
   const row = useMemo(
     () =>
       internalTxs?.map((result, index) => (
-        <EvmBlockInternalTransactionTableRow
+        <EvmInternalTransactionTableRow
           key={`${result.txHash ?? "nested"}-${index}`}
           assetInfos={assetInfos}
           evmDenom={evmParams?.params.feeDenom}
@@ -46,9 +46,7 @@ export const EvmInternalTransactionsTable = ({
 
   return isMobile ? null : (
     <TableContainer>
-      <EvmBlockInternalTransactionsTableHeader
-        templateColumns={templateColumns}
-      />
+      <EvmInternalTransactionsTableHeader templateColumns={templateColumns} />
       {row}
     </TableContainer>
   );
