@@ -4,13 +4,13 @@ import { Grid } from "@chakra-ui/react";
 
 import { TableHeader } from "../tableComponents";
 
-interface EvmBlockInternalTransactionsTableHeaderProps {
+interface EvmInternalTransactionsTableHeaderProps {
   templateColumns: GridProps["templateColumns"];
 }
 
-export const EvmBlockInternalTransactionsTableHeader = ({
+export const EvmInternalTransactionsTableHeader = ({
   templateColumns,
-}: EvmBlockInternalTransactionsTableHeaderProps) => (
+}: EvmInternalTransactionsTableHeaderProps) => (
   <Grid
     minW="min-content"
     sx={{
