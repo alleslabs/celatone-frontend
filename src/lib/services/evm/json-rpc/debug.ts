@@ -1,4 +1,4 @@
-import { zEvmCallFrame, zEvmDebugTraceBlockByNumber } from "lib/services/types";
+import { zEvmCallFrame, zEvmDebugTraceResponse } from "lib/services/types";
 import { numberToHex, parseWithError } from "lib/utils";
 
 import { requestJsonRpc } from ".";
@@ -17,4 +17,4 @@ export const getDebugTraceBlockByNumber = (endpoint: string, height: number) =>
     {
       tracer: "callTracer",
     },
-  ]).then((result) => parseWithError(zEvmDebugTraceBlockByNumber, result));
+  ]).then((result) => parseWithError(zEvmDebugTraceResponse, result));
