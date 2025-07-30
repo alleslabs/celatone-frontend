@@ -45,9 +45,10 @@ export const zEvmCallFrame: ZodType<
   value: zHexBig.optional(),
 });
 
-export const zEvmDebugTraceBlockByNumber = z
+export const zEvmDebugTraceResponse = z
   .object({
     result: zEvmCallFrame,
     txHash: z.string(),
   })
   .array();
+export type EvmDebugTraceResponse = z.infer<typeof zEvmDebugTraceResponse>;
