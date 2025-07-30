@@ -3,6 +3,7 @@ import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
 import { Box } from "@chakra-ui/react";
 import { CosmosEvmTxs } from "lib/components/cosmos-evm-txs";
 import { useBlockDataJsonRpc } from "lib/services/block";
+import { useDebugTraceBlockByNumber } from "lib/services/evm";
 import { useTxsByBlockHeightSequencer } from "lib/services/tx";
 import { useMemo } from "react";
 
@@ -17,6 +18,7 @@ export const BlockEvmTxsTablesSequencer = ({
     useTxsByBlockHeightSequencer(height);
   const { data: evmBlockData, isLoading: isEvmBlockDataLoading } =
     useBlockDataJsonRpc(height);
+  const { data: internalBlockByHeight } = useDebugTraceBlockByNumber(height);
 
   const evmTxs = useMemo(() => {
     const txs: TxDataWithTimeStampJsonRpc[] = [];
@@ -42,6 +44,7 @@ export const BlockEvmTxsTablesSequencer = ({
         cosmosTxs={cosmosTxs}
         evmEmptyMessage="There are no submitted EVM transactions in this block"
         evmTxs={evmTxs}
+        internalTxs={internalBlockByHeight}
         isCosmosTxsLoading={isCosmosTxsLoading}
         isEvmTxsLoading={isEvmBlockDataLoading}
       />
