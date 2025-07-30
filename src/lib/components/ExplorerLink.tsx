@@ -35,6 +35,7 @@ export interface ExplorerLinkProps extends FlexProps {
   externalLink?: string;
   fixedHeight?: boolean;
   isReadOnly?: boolean;
+  leftIcon?: ReactNode;
   openNewTab?: boolean;
   rightIcon?: ReactNode;
   showCopyOnHover?: boolean;
@@ -200,6 +201,7 @@ export const ExplorerLink = ({
   externalLink,
   fixedHeight = true,
   isReadOnly = false,
+  leftIcon = null,
   openNewTab,
   rightIcon = null,
   showCopyOnHover = false,
@@ -237,6 +239,7 @@ export const ExplorerLink = ({
       gap={1}
       {...componentProps}
     >
+      {leftIcon}
       <Text color="text.disabled" variant="body2">
         {textValue}
       </Text>
@@ -263,6 +266,7 @@ export const ExplorerLink = ({
       transition="all 0.25s ease-in-out"
       {...componentProps}
     >
+      {leftIcon}
       <LinkRender
         chainId={chainId}
         fallbackValue={copyValue ?? ""}
