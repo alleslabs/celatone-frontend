@@ -8,22 +8,23 @@ import { TxMsgDetails } from "./TxMsgDetails";
 import { TxMsgExpand } from "./TxMsgExpand";
 
 export interface TxMsgData {
-  isSingleMsg?: boolean;
+  compact: boolean;
   log: Option<Log>;
   msgBody: MessageResponse;
+  msgCount: number;
 }
 
-export const TxMessage = ({ isSingleMsg, ...txMsgData }: TxMsgData) => {
-  const [expand, setExpand] = useState(!!isSingleMsg);
+export const TxMessage = ({ msgCount, ...txMsgData }: TxMsgData) => {
+  const [expand, setExpand] = useState(msgCount === 1);
   return (
-    <Flex direction="column">
+    <Flex direction="column" w="full">
       <TxMsgExpand
         isExpand={expand}
-        isSingleMsg={isSingleMsg}
+        msgCount={msgCount}
         onClick={() => setExpand((prev) => !prev)}
         {...txMsgData}
       />
-      <TxMsgDetails isExpand={expand} {...txMsgData} />
+      <TxMsgDetails isExpand={expand} msgCount={msgCount} {...txMsgData} />
     </Flex>
   );
 };

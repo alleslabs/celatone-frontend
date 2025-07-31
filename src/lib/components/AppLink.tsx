@@ -5,9 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 export const AppLink = ({
+  chainId,
   children,
   ...linkProps
-}: React.ComponentProps<typeof Link>) => {
+}: React.ComponentProps<typeof Link> & {
+  chainId?: string;
+}) => {
   const router = useRouter();
   const { supportedChainIds } = useChainConfigs();
   const componentHref = linkProps.href.toString();
@@ -19,7 +22,7 @@ export const AppLink = ({
     : supportedChainIds[0];
 
   return (
-    <Link {...linkProps} href={`/${network}${componentHref}`}>
+    <Link {...linkProps} href={`/${chainId ?? network}${componentHref}`}>
       {typeof children === "string" ? (
         <Text
           _hover={{ textDecoration: "underline" }}

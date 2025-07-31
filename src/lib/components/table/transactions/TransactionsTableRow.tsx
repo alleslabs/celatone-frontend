@@ -1,9 +1,18 @@
-import type { Transaction } from "lib/types";
+import type { TransactionWithTxResponse } from "lib/types";
 
-import { Badge, Box, Flex, Grid, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  Spinner,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { ActionMessages } from "lib/components/action-msg/ActionMessages";
+import { DecodeMessage } from "lib/components/decode-message";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { useTxDecoder } from "lib/services/tx";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { AccordionTx } from "../AccordionTx";
@@ -17,7 +26,7 @@ interface TransactionsTableRowProps {
   showSuccess: boolean;
   showTimestamp: boolean;
   templateColumns: string;
-  transaction: Transaction;
+  transaction: TransactionWithTxResponse;
 }
 
 const NARow = () => (
@@ -37,6 +46,9 @@ export const TransactionsTableRow = ({
   const { isOpen, onToggle } = useDisclosure();
   const isAccordion = transaction.messages.length > 1;
   const isTxHasNoData = transaction.height === 0;
+  const { rawTxResponse, txResponse } = transaction;
+  const { data: decodedTx, isFetching: isDecodedTxFetching } =
+    useTxDecoder(rawTxResponse);
 
   return (
     <Box minW="min-content" w="full">
@@ -58,17 +70,12 @@ export const TransactionsTableRow = ({
             />
           )}
         </TableRow>
-        <TableRow pr={1}>
+        <TableRow>
           <ExplorerLink
             showCopyOnHover
             type="tx_hash"
             value={transaction.hash.toLocaleUpperCase()}
           />
-          {transaction.messages.length > 1 && (
-            <Badge ml={2} variant="primary-light">
-              {transaction.messages.length}
-            </Badge>
-          )}
         </TableRow>
         {showSuccess &&
           (isTxHasNoData ? (
@@ -89,8 +96,25 @@ export const TransactionsTableRow = ({
             </Text>
           </TableRow>
         ) : (
-          <TableRow>
-            <ActionMessages transaction={transaction} />
+          <TableRow maxW="100%">
+            {isDecodedTxFetching ? (
+              <Spinner boxSize={4} />
+            ) : (
+              <>
+                {txResponse && decodedTx ? (
+                  <DecodeMessage
+                    compact
+                    decodedMessage={decodedTx.messages[0].decodedMessage}
+                    log={undefined}
+                    metadata={decodedTx.metadata}
+                    msgBody={txResponse.tx.body.messages[0]}
+                    msgCount={txResponse.tx.body.messages.length}
+                  />
+                ) : (
+                  <ActionMessages transaction={transaction} />
+                )}
+              </>
+            )}
           </TableRow>
         )}
         {showRelations &&
@@ -140,10 +164,13 @@ export const TransactionsTableRow = ({
             <AccordionTx
               key={index.toString() + msg.type}
               allowFurtherAction={showAction}
-              isSigner={transaction.isSigner}
+              decodedMessage={decodedTx?.messages?.[index]?.decodedMessage}
               message={msg}
+              metadata={decodedTx?.metadata}
+              msgCount={transaction.messages.length}
               msgIndex={index}
               txHash={transaction.hash}
+              txResponse={txResponse}
             />
           ))}
         </Grid>
