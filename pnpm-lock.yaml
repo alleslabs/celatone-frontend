@@ -341,7 +341,7 @@ importers:
         specifier: ^4.6.0
         version: 4.12.0(react@19.1.0)
       react-intersection-observer:
-        specifier: ^9.0.0
+        specifier: ^9.16.0
         version: 9.16.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-linkify:
         specifier: ^1.0.0-alpha
