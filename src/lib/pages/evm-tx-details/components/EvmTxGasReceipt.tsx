@@ -7,6 +7,7 @@ import {
   formatInteger,
   formatPrettyPercent,
   formatTokenWithValue,
+  formatTokenWithValueInGwei,
 } from "lib/utils";
 import { useState } from "react";
 
@@ -29,8 +30,11 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
             token={gasInfo.txFee}
           />
         </LabelText>
-        <LabelText label="Gas price">
-          {formatTokenWithValue(gasInfo.gasPrice, undefined, false)}
+        <LabelText
+          helperText1={`(${formatTokenWithValue(gasInfo.gasPrice, undefined, false)})`}
+          label="Gas price"
+        >
+          {formatTokenWithValueInGwei(gasInfo.gasPrice, undefined, false)}
         </LabelText>
         <LabelText label="Usage by tx & gas limit">
           {`${formatInteger(gasInfo.gasUsed)}/${formatInteger(gasInfo.gasLimit)}`}

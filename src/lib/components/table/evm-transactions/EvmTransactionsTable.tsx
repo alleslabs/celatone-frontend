@@ -1,5 +1,6 @@
 import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
 import type { Option } from "lib/types";
+import type { ReactNode } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
@@ -12,7 +13,7 @@ import { EvmTransactionsTableMobileCard } from "./EvmTransactionsTableMobileCard
 import { EvmTransactionsTableRow } from "./EvmTransactionsTableRow";
 
 interface EvmTransactionsTableProps {
-  emptyState: JSX.Element;
+  emptyState: ReactNode;
   evmTransactions: Option<TxDataWithTimeStampJsonRpc[]>;
   isLoading: boolean;
   showTimestamp?: boolean;
@@ -34,14 +35,10 @@ export const EvmTransactionsTable = ({
   if (!evmTransactions?.length) return emptyState;
 
   const columns: string[] = [
-    "32px",
+    "200px",
+    "minmax(180px, 400px)",
     "160px",
-    "48px",
     "minmax(180px, 1fr)",
-    "minmax(160px, 2fr)",
-    "48px",
-    "minmax(180px, 2fr)",
-    "minmax(250px, 1fr)",
     ...(showTimestamp ? ["minmax(247px, 1fr)"] : []),
   ];
   const templateColumns: string = columns.join(" ");
