@@ -14,6 +14,8 @@ import {
 import { CustomTab } from "lib/components/CustomTab";
 import { DividerWithArrow } from "lib/components/DividerWithArrow";
 import { CustomIcon } from "lib/components/icon";
+import { EvmInternalTransactionsTable } from "lib/components/table/evm-internal-transactions";
+import { useDebugTraceTransaction } from "lib/services/evm";
 import { useEvmVerifyInfos } from "lib/services/verification/evm";
 import plur from "plur";
 
@@ -35,6 +37,10 @@ export const EvmTxMsgDetails = ({
   const { data } = useEvmVerifyInfos(
     evmTxData.txReceipt.logs.map((log) => log.address)
   );
+  const { data: internalTxs } = useDebugTraceTransaction(
+    evmTxData.txReceipt.blockNumber.toNumber(),
+    evmTxData.txReceipt.transactionHash
+  );
 
   return (
     <Tabs isLazy lazyBehavior="keepMounted" w="full">
@@ -49,7 +55,7 @@ export const EvmTxMsgDetails = ({
         <CustomTab>Balance changes</CustomTab>
       </TabList>
       <TabPanels>
-        <TabPanel>
+        <TabPanel pt={8}>
           <Flex direction="column" flex={1} gap={4} w="full">
             {cosmosTxData.isTxFailed && (
               <Alert
@@ -91,7 +97,12 @@ export const EvmTxMsgDetails = ({
             )}
           </Flex>
         </TabPanel>
-        <TabPanel>Internal txs</TabPanel>
+        <TabPanel>
+          <EvmInternalTransactionsTable
+            internalTxs={internalTxs ?? []}
+            showParentHash={false}
+          />
+        </TabPanel>
         <TabPanel>Balance changes</TabPanel>
       </TabPanels>
     </Tabs>
