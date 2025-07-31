@@ -58,7 +58,7 @@ export const TxMsgExpand = ({
   switch (type) {
     case "/cosmos.bank.v1beta1.MsgSend":
       {
-        const toAddress = body.to_address as BechAddr;
+        const toAddress = body.toAddress as BechAddr;
         const singleCoin = (body.amount as Coin[])[0];
         const singleToken = coinToTokenWithValue(
           singleCoin.denom,
@@ -92,7 +92,7 @@ export const TxMsgExpand = ({
       msgLabel = "Submit proposal";
       content = (
         <Flex display="inline" gap={1}>
-          {(body.is_expedited as boolean) && " expedited "}
+          {(body.expedited as boolean) && " expedited "}
           {log && (
             <>
               ID{" "}
@@ -140,16 +140,16 @@ export const TxMsgExpand = ({
             ampCopierSection="tx_page_message_header_delegator"
             showCopyOnHover
             textVariant="body1"
-            type={getAddressType(body.delegator_address as string)}
-            value={body.delegator_address as string}
+            type={getAddressType(body.delegatorAddress as string)}
+            value={body.delegatorAddress as string}
           />{" "}
           to{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_validator"
             showCopyOnHover
             textVariant="body1"
-            type={getAddressType(body.validator_address as string)}
-            value={body.validator_address as string}
+            type={getAddressType(body.validatorAddress as string)}
+            value={body.validatorAddress as string}
           />
         </Flex>
       );
@@ -210,11 +210,11 @@ export const TxMsgExpand = ({
           from{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_code"
-            rightIcon={<WasmVerifyBadgeById codeId={Number(body.code_id)} />}
+            rightIcon={<WasmVerifyBadgeById codeId={Number(body.codeId)} />}
             showCopyOnHover
             textVariant="body1"
             type="code_id"
-            value={body.code_id as string}
+            value={body.codeId as string}
           />
         </Flex>
       );
@@ -239,11 +239,11 @@ export const TxMsgExpand = ({
           from{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_code"
-            rightIcon={<WasmVerifyBadgeById codeId={Number(body.code_id)} />}
+            rightIcon={<WasmVerifyBadgeById codeId={Number(body.codeId)} />}
             showCopyOnHover
             textVariant="body1"
             type="code_id"
-            value={body.code_id as string}
+            value={body.codeId as string}
           />
         </Flex>
       );
@@ -267,7 +267,7 @@ export const TxMsgExpand = ({
             showCopyOnHover
             textVariant="body1"
             type="code_id"
-            value={body.code_id as string}
+            value={body.codeId as string}
           />
         </Flex>
       );
@@ -317,8 +317,8 @@ export const TxMsgExpand = ({
             ampCopierSection="tx_page_message_header_admin"
             showCopyOnHover
             textVariant="body1"
-            type={getAddressType(body.new_admin as string)}
-            value={body.new_admin as string}
+            type={getAddressType(body.newAdmin as string)}
+            value={body.newAdmin as string}
           />
         </Flex>
       );

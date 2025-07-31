@@ -42,17 +42,16 @@ const DecodeMessageSendMultipleCoinsHeader = ({
 }) => (
   <>
     <Flex>
-      {coins.map((coin, index) => {
+      {coins.map((coin) => {
         const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
         return (
-          <TokenImageRender
-            key={coin.denom}
-            alt={getTokenLabel(token.denom, token.symbol)}
-            boxSize={4}
-            logo={token.logo}
-            marginInlineEnd="-4px"
-            marginLeft={index > 0 ? "-4px" : "0"}
-          />
+          <Flex key={coin.denom} align="center" marginInlineEnd="-4px">
+            <TokenImageRender
+              alt={getTokenLabel(token.denom, token.symbol)}
+              boxSize={4}
+              logo={token.logo}
+            />
+          </Flex>
         );
       })}
     </Flex>
