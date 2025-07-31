@@ -1,10 +1,12 @@
-import type { EvmDebugTraceResponse } from "lib/services/types";
+import type { EvmCallFrame, EvmDebugTraceResponse } from "lib/services/types";
 
+import { Accordion, Flex, Spinner } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { useAssetInfos } from "lib/services/assetService";
 import { useEvmParams } from "lib/services/evm";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 import { TableContainer } from "../tableComponents";
 import { EvmInternalTransactionsTableHeader } from "./EvmInternalTransactionsTableHeader";
@@ -15,15 +17,44 @@ interface EvmInternalTransactionsTableProps {
   showParentHash?: boolean;
 }
 
+const flattenCalls = (
+  calls: EvmCallFrame[],
+  depth: number,
+  txHash: string
+): { depth: number; result: EvmCallFrame; txHash: string }[] =>
+  calls.flatMap((call) => [
+    { depth, result: call, txHash },
+    ...(call.calls ? flattenCalls(call.calls, depth + 1, txHash) : []),
+  ]);
+
+const flattenTransactions = (data: EvmDebugTraceResponse) =>
+  data.flatMap(({ result, txHash }) => [
+    { depth: 0, result, txHash },
+    ...(result.calls ? flattenCalls(result.calls, 1, txHash) : []),
+  ]);
+
 export const EvmInternalTransactionsTable = ({
   internalTxs,
   showParentHash = true,
 }: EvmInternalTransactionsTableProps) => {
   const isMobile = useMobile();
   const { data: evmParams, isLoading: isEvmParamsLoading } = useEvmParams();
-  const { data: assetInfos } = useAssetInfos({
-    withPrices: true,
-  });
+  const { data: assetInfos } = useAssetInfos({ withPrices: true });
+
+  const flatInternalTxs = useMemo(
+    () => flattenTransactions(internalTxs),
+    [internalTxs]
+  );
+
+  const [visibleCount, setVisibleCount] = useState(10);
+  const { inView, ref } = useInView({ threshold: 0 });
+
+  useEffect(() => {
+    if (inView && visibleCount < flatInternalTxs.length) {
+      setVisibleCount((prev) => Math.min(prev + 10, flatInternalTxs.length));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
 
   const templateColumns = [
     showParentHash ? "180px" : "",
@@ -36,22 +67,6 @@ export const EvmInternalTransactionsTable = ({
     "60px",
   ].join(" ");
 
-  const row = useMemo(
-    () =>
-      internalTxs?.map((result, index) => (
-        <EvmInternalTransactionTableRow
-          key={`${result.txHash ?? "nested"}-${index}`}
-          assetInfos={assetInfos}
-          evmDenom={evmParams?.params.feeDenom}
-          result={result.result}
-          showParentHash={showParentHash}
-          templateColumns={templateColumns}
-          txHash={result.txHash}
-        />
-      )),
-    [internalTxs, assetInfos, evmParams, showParentHash, templateColumns]
-  );
-
   if (isEvmParamsLoading) return <Loading />;
 
   return isMobile ? null : (
@@ -60,7 +75,26 @@ export const EvmInternalTransactionsTable = ({
         showParentHash={showParentHash}
         templateColumns={templateColumns}
       />
-      {row}
+
+      <Accordion allowToggle variant="transparent">
+        {flatInternalTxs.slice(0, visibleCount).map((result, index) => (
+          <EvmInternalTransactionTableRow
+            key={`${result.txHash ?? "nested"}-${index}`}
+            assetInfos={assetInfos}
+            evmDenom={evmParams?.params.feeDenom}
+            result={result.result}
+            showParentHash={showParentHash}
+            templateColumns={templateColumns}
+            txHash={result.txHash}
+          />
+        ))}
+      </Accordion>
+
+      {visibleCount < flatInternalTxs.length && (
+        <Flex align="center" justify="center" mt={4} ref={ref}>
+          <Spinner />
+        </Flex>
+      )}
     </TableContainer>
   );
 };
