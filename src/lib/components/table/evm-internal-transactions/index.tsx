@@ -1,5 +1,6 @@
 import type { EvmDebugTraceResponse } from "lib/services/types";
 
+import { Accordion } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { useAssetInfos } from "lib/services/assetService";
@@ -60,7 +61,9 @@ export const EvmInternalTransactionsTable = ({
         showParentHash={showParentHash}
         templateColumns={templateColumns}
       />
-      {row}
+      <Accordion allowMultiple allowToggle variant="transparent">
+        {row}
+      </Accordion>
     </TableContainer>
   );
 };
