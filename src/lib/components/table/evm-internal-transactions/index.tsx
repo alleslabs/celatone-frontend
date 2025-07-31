@@ -1,5 +1,4 @@
 import type { EvmDebugTraceResponse } from "lib/services/types";
-import type { Option } from "lib/types";
 
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
@@ -12,20 +11,30 @@ import { EvmInternalTransactionsTableHeader } from "./EvmInternalTransactionsTab
 import { EvmInternalTransactionTableRow } from "./EvmInternalTransactionsTableRow";
 
 interface EvmInternalTransactionsTableProps {
-  internalTxs: Option<EvmDebugTraceResponse>;
+  internalTxs: EvmDebugTraceResponse;
+  showParentHash?: boolean;
 }
-
-const templateColumns =
-  "180px 200px 40px 200px minmax(200px, 1fr) 120px 100px 60px";
 
 export const EvmInternalTransactionsTable = ({
   internalTxs,
+  showParentHash = true,
 }: EvmInternalTransactionsTableProps) => {
   const isMobile = useMobile();
   const { data: evmParams, isLoading: isEvmParamsLoading } = useEvmParams();
   const { data: assetInfos } = useAssetInfos({
     withPrices: true,
   });
+
+  const templateColumns = [
+    showParentHash ? "180px" : "",
+    "200px",
+    "40px",
+    "200px",
+    "minmax(200px, 1fr)",
+    "120px",
+    "100px",
+    "60px",
+  ].join(" ");
 
   const row = useMemo(
     () =>
@@ -35,18 +44,22 @@ export const EvmInternalTransactionsTable = ({
           assetInfos={assetInfos}
           evmDenom={evmParams?.params.feeDenom}
           result={result.result}
+          showParentHash={showParentHash}
           templateColumns={templateColumns}
           txHash={result.txHash}
         />
       )),
-    [internalTxs, assetInfos, evmParams]
+    [internalTxs, assetInfos, evmParams, showParentHash, templateColumns]
   );
 
   if (isEvmParamsLoading) return <Loading />;
 
   return isMobile ? null : (
     <TableContainer>
-      <EvmInternalTransactionsTableHeader templateColumns={templateColumns} />
+      <EvmInternalTransactionsTableHeader
+        showParentHash={showParentHash}
+        templateColumns={templateColumns}
+      />
       {row}
     </TableContainer>
   );

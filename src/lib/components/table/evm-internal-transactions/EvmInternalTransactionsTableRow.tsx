@@ -21,6 +21,7 @@ interface EvmInternalTransactionTableRowProps {
   evmDenom: Option<string>;
   nestedIndex?: number;
   result: EvmCallFrame;
+  showParentHash?: boolean;
   templateColumns: GridProps["templateColumns"];
   txHash: Option<string>;
 }
@@ -30,6 +31,7 @@ export const EvmInternalTransactionTableRow = ({
   evmDenom,
   nestedIndex = 0,
   result,
+  showParentHash = true,
   templateColumns,
   txHash,
 }: EvmInternalTransactionTableRowProps) => {
@@ -52,21 +54,23 @@ export const EvmInternalTransactionTableRow = ({
         }}
         templateColumns={templateColumns}
       >
-        <TableRow>
-          {txHash ? (
-            <ExplorerLink showCopyOnHover type="tx_hash" value={txHash} />
-          ) : (
-            <Flex>
-              {Array.from({ length: nestedIndex }).map((_, index) => (
-                <CustomIcon
-                  key={`${nestedIndex}-${index}`}
-                  color="gray.600"
-                  name="arrow-right"
-                />
-              ))}
-            </Flex>
-          )}
-        </TableRow>
+        {showParentHash && (
+          <TableRow>
+            {txHash ? (
+              <ExplorerLink showCopyOnHover type="tx_hash" value={txHash} />
+            ) : (
+              <Flex>
+                {Array.from({ length: nestedIndex }).map((_, index) => (
+                  <CustomIcon
+                    key={`${nestedIndex}-${index}`}
+                    color="gray.600"
+                    name="arrow-right"
+                  />
+                ))}
+              </Flex>
+            )}
+          </TableRow>
+        )}
         <TableRow>
           <ExplorerLink
             leftIcon={
@@ -139,6 +143,7 @@ export const EvmInternalTransactionTableRow = ({
           evmDenom={evmDenom}
           nestedIndex={nestedIndex + 1}
           result={call}
+          showParentHash={showParentHash}
           templateColumns={templateColumns}
           txHash={undefined}
         />

@@ -156,7 +156,7 @@ export const CosmosEvmTxs = ({
             )}
           </TabPanel>
           <TabPanel p={0} pt={{ base: 0, md: 6 }}>
-            <EvmInternalTransactionsTable internalTxs={internalTxs} />
+            <EvmInternalTransactionsTable internalTxs={internalTxs ?? []} />
           </TabPanel>
         </TabPanels>
       </Tabs>
