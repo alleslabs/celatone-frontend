@@ -15,7 +15,6 @@ import type { ProxyResult } from "./json-rpc/proxy/types";
 
 import {
   getDebugTraceBlockByNumber,
-  getDebugTraceTransaction,
   getEthCall,
   getEvmProxyTarget,
 } from "./json-rpc";
@@ -153,7 +152,7 @@ export const useGetEvmProxyTarget = (
   });
 };
 
-export const useDebugTraceTransaction = (txHash: string) => {
+export const useDebugTraceTransaction = (height: number, txHash: string) => {
   const {
     chainConfig: {
       features: { evm },
@@ -169,7 +168,8 @@ export const useDebugTraceTransaction = (txHash: string) => {
     async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useDebugTraceTransaction)");
-      return getDebugTraceTransaction(evm.jsonRpc, txHash);
+      const internalTxs = await getDebugTraceBlockByNumber(evm.jsonRpc, height);
+      return internalTxs.filter((tx) => tx.txHash === txHash);
     }
   );
 };
