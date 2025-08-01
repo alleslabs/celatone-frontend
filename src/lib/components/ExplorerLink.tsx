@@ -3,17 +3,20 @@ import type { Option } from "lib/types";
 import type { ReactNode } from "react";
 
 import { Flex, Text } from "@chakra-ui/react";
+import { transparentize } from "@chakra-ui/theme-tools";
 import { trackMintScan } from "lib/amplitude";
 import { type AddressReturnType, useChainConfigs } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { useWasmConfig } from "lib/app-provider/hooks/useConfig";
 import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
 import { useMobile } from "lib/app-provider/hooks/useMediaQuery";
+import { useHoverText } from "lib/providers/hover";
 import { truncate } from "lib/utils";
 import { isUndefined } from "lodash";
 
 import { AppLink } from "./AppLink";
 import { Copier } from "./copy";
+import { Tooltip } from "./Tooltip";
 
 export type LinkType =
   | "block_height"
@@ -28,6 +31,8 @@ export type LinkType =
   | "tx_hash"
   | AddressReturnType;
 
+type TextFormat = "ellipsis" | "normal" | "truncate";
+
 export interface ExplorerLinkProps extends FlexProps {
   ampCopierSection?: string;
   chainId?: string;
@@ -39,7 +44,7 @@ export interface ExplorerLinkProps extends FlexProps {
   openNewTab?: boolean;
   rightIcon?: ReactNode;
   showCopyOnHover?: boolean;
-  textFormat?: "ellipsis" | "normal" | "truncate";
+  textFormat?: TextFormat;
   textLabel?: string;
   textVariant?: TextProps["variant"];
   type: LinkType;
@@ -132,6 +137,22 @@ const getCopyLabel = (type: LinkType, value: string) => {
     .join(" ");
 };
 
+const isTooltipHidden = (type: LinkType, textFormat: TextFormat) => {
+  if (textFormat === "ellipsis" || textFormat === "normal") return true;
+
+  if (
+    type === "evm_contract_address" ||
+    type === "evm_tx_hash" ||
+    type === "tx_hash" ||
+    type === "user_address" ||
+    type === "contract_address" ||
+    type === "validator_address"
+  )
+    return false;
+
+  return true;
+};
+
 const LinkRender = ({
   chainId,
   fallbackValue,
@@ -216,6 +237,7 @@ export const ExplorerLink = ({
   const { chainConfigs } = useChainConfigs();
   const { address } = useCurrentChain();
   const { enabled: wasmEnabled } = useWasmConfig({ shouldRedirect: false });
+  const { hoveredText, setHoveredText } = useHoverText();
 
   const [internalLink, textValue] = [
     getNavigationUrl({
@@ -230,6 +252,7 @@ export const ExplorerLink = ({
   const link = externalLink ?? internalLink;
   const isNotInitiaChainId = chainId && !chainConfigs[chainId];
   const readOnly = isReadOnly || !link || isNotInitiaChainId;
+  const isHighlighted = hoveredText === textValue;
 
   // TODO: handle auto width
   return readOnly ? (
@@ -255,30 +278,50 @@ export const ExplorerLink = ({
   ) : (
     <Flex
       className="copier-wrapper"
-      _hover={{
-        textDecoration: "underline",
-        textDecorationColor: "primary.light",
-      }}
       align="center"
+      borderColor="transparent"
+      borderStyle="dashed"
+      borderWidth="1px"
       display="inline-flex"
       gap={1}
       h={fixedHeight ? "24px" : "auto"}
-      transition="all 0.25s ease-in-out"
+      px={0.5}
+      rounded={4}
+      sx={{
+        ...(isHighlighted && {
+          backgroundColor: transparentize("warning.dark", 0.3),
+          borderColor: "warning.dark",
+        }),
+        "&:hover": {
+          backgroundColor: transparentize("warning.dark", 0.3),
+          textDecoration: "underline",
+          textDecorationColor: "primary.light",
+        },
+      }}
+      transition="all 0.15s ease-in-out"
+      onMouseEnter={() => setHoveredText(textValue)}
+      onMouseLeave={() => setHoveredText(null)}
       {...componentProps}
     >
-      {leftIcon}
-      <LinkRender
-        chainId={chainId}
-        fallbackValue={copyValue ?? ""}
-        hrefLink={link}
-        isEllipsis={textFormat === "ellipsis"}
-        isInternal={isUndefined(externalLink)}
-        openNewTab={openNewTab}
-        textValue={textValue}
-        textVariant={textVariant}
-        type={type}
-      />
-      {rightIcon}
+      <Tooltip
+        hidden={isTooltipHidden(type, textFormat)}
+        label={value}
+        textAlign="center"
+      >
+        {leftIcon}
+        <LinkRender
+          chainId={chainId}
+          fallbackValue={copyValue ?? ""}
+          hrefLink={link}
+          isEllipsis={textFormat === "ellipsis"}
+          isInternal={isUndefined(externalLink)}
+          openNewTab={openNewTab}
+          textValue={textValue}
+          textVariant={textVariant}
+          type={type}
+        />
+        {rightIcon}
+      </Tooltip>
       <Copier
         amptrackSection={ampCopierSection}
         display={showCopyOnHover && !isMobile ? "none" : "inline"}
