@@ -69,6 +69,7 @@ export const EvmInternalTransactionTableRow = ({
                   {txHash ? (
                     <ExplorerLink
                       showCopyOnHover
+                      textLabel="Prach"
                       type="tx_hash"
                       value={txHash}
                     />
