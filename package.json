@@ -55,6 +55,7 @@
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "2.8.2",
     "@chakra-ui/styled-system": "^2.9.2",
+    "@chakra-ui/theme-tools": "^2.2.6",
     "@cosmjs/amino": "0.32.4",
     "@cosmjs/cosmwasm-stargate": "0.32.4",
     "@cosmjs/crypto": "0.32.4",
