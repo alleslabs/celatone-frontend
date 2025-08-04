@@ -1,6 +1,6 @@
 import type { TooltipProps as ChakraTooltipProps } from "@chakra-ui/react";
 
-import { Tooltip as ChakraTooltip, useDisclosure } from "@chakra-ui/react";
+import { Box, Tooltip as ChakraTooltip, useDisclosure } from "@chakra-ui/react";
 
 import { CustomIcon } from "./icon";
 
@@ -24,18 +24,21 @@ export const Tooltip = ({
       placement={placement}
       {...tooltipProps}
     >
-      <span
+      <Box
         style={{
           alignItems: "center",
           display: "inline-flex",
           height: "fit-content",
+          maxWidth: "100%",
+          minWidth: "0",
         }}
+        as="span"
         onClickCapture={disableClickCapture ? undefined : onToggle}
         onMouseEnter={onOpen}
         onMouseLeave={onClose}
       >
         {children}
-      </span>
+      </Box>
     </ChakraTooltip>
   );
 };

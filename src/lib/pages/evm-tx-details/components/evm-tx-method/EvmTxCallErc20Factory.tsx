@@ -1,9 +1,10 @@
 import type { TxDataJsonRpc } from "lib/services/types";
 import type { HexAddr20, Option } from "lib/types";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Spinner, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { useEvmVerifyInfos } from "lib/services/verification/evm";
 
 import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
@@ -18,6 +19,12 @@ export const EvmTxCallErc20Factory = ({
   const { from, to } = evmTxData.tx;
   const { logs } = evmTxData.txReceipt;
   const contractAddress = logs[0]?.address as Option<HexAddr20>;
+  const { data: evmVerifyInfos, isLoading: isEvmVerifInfosLoading } =
+    useEvmVerifyInfos(
+      contractAddress || to
+        ? [contractAddress, to].filter((addr): addr is HexAddr20 => !!addr)
+        : []
+    );
 
   return (
     <EvmTxMethodAccordion
@@ -25,18 +32,28 @@ export const EvmTxCallErc20Factory = ({
         <Flex gap={1}>
           Create{" "}
           {contractAddress ? (
-            <Flex align="center" gap={1}>
-              <CustomIcon
-                boxSize={3}
-                color="primary.main"
-                name="contract-address"
-              />
-              <ExplorerLink
-                showCopyOnHover
-                type="evm_contract_address"
-                value={contractAddress}
-              />
-            </Flex>
+            <>
+              {isEvmVerifInfosLoading ? (
+                <Spinner boxSize={4} />
+              ) : (
+                <ExplorerLink
+                  leftIcon={
+                    <CustomIcon
+                      boxSize={3}
+                      color="primary.main"
+                      name="contract-address"
+                    />
+                  }
+                  showCopyOnHover
+                  textLabel={
+                    evmVerifyInfos?.[contractAddress.toLowerCase()]
+                      ?.contractName
+                  }
+                  type="evm_contract_address"
+                  value={contractAddress}
+                />
+              )}
+            </>
           ) : (
             <Text color="text.disabled" variant="body2">
               -
@@ -63,20 +80,27 @@ export const EvmTxCallErc20Factory = ({
         label="ERC20 factory"
         value={
           to ? (
-            <Flex align="center" gap={1}>
-              <CustomIcon
-                boxSize={3}
-                color="primary.main"
-                name="contract-address"
-              />
-              <ExplorerLink
-                fixedHeight={false}
-                showCopyOnHover
-                textFormat="normal"
-                type="evm_contract_address"
-                value={to}
-              />
-            </Flex>
+            <>
+              {isEvmVerifInfosLoading ? (
+                <Spinner boxSize={4} />
+              ) : (
+                <ExplorerLink
+                  fixedHeight={false}
+                  leftIcon={
+                    <CustomIcon
+                      boxSize={3}
+                      color="primary.main"
+                      name="contract-address"
+                    />
+                  }
+                  showCopyOnHover
+                  textFormat="normal"
+                  textLabel={evmVerifyInfos?.[to.toLowerCase()]?.contractName}
+                  type="evm_contract_address"
+                  value={to}
+                />
+              )}
+            </>
           ) : (
             <Text color="text.disabled" variant="body2">
               -
@@ -88,20 +112,30 @@ export const EvmTxCallErc20Factory = ({
         label="Created contract"
         value={
           contractAddress ? (
-            <Flex align="center" gap={1}>
-              <CustomIcon
-                boxSize={3}
-                color="primary.main"
-                name="contract-address"
-              />
-              <ExplorerLink
-                fixedHeight={false}
-                showCopyOnHover
-                textFormat="normal"
-                type="evm_contract_address"
-                value={contractAddress}
-              />
-            </Flex>
+            <>
+              {isEvmVerifInfosLoading ? (
+                <Spinner boxSize={4} />
+              ) : (
+                <ExplorerLink
+                  fixedHeight={false}
+                  leftIcon={
+                    <CustomIcon
+                      boxSize={3}
+                      color="primary.main"
+                      name="contract-address"
+                    />
+                  }
+                  showCopyOnHover
+                  textFormat="normal"
+                  textLabel={
+                    evmVerifyInfos?.[contractAddress.toLowerCase()]
+                      ?.contractName
+                  }
+                  type="evm_contract_address"
+                  value={contractAddress}
+                />
+              )}
+            </>
           ) : (
             <Text color="text.disabled" variant="body2">
               -
