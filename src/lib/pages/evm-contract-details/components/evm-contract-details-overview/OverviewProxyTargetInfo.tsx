@@ -28,6 +28,7 @@ export const OverviewProxyTargetInfo = ({
         <ExplorerLink
           showCopyOnHover
           textFormat={isMobile ? "truncate" : "normal"}
+          textLabel={proxyTargetEvmVerifyInfo?.contractName}
           type="evm_contract_address"
           value={proxyTargetAddressHex}
         />

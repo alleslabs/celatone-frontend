@@ -1,10 +1,13 @@
 import type { EvmCallFrame, EvmDebugTraceResponse } from "lib/services/types";
+import type { HexAddr20 } from "lib/types";
 
 import { Accordion, Flex, Spinner } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { useAssetInfos } from "lib/services/assetService";
 import { useEvmParams } from "lib/services/evm";
+import { useEvmVerifyInfos } from "lib/services/verification/evm";
+import { zHexAddr20 } from "lib/types";
 import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -46,6 +49,23 @@ export const EvmInternalTransactionsTable = ({
     [internalTxs]
   );
 
+  const verifiedTxHashes = useMemo(() => {
+    return flatInternalTxs.reduce((acc, { result }) => {
+      const parsedContractFrom = zHexAddr20.safeParse(result.from);
+      if (parsedContractFrom.success) {
+        acc.add(parsedContractFrom.data);
+      }
+      const parsedContractTo = zHexAddr20.safeParse(result.to);
+      if (parsedContractTo.success) {
+        acc.add(parsedContractTo.data);
+      }
+      return acc;
+    }, new Set<HexAddr20>());
+  }, [flatInternalTxs]);
+
+  const { data: evmVerifyInfos, isLoading: isEvmVerifyInfosLoading } =
+    useEvmVerifyInfos(Array.from(verifiedTxHashes));
+
   const [visibleCount, setVisibleCount] = useState(10);
   const { inView, ref } = useInView({ threshold: 0 });
 
@@ -67,7 +87,7 @@ export const EvmInternalTransactionsTable = ({
     "60px",
   ].join(" ");
 
-  if (isEvmParamsLoading) return <Loading />;
+  if (isEvmParamsLoading || isEvmVerifyInfosLoading) return <Loading />;
 
   return isMobile ? null : (
     <TableContainer>
@@ -82,6 +102,7 @@ export const EvmInternalTransactionsTable = ({
             key={`${result.txHash ?? "nested"}-${index}`}
             assetInfos={assetInfos}
             evmDenom={evmParams?.params.feeDenom}
+            evmVerifyInfos={evmVerifyInfos}
             result={result.result}
             showParentHash={showParentHash}
             templateColumns={templateColumns}

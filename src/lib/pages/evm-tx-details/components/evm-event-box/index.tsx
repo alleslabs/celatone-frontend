@@ -96,6 +96,7 @@ export const EvmEventBox = ({ evmVerifyInfo, log }: EvmEventBoxProps) => {
               />
               <ExplorerLink
                 textFormat="normal"
+                textLabel={evmVerifyInfo?.contractName}
                 type="evm_contract_address"
                 value={log.address}
                 wordBreak="break-all"
