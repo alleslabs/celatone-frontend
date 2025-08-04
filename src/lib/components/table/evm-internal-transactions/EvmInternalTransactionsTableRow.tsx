@@ -1,5 +1,5 @@
-import type { EvmCallFrame } from "lib/services/types";
-import type { AssetInfos, Option } from "lib/types";
+import type { EvmCallFrame, EvmVerifyInfosResponse } from "lib/services/types";
+import type { AssetInfos, Nullable, Option } from "lib/types";
 
 import {
   AccordionButton,
@@ -25,6 +25,7 @@ import { TableRow } from "../tableComponents";
 interface EvmInternalTransactionTableRowProps {
   assetInfos: Option<AssetInfos>;
   evmDenom: Option<string>;
+  evmVerifyInfos: Option<Nullable<EvmVerifyInfosResponse>>;
   nestedIndex?: number;
   result: EvmCallFrame;
   showParentHash?: boolean;
@@ -35,6 +36,7 @@ interface EvmInternalTransactionTableRowProps {
 export const EvmInternalTransactionTableRow = ({
   assetInfos,
   evmDenom,
+  evmVerifyInfos,
   nestedIndex = 0,
   result,
   showParentHash = true,
@@ -57,8 +59,8 @@ export const EvmInternalTransactionTableRow = ({
               cursor="pointer"
               sx={{
                 "> div": {
-                  paddingLeft: 0,
-                  paddingRight: 0,
+                  paddingLeft: "4px",
+                  paddingRight: "4px",
                 },
               }}
               templateColumns={templateColumns}
@@ -91,7 +93,8 @@ export const EvmInternalTransactionTableRow = ({
                     <CustomIcon color="primary.main" name="contract-address" />
                   }
                   showCopyOnHover
-                  type="contract_address"
+                  textLabel={evmVerifyInfos?.[result.from]?.contractName}
+                  type="evm_contract_address"
                   value={result.from}
                 />
               </TableRow>
@@ -104,7 +107,8 @@ export const EvmInternalTransactionTableRow = ({
                     <CustomIcon color="primary.main" name="contract-address" />
                   }
                   showCopyOnHover
-                  type="contract_address"
+                  textLabel={evmVerifyInfos?.[result.to]?.contractName}
+                  type="evm_contract_address"
                   value={result.to}
                 />
               </TableRow>
