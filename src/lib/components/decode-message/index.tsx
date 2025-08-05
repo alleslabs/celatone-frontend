@@ -17,6 +17,7 @@ import { DecodeMessageSend } from "./decode-message-send";
 import { DecodeMessageSwap } from "./decode-message-swap";
 import { DecodeMessageUndelegate } from "./decode-message-undelegate";
 import { DecodeMessageWithdrawDelegatorReward } from "./decode-message-withdraw-delegator-reward";
+import { DecodeMessageWithdrawLiquidity } from "./decode-message-withdraw-liquidity";
 
 interface DecodeMessageProps extends TxMsgData {
   compact: boolean;
@@ -113,6 +114,13 @@ export const DecodeMessage = ({
     case "withdraw_delegator_reward":
       return (
         <DecodeMessageWithdrawDelegatorReward
+          decodedMessage={decodedMessage}
+          {...props}
+        />
+      );
+    case "withdraw_liquidity":
+      return (
+        <DecodeMessageWithdrawLiquidity
           decodedMessage={decodedMessage}
           {...props}
         />
