@@ -9,13 +9,19 @@ import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
+<<<<<<< HEAD
 import { DexPoolLink } from "../DexPoolLink";
+=======
+>>>>>>> d88a05a2e (feat(components): support decode message lp deposit and stake)
 import { ExplorerLink } from "../ExplorerLink";
 import { TokenImageWithAmount } from "../token";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { ValidatorBadge } from "../ValidatorBadge";
 import { DecodeMessageBody } from "./decode-message-body";
+<<<<<<< HEAD
 import { DecodeMessageExecute } from "./decode-message-execute";
+=======
+>>>>>>> d88a05a2e (feat(components): support decode message lp deposit and stake)
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
@@ -47,11 +53,19 @@ export const DecodeMessageDepositStakeLiquidity = ({
       <DecodeMessageHeader
         compact={compact}
         gap={2}
+<<<<<<< HEAD
+=======
+        iconName="delegate"
+>>>>>>> d88a05a2e (feat(components): support decode message lp deposit and stake)
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
+<<<<<<< HEAD
         label="Provide & Stake"
+=======
+        label="LP Deposit & Stake"
+>>>>>>> d88a05a2e (feat(components): support decode message lp deposit and stake)
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
@@ -60,7 +74,11 @@ export const DecodeMessageDepositStakeLiquidity = ({
         <Text color="text.dark">+</Text>
         <TokenImageWithAmount token={tokenB} />
         <Text color="text.dark">to</Text>
+<<<<<<< HEAD
         <DexPoolLink liquidityDenom={data.liquidityDenom} />
+=======
+        {/* TODO: add LP token */}
+>>>>>>> d88a05a2e (feat(components): support decode message lp deposit and stake)
         <Text color="text.dark">via</Text>
         <ValidatorBadge
           badgeSize={4}
@@ -78,7 +96,11 @@ export const DecodeMessageDepositStakeLiquidity = ({
         />
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
+<<<<<<< HEAD
         <DecodeMessageRow title="Address">
+=======
+        <DecodeMessageRow title="Staker">
+>>>>>>> d88a05a2e (feat(components): support decode message lp deposit and stake)
           <ExplorerLink
             maxWidth="full"
             showCopyOnHover
@@ -89,7 +111,11 @@ export const DecodeMessageDepositStakeLiquidity = ({
           />
         </DecodeMessageRow>
         <DecodeMessageRow title="Pool">
+<<<<<<< HEAD
           <DexPoolLink liquidityDenom={data.liquidityDenom} />
+=======
+          -{/* TODO: add LP token */}
+>>>>>>> d88a05a2e (feat(components): support decode message lp deposit and stake)
         </DecodeMessageRow>
         <DecodeMessageRow title="Validator">
           <ValidatorBadge
@@ -107,7 +133,10 @@ export const DecodeMessageDepositStakeLiquidity = ({
         <DecodeMessageRow title="Assets">
           <CoinsComponent coins={[coinA, coinB]} />
         </DecodeMessageRow>
+<<<<<<< HEAD
         <DecodeMessageExecute log={log} msgBody={msgBody} />
+=======
+>>>>>>> d88a05a2e (feat(components): support decode message lp deposit and stake)
       </DecodeMessageBody>
     </Flex>
   );

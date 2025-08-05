@@ -5,12 +5,16 @@ import { DecodeMessageClaimEsinit } from "./decode-message-claim-esinit";
 import { DecodeMessageClaimMinitSwap } from "./decode-message-claim-minitswap";
 import { DecodeMessageDelegate } from "./decode-message-delegate";
 import { DecodeMessageDepositLiquidity } from "./decode-message-deposit-liquidity";
+<<<<<<< HEAD
 import { DecodeMessageDepositMinitSwap } from "./decode-message-deposit-minitswap";
 import { DecodeMessageDepositStableSwap } from "./decode-message-deposit-stableswap";
 import { DecodeMessageDepositStakeLiquidity } from "./decode-message-deposit-stake-liquidity";
 import { DecodeMessageDepositStakeLockLiquidity } from "./decode-message-deposit-stake-lock-liquidity";
 import { DecodeMessageExtendLiquidity } from "./decode-message-extend-liquidity";
 import { DecodeMessageGaugeVote } from "./decode-message-gauge-vote";
+=======
+import { DecodeMessageDepositStakeLiquidity } from "./decode-message-deposit-stake-liquidity";
+>>>>>>> d88a05a2e (feat(components): support decode message lp deposit and stake)
 import { DecodeMessageIbcFt } from "./decode-message-ibc-ft";
 import { DecodeMessageIbcNft } from "./decode-message-ibc-nft";
 import { DecodeMessageMergeLiquidity } from "./decode-message-merge-liquidity";
@@ -58,6 +62,7 @@ export const DecodeMessage = ({
           {...props}
         />
       );
+<<<<<<< HEAD
     case "deposit_minitswap":
       return (
         <DecodeMessageDepositMinitSwap
@@ -65,6 +70,8 @@ export const DecodeMessage = ({
           {...props}
         />
       );
+=======
+>>>>>>> d88a05a2e (feat(components): support decode message lp deposit and stake)
     case "deposit_stake_liquidity":
       return (
         <DecodeMessageDepositStakeLiquidity
@@ -72,6 +79,7 @@ export const DecodeMessage = ({
           {...props}
         />
       );
+<<<<<<< HEAD
     case "deposit_stake_lock_liquidity":
       return (
         <DecodeMessageDepositStakeLockLiquidity
@@ -86,6 +94,8 @@ export const DecodeMessage = ({
           {...props}
         />
       );
+=======
+>>>>>>> d88a05a2e (feat(components): support decode message lp deposit and stake)
     case "ibc_ft_receive":
     case "ibc_ft_send":
       return <DecodeMessageIbcFt decodedMessage={decodedMessage} {...props} />;
