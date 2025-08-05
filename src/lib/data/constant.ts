@@ -19,10 +19,7 @@ export const CHAIN_PROFILE_URL = "https://registry.initia.xyz/profiles.json";
 
 export const INITIA_WEBSITE_URL = "https://initia.xyz";
 
-export const INITIA_REGISTRY_URLS = [
-  "https://registry.initia.xyz",
-  "https://registry.testnet.initia.xyz",
-];
+export const INITIA_REGISTRY_URL = "https://registry.initia.xyz";
 
 export const INSTANTIATED_LIST_NAME = "Instantiated by me";
 

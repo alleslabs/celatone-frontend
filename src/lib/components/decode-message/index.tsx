@@ -2,6 +2,7 @@ import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 
 import { TxMessage, type TxMsgData } from "../tx-message";
 import { DecodeMessageDelegate } from "./decode-message-delegate";
+import { DecodeMessageDepositLiquidity } from "./decode-message-deposit-liquidity";
 import { DecodeMessageIbcFt } from "./decode-message-ibc-ft";
 import { DecodeMessageIbcNft } from "./decode-message-ibc-nft";
 import { DecodeMessageNftBurn } from "./decode-message-nft-burn";
@@ -30,6 +31,13 @@ export const DecodeMessage = ({
     case "delegate":
       return (
         <DecodeMessageDelegate decodedMessage={decodedMessage} {...props} />
+      );
+    case "deposit_liquidity":
+      return (
+        <DecodeMessageDepositLiquidity
+          decodedMessage={decodedMessage}
+          {...props}
+        />
       );
     case "ibc_ft_receive":
     case "ibc_ft_send":
