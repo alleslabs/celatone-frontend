@@ -3,6 +3,9 @@ import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 import { TxMessage, type TxMsgData } from "../tx-message";
 import { DecodeMessageDelegate } from "./decode-message-delegate";
 import { DecodeMessageDepositLiquidity } from "./decode-message-deposit-liquidity";
+import { DecodeMessageDepositStakeLiquidity } from "./decode-message-deposit-stake-liquidity";
+import { DecodeMessageDepositStakeLockLiquidity } from "./decode-message-deposit-stake-lock-liquidity";
+import { DecodeMessageExtendLiquidity } from "./decode-message-extend-liquidity";
 import { DecodeMessageIbcFt } from "./decode-message-ibc-ft";
 import { DecodeMessageIbcNft } from "./decode-message-ibc-nft";
 import { DecodeMessageNftBurn } from "./decode-message-nft-burn";
@@ -15,6 +18,7 @@ import { DecodeMessageSend } from "./decode-message-send";
 import { DecodeMessageSwap } from "./decode-message-swap";
 import { DecodeMessageUndelegate } from "./decode-message-undelegate";
 import { DecodeMessageWithdrawDelegatorReward } from "./decode-message-withdraw-delegator-reward";
+import { DecodeMessageWithdrawLiquidity } from "./decode-message-withdraw-liquidity";
 
 interface DecodeMessageProps extends TxMsgData {
   compact: boolean;
@@ -35,6 +39,27 @@ export const DecodeMessage = ({
     case "deposit_liquidity":
       return (
         <DecodeMessageDepositLiquidity
+          decodedMessage={decodedMessage}
+          {...props}
+        />
+      );
+    case "deposit_stake_liquidity":
+      return (
+        <DecodeMessageDepositStakeLiquidity
+          decodedMessage={decodedMessage}
+          {...props}
+        />
+      );
+    case "deposit_stake_lock_liquidity":
+      return (
+        <DecodeMessageDepositStakeLockLiquidity
+          decodedMessage={decodedMessage}
+          {...props}
+        />
+      );
+    case "extend_liquidity":
+      return (
+        <DecodeMessageExtendLiquidity
           decodedMessage={decodedMessage}
           {...props}
         />
@@ -97,6 +122,13 @@ export const DecodeMessage = ({
     case "withdraw_delegator_reward":
       return (
         <DecodeMessageWithdrawDelegatorReward
+          decodedMessage={decodedMessage}
+          {...props}
+        />
+      );
+    case "withdraw_liquidity":
+      return (
+        <DecodeMessageWithdrawLiquidity
           decodedMessage={decodedMessage}
           {...props}
         />
