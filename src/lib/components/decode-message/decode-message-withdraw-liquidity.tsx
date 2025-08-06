@@ -85,6 +85,7 @@ export const DecodeMessageWithdrawLiquidity = ({
             token: lpToken,
           })}
         </DecodeMessageRow>
+        <DecodeMessageRow title="LP amount">-</DecodeMessageRow>
         <DecodeMessageRow title="Withdrawn assets">
           <CoinsComponent coins={[coinA, coinB]} />
         </DecodeMessageRow>
