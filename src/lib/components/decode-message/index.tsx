@@ -2,10 +2,10 @@ import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 
 import { TxMessage, type TxMsgData } from "../tx-message";
 import { DecodeMessageClaimEsinit } from "./decode-message-claim-esinit";
-import { DecodeMessageClaimMinuteSwap } from "./decode-message-claim-minitswap";
+import { DecodeMessageClaimMinitSwap } from "./decode-message-claim-minitswap";
 import { DecodeMessageDelegate } from "./decode-message-delegate";
 import { DecodeMessageDepositLiquidity } from "./decode-message-deposit-liquidity";
-import { DecodeMessageDepositMinuteSwap } from "./decode-message-deposit-minitswap";
+import { DecodeMessageDepositMinitSwap } from "./decode-message-deposit-minitswap";
 import { DecodeMessageDepositStakeLiquidity } from "./decode-message-deposit-stake-liquidity";
 import { DecodeMessageDepositStakeLockLiquidity } from "./decode-message-deposit-stake-lock-liquidity";
 import { DecodeMessageExtendLiquidity } from "./decode-message-extend-liquidity";
@@ -24,7 +24,7 @@ import { DecodeMessageSwap } from "./decode-message-swap";
 import { DecodeMessageUndelegate } from "./decode-message-undelegate";
 import { DecodeMessageWithdrawDelegatorReward } from "./decode-message-withdraw-delegator-reward";
 import { DecodeMessageWithdrawLiquidity } from "./decode-message-withdraw-liquidity";
-import { DecodeMessageWithdrawMinuteSwap } from "./decode-message-withdraw-minitswap";
+import { DecodeMessageWithdrawMinitSwap } from "./decode-message-withdraw-minitswap";
 
 interface DecodeMessageProps extends TxMsgData {
   compact: boolean;
@@ -40,7 +40,7 @@ export const DecodeMessage = ({
   switch (decodedMessage.action) {
     case "claim_minitswap":
       return (
-        <DecodeMessageClaimMinuteSwap
+        <DecodeMessageClaimMinitSwap
           decodedMessage={decodedMessage}
           {...props}
         />
@@ -58,7 +58,7 @@ export const DecodeMessage = ({
       );
     case "deposit_minitswap":
       return (
-        <DecodeMessageDepositMinuteSwap
+        <DecodeMessageDepositMinitSwap
           decodedMessage={decodedMessage}
           {...props}
         />
@@ -170,7 +170,7 @@ export const DecodeMessage = ({
       );
     case "withdraw_minitswap":
       return (
-        <DecodeMessageWithdrawMinuteSwap
+        <DecodeMessageWithdrawMinitSwap
           decodedMessage={decodedMessage}
           {...props}
         />

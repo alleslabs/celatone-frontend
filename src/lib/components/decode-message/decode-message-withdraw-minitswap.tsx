@@ -21,7 +21,7 @@ interface DecodeMessageWithdrawMinitSwapProps extends TxMsgData {
   };
 }
 
-export const DecodeMessageWithdrawMinuteSwap = ({
+export const DecodeMessageWithdrawMinitSwap = ({
   compact,
   decodedMessage,
   log,
