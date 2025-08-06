@@ -77,7 +77,6 @@ export const DecodeMessageSend = ({
       <DecodeMessageHeader
         compact={compact}
         gap={2}
-        iconName="send"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}

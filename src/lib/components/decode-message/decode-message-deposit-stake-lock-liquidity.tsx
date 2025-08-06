@@ -47,12 +47,11 @@ export const DecodeMessageDepositStakeLockLiquidity = ({
       <DecodeMessageHeader
         compact={compact}
         gap={2}
-        iconName="delegate"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="LP Deposit & Stake"
+        label="Provide & Stake"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
@@ -79,7 +78,7 @@ export const DecodeMessageDepositStakeLockLiquidity = ({
         />
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
-        <DecodeMessageRow title="Staker">
+        <DecodeMessageRow title="Address">
           <ExplorerLink
             maxWidth="full"
             showCopyOnHover

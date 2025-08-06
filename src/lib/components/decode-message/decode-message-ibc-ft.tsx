@@ -44,7 +44,6 @@ export const DecodeMessageIbcFt = ({
       <DecodeMessageHeader
         compact={compact}
         gap={2}
-        iconName="swap"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}

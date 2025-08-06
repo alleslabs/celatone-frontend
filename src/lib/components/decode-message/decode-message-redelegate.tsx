@@ -43,7 +43,6 @@ export const DecodedMessageRedelegate = ({
       <DecodeMessageHeader
         compact={compact}
         gap={2}
-        iconName="delegate"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}

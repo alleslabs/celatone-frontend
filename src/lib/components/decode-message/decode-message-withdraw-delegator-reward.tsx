@@ -43,7 +43,6 @@ export const DecodeMessageWithdrawDelegatorReward = ({
       <DecodeMessageHeader
         compact={compact}
         gap={2}
-        iconName="assets-solid"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}

@@ -1,38 +1,34 @@
 import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { zValidatorAddr } from "lib/types";
-import { formatUTC, parseUnixToDateOpt } from "lib/utils";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { formatInteger } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
-import { ExplorerLink } from "../ExplorerLink";
-import { ValidatorBadge } from "../ValidatorBadge";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodeMessageExtendLiquidityProps extends TxMsgData {
+interface DecodeMessageGaugeVoteProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "extend_liquidity";
+    action: "vip_gauge_vote";
   };
 }
 
-export const DecodeMessageExtendLiquidity = ({
+export const DecodeMessageGaugeVote = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageExtendLiquidityProps) => {
+}: DecodeMessageGaugeVoteProps) => {
   const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
 
-  const parsedNewReleaseTimestamp = parseUnixToDateOpt(
-    data.newReleaseTimestamp
-  );
+  const sumVotingPower = data.votes.reduce((acc, vote) => acc + vote.amount, 0);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -43,12 +39,14 @@ export const DecodeMessageExtendLiquidity = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Extend"
+        label="VIP Gauge Vote"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
+        <Text>{formatInteger(sumVotingPower)}</Text>
         <Text color="text.dark">for</Text>
+        {/* Add rollup image */}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Address">
@@ -61,27 +59,8 @@ export const DecodeMessageExtendLiquidity = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Pool">-</DecodeMessageRow>
-        <DecodeMessageRow title="Validator">
-          <ValidatorBadge
-            badgeSize={4}
-            sx={{
-              width: "fit-content",
-            }}
-            validator={{
-              identity: data.validator?.description.identity,
-              moniker: data.validator?.description.moniker,
-              validatorAddress: zValidatorAddr.parse(data.validatorAddress),
-            }}
-          />
-        </DecodeMessageRow>
-        <DecodeMessageRow title="Assets">-</DecodeMessageRow>
-        <DecodeMessageRow title="Extended period">-</DecodeMessageRow>
-        {parsedNewReleaseTimestamp && (
-          <DecodeMessageRow title="Release timestamp">
-            {formatUTC(parsedNewReleaseTimestamp)}
-          </DecodeMessageRow>
-        )}
+        <DecodeMessageRow title="Epoch">-</DecodeMessageRow>
+        <DecodeMessageRow title="Voted for">-</DecodeMessageRow>
       </DecodeMessageBody>
     </Flex>
   );

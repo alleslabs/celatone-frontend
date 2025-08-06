@@ -1,38 +1,40 @@
 import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { zValidatorAddr } from "lib/types";
-import { formatUTC, parseUnixToDateOpt } from "lib/utils";
+import { Coin } from "@initia/initia.js";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { TokenImageWithAmount } from "lib/components/token";
+import { useAssetInfos } from "lib/services/assetService";
+import { coinToTokenWithValue } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
-import { ExplorerLink } from "../ExplorerLink";
-import { ValidatorBadge } from "../ValidatorBadge";
+import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodeMessageExtendLiquidityProps extends TxMsgData {
+interface DecodeMessageClaimEsinitProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "extend_liquidity";
+    action: "vip_claim_esinit";
   };
 }
 
-export const DecodeMessageExtendLiquidity = ({
+export const DecodeMessageClaimEsinit = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageExtendLiquidityProps) => {
+}: DecodeMessageClaimEsinitProps) => {
   const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
 
-  const parsedNewReleaseTimestamp = parseUnixToDateOpt(
-    data.newReleaseTimestamp
-  );
+  const { data: assetInfos } = useAssetInfos({ withPrices: false });
+  const token = coinToTokenWithValue(data.denom, data.amount, assetInfos);
+  const coin = new Coin(data.denom, data.amount);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -43,12 +45,14 @@ export const DecodeMessageExtendLiquidity = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Extend"
+        label="VIP Claim"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Text color="text.dark">for</Text>
+        <TokenImageWithAmount token={token} />
+        <Text color="text.dark">from</Text>
+        {/* TODO: add validator */}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Address">
@@ -61,27 +65,10 @@ export const DecodeMessageExtendLiquidity = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Pool">-</DecodeMessageRow>
-        <DecodeMessageRow title="Validator">
-          <ValidatorBadge
-            badgeSize={4}
-            sx={{
-              width: "fit-content",
-            }}
-            validator={{
-              identity: data.validator?.description.identity,
-              moniker: data.validator?.description.moniker,
-              validatorAddress: zValidatorAddr.parse(data.validatorAddress),
-            }}
-          />
+        <DecodeMessageRow title="Rollup">-</DecodeMessageRow>
+        <DecodeMessageRow title="Amount">
+          <CoinsComponent coins={[coin]} />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Assets">-</DecodeMessageRow>
-        <DecodeMessageRow title="Extended period">-</DecodeMessageRow>
-        {parsedNewReleaseTimestamp && (
-          <DecodeMessageRow title="Release timestamp">
-            {formatUTC(parsedNewReleaseTimestamp)}
-          </DecodeMessageRow>
-        )}
       </DecodeMessageBody>
     </Flex>
   );

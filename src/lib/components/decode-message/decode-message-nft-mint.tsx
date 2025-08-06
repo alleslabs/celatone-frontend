@@ -53,7 +53,6 @@ export const DecodeMessageNftMint = ({
       <DecodeMessageHeader
         compact={compact}
         gap={2}
-        iconName="collection"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}

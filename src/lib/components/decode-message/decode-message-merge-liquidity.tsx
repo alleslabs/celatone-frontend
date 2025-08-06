@@ -1,44 +1,36 @@
 import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { Coin } from "@initia/initia.js";
-import { useAssetInfos } from "lib/services/assetService";
 import { zValidatorAddr } from "lib/types";
-import { coinToTokenWithValue } from "lib/utils";
+import { formatUTC, parseUnixToDateOpt } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
 import { ExplorerLink } from "../ExplorerLink";
-import { TokenImageWithAmount } from "../token";
-import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { ValidatorBadge } from "../ValidatorBadge";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodeMessageDepositStakeLiquidityProps extends TxMsgData {
+interface DecodeMessageMergeLiquidityProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "deposit_stake_liquidity";
+    action: "merge_liquidity";
   };
 }
 
-export const DecodeMessageDepositStakeLiquidity = ({
+export const DecodeMessageMergeLiquidity = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageDepositStakeLiquidityProps) => {
+}: DecodeMessageMergeLiquidityProps) => {
   const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
 
-  const { data: assetInfos } = useAssetInfos({ withPrices: false });
-  const tokenA = coinToTokenWithValue(data.denomA, data.amountA, assetInfos);
-  const coinA = new Coin(data.denomA, data.amountA);
-  const tokenB = coinToTokenWithValue(data.denomB, data.amountB, assetInfos);
-  const coinB = new Coin(data.denomB, data.amountB);
+  const parsedReleaseTimestamp = parseUnixToDateOpt(data.newReleaseTimestamp);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -49,31 +41,12 @@ export const DecodeMessageDepositStakeLiquidity = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Provide & Stake"
+        label="Merge"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <TokenImageWithAmount token={tokenA} />
         <Text color="text.dark">+</Text>
-        <TokenImageWithAmount token={tokenB} />
-        <Text color="text.dark">to</Text>
-        {/* TODO: add LP token */}
-        <Text color="text.dark">via</Text>
-        <ValidatorBadge
-          badgeSize={4}
-          fixedHeight={compact}
-          hasLabel={false}
-          sx={{
-            width: "fit-content",
-          }}
-          textFormat={!compact ? "normal" : "ellipsis"}
-          validator={{
-            identity: data.validator?.description.identity,
-            moniker: data.validator?.description.moniker,
-            validatorAddress: zValidatorAddr.parse(data.validatorAddress),
-          }}
-        />
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Address">
@@ -86,9 +59,7 @@ export const DecodeMessageDepositStakeLiquidity = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Pool">
-          -{/* TODO: add LP token */}
-        </DecodeMessageRow>
+        <DecodeMessageRow title="Pool">-</DecodeMessageRow>
         <DecodeMessageRow title="Validator">
           <ValidatorBadge
             badgeSize={4}
@@ -102,9 +73,12 @@ export const DecodeMessageDepositStakeLiquidity = ({
             }}
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Assets">
-          <CoinsComponent coins={[coinA, coinB]} />
-        </DecodeMessageRow>
+        <DecodeMessageRow title="Merged Assets">-</DecodeMessageRow>
+        {parsedReleaseTimestamp && (
+          <DecodeMessageRow title="Release timestamp">
+            {formatUTC(parsedReleaseTimestamp)}
+          </DecodeMessageRow>
+        )}
       </DecodeMessageBody>
     </Flex>
   );

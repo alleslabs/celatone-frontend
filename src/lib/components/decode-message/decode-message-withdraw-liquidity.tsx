@@ -43,12 +43,11 @@ export const DecodeMessageWithdrawLiquidity = ({
       <DecodeMessageHeader
         compact={compact}
         gap={2}
-        iconName="delegate"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="LP Withdraw"
+        label="Withdraw"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
@@ -60,7 +59,7 @@ export const DecodeMessageWithdrawLiquidity = ({
         {/* TODO: add LP token */}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
-        <DecodeMessageRow title="Liquidity withdrawer">
+        <DecodeMessageRow title="Address">
           <ExplorerLink
             maxWidth="full"
             showCopyOnHover
@@ -73,6 +72,7 @@ export const DecodeMessageWithdrawLiquidity = ({
         <DecodeMessageRow title="Pool">
           -{/* TODO: add LP token */}
         </DecodeMessageRow>
+        <DecodeMessageRow title="LP amount">-</DecodeMessageRow>
         <DecodeMessageRow title="Withdrawn assets">
           <CoinsComponent coins={[coinA, coinB]} />
         </DecodeMessageRow>

@@ -43,12 +43,11 @@ export const DecodeMessageDepositLiquidity = ({
       <DecodeMessageHeader
         compact={compact}
         gap={2}
-        iconName="delegate"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="LP Deposit"
+        label="Provide"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
@@ -60,7 +59,7 @@ export const DecodeMessageDepositLiquidity = ({
         {/* TODO: add LP token */}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
-        <DecodeMessageRow title="Liquidity provider">
+        <DecodeMessageRow title="Address">
           <ExplorerLink
             maxWidth="full"
             showCopyOnHover
