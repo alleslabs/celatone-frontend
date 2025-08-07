@@ -6,11 +6,16 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CountBadge } from "lib/components/module";
+import { MoveVerifyBadge } from "lib/components/MoveVerifyBadge";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { dateFromNow, formatUTC, resolveMoveVerifyStatus } from "lib/utils";
+import {
+  dateFromNow,
+  formatUTC,
+  resolveMoveVerifyStatus,
+  truncate,
+} from "lib/utils";
 
 import { TableRow } from "../tableComponents";
-import { ModulePathLink } from "./ModulePathLink";
 
 interface ModulesTableRowProps {
   isPublishedModules: boolean;
@@ -53,10 +58,17 @@ export const ModulesTableRow = ({
         }
       >
         <TableRow>
-          <ModulePathLink
-            hexAddr={moduleInfo.address}
-            moduleName={moduleInfo.moduleName}
-            moveVerifyStatus={moveVerifyStatus}
+          <ExplorerLink
+            rightIcon={
+              moveVerifyStatus && (
+                <MoveVerifyBadge hasTooltip status={moveVerifyStatus} />
+              )
+            }
+            showCopyOnHover
+            textFormat="normal"
+            textLabel={`${truncate(moduleInfo.address)}::${moduleInfo.moduleName}`}
+            type="module_name"
+            value={`${moduleInfo.address}/${moduleInfo.moduleName}`}
           />
         </TableRow>
         {isPublishedModules && (

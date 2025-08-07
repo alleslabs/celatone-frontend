@@ -252,7 +252,7 @@ export const ExplorerLink = ({
   const link = externalLink ?? internalLink;
   const isNotInitiaChainId = chainId && !chainConfigs[chainId];
   const readOnly = isReadOnly || !link || isNotInitiaChainId;
-  const isHighlighted = hoveredText === textValue;
+  const isHighlighted = hoveredText === value;
 
   // TODO: handle auto width
   return readOnly ? (
@@ -299,7 +299,7 @@ export const ExplorerLink = ({
         },
       }}
       transition="all 0.15s ease-in-out"
-      onMouseEnter={() => setHoveredText(textValue)}
+      onMouseEnter={() => setHoveredText(value)}
       onMouseLeave={() => setHoveredText(null)}
       {...componentProps}
     >
