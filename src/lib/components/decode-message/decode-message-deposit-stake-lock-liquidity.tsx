@@ -4,11 +4,12 @@ import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
 import { useAssetInfos } from "lib/services/assetService";
 import { zValidatorAddr } from "lib/types";
-import { coinToTokenWithValue, formatUTC, parseUnixToDateOpt } from "lib/utils";
+import { coinToTokenWithValue, formatUTC, parseUnixToDate } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
+import { DexPoolLink } from "../DexPoolLink";
 import { ExplorerLink } from "../ExplorerLink";
 import { TokenImageWithAmount } from "../token";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
@@ -40,7 +41,7 @@ export const DecodeMessageDepositStakeLockLiquidity = ({
   const tokenB = coinToTokenWithValue(data.denomB, data.amountB, assetInfos);
   const coinB = new Coin(data.denomB, data.amountB);
 
-  const parsedReleaseTimestamp = parseUnixToDateOpt(data.releaseTimestamp);
+  const releaseTimestamp = parseUnixToDate(data.releaseTimestamp);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -60,7 +61,7 @@ export const DecodeMessageDepositStakeLockLiquidity = ({
         <Text color="text.dark">+</Text>
         <TokenImageWithAmount token={tokenB} />
         <Text color="text.dark">to</Text>
-        {/* TODO: add LP token */}
+        <DexPoolLink liquidityDenom={data.liquidityDenom} />
         <Text color="text.dark">via</Text>
         <ValidatorBadge
           badgeSize={4}
@@ -89,7 +90,7 @@ export const DecodeMessageDepositStakeLockLiquidity = ({
           />
         </DecodeMessageRow>
         <DecodeMessageRow title="Pool">
-          -{/* TODO: add LP token */}
+          <DexPoolLink liquidityDenom={data.liquidityDenom} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Validator">
           <ValidatorBadge
@@ -107,17 +108,13 @@ export const DecodeMessageDepositStakeLockLiquidity = ({
         <DecodeMessageRow title="Assets">
           <CoinsComponent coins={[coinA, coinB]} />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Lock period">
+        {/* Required block timestamp */}
+        {/* <DecodeMessageRow title="Lock period">
           -
-          {/* 
-            // TODO: add lock period
-          */}
+        </DecodeMessageRow> */}
+        <DecodeMessageRow title="Release timestamp">
+          {formatUTC(releaseTimestamp)}
         </DecodeMessageRow>
-        {parsedReleaseTimestamp && (
-          <DecodeMessageRow title="Release timestamp">
-            {formatUTC(parsedReleaseTimestamp)}
-          </DecodeMessageRow>
-        )}
       </DecodeMessageBody>
     </Flex>
   );

@@ -3,11 +3,12 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
 import { useAssetInfos } from "lib/services/assetService";
-import { coinToTokenWithValue } from "lib/utils";
+import { coinToTokenWithValue, formatTokenWithValue } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
+import { DexPoolLink } from "../DexPoolLink";
 import { ExplorerLink } from "../ExplorerLink";
 import { TokenImageWithAmount } from "../token";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
@@ -37,6 +38,11 @@ export const DecodeMessageWithdrawLiquidity = ({
   const coinA = new Coin(data.denomA, data.amountA);
   const tokenB = coinToTokenWithValue(data.denomB, data.amountB, assetInfos);
   const coinB = new Coin(data.denomB, data.amountB);
+  const lpToken = coinToTokenWithValue(
+    data.liquidityDenom,
+    data.liquidity,
+    assetInfos
+  );
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -56,7 +62,7 @@ export const DecodeMessageWithdrawLiquidity = ({
         <Text color="text.dark">+</Text>
         <TokenImageWithAmount token={tokenB} />
         <Text color="text.dark">to</Text>
-        {/* TODO: add LP token */}
+        <DexPoolLink liquidityDenom={data.liquidityDenom} />
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Address">
@@ -70,9 +76,11 @@ export const DecodeMessageWithdrawLiquidity = ({
           />
         </DecodeMessageRow>
         <DecodeMessageRow title="Pool">
-          -{/* TODO: add LP token */}
+          <DexPoolLink liquidityDenom={data.liquidityDenom} />
         </DecodeMessageRow>
-        <DecodeMessageRow title="LP amount">-</DecodeMessageRow>
+        <DecodeMessageRow title="LP amount">
+          {formatTokenWithValue(lpToken, undefined, true)}
+        </DecodeMessageRow>
         <DecodeMessageRow title="Withdrawn assets">
           <CoinsComponent coins={[coinA, coinB]} />
         </DecodeMessageRow>

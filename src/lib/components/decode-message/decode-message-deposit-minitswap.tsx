@@ -8,6 +8,7 @@ import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
+import { DexPoolLink } from "../DexPoolLink";
 import { ExplorerLink } from "../ExplorerLink";
 import { TokenImageWithAmount } from "../token";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
@@ -56,7 +57,7 @@ export const DecodeMessageDepositMinitSwap = ({
       >
         <TokenImageWithAmount token={tokenDeposit} />
         <Text color="text.dark">to</Text>
-        {/* TODO: add LP token */}
+        <DexPoolLink liquidityDenom={data.denomReceived} />
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Address">
@@ -70,7 +71,7 @@ export const DecodeMessageDepositMinitSwap = ({
           />
         </DecodeMessageRow>
         <DecodeMessageRow title="Pool">
-          -{/* TODO: add LP token */}
+          <DexPoolLink liquidityDenom={data.denomReceived} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Deposited assets">
           <CoinsComponent coins={[coinDeposit]} />

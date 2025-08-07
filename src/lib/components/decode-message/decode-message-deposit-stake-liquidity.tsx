@@ -9,6 +9,7 @@ import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
+import { DexPoolLink } from "../DexPoolLink";
 import { ExplorerLink } from "../ExplorerLink";
 import { TokenImageWithAmount } from "../token";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
@@ -58,7 +59,7 @@ export const DecodeMessageDepositStakeLiquidity = ({
         <Text color="text.dark">+</Text>
         <TokenImageWithAmount token={tokenB} />
         <Text color="text.dark">to</Text>
-        {/* TODO: add LP token */}
+        <DexPoolLink liquidityDenom={data.liquidityDenom} />
         <Text color="text.dark">via</Text>
         <ValidatorBadge
           badgeSize={4}
@@ -87,7 +88,7 @@ export const DecodeMessageDepositStakeLiquidity = ({
           />
         </DecodeMessageRow>
         <DecodeMessageRow title="Pool">
-          -{/* TODO: add LP token */}
+          <DexPoolLink liquidityDenom={data.liquidityDenom} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Validator">
           <ValidatorBadge

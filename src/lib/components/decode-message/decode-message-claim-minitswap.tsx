@@ -8,6 +8,7 @@ import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
+import { DexPoolLink } from "../DexPoolLink";
 import { ExplorerLink } from "../ExplorerLink";
 import { TokenImageWithAmount } from "../token";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
@@ -33,9 +34,9 @@ export const DecodeMessageClaimMinitSwap = ({
   const { data, isIbc, isOp } = decodedMessage;
 
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
-  const tokenWithdrawn = coinToTokenWithValue(
-    data.denomWithdrawn,
-    data.amountWithdrawn,
+  const tokenReceived = coinToTokenWithValue(
+    data.denomReceived,
+    data.amountReceived,
     assetInfos
   );
   const coinWithdrawn = new Coin(data.denomWithdrawn, data.amountWithdrawn);
@@ -49,14 +50,14 @@ export const DecodeMessageClaimMinitSwap = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Withdraw"
+        label="Claim"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <TokenImageWithAmount token={tokenWithdrawn} />
+        <TokenImageWithAmount token={tokenReceived} />
         <Text color="text.dark">from</Text>
-        {/* TODO: add LP token */}
+        <DexPoolLink liquidityDenom={data.denomWithdrawn} />
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Claimer">
@@ -70,7 +71,7 @@ export const DecodeMessageClaimMinitSwap = ({
           />
         </DecodeMessageRow>
         <DecodeMessageRow title="Pool">
-          -{/* TODO: add LP token */}
+          <DexPoolLink liquidityDenom={data.denomWithdrawn} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Amount">
           <CoinsComponent coins={[coinWithdrawn]} />

@@ -1,6 +1,6 @@
 import type { DecodedMessage } from "@initia/tx-decoder";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TokenImageWithAmount } from "lib/components/token";
@@ -51,8 +51,6 @@ export const DecodeMessageClaimEsinit = ({
         onClick={() => setExpand(!expand)}
       >
         <TokenImageWithAmount token={token} />
-        <Text color="text.dark">from</Text>
-        {/* TODO: add validator */}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Address">
@@ -65,7 +63,7 @@ export const DecodeMessageClaimEsinit = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Rollup">-</DecodeMessageRow>
+        {/* <DecodeMessageRow title="Rollup">-</DecodeMessageRow> */}
         <DecodeMessageRow title="Amount">
           <CoinsComponent coins={[coin]} />
         </DecodeMessageRow>

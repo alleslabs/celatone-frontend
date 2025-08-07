@@ -1,13 +1,18 @@
 import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
+import { Coin } from "@initia/initia.js";
+import { useAssetInfos } from "lib/services/assetService";
 import { zValidatorAddr } from "lib/types";
-import { formatUTC, parseUnixToDateOpt } from "lib/utils";
+import { coinToTokenWithValue, formatUTC, parseUnixToDate } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
+import { DexPoolLink } from "../DexPoolLink";
 import { ExplorerLink } from "../ExplorerLink";
+import { TokenImageWithAmount } from "../token/TokenImageWithAmount";
+import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { ValidatorBadge } from "../ValidatorBadge";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
@@ -29,8 +34,15 @@ export const DecodeMessageMergeLiquidity = ({
   const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
+  const { data: assetInfos } = useAssetInfos({ withPrices: false });
 
-  const parsedReleaseTimestamp = parseUnixToDateOpt(data.newReleaseTimestamp);
+  const lpToken = coinToTokenWithValue(
+    data.liquidityDenom,
+    data.liquidity,
+    assetInfos
+  );
+  const lpCoin = new Coin(data.liquidityDenom, data.liquidity);
+  const releaseTimestamp = parseUnixToDate(data.newReleaseTimestamp);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -46,7 +58,19 @@ export const DecodeMessageMergeLiquidity = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Text color="text.dark">+</Text>
+        <TokenImageWithAmount token={lpToken} />
+        <Text color="text.dark">via</Text>
+        <ValidatorBadge
+          badgeSize={4}
+          sx={{
+            width: "fit-content",
+          }}
+          validator={{
+            identity: data.validator?.description.identity,
+            moniker: data.validator?.description.moniker,
+            validatorAddress: zValidatorAddr.parse(data.validatorAddress),
+          }}
+        />
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Address">
@@ -59,7 +83,9 @@ export const DecodeMessageMergeLiquidity = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Pool">-</DecodeMessageRow>
+        <DecodeMessageRow title="Pool">
+          <DexPoolLink liquidityDenom={data.liquidityDenom} />
+        </DecodeMessageRow>
         <DecodeMessageRow title="Validator">
           <ValidatorBadge
             badgeSize={4}
@@ -73,10 +99,12 @@ export const DecodeMessageMergeLiquidity = ({
             }}
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Merged Assets">-</DecodeMessageRow>
-        {parsedReleaseTimestamp && (
+        <DecodeMessageRow title="Merged Assets">
+          <CoinsComponent coins={[lpCoin]} />
+        </DecodeMessageRow>
+        {releaseTimestamp && (
           <DecodeMessageRow title="Release timestamp">
-            {formatUTC(parsedReleaseTimestamp)}
+            {formatUTC(releaseTimestamp)}
           </DecodeMessageRow>
         )}
       </DecodeMessageBody>
