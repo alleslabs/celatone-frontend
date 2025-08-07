@@ -11,6 +11,7 @@ import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
+import { ChainBadge } from "../ChainBadge";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
@@ -54,7 +55,7 @@ export const DecodeMessageOpDeposit = ({
         <TokenImageWithAmount token={token} />
         <Flex align="center" gap={2}>
           <Text color="text.dark">to</Text>
-          <Text whiteSpace="nowrap">{data.dstChainId}</Text>
+          <ChainBadge chainId={data.dstChainId} />
         </Flex>
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
@@ -62,7 +63,7 @@ export const DecodeMessageOpDeposit = ({
           <Text>{data.bridgeId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Source chain">
-          <Text>{chainId}</Text>
+          <ChainBadge chainId={chainId} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
@@ -75,7 +76,7 @@ export const DecodeMessageOpDeposit = ({
           />
         </DecodeMessageRow>
         <DecodeMessageRow title="Destination chain">
-          {data.dstChainId}
+          <ChainBadge chainId={data.dstChainId} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink

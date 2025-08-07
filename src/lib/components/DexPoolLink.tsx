@@ -1,8 +1,7 @@
-import { HStack } from "@chakra-ui/react";
-import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
+import { Flex, HStack } from "@chakra-ui/react";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMoveDexPoolInfo } from "lib/services/move/dex";
-import { coinToTokenWithValue } from "lib/utils";
+import { coinToTokenWithValue, getTokenLabel } from "lib/utils";
 
 import { ExplorerLink } from "./ExplorerLink";
 import { TokenImageRender } from "./token/TokenImageRender";
@@ -21,21 +20,21 @@ export const DexPoolLink = ({ liquidityDenom }: DexPoolLinkProps) => {
     coinToTokenWithValue(coin.denom, "0", assetInfos)
   );
 
-  if (!moveDexPool || !underlyingCoins) return "No pool found";
+  if (!moveDexPool) return <TokenImageRender boxSize={4} logo={undefined} />;
 
   return (
     <HStack>
-      {underlyingCoins.length === 0 ? (
-        <TokenImageRender boxSize={4} logo={lpToken?.logo} />
-      ) : (
-        <PoolLogo
-          backOver={true}
-          logoSize={4}
-          marginLeft={-6}
-          minW="auto"
-          tokens={underlyingCoins}
-        />
-      )}
+      <Flex>
+        {underlyingCoins?.map((token) => (
+          <Flex key={token.denom} align="center" marginInlineEnd="-4px">
+            <TokenImageRender
+              alt={getTokenLabel(token.denom, token.symbol)}
+              boxSize={4}
+              logo={token.logo}
+            />
+          </Flex>
+        ))}
+      </Flex>
       <ExplorerLink
         copyValue={liquidityDenom}
         externalLink={`https://app.initia.xyz/liquidity/${encodeURIComponent(liquidityDenom)}`}

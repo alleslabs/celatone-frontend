@@ -11,6 +11,7 @@ import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
+import { ChainBadge } from "../ChainBadge";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
@@ -54,7 +55,7 @@ export const DecodeMessageOpFinalizeWithdraw = ({
         <TokenImageWithAmount token={token} />
         <Flex align="center" gap={2}>
           <Text color="text.dark">from</Text>
-          <Text whiteSpace="nowrap">{data.srcChainId}</Text>
+          <ChainBadge chainId={data.srcChainId} />
         </Flex>
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
@@ -62,7 +63,7 @@ export const DecodeMessageOpFinalizeWithdraw = ({
           <Text>{data.bridgeId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Source chain">
-          <Text>{data.srcChainId}</Text>
+          <ChainBadge chainId={data.srcChainId} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
@@ -75,7 +76,9 @@ export const DecodeMessageOpFinalizeWithdraw = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Destination chain">{chainId}</DecodeMessageRow>
+        <DecodeMessageRow title="Destination chain">
+          <ChainBadge chainId={chainId} />
+        </DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink
             maxWidth="full"
