@@ -45,7 +45,6 @@ export const ValidatorBadge = ({
           {isMobile && hasLabel && <MobileLabel label="Validator" />}
           <ExplorerLink
             ampCopierSection={ampCopierSection}
-            copyValue={validator.validatorAddress}
             externalLink={
               isValidatorExternalLink
                 ? `${isValidatorExternalLink}/${validator.validatorAddress}`
@@ -55,8 +54,9 @@ export const ValidatorBadge = ({
             isReadOnly={isNull(isValidatorExternalLink)}
             showCopyOnHover
             textFormat={textFormat}
+            textLabel={validator.moniker ?? validator.validatorAddress}
             type="validator_address"
-            value={validator.moniker ?? validator.validatorAddress}
+            value={validator.validatorAddress}
           />
           {moreInfo}
         </Flex>
