@@ -1382,8 +1382,18 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          html: getCommonReceiptHtml({
+            linkType: "function_name",
+            queryParams: {
+              address: details.module_address,
+              functionName: details.function_name,
+              moduleName: details.module_name,
+            },
+            textLabel: details.function_name,
+            type: "explorer",
+            value: undefined,
+          }),
           title: "Function Name",
-          value: details.function_name,
         },
         {
           html: getCommonReceiptHtml({

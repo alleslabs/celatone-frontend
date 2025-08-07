@@ -48,6 +48,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
             ampCopierSection="tx_page_event_logs"
             fixedHeight={false}
             maxWidth="full"
+            queryParams={{}}
             showCopyOnHover
             textFormat="normal"
             textLabel={undefined}
