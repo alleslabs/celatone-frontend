@@ -2,8 +2,9 @@ import type { MoveVerificationModuleIdentifier } from "lib/services/types";
 
 import { Box, Grid, TableContainer } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { truncate } from "lib/utils";
 
-import { ModulePathLink } from "../modules/ModulePathLink";
 import { TableHeader, TableRow } from "../tableComponents";
 
 interface ModuleVerificationDetailsTableProps {
@@ -40,7 +41,13 @@ export const ModuleVerificationDetailsTable = ({
             }
           >
             <TableRow>
-              <ModulePathLink hexAddr={address} moduleName={name} />
+              <ExplorerLink
+                showCopyOnHover
+                textFormat="normal"
+                textLabel={`${truncate(address)}::${name}`}
+                type="module_name"
+                value={`${address}/${name}`}
+              />
             </TableRow>
           </Grid>
         </Box>

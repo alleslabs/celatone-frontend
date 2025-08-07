@@ -4,12 +4,17 @@ import type { ModuleInfo, Option } from "lib/types";
 import { Flex, Grid, Tag, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { MoveVerifyBadge } from "lib/components/MoveVerifyBadge";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { dateFromNow, formatUTC, resolveMoveVerifyStatus } from "lib/utils";
+import {
+  dateFromNow,
+  formatUTC,
+  resolveMoveVerifyStatus,
+  truncate,
+} from "lib/utils";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
-import { ModulePathLink } from "./ModulePathLink";
 
 interface ModulesTableMobileCardProps {
   moduleInfo: ModuleInfo;
@@ -65,10 +70,17 @@ export const ModulesTableMobileCard = ({
       topContent={
         <Flex direction="column">
           <MobileLabel label="Module path" />
-          <ModulePathLink
-            hexAddr={moduleInfo.address}
-            moduleName={moduleInfo.moduleName}
-            moveVerifyStatus={moveVerifyStatus}
+          <ExplorerLink
+            rightIcon={
+              moveVerifyStatus && (
+                <MoveVerifyBadge hasTooltip status={moveVerifyStatus} />
+              )
+            }
+            showCopyOnHover
+            textFormat="normal"
+            textLabel={`${truncate(moduleInfo.address)}::${moduleInfo.moduleName}`}
+            type="module_name"
+            value={`${moduleInfo.address}/${moduleInfo.moduleName}`}
           />
         </Flex>
       }
