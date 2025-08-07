@@ -2,11 +2,12 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { formatInteger } from "lib/utils";
+import { formatDecimal } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
+import { ChainBadge } from "../ChainBadge";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
@@ -29,6 +30,7 @@ export const DecodeMessageGaugeVote = ({
   const { data, isIbc, isOp } = decodedMessage;
 
   const sumVotingPower = data.votes.reduce((acc, vote) => acc + vote.amount, 0);
+  const chainIds = data.votes.map((vote) => vote.rollup);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -44,9 +46,14 @@ export const DecodeMessageGaugeVote = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Text>{formatInteger(sumVotingPower)}</Text>
+        <Text>
+          {formatDecimal({
+            decimalPoints: 6,
+            delimiter: true,
+          })(sumVotingPower, "0")}
+        </Text>
         <Text color="text.dark">for</Text>
-        {/* Add rollup image */}
+        <ChainBadge chainId={chainIds} />
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Address">
@@ -60,7 +67,35 @@ export const DecodeMessageGaugeVote = ({
           />
         </DecodeMessageRow>
         <DecodeMessageRow title="Epoch">-</DecodeMessageRow>
-        <DecodeMessageRow title="Voted for">-</DecodeMessageRow>
+        <DecodeMessageRow title="Voted for">
+          <Flex direction="column" gap={2} w="full">
+            {data.votes.map(({ amount, rollup }) => (
+              <Flex
+                key={rollup}
+                align="center"
+                bg="gray.800"
+                borderRadius={4}
+                justifyContent="space-between"
+                px={3}
+                py={2}
+                w="full"
+              >
+                <ChainBadge chainId={rollup} />
+                <Flex align="center" gap={2}>
+                  <Text variant="body2">
+                    {formatDecimal({
+                      decimalPoints: 6,
+                      delimiter: true,
+                    })(amount, "0")}
+                  </Text>
+                  <Text color="text.dark" variant="body2">
+                    voting power
+                  </Text>
+                </Flex>
+              </Flex>
+            ))}
+          </Flex>
+        </DecodeMessageRow>
       </DecodeMessageBody>
     </Flex>
   );

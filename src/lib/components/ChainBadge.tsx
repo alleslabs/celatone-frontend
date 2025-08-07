@@ -5,14 +5,25 @@ import { TokenImageRender } from "./token";
 import { Tooltip } from "./Tooltip";
 
 interface ChainBadgeProps {
-  chainId: string;
+  chainId: string | string[];
 }
 
-export const ChainBadge = ({ chainId }: ChainBadgeProps) => {
+const ChainBadgeSingle = ({ chainId }: { chainId: string }) => {
   const { chainConfigs } = useChainConfigs();
   const chainInfo = chainConfigs[chainId];
 
-  if (!chainInfo) return <Text whiteSpace="nowrap">{chainId}</Text>;
+  if (!chainInfo)
+    return (
+      <Flex
+        className="copier-wrapper"
+        align="center"
+        gap={1}
+        minWidth="fit-content"
+      >
+        <TokenImageRender boxSize={4} logo={undefined} />
+        <Text whiteSpace="nowrap">{chainId}</Text>
+      </Flex>
+    );
 
   const logo =
     chainInfo.logo_URIs?.svg ||
@@ -23,7 +34,7 @@ export const ChainBadge = ({ chainId }: ChainBadgeProps) => {
     <Tooltip label={`Chain ID: ${chainId}`}>
       <Flex
         className="copier-wrapper"
-        alignItems="center"
+        align="center"
         gap={1}
         minWidth="fit-content"
       >
@@ -34,4 +45,36 @@ export const ChainBadge = ({ chainId }: ChainBadgeProps) => {
       </Flex>
     </Tooltip>
   );
+};
+
+const ChainBadgeMultiple = ({ chainId }: { chainId: string[] }) => {
+  const { chainConfigs } = useChainConfigs();
+  const chainInfos = chainId.map((id) => chainConfigs[id]).filter(Boolean);
+
+  if (!chainInfos.length)
+    return <TokenImageRender boxSize={4} logo={undefined} />;
+
+  return (
+    <Flex>
+      {chainInfos.map((chainInfo) => {
+        const logo =
+          chainInfo.logo_URIs?.svg ||
+          chainInfo.logo_URIs?.png ||
+          chainInfo.logo_URIs?.jpeg;
+
+        return (
+          <Flex key={chainInfo.chainId} align="center" marginInlineEnd="-4px">
+            <TokenImageRender boxSize={4} logo={logo} />
+          </Flex>
+        );
+      })}
+    </Flex>
+  );
+};
+
+export const ChainBadge = ({ chainId }: ChainBadgeProps) => {
+  if (typeof chainId === "string")
+    return <ChainBadgeSingle chainId={chainId} />;
+
+  return <ChainBadgeMultiple chainId={chainId} />;
 };
