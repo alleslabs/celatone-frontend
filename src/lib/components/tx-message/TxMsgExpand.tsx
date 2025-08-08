@@ -1,5 +1,4 @@
 import type { Coin } from "@cosmjs/stargate";
-import type { IconKeys } from "lib/components/icon";
 import type { BechAddr } from "lib/types";
 import type { VoteOption } from "lib/utils";
 
@@ -52,7 +51,6 @@ export const TxMsgExpand = ({
       ? ref.current.scrollWidth > ref.current.clientWidth
       : false;
 
-  let msgIcon: IconKeys = "file";
   let msgLabel: string = "";
   let content: ReactNode;
   switch (type) {
@@ -70,7 +68,6 @@ export const TxMsgExpand = ({
           (body.amount as Coin[]).length > 1
             ? "assets"
             : formatTokenWithValue(singleToken);
-        msgIcon = "send";
         msgLabel = "Send";
         content = (
           <Flex display="inline" gap={1}>
@@ -88,7 +85,6 @@ export const TxMsgExpand = ({
       break;
     case "/cosmos.gov.v1.MsgSubmitProposal":
     case "/cosmos.gov.v1beta1.MsgSubmitProposal":
-      msgIcon = "submit-proposal";
       msgLabel = "Submit proposal";
       content = (
         <Flex display="inline" gap={1}>
@@ -111,7 +107,6 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmos.gov.v1beta1.MsgVote":
-      msgIcon = "vote";
       msgLabel = "Vote";
       content = (
         <Flex align="center" gap={1}>
@@ -131,7 +126,6 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmos.staking.v1beta1.MsgDelegate":
-      msgIcon = "delegate";
       msgLabel = "Delegate";
       content = (
         <Flex display="inline" gap={1}>
@@ -155,7 +149,6 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgClearAdmin":
-      msgIcon = "admin-clear";
       msgLabel = "Clear admin";
       content = (
         <Flex display="inline" gap={1}>
@@ -171,7 +164,6 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgExecuteContract":
-      msgIcon = "execute";
       msgLabel = "Execute";
       content = (
         <Flex display="inline" gap={1}>
@@ -191,7 +183,6 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract":
-      msgIcon = "instantiate";
       msgLabel = "Instantiate";
       content = (
         <Flex display="inline" gap={1}>
@@ -220,7 +211,6 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
-      msgIcon = "instantiate";
       msgLabel = "Instantiate2";
       content = (
         <Flex display="inline" gap={1}>
@@ -249,7 +239,6 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgMigrateContract":
-      msgIcon = "migrate";
       msgLabel = "Migrate";
       content = (
         <Flex display="inline" gap={1}>
@@ -275,7 +264,6 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgStoreCode": {
       const codeId = findAttr(log?.events, "store_code", "code_id") ?? "";
 
-      msgIcon = "upload";
       msgLabel = "Upload wasm";
       content = (
         <Flex display="inline" gap={1}>
@@ -300,7 +288,6 @@ export const TxMsgExpand = ({
       break;
     }
     case "/cosmwasm.wasm.v1.MsgUpdateAdmin":
-      msgIcon = "admin-edit";
       msgLabel = "Update admin";
       content = (
         <Flex display="inline" gap={1}>
@@ -384,10 +371,7 @@ export const TxMsgExpand = ({
         gap={2}
       >
         <Tag gap={0.5} minWidth="auto" py={0} variant="gray">
-          <CustomIcon boxSize={3} color="gray.600" name={msgIcon} />
-          <Text fontWeight={700} variant="body2">
-            {msgLabel}
-          </Text>
+          <Text variant="body2">{msgLabel}</Text>
         </Tag>
         {!compact || msgCount === 1 ? (
           <>

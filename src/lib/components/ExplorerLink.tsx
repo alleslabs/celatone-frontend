@@ -21,6 +21,7 @@ export type LinkType =
   | "evm_contract_address"
   | "evm_tx_hash"
   | "module_name"
+  | "move_dex_pool_address"
   | "nft_collection"
   | "pool_id"
   | "proposal_id"
@@ -34,6 +35,7 @@ export interface ExplorerLinkProps extends FlexProps {
   copyValue?: string;
   externalLink?: string;
   fixedHeight?: boolean;
+  hideCopy?: boolean;
   isReadOnly?: boolean;
   openNewTab?: boolean;
   rightIcon?: ReactNode;
@@ -199,6 +201,7 @@ export const ExplorerLink = ({
   copyValue,
   externalLink,
   fixedHeight = true,
+  hideCopy = false,
   isReadOnly = false,
   openNewTab,
   rightIcon = null,
@@ -241,13 +244,15 @@ export const ExplorerLink = ({
         {textValue}
       </Text>
       {rightIcon}
-      <Copier
-        display={showCopyOnHover && !isMobile ? "none" : "inline"}
-        hoverLabel={`Copy ${getCopyLabel(type, value)}`}
-        ml={1}
-        type={type}
-        value={copyValue ?? value}
-      />
+      {!hideCopy && (
+        <Copier
+          display={showCopyOnHover && !isMobile ? "none" : "inline"}
+          hoverLabel={`Copy ${getCopyLabel(type, value)}`}
+          ml={1}
+          type={type}
+          value={copyValue ?? value}
+        />
+      )}
     </Flex>
   ) : (
     <Flex
@@ -275,14 +280,16 @@ export const ExplorerLink = ({
         type={type}
       />
       {rightIcon}
-      <Copier
-        amptrackSection={ampCopierSection}
-        display={showCopyOnHover && !isMobile ? "none" : "inline"}
-        hoverLabel={`Copy ${getCopyLabel(type, value)}`}
-        ml={1}
-        type={type}
-        value={copyValue ?? value}
-      />
+      {!hideCopy && (
+        <Copier
+          amptrackSection={ampCopierSection}
+          display={showCopyOnHover && !isMobile ? "none" : "inline"}
+          hoverLabel={`Copy ${getCopyLabel(type, value)}`}
+          ml={1}
+          type={type}
+          value={copyValue ?? value}
+        />
+      )}
     </Flex>
   );
 };

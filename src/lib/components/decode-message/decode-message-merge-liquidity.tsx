@@ -1,42 +1,41 @@
 import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { useGetAddressType } from "lib/app-provider";
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TokenImageWithAmount } from "lib/components/token";
-import { ValidatorBadge } from "lib/components/ValidatorBadge";
-import { useAssetInfos } from "lib/services/assetService";
+import { Coin } from "@initia/initia.js";
 import { zValidatorAddr } from "lib/types";
-import { coinToTokenWithValue } from "lib/utils";
+import { formatUTC, parseUnixToDate } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
+import { DexPoolLink } from "../DexPoolLink";
+import { ExplorerLink } from "../ExplorerLink";
+import { MergedPositions } from "../MergedPositions";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
+import { ValidatorBadge } from "../ValidatorBadge";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodeMessageWithdrawDelegatorRewardProps extends TxMsgData {
+interface DecodeMessageMergeLiquidityProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "withdraw_delegator_reward";
+    action: "merge_liquidity";
   };
 }
 
-export const DecodeMessageWithdrawDelegatorReward = ({
+export const DecodeMessageMergeLiquidity = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageWithdrawDelegatorRewardProps) => {
+}: DecodeMessageMergeLiquidityProps) => {
   const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
-  const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
-  const coin = data.coins[0];
-  const { data: assetInfos } = useAssetInfos({ withPrices: false });
-  const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
+
+  const coin = new Coin(data.liquidityDenom, data.mergedLiquidity);
+  const releaseTimestamp = parseUnixToDate(data.newReleaseTimestamp);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -47,51 +46,40 @@ export const DecodeMessageWithdrawDelegatorReward = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Claim"
+        label="Merge"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <TokenImageWithAmount token={token} />
-        <Text color="text.dark">from</Text>
+        <DexPoolLink liquidityDenom={data.liquidityDenom} />
+        <Text color="text.dark">via</Text>
         <ValidatorBadge
           badgeSize={4}
-          fixedHeight={compact}
-          hasLabel={false}
           sx={{
             width: "fit-content",
           }}
-          textFormat={!compact ? "normal" : "ellipsis"}
           validator={{
             identity: data.validator?.description.identity,
             moniker: data.validator?.description.moniker,
             validatorAddress: zValidatorAddr.parse(data.validatorAddress),
           }}
         />
-        {!compact && (
-          <Flex align="center" gap={2}>
-            <Text color="text.dark">by</Text>
-            <ExplorerLink
-              showCopyOnHover
-              textVariant="body1"
-              type={getAddressType(data.delegatorAddress)}
-              value={data.delegatorAddress}
-            />
-          </Flex>
-        )}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
-        <DecodeMessageRow title="Claimer">
+        <DecodeMessageRow title="Address">
           <ExplorerLink
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
-            type={getAddressType(data.delegatorAddress)}
-            value={data.delegatorAddress}
+            type="user_address"
+            value={data.from}
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="From validator">
+        <DecodeMessageRow title="Pool">
+          <DexPoolLink liquidityDenom={data.liquidityDenom} />
+        </DecodeMessageRow>
+        <DecodeMessageRow title="Validator">
           <ValidatorBadge
             badgeSize={4}
             sx={{
@@ -104,9 +92,20 @@ export const DecodeMessageWithdrawDelegatorReward = ({
             }}
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Amount">
-          <CoinsComponent coins={data.coins} />
+        <DecodeMessageRow title="Merged Positions">
+          <MergedPositions
+            initialPositions={data.initialPositions}
+            liquidityDenom={data.liquidityDenom}
+          />
         </DecodeMessageRow>
+        <DecodeMessageRow title="Merged Assets">
+          <CoinsComponent coins={[coin]} />
+        </DecodeMessageRow>
+        {releaseTimestamp && (
+          <DecodeMessageRow title="Release timestamp">
+            {formatUTC(releaseTimestamp)}
+          </DecodeMessageRow>
+        )}
       </DecodeMessageBody>
     </Flex>
   );

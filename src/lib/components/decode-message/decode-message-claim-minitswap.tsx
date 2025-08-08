@@ -2,41 +2,44 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
-import { useCurrentChain, useGetAddressType } from "lib/app-provider";
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TokenImageWithAmount } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
 import { coinToTokenWithValue } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
-import { ChainBadge } from "../ChainBadge";
+import { DexPoolLink } from "../DexPoolLink";
+import { ExplorerLink } from "../ExplorerLink";
+import { TokenImageWithAmount } from "../token";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { DecodeMessageBody } from "./decode-message-body";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodeMessageOpFinalizeWithdrawProps extends TxMsgData {
+interface DecodeMessageClaimMinitSwapProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "op_finalize_withdraw";
+    action: "claim_minitswap";
   };
 }
 
-export const DecodeMessageOpFinalizeWithdraw = ({
+export const DecodeMessageClaimMinitSwap = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageOpFinalizeWithdrawProps) => {
+}: DecodeMessageClaimMinitSwapProps) => {
   const isSingleMsg = msgCount === 1;
-  const { chainId } = useCurrentChain();
   const [expand, setExpand] = useState(!!isSingleMsg);
-  const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
+
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
-  const token = coinToTokenWithValue(data.denom, data.amount, assetInfos);
+  const tokenReceived = coinToTokenWithValue(
+    data.denomReceived,
+    data.amountReceived,
+    assetInfos
+  );
+  const coinWithdrawn = new Coin(data.denomWithdrawn, data.amountWithdrawn);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -47,50 +50,31 @@ export const DecodeMessageOpFinalizeWithdraw = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="OP Withdraw"
+        label="Claim"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <TokenImageWithAmount token={token} />
-        <Flex align="center" gap={2}>
-          <Text color="text.dark">from</Text>
-          <ChainBadge chainId={data.srcChainId} />
-        </Flex>
+        <TokenImageWithAmount token={tokenReceived} />
+        <Text color="text.dark">from</Text>
+        <DexPoolLink liquidityDenom={data.denomWithdrawn} />
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
-        <DecodeMessageRow title="Bridge ID">
-          <Text>{data.bridgeId}</Text>
-        </DecodeMessageRow>
-        <DecodeMessageRow title="Source chain">
-          <ChainBadge chainId={data.srcChainId} />
-        </DecodeMessageRow>
-        <DecodeMessageRow title="Sender">
+        <DecodeMessageRow title="Claimer">
           <ExplorerLink
-            chainId={data.srcChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
-            type={getAddressType(data.from)}
+            type="user_address"
             value={data.from}
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Destination chain">
-          <ChainBadge chainId={chainId} />
-        </DecodeMessageRow>
-        <DecodeMessageRow title="Receiver">
-          <ExplorerLink
-            maxWidth="full"
-            showCopyOnHover
-            textFormat="normal"
-            type={getAddressType(data.to)}
-            value={data.to}
-            wordBreak="break-word"
-          />
+        <DecodeMessageRow title="Pool">
+          <DexPoolLink liquidityDenom={data.denomWithdrawn} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Amount">
-          <CoinsComponent coins={[new Coin(data.denom, data.amount)]} />
+          <CoinsComponent coins={[coinWithdrawn]} />
         </DecodeMessageRow>
       </DecodeMessageBody>
     </Flex>

@@ -1,5 +1,4 @@
 import type { FlexProps } from "@chakra-ui/react";
-import type { IconKeys } from "lib/components/icon";
 
 import { Flex, Tag, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
@@ -10,7 +9,6 @@ import { type ReactNode, useRef, useState } from "react";
 interface DecodeMessageHeaderProps extends FlexProps {
   children: ReactNode;
   compact: boolean;
-  iconName: IconKeys;
   isExpand: boolean;
   isIbc: boolean;
   isOpinit: boolean;
@@ -24,7 +22,6 @@ interface DecodeMessageHeaderProps extends FlexProps {
 export const DecodeMessageHeader = ({
   children,
   compact,
-  iconName,
   isExpand,
   isIbc,
   isOpinit,
@@ -100,8 +97,7 @@ export const DecodeMessageHeader = ({
         {...props}
       >
         <Tag gap={0.5} minWidth="auto" py={0} variant="gray">
-          <CustomIcon boxSize={3} color="gray.600" name={iconName} />
-          <Text fontWeight={700} variant="body2" whiteSpace="nowrap">
+          <Text variant="body2" whiteSpace="nowrap">
             {label}
           </Text>
         </Tag>
@@ -109,9 +105,7 @@ export const DecodeMessageHeader = ({
           children
         ) : (
           <Tag gap={0.5} minWidth="auto" variant="gray">
-            <Text fontWeight={700} variant="body2">
-              {msgCount}
-            </Text>
+            <Text variant="body2">{msgCount}</Text>
           </Tag>
         )}
         {isIbc && (

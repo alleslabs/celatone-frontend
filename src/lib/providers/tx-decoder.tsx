@@ -2,7 +2,7 @@ import type { Option } from "lib/types";
 
 import { TxDecoder } from "@initia/tx-decoder";
 import { useCelatoneApp } from "lib/app-provider";
-import { INITIA_REGISTRY_URLS } from "lib/data";
+import { INITIA_REGISTRY_URL, INITIA_TESTNET_REGISTRY_URL } from "lib/data";
 import { createContext, useContext, useMemo } from "react";
 
 interface TxDecoderContextValue {
@@ -28,16 +28,19 @@ export const TxDecoderProvider = ({
   children: React.ReactNode;
 }) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { network_type, rest: restEndpoint },
   } = useCelatoneApp();
 
   const txDecoder = useMemo(
     () =>
       new TxDecoder({
-        registryUrls: INITIA_REGISTRY_URLS,
+        registryUrl:
+          network_type === "mainnet"
+            ? INITIA_REGISTRY_URL
+            : INITIA_TESTNET_REGISTRY_URL,
         restUrl: restEndpoint,
       }),
-    [restEndpoint]
+    [network_type, restEndpoint]
   );
 
   return (
