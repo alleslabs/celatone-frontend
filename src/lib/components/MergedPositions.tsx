@@ -1,4 +1,4 @@
-import type { AssetInfo, Option, TokenWithValue } from "lib/types";
+import type { Option, TokenWithValue } from "lib/types";
 
 import {
   Box,
@@ -19,11 +19,10 @@ import { useAssetInfos } from "lib/services/assetService";
 import { useMoveDexPoolInfo } from "lib/services/move/dex";
 import {
   coinToTokenWithValue,
-  formatDecimal,
+  formatTokenWithValue,
   formatUTC,
   getTokenLabel,
   parseUnixToDate,
-  truncate,
 } from "lib/utils";
 
 import { TokenImageRender } from "./token";
@@ -38,18 +37,23 @@ interface MergedPositionsProps {
 
 const MergedPosition = ({
   liquidityDenom,
-  lpToken,
   position,
   underlyingCoins,
 }: {
   liquidityDenom: string;
-  lpToken: Option<AssetInfo>;
   position: {
     amount: string;
     initialReleaseTimestamp: string;
   };
   underlyingCoins: Option<TokenWithValue[]>;
 }) => {
+  const { data: assetInfos } = useAssetInfos({ withPrices: true });
+  const token = coinToTokenWithValue(
+    liquidityDenom,
+    position.amount,
+    assetInfos
+  );
+
   return (
     <Grid
       backgroundColor="gray.800"
@@ -60,7 +64,7 @@ const MergedPosition = ({
       w="full"
     >
       <Flex gap={1}>
-        <Flex align="center" minW={6}>
+        <Flex align="center" minW={8}>
           {underlyingCoins?.map((token) => (
             <Flex key={token.denom} align="center" marginInlineEnd="-4px">
               <TokenImageRender
@@ -71,13 +75,7 @@ const MergedPosition = ({
             </Flex>
           ))}
         </Flex>
-        <Text>
-          {formatDecimal({
-            decimalPoints: lpToken?.precision ?? 0,
-            delimiter: true,
-          })(position.amount, "0")}
-        </Text>
-        <Text>{lpToken?.name || truncate(liquidityDenom)}</Text>
+        <Text>{formatTokenWithValue(token, undefined, true)}</Text>
       </Flex>
       <Text color="text.dark">
         {formatUTC(parseUnixToDate(position.initialReleaseTimestamp))}
@@ -93,7 +91,6 @@ export const MergedPositions = ({
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
   const { data: moveDexPool } = useMoveDexPoolInfo(liquidityDenom);
-  const lpToken = assetInfos?.[liquidityDenom];
   const underlyingCoins = moveDexPool?.coins?.map((coin) =>
     coinToTokenWithValue(coin.denom, "0", assetInfos)
   );
@@ -108,7 +105,7 @@ export const MergedPositions = ({
       </Flex>
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent w="600px">
+        <ModalContent w="800px">
           <ModalHeader>
             <Box
               borderBottom="1px solid"
@@ -143,7 +140,6 @@ export const MergedPositions = ({
               <MergedPosition
                 key={`${liquidityDenom}-${position.amount}-${index}`}
                 liquidityDenom={liquidityDenom}
-                lpToken={lpToken}
                 position={position}
                 underlyingCoins={underlyingCoins}
               />
