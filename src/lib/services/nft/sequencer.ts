@@ -118,14 +118,18 @@ export const getNftMintInfoSequencer = async (
     throw new Error("No mint transaction found");
 
   const tx = txsByNftAddress.items[0];
+  const { item } = tx;
 
-  const sender = convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix);
+  const sender = convertAccountPubkeyToAccountAddress(
+    item.signerPubkey,
+    prefix
+  );
 
   return {
-    height: tx.height,
+    height: item.height,
     minter: sender,
-    timestamp: tx.created,
-    txhash: tx.hash,
+    timestamp: item.created,
+    txhash: item.hash,
   };
 };
 
@@ -144,7 +148,7 @@ export const getNftTransactionsSequencer = async (
   const nftsTxs: NftTxResponse[] = [];
 
   txsByNftAddress.items.forEach((tx) => {
-    const { created, events, hash } = tx;
+    const { created, events, hash } = tx.item;
 
     events?.reverse()?.forEach((event) => {
       if (!event.attributes[0].value.includes("0x1::object::")) return;

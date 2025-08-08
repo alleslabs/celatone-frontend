@@ -7,6 +7,7 @@ import { TokenImageRender } from "lib/components/token";
 import { getUndefinedTokenIcon } from "../utils";
 
 interface PoolLogoProps {
+  backOver?: boolean;
   logoSize?: ImageProps["boxSize"];
   marginLeft?: number;
   minW?: FlexProps["minW"];
@@ -15,6 +16,7 @@ interface PoolLogoProps {
 }
 
 export const PoolLogo = ({
+  backOver = false,
   logoSize = 10,
   marginLeft = -12,
   minW = 24,
@@ -38,7 +40,7 @@ export const PoolLogo = ({
           <TokenImageRender
             boxSize={logoSize}
             logo={token.logo || getUndefinedTokenIcon(token.denom)}
-            zIndex={2 - idx}
+            zIndex={backOver ? idx : 2 - idx}
           />
         </Flex>
       ))}

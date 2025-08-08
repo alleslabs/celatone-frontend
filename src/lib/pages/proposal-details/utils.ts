@@ -107,7 +107,7 @@ export const getVoteResult = (
     };
   if (yesNonRatio >= threshold)
     return {
-      result: "Yes",
+      result: "Passed",
       resultColor: "success.main",
     };
   return {

@@ -1,7 +1,6 @@
 import {
   Divider,
   Flex,
-  Image,
   TabList,
   TabPanel,
   TabPanels,
@@ -15,6 +14,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { JsonLink } from "lib/components/JsonLink";
 import { Loading } from "lib/components/Loading";
+import { NftImage } from "lib/components/nft/NftImage";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
@@ -153,7 +153,7 @@ const NftDetailsBody = ({
                 width: "100%",
               }}
             >
-              <Image
+              <NftImage
                 style={{
                   backgroundPosition: "center",
                   borderRadius: "8px",
