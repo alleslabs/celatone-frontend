@@ -61,7 +61,7 @@ export const DecodeMessageWithdrawLiquidity = ({
         <TokenImageWithAmount token={tokenA} />
         <Text color="text.dark">+</Text>
         <TokenImageWithAmount token={tokenB} />
-        <Text color="text.dark">to</Text>
+        <Text color="text.dark">from</Text>
         <DexPoolLink liquidityDenom={data.liquidityDenom} />
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
