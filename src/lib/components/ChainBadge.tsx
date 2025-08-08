@@ -51,23 +51,30 @@ const ChainBadgeMultiple = ({ chainId }: { chainId: string[] }) => {
   const { chainConfigs } = useChainConfigs();
   const chainInfos = chainId.map((id) => chainConfigs[id]).filter(Boolean);
 
-  if (!chainInfos.length)
-    return <TokenImageRender boxSize={4} logo={undefined} />;
-
   return (
     <Flex>
-      {chainInfos.map((chainInfo) => {
-        const logo =
-          chainInfo.logo_URIs?.svg ||
-          chainInfo.logo_URIs?.png ||
-          chainInfo.logo_URIs?.jpeg;
+      {chainInfos.length
+        ? chainInfos.map((chainInfo) => {
+            const logo =
+              chainInfo.logo_URIs?.svg ||
+              chainInfo.logo_URIs?.png ||
+              chainInfo.logo_URIs?.jpeg;
 
-        return (
-          <Flex key={chainInfo.chainId} align="center" marginInlineEnd="-4px">
-            <TokenImageRender boxSize={4} logo={logo} />
-          </Flex>
-        );
-      })}
+            return (
+              <Flex
+                key={chainInfo.chainId}
+                align="center"
+                marginInlineEnd="-4px"
+              >
+                <TokenImageRender boxSize={4} logo={logo} />
+              </Flex>
+            );
+          })
+        : chainId.map((chain) => (
+            <Flex key={chain} align="center" marginInlineEnd="-4px">
+              <TokenImageRender boxSize={4} logo={undefined} />
+            </Flex>
+          ))}
     </Flex>
   );
 };

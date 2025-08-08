@@ -40,7 +40,7 @@ export const DecodeMessageWithdrawMinitSwap = ({
     assetInfos
   );
   const coinWithdrawn = new Coin(data.denomWithdrawn, data.amountWithdrawn);
-  const releaseTimestamp = parseUnixToDate(data.releaseTime);
+  const releaseTimestamp = parseUnixToDate(data.releaseTimestamp);
 
   return (
     <Flex direction="column" maxW="inherit">

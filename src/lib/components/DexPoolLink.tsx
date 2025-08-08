@@ -24,7 +24,7 @@ export const DexPoolLink = ({ liquidityDenom }: DexPoolLinkProps) => {
 
   return (
     <HStack>
-      <Flex>
+      <Flex align="center" minW={6}>
         {underlyingCoins?.map((token) => (
           <Flex key={token.denom} align="center" marginInlineEnd="-4px">
             <TokenImageRender

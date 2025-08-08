@@ -29,7 +29,6 @@ export const DecodeMessageGaugeVote = ({
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
 
-  const sumVotingPower = data.votes.reduce((acc, vote) => acc + vote.amount, 0);
   const chainIds = data.votes.map((vote) => vote.rollup);
 
   return (
@@ -50,7 +49,7 @@ export const DecodeMessageGaugeVote = ({
           {formatDecimal({
             decimalPoints: 6,
             delimiter: true,
-          })(sumVotingPower, "0")}
+          })(data.votingPower, "0")}
         </Text>
         <Text color="text.dark">for</Text>
         <ChainBadge chainId={chainIds} />
@@ -66,7 +65,7 @@ export const DecodeMessageGaugeVote = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Epoch">-</DecodeMessageRow>
+        <DecodeMessageRow title="Epoch">{data.epoch}</DecodeMessageRow>
         <DecodeMessageRow title="Voted for">
           <Flex direction="column" gap={2} w="full">
             {data.votes.map(({ amount, rollup }) => (

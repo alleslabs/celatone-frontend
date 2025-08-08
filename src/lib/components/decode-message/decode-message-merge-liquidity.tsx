@@ -2,16 +2,15 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
-import { useAssetInfos } from "lib/services/assetService";
 import { zValidatorAddr } from "lib/types";
-import { coinToTokenWithValue, formatUTC, parseUnixToDate } from "lib/utils";
+import { formatUTC, parseUnixToDate } from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
 import { DexPoolLink } from "../DexPoolLink";
 import { ExplorerLink } from "../ExplorerLink";
-import { TokenImageWithAmount } from "../token/TokenImageWithAmount";
+import { MergedPositions } from "../MergedPositions";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { ValidatorBadge } from "../ValidatorBadge";
 import { DecodeMessageBody } from "./decode-message-body";
@@ -34,14 +33,8 @@ export const DecodeMessageMergeLiquidity = ({
   const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
-  const { data: assetInfos } = useAssetInfos({ withPrices: false });
 
-  const lpToken = coinToTokenWithValue(
-    data.liquidityDenom,
-    data.liquidity,
-    assetInfos
-  );
-  const lpCoin = new Coin(data.liquidityDenom, data.liquidity);
+  const coin = new Coin(data.liquidityDenom, data.mergedLiquidity);
   const releaseTimestamp = parseUnixToDate(data.newReleaseTimestamp);
 
   return (
@@ -58,7 +51,7 @@ export const DecodeMessageMergeLiquidity = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <TokenImageWithAmount token={lpToken} />
+        <DexPoolLink liquidityDenom={data.liquidityDenom} />
         <Text color="text.dark">via</Text>
         <ValidatorBadge
           badgeSize={4}
@@ -99,8 +92,14 @@ export const DecodeMessageMergeLiquidity = ({
             }}
           />
         </DecodeMessageRow>
+        <DecodeMessageRow title="Merged Positions">
+          <MergedPositions
+            initialPositions={data.initialPositions}
+            liquidityDenom={data.liquidityDenom}
+          />
+        </DecodeMessageRow>
         <DecodeMessageRow title="Merged Assets">
-          <CoinsComponent coins={[lpCoin]} />
+          <CoinsComponent coins={[coin]} />
         </DecodeMessageRow>
         {releaseTimestamp && (
           <DecodeMessageRow title="Release timestamp">
