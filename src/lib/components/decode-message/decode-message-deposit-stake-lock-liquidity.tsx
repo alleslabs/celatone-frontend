@@ -4,7 +4,13 @@ import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
 import { useAssetInfos } from "lib/services/assetService";
 import { zValidatorAddr } from "lib/types";
-import { coinToTokenWithValue, formatUTC, parseUnixToDate } from "lib/utils";
+import {
+  coinToTokenWithValue,
+  formatDayJSDuration,
+  formatUTC,
+  parseSecondsToDuration,
+  parseUnixToDate,
+} from "lib/utils";
 import { useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
@@ -108,10 +114,9 @@ export const DecodeMessageDepositStakeLockLiquidity = ({
         <DecodeMessageRow title="Assets">
           <CoinsComponent coins={[coinA, coinB]} />
         </DecodeMessageRow>
-        {/* Required block timestamp */}
-        {/* <DecodeMessageRow title="Lock period">
-          -
-        </DecodeMessageRow> */}
+        <DecodeMessageRow title="Lock period">
+          {formatDayJSDuration(parseSecondsToDuration(data.lockTime))}
+        </DecodeMessageRow>
         <DecodeMessageRow title="Release timestamp">
           {formatUTC(releaseTimestamp)}
         </DecodeMessageRow>

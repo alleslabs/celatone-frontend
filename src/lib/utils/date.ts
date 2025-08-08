@@ -41,6 +41,9 @@ export const parseUnixToDateOpt = (
 export const parseDateDefault = (dateOpt: Option<string>): Date =>
   dateOpt ? parseDate(dateOpt) : getDefaultDate();
 
+export const parseSecondsToDuration = (seconds: number) =>
+  dayjs.duration(seconds * 1000);
+
 export const formatUTC = (date: Date) =>
   dayjs.utc(date).format("MMM DD, YYYY, h:mm:ss A [(UTC)]");
 

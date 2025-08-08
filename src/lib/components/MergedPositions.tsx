@@ -24,6 +24,7 @@ import {
   getTokenLabel,
   parseUnixToDate,
 } from "lib/utils";
+import plur from "plur";
 
 import { TokenImageRender } from "./token";
 
@@ -95,10 +96,14 @@ export const MergedPositions = ({
     coinToTokenWithValue(coin.denom, "0", assetInfos)
   );
 
+  const positionsCount = initialPositions.length;
+
   return (
     <>
       <Flex align="center" gap={2}>
-        <Text variant="body2">{initialPositions.length} positions</Text>
+        <Text variant="body2">
+          {positionsCount} {plur("position", positionsCount)}
+        </Text>
         <Button size="sm" variant="ghost-gray" onClick={onOpen}>
           View details
         </Button>
@@ -115,7 +120,7 @@ export const MergedPositions = ({
               w="full"
             >
               <Heading as="h6" variant="h7">
-                Merged positions ({initialPositions.length})
+                Merged positions ({positionsCount})
               </Heading>
             </Box>
           </ModalHeader>

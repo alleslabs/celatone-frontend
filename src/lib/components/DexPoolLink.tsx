@@ -24,16 +24,20 @@ export const DexPoolLink = ({ liquidityDenom }: DexPoolLinkProps) => {
 
   return (
     <HStack>
-      <Flex align="center" minW={6}>
-        {underlyingCoins?.map((token) => (
-          <Flex key={token.denom} align="center" marginInlineEnd="-4px">
-            <TokenImageRender
-              alt={getTokenLabel(token.denom, token.symbol)}
-              boxSize={4}
-              logo={token.logo}
-            />
-          </Flex>
-        ))}
+      <Flex align="center" minW={4}>
+        {underlyingCoins?.length === 0 ? (
+          <TokenImageRender boxSize={4} logo={lpToken?.logo} />
+        ) : (
+          underlyingCoins?.map((token) => (
+            <Flex key={token.denom} align="center" marginInlineEnd="-4px">
+              <TokenImageRender
+                alt={getTokenLabel(token.denom, token.symbol)}
+                boxSize={4}
+                logo={token.logo}
+              />
+            </Flex>
+          ))
+        )}
       </Flex>
       <ExplorerLink
         copyValue={liquidityDenom}
