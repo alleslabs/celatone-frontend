@@ -18,7 +18,7 @@ const ChainBadgeSingle = ({ chainId }: { chainId: string }) => {
         className="copier-wrapper"
         align="center"
         gap={1}
-        minWidth="fit-content"
+        minWidth="max-content"
       >
         <TokenImageRender boxSize={4} logo={undefined} />
         <Text whiteSpace="nowrap">{chainId}</Text>
@@ -36,7 +36,7 @@ const ChainBadgeSingle = ({ chainId }: { chainId: string }) => {
         className="copier-wrapper"
         align="center"
         gap={1}
-        minWidth="fit-content"
+        minWidth="max-content"
       >
         <TokenImageRender boxSize={4} logo={logo} />
         <Text fontWeight={400} variant="body2" whiteSpace="nowrap">
@@ -52,9 +52,9 @@ const ChainBadgeMultiple = ({ chainId }: { chainId: string[] }) => {
   const chainInfos = chainId.map((id) => chainConfigs[id]).filter(Boolean);
 
   return (
-    <Flex>
+    <Flex overflow="visible">
       {chainInfos.length
-        ? chainInfos.map((chainInfo) => {
+        ? chainInfos.map((chainInfo, index) => {
             const logo =
               chainInfo.logo_URIs?.svg ||
               chainInfo.logo_URIs?.png ||
@@ -64,7 +64,8 @@ const ChainBadgeMultiple = ({ chainId }: { chainId: string[] }) => {
               <Flex
                 key={chainInfo.chainId}
                 align="center"
-                marginInlineEnd="-4px"
+                marginInlineStart={index === 0 ? 0 : "-4px"}
+                zIndex={index}
               >
                 <TokenImageRender boxSize={4} logo={logo} />
               </Flex>
