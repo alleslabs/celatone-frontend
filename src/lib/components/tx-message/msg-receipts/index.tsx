@@ -1378,6 +1378,54 @@ export const generateReceipts = (
         },
       ];
     }
+    case "/initia.move.v1.MsgExecute": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Function Name",
+          value: details.function_name,
+        },
+        {
+          html: getCommonReceiptHtml({
+            linkType: "contract_address",
+            type: "explorer",
+            value: details.module_address,
+          }),
+          title: "Module Address",
+        },
+        {
+          html: getCommonReceiptHtml({
+            linkType: "module_name",
+            textLabel: details.module_name,
+            type: "explorer",
+            value: `${details.module_address}/${details.module_name}`,
+          }),
+          title: "Module Name",
+        },
+        {
+          html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
+            type: "explorer",
+            value: details.sender,
+          }),
+          title: "Sender",
+        },
+        {
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.type_args,
+          }),
+          title: "Type Args",
+        },
+        {
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.args,
+          }),
+          title: "Args",
+        },
+      ];
+    }
     // osmosis/gamm
     case "/osmosis.gamm.poolmodels.balancer.v1beta1.MsgCreateBalancerPool": {
       const details = extractTxDetails(type, body, log);

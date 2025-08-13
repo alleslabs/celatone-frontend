@@ -1,4 +1,4 @@
-import type { Option, Transaction } from "lib/types";
+import type { Option, TransactionWithTxResponse } from "lib/types";
 
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
@@ -15,7 +15,7 @@ interface TransactionsTableProps {
   showRelations: boolean;
   showSuccess?: boolean;
   showTimestamp?: boolean;
-  transactions: Option<Transaction[]>;
+  transactions: Option<TransactionWithTxResponse[]>;
 }
 
 export const TransactionsTable = ({

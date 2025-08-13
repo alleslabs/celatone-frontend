@@ -25,6 +25,8 @@ export const CELATONE_API = (() => {
   return url;
 })();
 
+export const INITIA_DEX_API = process.env.NEXT_PUBLIC_INITIA_DEX_API;
+
 export const CELATONE_VERIFICATION_API =
   process.env.NEXT_PUBLIC_CELATONE_VERIFICATION_API ?? "";
 

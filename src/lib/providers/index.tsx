@@ -8,6 +8,7 @@ import { NetworkGuard } from "./network-guard";
 import { QueryClientProvider } from "./query-client";
 import { StoreProvider } from "./store";
 import { TxBroadcastProvider } from "./tx-broadcast";
+import { TxDecoderProvider } from "./tx-decoder";
 
 export default ({ children }: { children: React.ReactNode }) => (
   <StoreProvider>
@@ -17,11 +18,13 @@ export default ({ children }: { children: React.ReactNode }) => (
           <NetworkGuard>
             <CosmosKitProvider>
               <InitiaWidgetProvider>
-                <NavProvider>
-                  <AmplitudeProvider>
-                    <TxBroadcastProvider>{children}</TxBroadcastProvider>
-                  </AmplitudeProvider>
-                </NavProvider>
+                <TxDecoderProvider>
+                  <NavProvider>
+                    <AmplitudeProvider>
+                      <TxBroadcastProvider>{children}</TxBroadcastProvider>
+                    </AmplitudeProvider>
+                  </NavProvider>
+                </TxDecoderProvider>
               </InitiaWidgetProvider>
             </CosmosKitProvider>
           </NetworkGuard>
