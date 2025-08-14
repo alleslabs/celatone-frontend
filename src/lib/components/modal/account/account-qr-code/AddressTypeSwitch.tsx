@@ -54,7 +54,13 @@ export const AddressTypeSwitch = ({
             onTabChange(tab);
           }}
         >
-          <Text variant="body3">{tab}</Text>
+          <Text
+            color={tab === currentTab ? "text.main" : "gray.500"}
+            fontWeight={700}
+            variant="body2"
+          >
+            {tab}
+          </Text>
         </MotionBox>
       ))}
       <MotionBox
