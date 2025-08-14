@@ -15,16 +15,24 @@ import {
 import { trackUseOtherModal } from "lib/amplitude";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
-import { QrCode } from "lib/components/QrCode";
 import { Tooltip } from "lib/components/Tooltip";
+import { TypeSwitch } from "lib/components/TypeSwitch";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 
-import { AddressType, AddressTypeSwitch } from "./AddressTypeSwitch";
+export enum AddressType {
+  init = "init",
+  hex = "0x",
+}
 
 interface AccountQrCodeModalProps {
   accountBechAddr: BechAddr;
   accountHexAddr?: HexAddr;
 }
+
+const DynamicQrCode = dynamic(() => import("lib/components/QrCode"), {
+  ssr: false,
+});
 
 export const AccountQrCodeModal = ({
   accountBechAddr,
@@ -35,7 +43,7 @@ export const AccountQrCodeModal = ({
   const [addressType, setAddressType] = useState<AddressType>(AddressType.init);
 
   const displayAddress =
-    addressType === AddressType["0x"] && accountHexAddr
+    addressType === AddressType.hex && accountHexAddr
       ? accountHexAddr
       : accountBechAddr;
 
@@ -79,12 +87,17 @@ export const AccountQrCodeModal = ({
               p={6}
             >
               {accountHexAddr && (
-                <AddressTypeSwitch
+                <TypeSwitch
                   currentTab={addressType}
+                  fontSize="12px"
+                  padding="4px 10px"
+                  tabHeight={22}
+                  tabs={[AddressType.init, AddressType.hex]}
+                  tabWidth={40}
                   onTabChange={setAddressType}
                 />
               )}
-              <QrCode address={displayAddress} />
+              <DynamicQrCode address={displayAddress} />
               <CopyLink
                 style={{
                   textAlign: "center",

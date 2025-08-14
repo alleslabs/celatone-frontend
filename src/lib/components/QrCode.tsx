@@ -1,7 +1,7 @@
 import QRCodeStyling from "qr-code-styling";
 import { useEffect, useRef } from "react";
 
-export const QrCode = ({ address }: { address: string }) => {
+const QrCode = ({ address }: { address: string }) => {
   const ref = useRef<HTMLDivElement>(null);
   const qrCode = useRef<QRCodeStyling | null>(null);
 
@@ -9,7 +9,10 @@ export const QrCode = ({ address }: { address: string }) => {
     if (!ref.current) return;
 
     const computedStyle = getComputedStyle(ref.current);
-    const color = computedStyle.getPropertyValue("--gray-0");
+    const color =
+      computedStyle.getPropertyValue("--chakra-colors-gray-100") ||
+      computedStyle.getPropertyValue("--gray-0") ||
+      "#f5f5f5";
 
     if (!qrCode.current) {
       qrCode.current = new QRCodeStyling({
@@ -37,3 +40,5 @@ export const QrCode = ({ address }: { address: string }) => {
 
   return <div style={{ height: 200, width: 200 }} ref={ref} />;
 };
+
+export default QrCode;
