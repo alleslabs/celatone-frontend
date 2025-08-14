@@ -28,14 +28,14 @@ export const TokenImageWithAmount = ({
   const isMobile = useMobile();
 
   return (
-    <Flex
-      className="copier-wrapper"
-      alignItems="center"
-      gap={1}
-      minWidth="fit-content"
-    >
+    <Flex className="copier-wrapper" alignItems="center" minWidth="fit-content">
       <TokenImageRender boxSize={boxSize} logo={token.logo} />
-      <Text fontWeight={fontWeight} variant={variant} whiteSpace="nowrap">
+      <Text
+        fontWeight={fontWeight}
+        ml={1}
+        variant={variant}
+        whiteSpace="nowrap"
+      >
         {formatTokenWithValue(token, undefined, hasTrailingZeros)}
       </Text>
       <Copier
