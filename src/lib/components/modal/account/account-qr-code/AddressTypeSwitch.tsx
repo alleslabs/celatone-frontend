@@ -5,8 +5,8 @@ import { AmpEvent, track } from "lib/amplitude";
 import { MotionBox } from "lib/components/MotionBox";
 
 export enum AddressType {
-  Bech32 = "Bech32",
-  Hex = "Hex",
+  init = "init",
+  "0x" = "0x",
 }
 
 interface AddressTypeSwitchProps {
@@ -31,7 +31,7 @@ export const AddressTypeSwitch = ({
       h="32px"
       p={1}
       position="relative"
-      w={160}
+      w={100}
     >
       {tabs.map((tab) => (
         <MotionBox

@@ -13,11 +13,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { trackUseOtherModal } from "lib/amplitude";
-import { useCelatoneApp } from "lib/app-provider/contexts";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
+import { QrCode } from "lib/components/QrCode";
 import { Tooltip } from "lib/components/Tooltip";
-import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 
 import { AddressType, AddressTypeSwitch } from "./AddressTypeSwitch";
@@ -31,19 +30,12 @@ export const AccountQrCodeModal = ({
   accountBechAddr,
   accountHexAddr,
 }: AccountQrCodeModalProps) => {
-  const {
-    chainConfig: { logo_URIs: logoUris },
-    currentChainId,
-  } = useCelatoneApp();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const [addressType, setAddressType] = useState<AddressType>(
-    AddressType.Bech32
-  );
+  const [addressType, setAddressType] = useState<AddressType>(AddressType.init);
 
-  const image = logoUris?.png || logoUris?.svg || logoUris?.jpeg;
   const displayAddress =
-    addressType === AddressType.Hex && accountHexAddr
+    addressType === AddressType["0x"] && accountHexAddr
       ? accountHexAddr
       : accountBechAddr;
 
@@ -54,7 +46,7 @@ export const AccountQrCodeModal = ({
           e.stopPropagation();
           trackUseOtherModal("Account QR code");
           onOpen();
-          setAddressType(AddressType.Bech32);
+          setAddressType(AddressType.init);
         }}
       >
         <Tooltip label="View QR code">
@@ -86,43 +78,21 @@ export const AccountQrCodeModal = ({
               gap={6}
               p={6}
             >
-              <Heading as="h6" variant="h6">
-                {currentChainId}
-              </Heading>
-              <QRCodeSVG
-                style={{ borderRadius: "4px" }}
-                imageSettings={
-                  image
-                    ? {
-                        crossOrigin: "anonymous",
-                        excavate: true,
-                        height: 40,
-                        src: image,
-                        width: 40,
-                      }
-                    : undefined
-                }
-                level="H"
-                marginSize={1}
-                size={230}
+              {accountHexAddr && (
+                <AddressTypeSwitch
+                  currentTab={addressType}
+                  onTabChange={setAddressType}
+                />
+              )}
+              <QrCode address={displayAddress} />
+              <CopyLink
+                style={{
+                  textAlign: "center",
+                }}
+                displayTextColor="text.main"
+                type="user_address"
                 value={displayAddress}
               />
-              <Flex alignItems="center" direction="column" gap={2}>
-                {accountHexAddr && (
-                  <AddressTypeSwitch
-                    currentTab={addressType}
-                    onTabChange={setAddressType}
-                  />
-                )}
-                <CopyLink
-                  style={{
-                    textAlign: "center",
-                  }}
-                  displayTextColor="text.main"
-                  type="user_address"
-                  value={displayAddress}
-                />
-              </Flex>
             </Flex>
           </ModalBody>
         </ModalContent>
