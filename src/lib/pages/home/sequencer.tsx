@@ -1,5 +1,5 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
-import { useEvmConfig, useInternalNavigate } from "lib/app-provider";
+import { Box, Heading } from "@chakra-ui/react";
+import { useInternalNavigate } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { RecentBlocksTableSequencer } from "lib/pages/blocks/components/RecentBlocksTableSequencer";
@@ -14,7 +14,6 @@ import { HomeTop } from "./components";
 
 export const HomeSequencer = () => {
   const navigate = useInternalNavigate();
-  const evm = useEvmConfig({ shouldRedirect: false });
 
   const { data: txsCount, isLoading: isTxsCountLoading } =
     useTxsCountSequencer();
@@ -46,16 +45,9 @@ export const HomeSequencer = () => {
         toTxs={toTxs}
       />
       <Box as="section" mb="48px">
-        <Box mb={5}>
-          <Heading as="h5" variant="h5">
-            Recent transactions
-          </Heading>
-          {evm.enabled && (
-            <Text color="text.dark" fontWeight={500} variant="body2">
-              Displaying recent Cosmos transactions within this network
-            </Text>
-          )}
-        </Box>
+        <Heading as="h5" mb={5} variant="h5">
+          Recent transactions
+        </Heading>
         <TxsTableSequencer isViewMore />
         {!!txsCount && txsCount > 5 && <ViewMore onClick={toTxs} />}
       </Box>
