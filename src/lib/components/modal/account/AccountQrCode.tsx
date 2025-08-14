@@ -20,7 +20,7 @@ import { TypeSwitch } from "lib/components/TypeSwitch";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 
-export enum AddressType {
+enum AddressType {
   init = "init",
   hex = "0x",
 }
