@@ -21,7 +21,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 
 enum AddressType {
-  init = "init",
+  bech32 = "init",
   hex = "0x",
 }
 
@@ -40,7 +40,9 @@ export const AccountQrCodeModal = ({
 }: AccountQrCodeModalProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const [addressType, setAddressType] = useState<AddressType>(AddressType.init);
+  const [addressType, setAddressType] = useState<AddressType>(
+    AddressType.bech32
+  );
 
   const displayAddress =
     addressType === AddressType.hex && accountHexAddr
@@ -54,7 +56,7 @@ export const AccountQrCodeModal = ({
           e.stopPropagation();
           trackUseOtherModal("Account QR code");
           onOpen();
-          setAddressType(AddressType.init);
+          setAddressType(AddressType.bech32);
         }}
       >
         <Tooltip label="View QR code">
@@ -89,10 +91,11 @@ export const AccountQrCodeModal = ({
               {accountHexAddr && (
                 <TypeSwitch
                   currentTab={addressType}
+                  disabledScrollToTop
                   fontSize="12px"
                   padding="4px 10px"
                   tabHeight={22}
-                  tabs={[AddressType.init, AddressType.hex]}
+                  tabs={[AddressType.bech32, AddressType.hex]}
                   tabWidth={40}
                   onTabChange={setAddressType}
                 />

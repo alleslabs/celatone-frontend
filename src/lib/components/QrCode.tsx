@@ -23,7 +23,7 @@ const QrCode = ({ address }: { address: string }) => {
         dotsOptions: { color, type: "dots" },
         height: 200,
         image: "https://registry.initia.xyz/images/INIT.png",
-        imageOptions: { crossOrigin: "anonymous", margin: 12 },
+        imageOptions: { crossOrigin: "anonymous", margin: 4 },
         margin: 0,
         qrOptions: { errorCorrectionLevel: "H", mode: "Byte" },
         type: "canvas",
