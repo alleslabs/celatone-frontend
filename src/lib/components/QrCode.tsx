@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import QRCodeStyling from "qr-code-styling";
 import { useEffect, useRef } from "react";
 
@@ -21,13 +22,13 @@ const QrCode = ({ address }: { address: string }) => {
         cornersSquareOptions: { color, type: "extra-rounded" },
         data: address,
         dotsOptions: { color, type: "dots" },
-        height: 200,
+        height: 400,
         image: "https://registry.initia.xyz/images/INIT.png",
         imageOptions: { crossOrigin: "anonymous", margin: 4 },
         margin: 0,
         qrOptions: { errorCorrectionLevel: "H", mode: "Byte" },
         type: "canvas",
-        width: 200,
+        width: 400,
       });
 
       qrCode.current.append(ref.current);
@@ -38,7 +39,14 @@ const QrCode = ({ address }: { address: string }) => {
     }
   }, [address]);
 
-  return <div style={{ height: 200, width: 200 }} ref={ref} />;
+  return (
+    <Box
+      h="200px"
+      sx={{ "& canvas": { height: "100%", width: "100%" } }}
+      w="200px"
+      ref={ref}
+    />
+  );
 };
 
 export default QrCode;
