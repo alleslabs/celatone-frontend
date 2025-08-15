@@ -103,13 +103,16 @@ importers:
         version: 1.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@initia/react-wallet-widget':
         specifier: 1.6.13
-        version: 1.6.13(ynzntg7rzwpbrm4vasidchkxma)
+        version: 1.6.13(@cosmjs/proto-signing@0.32.4)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/utils@2.0.0-alpha.5(@cosmjs/encoding@0.32.4)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)))(@initia/wallet-widget@1.6.13(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bufferutil@4.0.9)(change-case@5.4.4)(starknet@6.11.0)(svelte@4.2.19)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))(@keplr-wallet/types@0.12.215(starknet@6.11.0))(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(react@19.1.0)(rxjs@7.8.1)
       '@initia/tx-decoder':
         specifier: 0.4.0
         version: 0.4.0(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       '@initia/utils':
-        specifier: 1.6.3
-        version: 1.6.3(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.1)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.0)(@keplr-wallet/types@0.12.215(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.2.3)(ramda@0.30.1)(rxjs@7.8.1)(zod@3.24.2)
+        specifier: npm:@initia/utils@2.0.0-alpha.5
+        version: 2.0.0-alpha.5(@cosmjs/encoding@0.32.4)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
+      '@initia/utils-legacy':
+        specifier: npm:@initia/utils@1.6.3
+        version: '@initia/utils@1.6.3(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.1)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.0)(@keplr-wallet/types@0.12.215(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.2.3)(ramda@0.30.1)(rxjs@7.8.1)(zod@3.24.2)'
       '@interchain-ui/react':
         specifier: 1.23.9
         version: 1.23.9(@types/react@19.1.0)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -2490,6 +2493,15 @@ packages:
       '@noble/hashes': ^1
       bignumber.js: ^9
       viem: ^2
+
+  '@initia/utils@2.0.0-alpha.5':
+    resolution: {integrity: sha512-Bz7v7tS3utmsYdAVJDWrRlEisSY0PmJgjTTJUWta/tJRktDqg+Px381AqNXqJzwDfyuNl76tSQbxgoOGg2H2PA==}
+    peerDependencies:
+      '@cosmjs/encoding': '>=0.34.0'
+      '@mysten/bcs': '>=1.0.0'
+      '@noble/hashes': '>=1.0.0'
+      bignumber.js: '>=9.0.0'
+      viem: '>=2.0.0'
 
   '@initia/wallet-widget@1.6.13':
     resolution: {integrity: sha512-cf9DZyPtzcXrl/jO3tZENBxReA4pvO1Zmpitlx9sICM6mzY50sRzHyjv2tqoOFwCN/Z902M0i/2XWfs/RtZtjA==}
@@ -13541,11 +13553,11 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  '@initia/react-wallet-widget@1.6.13(ynzntg7rzwpbrm4vasidchkxma)':
+  '@initia/react-wallet-widget@1.6.13(@cosmjs/proto-signing@0.32.4)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/utils@2.0.0-alpha.5(@cosmjs/encoding@0.32.4)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)))(@initia/wallet-widget@1.6.13(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bufferutil@4.0.9)(change-case@5.4.4)(starknet@6.11.0)(svelte@4.2.19)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))(@keplr-wallet/types@0.12.215(starknet@6.11.0))(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(react@19.1.0)(rxjs@7.8.1)':
     dependencies:
       '@cosmjs/proto-signing': 0.32.4
       '@initia/initia.js': 1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
-      '@initia/utils': 1.6.3(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.1)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.0)(@keplr-wallet/types@0.12.215(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.2.3)(ramda@0.30.1)(rxjs@7.8.1)(zod@3.24.2)
+      '@initia/utils': 2.0.0-alpha.5(@cosmjs/encoding@0.32.4)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       '@initia/wallet-widget': 1.6.13(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bufferutil@4.0.9)(change-case@5.4.4)(starknet@6.11.0)(svelte@4.2.19)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
       '@keplr-wallet/types': 0.12.215(starknet@6.11.0)
       cosmjs-types: 0.9.0
@@ -13624,6 +13636,14 @@ snapshots:
   '@initia/utils@2.0.0-alpha.3(@cosmjs/encoding@0.33.1)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
     dependencies:
       '@cosmjs/encoding': 0.33.1
+      '@mysten/bcs': 1.2.0
+      '@noble/hashes': 1.8.0
+      bignumber.js: 9.1.2
+      viem: 2.33.3(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+
+  '@initia/utils@2.0.0-alpha.5(@cosmjs/encoding@0.32.4)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
+    dependencies:
+      '@cosmjs/encoding': 0.32.4
       '@mysten/bcs': 1.2.0
       '@noble/hashes': 1.8.0
       bignumber.js: 9.1.2
