@@ -50,6 +50,7 @@ const DecodeMessageSendMultipleCoinsHeader = ({
               alt={getTokenLabel(token.denom, token.symbol)}
               boxSize={4}
               logo={token.logo}
+              minW={4}
             />
           </Flex>
         );

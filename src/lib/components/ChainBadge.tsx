@@ -20,7 +20,7 @@ const ChainBadgeSingle = ({ chainId }: { chainId: string }) => {
         gap={1}
         minWidth="max-content"
       >
-        <TokenImageRender boxSize={4} logo={undefined} />
+        <TokenImageRender boxSize={4} logo={undefined} minW={4} />
         <Text whiteSpace="nowrap">{chainId}</Text>
       </Flex>
     );
@@ -38,7 +38,7 @@ const ChainBadgeSingle = ({ chainId }: { chainId: string }) => {
         gap={1}
         minWidth="max-content"
       >
-        <TokenImageRender boxSize={4} logo={logo} />
+        <TokenImageRender boxSize={4} logo={logo} minW={4} />
         <Text fontWeight={400} variant="body2" whiteSpace="nowrap">
           {chainInfo.prettyName}
         </Text>
@@ -67,13 +67,13 @@ const ChainBadgeMultiple = ({ chainId }: { chainId: string[] }) => {
                 marginInlineStart={index === 0 ? 0 : "-4px"}
                 zIndex={index}
               >
-                <TokenImageRender boxSize={4} logo={logo} />
+                <TokenImageRender boxSize={4} logo={logo} minW={4} />
               </Flex>
             );
           })
         : chainId.map((chain) => (
             <Flex key={chain} align="center" marginInlineEnd="-4px">
-              <TokenImageRender boxSize={4} logo={undefined} />
+              <TokenImageRender boxSize={4} logo={undefined} minW={4} />
             </Flex>
           ))}
     </Flex>
