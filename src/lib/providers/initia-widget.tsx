@@ -1,4 +1,4 @@
-import type { WalletWidget, WidgetConfig } from "@initia/utils";
+import type { WalletWidget, WidgetConfig } from "@initia/utils-legacy";
 import type { PropsWithChildren, ReactNode } from "react";
 
 import { context, loadScript } from "@initia/react-wallet-widget/ssr";

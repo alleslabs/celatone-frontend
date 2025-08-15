@@ -1,4 +1,4 @@
-import type { WidgetWallet } from "@initia/utils";
+import type { WidgetWallet } from "@initia/utils-legacy";
 
 import { MAINNET, TESTNET } from "@initia/react-wallet-widget/ssr";
 import { SUPPORTED_NETWORK_TYPES } from "env";
