@@ -86,7 +86,8 @@ export const useProposals = (
   proposer: Option<BechAddr20>,
   statuses: ProposalStatus[],
   types: ProposalType[],
-  search: string
+  search: string,
+  options: Pick<UseQueryOptions<ProposalsResponse>, "onSuccess"> = {}
 ) => {
   const endpoint = useBaseApiRoute("proposals");
   const trimmedSearch = search.trim();
@@ -112,7 +113,7 @@ export const useProposals = (
         types,
         trimmedSearch
       ),
-    { refetchOnWindowFocus: false, retry: 1 }
+    { ...options, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 

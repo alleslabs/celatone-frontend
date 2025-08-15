@@ -12,13 +12,13 @@ import {
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
   type BechAddr,
   type BechAddr32,
   type HexAddr,
   type HexAddr32,
   type Option,
-  zHexAddr32,
 } from "lib/types";
 import { useCallback } from "react";
 
@@ -196,8 +196,12 @@ export const useNftByTokenId = (
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
+  const formatAddresses = useFormatAddresses();
+
   // Nft address is available for Move VM only
-  const nftAddress = moveConfig.enabled ? zHexAddr32.parse(tokenId) : undefined;
+  const nftAddress = moveConfig.enabled
+    ? (formatAddresses(tokenId).hex as HexAddr32)
+    : undefined;
 
   return useQuery(
     [
@@ -308,18 +312,12 @@ export const useMetadata = (
   height?: string
 ) => {
   const { currentChainId } = useCelatoneApp();
-
   return useQuery<Metadata>(
     [CELATONE_QUERY_KEYS.NFT_METADATA, nft],
     async () => {
       if (!nft) throw new Error("NFT is required (useMetadata)");
       const baseUri = await getMetadata(nft.uri ?? "");
-
-      if (
-        baseUri.image.startsWith("ipfs://") &&
-        nft.collectionAddress &&
-        (nft.nftAddress || nft.tokenId)
-      ) {
+      if (baseUri.image && nft.collectionAddress) {
         try {
           const image: Blob = await getGlyphImage(
             currentChainId,

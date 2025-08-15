@@ -1,10 +1,10 @@
 import type { FlexProps, TextProps } from "@chakra-ui/react";
-import type { AddressReturnType } from "lib/app-provider";
 import type { Option } from "lib/types";
 import type { ReactNode } from "react";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { trackMintScan } from "lib/amplitude";
+import { type AddressReturnType, useChainConfigs } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { useWasmConfig } from "lib/app-provider/hooks/useConfig";
 import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
@@ -20,22 +20,28 @@ export type LinkType =
   | "code_id"
   | "evm_contract_address"
   | "evm_tx_hash"
+  | "module_name"
+  | "move_dex_pool_address"
+  | "nft_collection"
   | "pool_id"
   | "proposal_id"
   | "task_id"
   | "tx_hash"
   | AddressReturnType;
 
-interface ExplorerLinkProps extends FlexProps {
+export interface ExplorerLinkProps extends FlexProps {
   ampCopierSection?: string;
+  chainId?: string;
   copyValue?: string;
   externalLink?: string;
   fixedHeight?: boolean;
+  hideCopy?: boolean;
   isReadOnly?: boolean;
   openNewTab?: boolean;
   rightIcon?: ReactNode;
   showCopyOnHover?: boolean;
   textFormat?: "ellipsis" | "normal" | "truncate";
+  textLabel?: string;
   textVariant?: TextProps["variant"];
   type: LinkType;
   value: string;
@@ -71,6 +77,12 @@ export const getNavigationUrl = ({
       break;
     case "invalid_address":
       return "";
+    case "module_name":
+      url = "/modules";
+      break;
+    case "nft_collection":
+      url = "/nft-collections";
+      break;
     case "pool_id":
       url = "/pools";
       break;
@@ -106,13 +118,23 @@ const getValueText = (
   return isTruncate ? truncate(value) : value;
 };
 
-const getCopyLabel = (type: LinkType) =>
-  type
+const getCopyLabel = (type: LinkType, value: string) => {
+  if (type === "user_address") return "address";
+
+  if (type === "nft_collection") {
+    if (value.includes("/nft/")) {
+      return "nft";
+    }
+  }
+
+  return type
     .split("_")
-    .map((str: string) => str.charAt(0).toUpperCase() + str.slice(1))
+    .map((str: string) => str.charAt(0) + str.slice(1))
     .join(" ");
+};
 
 const LinkRender = ({
+  chainId,
   fallbackValue,
   hrefLink,
   isEllipsis,
@@ -122,6 +144,7 @@ const LinkRender = ({
   textVariant,
   type,
 }: {
+  chainId?: string;
   fallbackValue: string;
   hrefLink: string;
   isEllipsis: boolean;
@@ -148,6 +171,7 @@ const LinkRender = ({
   return isInternal && !openNewTab ? (
     <AppLink
       style={{ overflow: "hidden" }}
+      chainId={chainId}
       href={hrefLink}
       passHref
       onClick={(e) => e.stopPropagation()}
@@ -158,7 +182,7 @@ const LinkRender = ({
     <a
       style={{ overflow: "hidden" }}
       data-peer
-      href={isInternal ? `/${currentChainId}${hrefLink}` : hrefLink}
+      href={isInternal ? `/${chainId ?? currentChainId}${hrefLink}` : hrefLink}
       rel="noopener noreferrer"
       target="_blank"
       onClick={(e) => {
@@ -173,41 +197,62 @@ const LinkRender = ({
 
 export const ExplorerLink = ({
   ampCopierSection,
+  chainId,
   copyValue,
   externalLink,
   fixedHeight = true,
+  hideCopy = false,
   isReadOnly = false,
   openNewTab,
   rightIcon = null,
   showCopyOnHover = false,
   textFormat = "truncate",
+  textLabel,
   textVariant = "body2",
   type,
   value,
   ...componentProps
 }: ExplorerLinkProps) => {
   const isMobile = useMobile();
+  const { chainConfigs } = useChainConfigs();
   const { address } = useCurrentChain();
   const { enabled: wasmEnabled } = useWasmConfig({ shouldRedirect: false });
 
   const [internalLink, textValue] = [
     getNavigationUrl({
       type,
-      value: copyValue || value,
+      value,
       wasmEnabled,
     }),
-    getValueText(value === address, textFormat === "truncate", value),
+    textLabel ??
+      getValueText(value === address, textFormat === "truncate", value),
   ];
 
   const link = externalLink ?? internalLink;
-  const readOnly = isReadOnly || !link;
+  const isNotInitiaChainId = chainId && !chainConfigs[chainId];
+  const readOnly = isReadOnly || !link || isNotInitiaChainId;
+
   // TODO: handle auto width
   return readOnly ? (
-    <Flex alignItems="center" gap={1} {...componentProps}>
+    <Flex
+      className="copier-wrapper"
+      alignItems="center"
+      gap={1}
+      {...componentProps}
+    >
       <Text color="text.disabled" variant="body2">
         {textValue}
       </Text>
       {rightIcon}
+      {!hideCopy && (
+        <Copier
+          display={showCopyOnHover && !isMobile ? "none" : "inline"}
+          hoverLabel={`Copy ${getCopyLabel(type, value)}`}
+          ml={1}
+          type={type}
+          value={copyValue ?? value}
+        />
+      )}
     </Flex>
   ) : (
     <Flex
@@ -224,7 +269,8 @@ export const ExplorerLink = ({
       {...componentProps}
     >
       <LinkRender
-        fallbackValue={copyValue || value}
+        chainId={chainId}
+        fallbackValue={copyValue ?? ""}
         hrefLink={link}
         isEllipsis={textFormat === "ellipsis"}
         isInternal={isUndefined(externalLink)}
@@ -234,14 +280,16 @@ export const ExplorerLink = ({
         type={type}
       />
       {rightIcon}
-      <Copier
-        amptrackSection={ampCopierSection}
-        copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
-        display={showCopyOnHover && !isMobile ? "none" : "inline"}
-        ml={1}
-        type={type}
-        value={copyValue || value}
-      />
+      {!hideCopy && (
+        <Copier
+          amptrackSection={ampCopierSection}
+          display={showCopyOnHover && !isMobile ? "none" : "inline"}
+          hoverLabel={`Copy ${getCopyLabel(type, value)}`}
+          ml={1}
+          type={type}
+          value={copyValue ?? value}
+        />
+      )}
     </Flex>
   );
 };

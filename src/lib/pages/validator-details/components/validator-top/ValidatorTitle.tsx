@@ -22,7 +22,7 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
       w="full"
     >
       <Flex align="center" gap={2}>
-        {info.rank && (
+        {info.rank ? (
           <Heading
             as="h5"
             color="primary.main"
@@ -32,7 +32,7 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
           >
             #{info.rank}
           </Heading>
-        )}
+        ) : null}
         <Heading
           as="h5"
           color={info.moniker.length ? "text.main" : "text.disabled"}

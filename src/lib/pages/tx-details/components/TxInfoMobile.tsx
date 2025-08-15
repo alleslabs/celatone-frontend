@@ -2,16 +2,16 @@ import type { FlexProps } from "@chakra-ui/react";
 import type { TxData } from "lib/services/types";
 import type { Option, Ratio } from "lib/types";
 
-import { chakra, Flex, Text } from "@chakra-ui/react";
+import { chakra, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
+import { TokenImageWithAmount } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import {
   computeCosmosFee,
   formatInteger,
   formatPrettyPercent,
-  formatTokenWithValue,
 } from "lib/utils";
 
 interface TxInfoMobileProps extends FlexProps {
@@ -51,13 +51,12 @@ export const TxInfoMobile = ({
     assetInfos,
     movePoolInfos
   );
+
   return (
     <Container {...flexProps}>
-      <Flex>
-        <LabelText flex={1} label="Network">
-          {txData.chainId}
-        </LabelText>
-        <LabelText flex={1} label="Block">
+      <Grid gap={6} templateColumns="repeat(2, 1fr)">
+        <LabelText label="Network">{txData.chainId}</LabelText>
+        <LabelText label="Block">
           <ExplorerLink
             ampCopierSection="tx_page_block_height"
             showCopyOnHover
@@ -65,18 +64,27 @@ export const TxInfoMobile = ({
             value={txData.height}
           />
         </LabelText>
-      </Flex>
+        <GridItem colSpan={2}>
+          <LabelText label="Signer">
+            <ExplorerLink
+              showCopyOnHover
+              type="user_address"
+              value={txData.signer}
+            />
+          </LabelText>
+        </GridItem>
+      </Grid>
       <Flex>
         <LabelText flex={1} label="Transaction fee">
           {feeToken ? (
-            formatTokenWithValue(feeToken)
+            <TokenImageWithAmount boxSize={4} token={feeToken} />
           ) : (
             <Text color="text.dark" variant="body2">
               No fee
             </Text>
           )}
         </LabelText>
-        <LabelText flex={1} label="Gas used/wanted">
+        <LabelText flex={1} label="Gas used/requested">
           {`${formatInteger(txData.gasUsed)}/${formatInteger(
             txData.gasWanted
           )}`}

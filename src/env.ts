@@ -13,6 +13,9 @@ export const DUMMY_MNEMONIC = (() => {
   return mnemonic;
 })();
 
+export const SCAN_API = process.env.NEXT_PUBLIC_SCAN_API;
+export const INITIA_API = process.env.NEXT_PUBLIC_INITIA_API;
+
 export const CELATONE_API = (() => {
   const url = process.env.NEXT_PUBLIC_CELATONE_API;
   if (!url)
@@ -22,7 +25,7 @@ export const CELATONE_API = (() => {
   return url;
 })();
 
-export const INITIA_API = process.env.NEXT_PUBLIC_INITIA_API;
+export const INITIA_DEX_API = process.env.NEXT_PUBLIC_INITIA_DEX_API;
 
 export const CELATONE_VERIFICATION_API =
   process.env.NEXT_PUBLIC_CELATONE_VERIFICATION_API ?? "";

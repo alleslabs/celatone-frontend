@@ -24,5 +24,9 @@ export const Badge: ComponentStyleConfig = {
       background: "primary.main",
       color: "background.main",
     },
+    white: {
+      background: "white",
+      color: "gray.900",
+    },
   },
 };

@@ -147,7 +147,7 @@ export const EditableCell = ({
                 <CustomIcon color="error.light" name="close" />
               </Button>
             </Flex>
-            <Text color="text.dark" fontSize="body3" ml={4} mt={2}>
+            <Text color="text.dark" ml={4} mt={2} variant="body3">
               Your input will be stored in this device only.
             </Text>
           </Flex>

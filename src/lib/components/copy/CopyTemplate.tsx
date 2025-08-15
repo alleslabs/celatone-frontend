@@ -1,12 +1,13 @@
 import type { BoxProps } from "@chakra-ui/react";
 
 import { Flex, useClipboard } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Tooltip } from "../Tooltip";
 
 interface CopyTemplateProps {
   copyLabel?: string;
+  hoverLabel?: string;
   isDisabled?: boolean;
   ml?: BoxProps["ml"];
   triggerElement: JSX.Element;
@@ -16,6 +17,7 @@ interface CopyTemplateProps {
 
 export const CopyTemplate = ({
   copyLabel = "Copied!",
+  hoverLabel = "Click to copy",
   isDisabled = false,
   ml,
   triggerElement,
@@ -23,10 +25,15 @@ export const CopyTemplate = ({
   w = "auto",
 }: CopyTemplateProps) => {
   const { hasCopied, onCopy, setValue } = useClipboard(value);
+  const [isHover, setIsHover] = useState(false);
+
   useEffect(() => setValue(value), [value, setValue]);
 
   return (
-    <Tooltip isOpen={!isDisabled && hasCopied} label={copyLabel}>
+    <Tooltip
+      isOpen={!isDisabled && (hasCopied || isHover)}
+      label={hasCopied ? copyLabel : hoverLabel}
+    >
       <Flex
         as="span"
         display="inline-flex"
@@ -37,6 +44,8 @@ export const CopyTemplate = ({
           e.stopPropagation();
           e.preventDefault();
         }}
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
       >
         {triggerElement}
       </Flex>
