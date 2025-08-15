@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1402](https://github.com/alleslabs/celatone-frontend/pull/1402) Replace qrcode.react with qr-code-styling, update UI according to redesign
+
 ### Improvements
 
 ### Bug fixes

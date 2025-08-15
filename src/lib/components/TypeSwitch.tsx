@@ -6,16 +6,24 @@ interface TypeSwitchProps<T extends string> {
   currentTab: T;
   disabled?: boolean;
   disabledScrollToTop?: boolean;
+  fontSize?: string;
   onTabChange: (newType: T) => void;
+  padding?: string;
+  tabHeight?: number;
   tabs: T[];
+  tabWidth?: number;
 }
 
 export const TypeSwitch = <T extends string>({
   currentTab,
   disabled = false,
   disabledScrollToTop = false,
+  fontSize = "12px",
   onTabChange: onTabChangeProps,
+  padding = "2px 10px",
+  tabHeight = 22,
   tabs,
+  tabWidth = 96,
 }: TypeSwitchProps<T>) => {
   const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
 
@@ -46,10 +54,10 @@ export const TypeSwitch = <T extends string>({
           key={tab}
           animate={currentTab === tab ? "active" : "inactive"}
           cursor="pointer"
-          fontSize="12px"
+          fontSize={fontSize}
           fontWeight={700}
           initial="inactive"
-          p="2px 10px"
+          p={padding}
           textAlign="center"
           textTransform="capitalize"
           variants={{
@@ -58,7 +66,7 @@ export const TypeSwitch = <T extends string>({
               color: "var(--chakra-colors-white)",
             },
           }}
-          w="96px"
+          w={`${tabWidth}px`}
           zIndex={1}
           onClick={() => onTabChange(tab as T)}
         >
@@ -67,18 +75,18 @@ export const TypeSwitch = <T extends string>({
       ))}
       <MotionBox
         animate={{
-          left: `${activeIndex * 96 + 4}px`,
+          left: `${activeIndex * tabWidth + 4}px`,
         }}
         backgroundColor="primary.darker"
         borderRadius="2px"
-        h="22px"
+        h={`${tabHeight}px`}
         position="absolute"
         transition={{
           damping: "30",
           stiffness: "250",
           type: "spring",
         }}
-        w="96px"
+        w={`${tabWidth}px`}
       />
     </Flex>
   );
