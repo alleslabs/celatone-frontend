@@ -5,10 +5,12 @@ import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "../tableComponents";
 
 interface EvmInternalTransactionsTableHeaderProps {
+  showParentHash?: boolean;
   templateColumns: GridProps["templateColumns"];
 }
 
 export const EvmInternalTransactionsTableHeader = ({
+  showParentHash = true,
   templateColumns,
 }: EvmInternalTransactionsTableHeaderProps) => (
   <Grid
@@ -21,7 +23,7 @@ export const EvmInternalTransactionsTableHeader = ({
     }}
     templateColumns={templateColumns}
   >
-    <TableHeader>Parent tx hash</TableHeader>
+    {showParentHash && <TableHeader>Parent tx hash</TableHeader>}
     <TableHeader>From</TableHeader>
     <TableHeader />
     <TableHeader>To</TableHeader>
