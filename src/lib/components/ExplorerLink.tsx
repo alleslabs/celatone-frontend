@@ -49,21 +49,15 @@ type CommonExplorerLinkProps = FlexProps & {
   textFormat?: TextFormat;
   textLabel?: string;
   textVariant?: TextProps["variant"];
+};
+
+type ContractAddressExplorerLinkProps = CommonExplorerLinkProps & {
+  textLabel: Option<string>;
+  type: "evm_contract_address";
   value: string;
 };
 
-type ContractAddressExplorerLinkProps = Omit<
-  CommonExplorerLinkProps,
-  "textLabel" | "type"
-> & {
-  textLabel: Option<string>;
-  type: "evm_contract_address";
-};
-
-type FunctionNameExplorerLinkProps = Omit<
-  CommonExplorerLinkProps,
-  "queryParams" | "type" | "value"
-> & {
+type FunctionNameExplorerLinkProps = CommonExplorerLinkProps & {
   queryParams: Record<string, string>;
   type: "function_name";
   value: Option<string>;
@@ -71,6 +65,7 @@ type FunctionNameExplorerLinkProps = Omit<
 
 type DefaultExplorerLinkProps = CommonExplorerLinkProps & {
   type: Exclude<LinkType, "evm_contract_address" | "function_name">;
+  value: string;
 };
 
 export type ExplorerLinkProps =
