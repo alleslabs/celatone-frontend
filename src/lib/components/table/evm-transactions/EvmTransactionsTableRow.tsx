@@ -98,7 +98,7 @@ export const EvmTransactionsTableRow = ({
             token.precision ?? 0,
             true,
             token.precision ? 6 : 0
-          )}{" "}
+          )}
           {getTokenLabel(token.denom, token.symbol)}
         </Text>
         {!isUndefined(token.value) && (

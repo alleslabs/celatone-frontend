@@ -1,4 +1,7 @@
-import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
+import type {
+  EvmDebugTraceResponse,
+  TxDataWithTimeStampJsonRpc,
+} from "lib/services/types";
 import type { Option, TransactionWithTxResponse } from "lib/types";
 
 import {
@@ -16,6 +19,7 @@ import { CustomTab } from "../CustomTab";
 import { LoadNext } from "../LoadNext";
 import { EmptyState } from "../state";
 import { EvmTransactionsTable, TransactionsTable, ViewMore } from "../table";
+import { EvmInternalTransactionsTable } from "../table/evm-internal-transactions";
 import { TypeSwitch } from "../TypeSwitch";
 
 interface CosmosEvmTxsProps {
@@ -25,6 +29,7 @@ interface CosmosEvmTxsProps {
   evmTxs: Option<TxDataWithTimeStampJsonRpc[]>;
   fetchNextPage?: () => void;
   hasNextPage?: boolean;
+  internalTxs?: EvmDebugTraceResponse;
   isCosmosTxsLoading: boolean;
   isEvmTxsLoading: boolean;
   isFetchingNextPage?: boolean;
@@ -38,6 +43,7 @@ export const CosmosEvmTxs = ({
   evmTxs,
   fetchNextPage,
   hasNextPage,
+  internalTxs,
   isCosmosTxsLoading,
   isEvmTxsLoading,
   isFetchingNextPage,
@@ -150,7 +156,7 @@ export const CosmosEvmTxs = ({
             )}
           </TabPanel>
           <TabPanel p={0} pt={{ base: 0, md: 6 }}>
-            Internal txs
+            <EvmInternalTransactionsTable internalTxs={internalTxs ?? []} />
           </TabPanel>
         </TabPanels>
       </Tabs>
