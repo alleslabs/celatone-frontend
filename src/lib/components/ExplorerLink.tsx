@@ -33,7 +33,7 @@ export type LinkType =
 
 type TextFormat = "ellipsis" | "normal" | "truncate";
 
-export interface ExplorerLinkProps extends FlexProps {
+type CommonExplorerLinkProps = FlexProps & {
   ampCopierSection?: string;
   chainId?: string;
   copyValue?: string;
@@ -45,11 +45,22 @@ export interface ExplorerLinkProps extends FlexProps {
   rightIcon?: ReactNode;
   showCopyOnHover?: boolean;
   textFormat?: TextFormat;
-  textLabel?: string;
   textVariant?: TextProps["variant"];
   type: LinkType;
   value: string;
-}
+};
+
+type ContractAddressExplorerLinkProps = CommonExplorerLinkProps & {
+  textLabel: Option<string>;
+  type: "evm_contract_address";
+};
+
+export type ExplorerLinkProps =
+  | (CommonExplorerLinkProps & {
+      textLabel?: string;
+      type: Exclude<LinkType, "evm_contract_address">;
+    })
+  | ContractAddressExplorerLinkProps;
 
 export const getNavigationUrl = ({
   type,
@@ -160,6 +171,7 @@ const LinkRender = ({
   isEllipsis,
   isInternal,
   openNewTab,
+  textLabel,
   textValue,
   textVariant,
   type,
@@ -170,6 +182,7 @@ const LinkRender = ({
   isEllipsis: boolean;
   isInternal: boolean;
   openNewTab: Option<boolean>;
+  textLabel?: string;
   textValue: string;
   textVariant: TextProps["variant"];
   type: string;
@@ -180,6 +193,7 @@ const LinkRender = ({
       className={isEllipsis ? "ellipsis" : undefined}
       color={textValue.length ? "primary.main" : "text.disabled"}
       fontFamily="mono"
+      isTruncated={!!textLabel}
       pointerEvents={hrefLink ? "auto" : "none"}
       variant={textVariant}
       wordBreak={{ base: "break-all", md: "inherit" }}
@@ -283,9 +297,9 @@ export const ExplorerLink = ({
       borderStyle="dashed"
       borderWidth="1px"
       display="inline-flex"
-      gap={1}
       h={fixedHeight ? "24px" : "auto"}
-      px={0.5}
+      maxW={textLabel ? "100%" : "fit-content"}
+      px={1}
       rounded={4}
       sx={{
         ...(isHighlighted && {
@@ -299,7 +313,8 @@ export const ExplorerLink = ({
         },
       }}
       transition="all 0.15s ease-in-out"
-      onMouseEnter={() => setHoveredText(value)}
+      w="fit-content"
+      onMouseEnter={() => setHoveredText(textValue)}
       onMouseLeave={() => setHoveredText(null)}
       {...componentProps}
     >
@@ -316,6 +331,7 @@ export const ExplorerLink = ({
           isEllipsis={textFormat === "ellipsis"}
           isInternal={isUndefined(externalLink)}
           openNewTab={openNewTab}
+          textLabel={textLabel}
           textValue={textValue}
           textVariant={textVariant}
           type={type}

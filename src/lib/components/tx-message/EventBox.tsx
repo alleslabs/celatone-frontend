@@ -50,6 +50,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
+            textLabel={undefined}
             type={key as LinkType}
             value={value}
           />

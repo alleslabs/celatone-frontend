@@ -1,6 +1,6 @@
 import type { HexAddr20 } from "lib/types";
 
-import { Flex, Tag, Text } from "@chakra-ui/react";
+import { Flex, Spinner, Tag, Text } from "@chakra-ui/react";
 import {
   flip,
   offset,
@@ -9,6 +9,7 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import { useCreatedContractsByEvmTxHash } from "lib/services/tx";
+import { useEvmVerifyInfos } from "lib/services/verification/evm";
 import plur from "plur";
 import { useState } from "react";
 
@@ -21,17 +22,35 @@ interface EvmToCellCreateProps {
   isCompact?: boolean;
 }
 
-const EvmToCellCreateContracts = ({ contracts }: { contracts: HexAddr20[] }) =>
-  contracts.map((contract) => (
-    <Flex align="center" gap={1}>
-      <CustomIcon boxSize={3} color="primary.main" name="contract-address" />
+const EvmToCellCreateContracts = ({
+  contracts,
+}: {
+  contracts: HexAddr20[];
+}) => {
+  const { data: evmVerifyInfos, isLoading: isEvmVerifyInfosLoading } =
+    useEvmVerifyInfos(contracts);
+
+  return contracts.map((contract) =>
+    isEvmVerifyInfosLoading ? (
+      <Spinner boxSize={4} />
+    ) : (
       <ExplorerLink
+        leftIcon={
+          <CustomIcon
+            boxSize={3}
+            color="primary.main"
+            name="contract-address"
+          />
+        }
+        marginLeft={-2}
         showCopyOnHover
+        textLabel={evmVerifyInfos?.[contract.toLowerCase()]?.contractName}
         type="evm_contract_address"
         value={contract}
       />
-    </Flex>
-  ));
+    )
+  );
+};
 
 export const EvmToCellCreate = ({
   address,
@@ -65,7 +84,12 @@ export const EvmToCellCreate = ({
   const { getFloatingProps, getReferenceProps } = useInteractions([hover]);
 
   return (
-    <Flex direction="column" ref={refs.setReference} {...getReferenceProps()}>
+    <Flex
+      direction="column"
+      w="100%"
+      ref={refs.setReference}
+      {...getReferenceProps()}
+    >
       <Text color="text.disabled" variant="body3">
         Created {plur("Contract", contracts.length)}
       </Text>

@@ -60,6 +60,7 @@ export const EvmContractVerifySuccessModal = ({
             <ExplorerLink
               showCopyOnHover
               textFormat="normal"
+              textLabel={undefined}
               type="evm_contract_address"
               value={contractAddress}
             />

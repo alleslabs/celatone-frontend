@@ -1,9 +1,10 @@
 import type { TxDataJsonRpc } from "lib/services/types";
 
-import { Flex, Tag, Text } from "@chakra-ui/react";
+import { Flex, Spinner, Tag, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { useCreatedContractsByEvmTxHash } from "lib/services/tx";
+import { useEvmVerifyInfos } from "lib/services/verification/evm";
 
 import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
@@ -21,6 +22,8 @@ export const EvmTxCreateContract = ({
     evmTxData.tx.hash,
     contractAddress
   );
+  const { data: evmVerifyInfos, isLoading: isEvmVerifyInfosLoading } =
+    useEvmVerifyInfos(contracts);
 
   return (
     <EvmTxMethodAccordion
@@ -36,18 +39,27 @@ export const EvmTxCreateContract = ({
                 <Text>contracts</Text>
               </>
             ) : (
-              <Flex align="center" gap={1}>
-                <CustomIcon
-                  boxSize={3}
-                  color="primary.main"
-                  name="contract-address"
-                />
-                <ExplorerLink
-                  showCopyOnHover
-                  type="evm_contract_address"
-                  value={contracts[0]}
-                />
-              </Flex>
+              <>
+                {isEvmVerifyInfosLoading ? (
+                  <Spinner boxSize={4} />
+                ) : (
+                  <ExplorerLink
+                    leftIcon={
+                      <CustomIcon
+                        boxSize={3}
+                        color="primary.main"
+                        name="contract-address"
+                      />
+                    }
+                    showCopyOnHover
+                    textLabel={
+                      evmVerifyInfos?.[contracts[0].toLowerCase()]?.contractName
+                    }
+                    type="evm_contract_address"
+                    value={contracts[0]}
+                  />
+                )}
+              </>
             )
           ) : (
             <Text color="text.disabled" variant="body2">
@@ -75,22 +87,29 @@ export const EvmTxCreateContract = ({
         value={
           contracts.length > 0 ? (
             <Flex direction="column" gap={2}>
-              {contracts.map((contract) => (
-                <Flex key={contract} align="center" gap={1}>
-                  <CustomIcon
-                    boxSize={3}
-                    color="primary.main"
-                    name="contract-address"
-                  />
+              {contracts.map((contract) =>
+                isEvmVerifyInfosLoading ? (
+                  <Spinner boxSize={4} />
+                ) : (
                   <ExplorerLink
                     fixedHeight={false}
+                    leftIcon={
+                      <CustomIcon
+                        boxSize={3}
+                        color="primary.main"
+                        name="contract-address"
+                      />
+                    }
                     showCopyOnHover
                     textFormat="normal"
+                    textLabel={
+                      evmVerifyInfos?.[contract.toLowerCase()]?.contractName
+                    }
                     type="evm_contract_address"
                     value={contract}
                   />
-                </Flex>
-              ))}
+                )
+              )}
             </Flex>
           ) : (
             <Text color="text.disabled" variant="body2">
