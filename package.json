@@ -77,7 +77,7 @@
     "@initia/initia.proto": "1.0.0",
     "@initia/react-app-shell": "1.1.0",
     "@initia/react-wallet-widget": "1.6.13",
-    "@initia/tx-decoder": "0.1.5",
+    "@initia/tx-decoder": "0.4.1",
     "@initia/utils": "1.6.3",
     "@interchain-ui/react": "1.23.9",
     "@monaco-editor/react": "^4.6.0",

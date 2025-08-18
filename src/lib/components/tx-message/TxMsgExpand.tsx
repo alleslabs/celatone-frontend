@@ -1,5 +1,4 @@
 import type { Coin } from "@cosmjs/stargate";
-import type { IconKeys } from "lib/components/icon";
 import type { BechAddr } from "lib/types";
 import type { VoteOption } from "lib/utils";
 
@@ -52,13 +51,12 @@ export const TxMsgExpand = ({
       ? ref.current.scrollWidth > ref.current.clientWidth
       : false;
 
-  let msgIcon: IconKeys = "file";
   let msgLabel: string = "";
   let content: ReactNode;
   switch (type) {
     case "/cosmos.bank.v1beta1.MsgSend":
       {
-        const toAddress = body.to_address as BechAddr;
+        const toAddress = body.toAddress as BechAddr;
         const singleCoin = (body.amount as Coin[])[0];
         const singleToken = coinToTokenWithValue(
           singleCoin.denom,
@@ -70,7 +68,6 @@ export const TxMsgExpand = ({
           (body.amount as Coin[]).length > 1
             ? "assets"
             : formatTokenWithValue(singleToken);
-        msgIcon = "send";
         msgLabel = "Send";
         content = (
           <Flex display="inline" gap={1}>
@@ -88,11 +85,10 @@ export const TxMsgExpand = ({
       break;
     case "/cosmos.gov.v1.MsgSubmitProposal":
     case "/cosmos.gov.v1beta1.MsgSubmitProposal":
-      msgIcon = "submit-proposal";
       msgLabel = "Submit proposal";
       content = (
         <Flex display="inline" gap={1}>
-          {(body.is_expedited as boolean) && " expedited "}
+          {(body.expedited as boolean) && " expedited "}
           {log && (
             <>
               ID{" "}
@@ -111,7 +107,6 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmos.gov.v1beta1.MsgVote":
-      msgIcon = "vote";
       msgLabel = "Vote";
       content = (
         <Flex align="center" gap={1}>
@@ -131,7 +126,6 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmos.staking.v1beta1.MsgDelegate":
-      msgIcon = "delegate";
       msgLabel = "Delegate";
       content = (
         <Flex display="inline" gap={1}>
@@ -140,22 +134,21 @@ export const TxMsgExpand = ({
             ampCopierSection="tx_page_message_header_delegator"
             showCopyOnHover
             textVariant="body1"
-            type={getAddressType(body.delegator_address as string)}
-            value={body.delegator_address as string}
+            type={getAddressType(body.delegatorAddress as string)}
+            value={body.delegatorAddress as string}
           />{" "}
           to{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_validator"
             showCopyOnHover
             textVariant="body1"
-            type={getAddressType(body.validator_address as string)}
-            value={body.validator_address as string}
+            type={getAddressType(body.validatorAddress as string)}
+            value={body.validatorAddress as string}
           />
         </Flex>
       );
       break;
     case "/cosmwasm.wasm.v1.MsgClearAdmin":
-      msgIcon = "admin-clear";
       msgLabel = "Clear admin";
       content = (
         <Flex display="inline" gap={1}>
@@ -171,7 +164,6 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgExecuteContract":
-      msgIcon = "execute";
       msgLabel = "Execute";
       content = (
         <Flex display="inline" gap={1}>
@@ -191,7 +183,6 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract":
-      msgIcon = "instantiate";
       msgLabel = "Instantiate";
       content = (
         <Flex display="inline" gap={1}>
@@ -210,17 +201,16 @@ export const TxMsgExpand = ({
           from{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_code"
-            rightIcon={<WasmVerifyBadgeById codeId={Number(body.code_id)} />}
+            rightIcon={<WasmVerifyBadgeById codeId={Number(body.codeId)} />}
             showCopyOnHover
             textVariant="body1"
             type="code_id"
-            value={body.code_id as string}
+            value={body.codeId as string}
           />
         </Flex>
       );
       break;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
-      msgIcon = "instantiate";
       msgLabel = "Instantiate2";
       content = (
         <Flex display="inline" gap={1}>
@@ -239,17 +229,16 @@ export const TxMsgExpand = ({
           from{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_code"
-            rightIcon={<WasmVerifyBadgeById codeId={Number(body.code_id)} />}
+            rightIcon={<WasmVerifyBadgeById codeId={Number(body.codeId)} />}
             showCopyOnHover
             textVariant="body1"
             type="code_id"
-            value={body.code_id as string}
+            value={body.codeId as string}
           />
         </Flex>
       );
       break;
     case "/cosmwasm.wasm.v1.MsgMigrateContract":
-      msgIcon = "migrate";
       msgLabel = "Migrate";
       content = (
         <Flex display="inline" gap={1}>
@@ -267,7 +256,7 @@ export const TxMsgExpand = ({
             showCopyOnHover
             textVariant="body1"
             type="code_id"
-            value={body.code_id as string}
+            value={body.codeId as string}
           />
         </Flex>
       );
@@ -275,7 +264,6 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgStoreCode": {
       const codeId = findAttr(log?.events, "store_code", "code_id") ?? "";
 
-      msgIcon = "upload";
       msgLabel = "Upload wasm";
       content = (
         <Flex display="inline" gap={1}>
@@ -300,7 +288,6 @@ export const TxMsgExpand = ({
       break;
     }
     case "/cosmwasm.wasm.v1.MsgUpdateAdmin":
-      msgIcon = "admin-edit";
       msgLabel = "Update admin";
       content = (
         <Flex display="inline" gap={1}>
@@ -317,8 +304,8 @@ export const TxMsgExpand = ({
             ampCopierSection="tx_page_message_header_admin"
             showCopyOnHover
             textVariant="body1"
-            type={getAddressType(body.new_admin as string)}
-            value={body.new_admin as string}
+            type={getAddressType(body.newAdmin as string)}
+            value={body.newAdmin as string}
           />
         </Flex>
       );
@@ -384,10 +371,7 @@ export const TxMsgExpand = ({
         gap={2}
       >
         <Tag gap={0.5} minWidth="auto" py={0} variant="gray">
-          <CustomIcon boxSize={3} color="gray.600" name={msgIcon} />
-          <Text fontWeight={700} variant="body2">
-            {msgLabel}
-          </Text>
+          <Text variant="body2">{msgLabel}</Text>
         </Tag>
         {!compact || msgCount === 1 ? (
           <>

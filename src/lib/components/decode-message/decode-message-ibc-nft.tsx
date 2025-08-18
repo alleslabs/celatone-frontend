@@ -11,6 +11,7 @@ import { useState } from "react";
 import type { TxMsgData } from "../tx-message";
 
 import { AppLink } from "../AppLink";
+import { ChainBadge } from "../ChainBadge";
 import { ExplorerLink } from "../ExplorerLink";
 import JsonReadOnly from "../json/JsonReadOnly";
 import { NftImage } from "../nft/NftImage";
@@ -51,7 +52,6 @@ export const DecodeMessageIbcNft = ({
       <DecodeMessageHeader
         compact={compact}
         gap={2}
-        iconName="collection"
         isExpand={expand}
         isIbc={isIbc}
         isOpinit={isOp}
@@ -85,18 +85,18 @@ export const DecodeMessageIbcNft = ({
         {decodedMessage.action === "ibc_nft_send" ? (
           <Flex align="center" gap={2}>
             <Text color="text.dark">to</Text>
-            <Text whiteSpace="nowrap">{data.dstChainId}</Text>
+            <ChainBadge chainId={data.dstChainId} />
           </Flex>
         ) : (
           <Flex align="center" gap={2}>
             <Text color="text.dark">from</Text>
-            <Text whiteSpace="nowrap">{data.srcChainId}</Text>
+            <ChainBadge chainId={data.srcChainId} />
           </Flex>
         )}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
         <DecodeMessageRow title="Source chain">
-          <Text>{data.srcChainId}</Text>
+          <ChainBadge chainId={data.srcChainId} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
@@ -110,7 +110,7 @@ export const DecodeMessageIbcNft = ({
           />
         </DecodeMessageRow>
         <DecodeMessageRow title="Destination chain">
-          <Text>{data.dstChainId}</Text>
+          <ChainBadge chainId={data.dstChainId} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink
