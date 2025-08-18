@@ -1,7 +1,6 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import type { MessageResponse, Option } from "lib/types";
 
-import { Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { extractTxDetails } from "lib/utils";
@@ -47,7 +46,20 @@ export const DecodeMessageExecute = ({
         />
       </DecodeMessageRow>
       <DecodeMessageRow title="Function name">
-        <Text>{details.function_name}</Text>
+        <ExplorerLink
+          maxWidth="full"
+          queryParams={{
+            address: details.module_address,
+            functionName: details.function_name,
+            moduleName: details.module_name,
+          }}
+          showCopyOnHover
+          textFormat="normal"
+          textLabel={details.function_name}
+          type="function_name"
+          value={undefined}
+          wordBreak="break-word"
+        />
       </DecodeMessageRow>
       <DecodeMessageRow title="Type args">
         <JsonReadOnly

@@ -23,6 +23,7 @@ export type LinkType =
   | "code_id"
   | "evm_contract_address"
   | "evm_tx_hash"
+  | "function_name"
   | "module_name"
   | "nft_collection"
   | "pool_id"
@@ -42,25 +43,35 @@ type CommonExplorerLinkProps = FlexProps & {
   isReadOnly?: boolean;
   leftIcon?: ReactNode;
   openNewTab?: boolean;
+  queryParams?: Record<string, string>;
   rightIcon?: ReactNode;
   showCopyOnHover?: boolean;
   textFormat?: TextFormat;
+  textLabel?: string;
   textVariant?: TextProps["variant"];
-  type: LinkType;
-  value: string;
 };
 
 type ContractAddressExplorerLinkProps = CommonExplorerLinkProps & {
   textLabel: Option<string>;
   type: "evm_contract_address";
+  value: string;
+};
+
+type FunctionNameExplorerLinkProps = CommonExplorerLinkProps & {
+  queryParams: Record<string, string>;
+  type: "function_name";
+  value: Option<string>;
+};
+
+type DefaultExplorerLinkProps = CommonExplorerLinkProps & {
+  type: Exclude<LinkType, "evm_contract_address" | "function_name">;
+  value: string;
 };
 
 export type ExplorerLinkProps =
-  | (CommonExplorerLinkProps & {
-      textLabel?: string;
-      type: Exclude<LinkType, "evm_contract_address">;
-    })
-  | ContractAddressExplorerLinkProps;
+  | ContractAddressExplorerLinkProps
+  | DefaultExplorerLinkProps
+  | FunctionNameExplorerLinkProps;
 
 export const getNavigationUrl = ({
   type,
@@ -68,7 +79,7 @@ export const getNavigationUrl = ({
   wasmEnabled = false,
 }: {
   type: ExplorerLinkProps["type"];
-  value: string;
+  value: Option<string>;
   wasmEnabled?: boolean;
 }) => {
   let url = "";
@@ -89,6 +100,9 @@ export const getNavigationUrl = ({
       break;
     case "evm_tx_hash":
       url = "/evm-txs";
+      break;
+    case "function_name":
+      url = "/interact";
       break;
     case "invalid_address":
       return "";
@@ -119,7 +133,10 @@ export const getNavigationUrl = ({
     default:
       break;
   }
-  return `${url}/${value}`;
+
+  if (value) return `${url}/${value}`;
+
+  return url;
 };
 
 const getValueText = (
@@ -238,13 +255,14 @@ export const ExplorerLink = ({
   isReadOnly = false,
   leftIcon = null,
   openNewTab,
+  queryParams,
   rightIcon = null,
   showCopyOnHover = false,
   textFormat = "truncate",
   textLabel,
   textVariant = "body2",
   type,
-  value,
+  value = "",
   ...componentProps
 }: ExplorerLinkProps) => {
   const isMobile = useMobile();
@@ -263,7 +281,11 @@ export const ExplorerLink = ({
       getValueText(value === address, textFormat === "truncate", value),
   ];
 
-  const link = externalLink ?? internalLink;
+  const link = `${externalLink ?? internalLink}${
+    queryParams && Object.keys(queryParams).length > 0
+      ? `?${new URLSearchParams(queryParams).toString()}`
+      : ""
+  }`;
   const isNotInitiaChainId = chainId && !chainConfigs[chainId];
   const readOnly = isReadOnly || !link || isNotInitiaChainId;
   const isHighlighted = hoveredText === value;
