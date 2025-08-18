@@ -1,4 +1,3 @@
-// lib/context/hover.ts (or lib/hover-context.ts)
 import { createContext, useContext, useState } from "react";
 
 type HoverContextType = {
