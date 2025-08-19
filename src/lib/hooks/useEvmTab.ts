@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 export enum CosmosEvmTxsTab {
-  Evm = "evm",
-  Cosmos = "cosmos",
+  Evm = "EVM",
+  Cosmos = "Cosmos",
 }
 
 export const useEvmTab = () => {
