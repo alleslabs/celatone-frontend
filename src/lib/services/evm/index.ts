@@ -62,19 +62,19 @@ export const useEvmCodesByAddress = (address: HexAddr20, enabled = true) => {
 
 export const useEvmContractInfoSequencer = (address: HexAddr20) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.EVM_CONTRACT_INFO_SEQUENCER,
-      restEndpoint,
+      indexerEndpoint,
       bech32Prefix,
       address,
     ],
     async () =>
-      getEvmContractInfoSequencer(restEndpoint, bech32Prefix, address),
+      getEvmContractInfoSequencer(indexerEndpoint ?? "", bech32Prefix, address),
     {
       enabled: address && isHexWalletAddress(address),
       refetchOnWindowFocus: false,

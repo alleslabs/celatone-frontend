@@ -114,14 +114,14 @@ export const useLatestBlockRest = () => {
 
 export const useBlocksSequencer = (limit = 10) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery(
-      [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, restEndpoint, limit],
+      [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, indexerEndpoint, limit],
       async ({ pageParam }) =>
-        getBlocksSequencer(restEndpoint, pageParam, limit),
+        getBlocksSequencer(indexerEndpoint ?? "", pageParam, limit),
       {
         getNextPageParam: (lastPage) =>
           lastPage.pagination.nextKey ?? undefined,
@@ -140,12 +140,12 @@ export const useBlocksSequencer = (limit = 10) => {
 
 export const useBlockTimeAverageSequencer = () => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.BLOCK_TIME_AVERAGE_SEQUENCER, restEndpoint],
-    async () => getBlockTimeAverageSequencer(restEndpoint),
+    [CELATONE_QUERY_KEYS.BLOCK_TIME_AVERAGE_SEQUENCER, indexerEndpoint],
+    async () => getBlockTimeAverageSequencer(indexerEndpoint ?? ""),
     {
       refetchOnWindowFocus: false,
       retry: false,
@@ -155,12 +155,12 @@ export const useBlockTimeAverageSequencer = () => {
 
 export const useBlockDataSequencer = (height: number) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
   return useQuery<BlockData>(
-    [CELATONE_QUERY_KEYS.BLOCK_DATA_SEQUENCER, restEndpoint, height],
-    async () => getBlockDataSequencer(restEndpoint, height),
+    [CELATONE_QUERY_KEYS.BLOCK_DATA_SEQUENCER, indexerEndpoint, height],
+    async () => getBlockDataSequencer(indexerEndpoint ?? "", height),
     {
       refetchOnWindowFocus: false,
       retry: false,
