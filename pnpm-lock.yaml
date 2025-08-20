@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@alleslabs/shared':
-        specifier: 1.0.0-dev9
-        version: 1.0.0-dev9
+        specifier: 1.0.0-dev10
+        version: 1.0.0-dev10
       '@amplitude/analytics-browser':
         specifier: ^2.3.3
         version: 2.11.11
@@ -426,8 +426,8 @@ packages:
   '@adraffy/ens-normalize@1.11.0':
     resolution: {integrity: sha512-/3DDPKHqqIqxUULp8yP4zODUY1i+2xvVWsv8A79xGWdCAG+8sb0hRh0Rk2QyOJUnnbyPUAZYcpBuRe3nS2OIUg==}
 
-  '@alleslabs/shared@1.0.0-dev9':
-    resolution: {integrity: sha512-43We5k9oICcfA3i3EKtx7Df7nHGpfSM0S7Od33xjOTf3mnGtLyZGsX74ZnpKjkQJ+FBi4+J1LSY8wxNxbojFjA==}
+  '@alleslabs/shared@1.0.0-dev10':
+    resolution: {integrity: sha512-c3tUWg53jDwOSToiC+1sfT00W1kxzhUTlJ1SQqFFwzH3dFZAsjmZacFbjIClyV2fwvcrx0F86DBeyQscPx+m1w==}
 
   '@amplitude/analytics-browser@2.11.11':
     resolution: {integrity: sha512-AdpNNPwoNPezojeeU2ITcyqKcrrW8edVBHlCEvDNIXYkf5Y0i5Blbes3x6rgONsOeV2hx85trTXhhVkilWgHcg==}
@@ -10639,7 +10639,7 @@ snapshots:
 
   '@adraffy/ens-normalize@1.11.0': {}
 
-  '@alleslabs/shared@1.0.0-dev9':
+  '@alleslabs/shared@1.0.0-dev10':
     dependencies:
       '@chain-registry/types': 0.45.20
 

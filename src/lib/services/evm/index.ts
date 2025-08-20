@@ -74,7 +74,7 @@ export const useEvmContractInfoSequencer = (address: HexAddr20) => {
       address,
     ],
     async () =>
-      getEvmContractInfoSequencer(indexerEndpoint ?? "", bech32Prefix, address),
+      getEvmContractInfoSequencer(indexerEndpoint, bech32Prefix, address),
     {
       enabled: address && isHexWalletAddress(address),
       refetchOnWindowFocus: false,

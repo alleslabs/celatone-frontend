@@ -463,7 +463,7 @@ export const useTxsSequencer = (limit = 10) => {
 
   const queryfn = useCallback(
     async (pageParam: Option<string>) => {
-      return getTxsSequencer(indexerEndpoint ?? "", pageParam, limit);
+      return getTxsSequencer(indexerEndpoint, pageParam, limit);
     },
     [indexerEndpoint, limit]
   );
@@ -515,7 +515,7 @@ export const useTxsCountSequencer = () => {
 
   return useQuery(
     [CELATONE_QUERY_KEYS.TXS_COUNT_SEQUENCER, indexerEndpoint],
-    async () => getTxsCountSequencer(indexerEndpoint ?? ""),
+    async () => getTxsCountSequencer(indexerEndpoint),
     { refetchOnWindowFocus: false, retry: 1 }
   );
 };
@@ -555,7 +555,7 @@ export const useTxsByAddressSequencer = (
       return (async () => {
         if (search && isTxHash(search)) {
           const txsByHash = await getTxsByHashSequencer(
-            indexerEndpoint ?? "",
+            indexerEndpoint,
             search
           );
 
@@ -589,7 +589,7 @@ export const useTxsByAddressSequencer = (
 
         return getTxsByAccountAddressSequencer({
           address,
-          endpoint: indexerEndpoint ?? "",
+          endpoint: indexerEndpoint,
           limit,
           paginationKey: pageParam,
         });
@@ -648,13 +648,13 @@ export const useTxsByAddressPaginationSequencer = (
   enabled = true
 ) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { rest: indexerEndpoint },
   } = useCelatoneApp();
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_PAGINATION_SEQUENCER,
-      restEndpoint,
+      indexerEndpoint,
       address,
       paginationKey,
       limit,
@@ -662,7 +662,7 @@ export const useTxsByAddressPaginationSequencer = (
     () =>
       getTxsByAccountAddressSequencer({
         address,
-        endpoint: restEndpoint,
+        endpoint: indexerEndpoint,
         limit,
         paginationKey,
       }),
@@ -689,10 +689,7 @@ export const useTxsByBlockHeightSequencer = (height: number) => {
       bech32Prefix,
     ],
     async () => {
-      const txs = await getTxsByBlockHeightSequencer(
-        indexerEndpoint ?? "",
-        height
-      );
+      const txs = await getTxsByBlockHeightSequencer(indexerEndpoint, height);
 
       return txs.map<TransactionWithTxResponse>((tx) => ({
         ...tx.item,

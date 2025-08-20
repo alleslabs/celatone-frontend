@@ -84,23 +84,19 @@ export const useNftCollectionsSequencer = (limit: number, search?: string) => {
           if (isSomeValidAddress(search)) {
             const formattedAddress = formatAddresses(search);
             return getNftCollectionsByCollectionAddressSequencer(
-              indexerEndpoint ?? "",
+              indexerEndpoint,
               formattedAddress.address as BechAddr32
             );
           }
 
           return getNftCollecitonsByNameSequencer(
-            indexerEndpoint ?? "",
+            indexerEndpoint,
             search,
             pageParam
           );
         }
 
-        return getNftCollectionsSequencer(
-          indexerEndpoint ?? "",
-          limit,
-          pageParam
-        );
+        return getNftCollectionsSequencer(indexerEndpoint, limit, pageParam);
       },
       {
         getNextPageParam: (lastPage) =>
@@ -148,7 +144,7 @@ export const useNftCollectionByCollectionAddress = (
           ),
         querySequencer: () =>
           getNftCollectionByCollectionAddressSequencer(
-            indexerEndpoint ?? "",
+            indexerEndpoint,
             collectionAddressBech,
             collectionAddressHex,
             isMove
@@ -215,7 +211,7 @@ export const useNftCollectionCreator = (
           ),
         querySequencer: () =>
           getNftCollectionCreatorByCollectionAddressSequencer(
-            indexerEndpoint ?? "",
+            indexerEndpoint,
             bech32Prefix,
             collectionAddressBech
           ),
@@ -278,7 +274,7 @@ export const useNftCollectionActivitiesSequencer = (
       ],
       async ({ pageParam }) =>
         getNftCollectionActivitiesSequencer(
-          indexerEndpoint ?? "",
+          indexerEndpoint,
           pageParam,
           collectionAddress
         ),
@@ -354,7 +350,7 @@ export const useNftCollectionsByAccountAddress = (accountAddress: HexAddr) => {
         // TODO: revisit this later, it isn't used now.
         querySequencer: () =>
           getNftCollectionsByAccountAddressSequencer(
-            indexerEndpoint ?? "",
+            indexerEndpoint,
             accountAddress
           ),
         threshold: "sequencer",
