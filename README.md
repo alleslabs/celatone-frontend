@@ -57,7 +57,7 @@ The server will start on `http://localhost:3000`
 - State Management: [MobX](https://mobx.js.org/) & [TanStack Query](https://tanstack.com/query)
 - HTTP Client: [Axios](https://axios-http.com/)
 - Blockchain: [CosmJS](https://github.com/cosmos/cosmjs) & [Initia.js](https://github.com/initia-labs/initia.js)
-- Wallet Integration: [Cosmos Kit](https://cosmoskit.com/)
+- Wallet Integration: [Cosmos Kit](https://cosmoskit.com/) & [Initia Wallet](https://github.com/initia-labs/wallet)
 - Deployment: [Vercel](https://vercel.com/)
 
 ## Project Structure
