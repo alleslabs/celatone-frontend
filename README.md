@@ -27,7 +27,7 @@ pnpm install
 Copy `.env` and fill values:
 
 ```sh
-cp .env .env.local
+cp .env.example .env.local
 ```
 
 ```env
