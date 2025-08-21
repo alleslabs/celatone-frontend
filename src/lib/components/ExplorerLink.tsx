@@ -341,7 +341,7 @@ export const ExplorerLink = ({
       }}
       transition="all 0.15s ease-in-out"
       w="fit-content"
-      onMouseEnter={() => setHoveredText(textValue)}
+      onMouseEnter={() => setHoveredText(value)}
       onMouseLeave={() => setHoveredText(null)}
       {...componentProps}
     >

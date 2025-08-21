@@ -3,7 +3,8 @@ import { z } from "zod";
 
 export enum EvmEventBoxTabs {
   Decoded = "decoded",
-  Hex = "hex",
+  Formatted = "formatted",
+  Raw = "raw",
 }
 
 export const zEvmTxDetailsQueryParams = z.object({

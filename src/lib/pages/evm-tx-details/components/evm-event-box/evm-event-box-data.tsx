@@ -2,7 +2,7 @@ import type { LogDescription } from "ethers";
 import type { TxReceiptJsonRpcLog } from "lib/services/types";
 import type { Option } from "lib/types";
 
-import { Box, Checkbox, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SelectInput } from "lib/components/forms";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
@@ -102,12 +102,13 @@ export const EvmEventBoxData = ({
   tab,
   topics,
 }: EvmEventBoxDataProps) => {
-  const [isFormatted, setIsFormatted] = useState(false);
   const formattedData = data.replace("0x", "").match(/.{1,64}/g) ?? [];
 
-  return tab === EvmEventBoxTabs.Hex || data.trim() === "0x" ? (
+  return tab === EvmEventBoxTabs.Raw ||
+    tab === EvmEventBoxTabs.Formatted ||
+    data.trim() === "0x" ? (
     <Stack gap={1} w="full">
-      {isFormatted ? (
+      {tab === EvmEventBoxTabs.Formatted ? (
         <Box
           _hover={{
             "& .copy-button-box": { display: "block" },
@@ -130,14 +131,6 @@ export const EvmEventBoxData = ({
         </Box>
       ) : (
         <TextReadOnly canCopy text={data} />
-      )}
-      {data.trim() !== "0x" && (
-        <Checkbox
-          isChecked={isFormatted}
-          onChange={(e) => setIsFormatted(e.target.checked)}
-        >
-          <Text variant="body3">Formatted</Text>
-        </Checkbox>
       )}
     </Stack>
   ) : (
