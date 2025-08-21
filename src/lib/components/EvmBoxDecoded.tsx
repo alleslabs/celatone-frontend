@@ -5,16 +5,16 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { jsonPrettify } from "lib/utils";
 
-interface EvmEventBoxDecodedProps {
+interface EvmBoxDecodedProps {
   decode: unknown;
   index?: number;
   input: ParamType;
 }
 
-const EvmEventBoxDecodedBody = ({
+const EvmBoxDecodedBody = ({
   baseType,
   decode,
-}: Pick<EvmEventBoxDecodedProps, "decode"> & {
+}: Pick<EvmBoxDecodedProps, "decode"> & {
   baseType: string;
 }) => {
   switch (baseType) {
@@ -44,11 +44,7 @@ const EvmEventBoxDecodedBody = ({
   }
 };
 
-export const EvmEventBoxDecoded = ({
-  decode,
-  index,
-  input,
-}: EvmEventBoxDecodedProps) => (
+export const EvmBoxDecoded = ({ decode, index, input }: EvmBoxDecodedProps) => (
   <Grid
     gap={1}
     gridTemplateColumns={{
@@ -60,12 +56,12 @@ export const EvmEventBoxDecoded = ({
     <Flex alignItems="center" gap={2}>
       {index !== undefined && (
         <Text fontFamily="mono" variant="body2">
-          [{index + 1}]
+          [{index}]
         </Text>
       )}
       <Text variant="body2">{input.name}</Text>
       <Tag variant="gray">{input.type}</Tag>
     </Flex>
-    <EvmEventBoxDecodedBody baseType={input.baseType} decode={decode} />
+    <EvmBoxDecodedBody baseType={input.baseType} decode={decode} />
   </Grid>
 );

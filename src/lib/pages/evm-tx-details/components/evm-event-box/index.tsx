@@ -1,17 +1,21 @@
 import type { LogDescription } from "ethers";
 import type { TxReceiptJsonRpcLog } from "lib/services/types";
-import type { EvmVerifyInfo, Nullable, Option } from "lib/types";
 
 import { Flex, Stack, Text } from "@chakra-ui/react";
+import { EvmEventBoxData } from "lib/components/evm-event-box-data";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { TypeSwitch } from "lib/components/TypeSwitch";
+import {
+  EvmEventBoxTabs,
+  type EvmVerifyInfo,
+  type Nullable,
+  type Option,
+} from "lib/types";
 import { parseEvmLog } from "lib/utils";
 import { Fragment, useEffect, useState } from "react";
 
-import { EvmEventBoxTabs } from "../../types";
-import { EvmEventBoxData } from "./evm-event-box-data";
 import { EvmEventBoxTopics } from "./evm-event-box-topics";
 
 interface EvmEventBoxProps {
@@ -132,16 +136,18 @@ export const EvmEventBox = ({ evmVerifyInfo, log }: EvmEventBoxProps) => {
           )}
         </Stack>
         <Stack alignItems="flex-end">
-          <TypeSwitch
-            currentTab={currentTab}
-            disabledScrollToTop
-            tabs={Object.values(EvmEventBoxTabs).filter((value) =>
-              evmVerifyInfo?.isVerified
-                ? value !== EvmEventBoxTabs.Formatted
-                : value !== EvmEventBoxTabs.Decoded
-            )}
-            onTabChange={setCurrentTab}
-          />
+          {log.data.trim() !== "0x" && (
+            <TypeSwitch
+              currentTab={currentTab}
+              disabledScrollToTop
+              tabs={Object.values(EvmEventBoxTabs).filter((value) =>
+                evmVerifyInfo?.isVerified
+                  ? value !== EvmEventBoxTabs.Formatted
+                  : value !== EvmEventBoxTabs.Decoded
+              )}
+              onTabChange={setCurrentTab}
+            />
+          )}
         </Stack>
       </Flex>
       <LabelText

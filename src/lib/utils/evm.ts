@@ -189,3 +189,16 @@ export const parseEvmLog = (abi: JsonFragment[], log: TxReceiptJsonRpcLog) => {
     return undefined;
   }
 };
+
+export const decodeEvmFunctionData = (abi: JsonFragment[], data: string) => {
+  const iface = new Interface(abi);
+  try {
+    return (
+      iface.parseTransaction({
+        data,
+      }) ?? undefined
+    );
+  } catch {
+    return undefined;
+  }
+};
