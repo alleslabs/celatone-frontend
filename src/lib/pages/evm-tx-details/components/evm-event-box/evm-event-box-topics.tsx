@@ -33,8 +33,8 @@ export const EvmEventBoxTopics = ({
   tab,
   topics,
 }: EvmEventBoxTopicsProps) => (
-  <Stack columnGap={2} rowGap={4} w="full" wordBreak="break-all">
-    {tab === EvmEventBoxTabs.Hex ? (
+  <Stack columnGap={2} rowGap={2} w="full" wordBreak="break-all">
+    {tab === EvmEventBoxTabs.Raw ? (
       topics.map((topic, index) => (
         <EvmEventBoxTopicHex key={topic} index={index} topic={topic} />
       ))
