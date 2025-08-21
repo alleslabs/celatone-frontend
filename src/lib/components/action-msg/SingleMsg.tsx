@@ -90,9 +90,11 @@ export const SingleMsg = ({
       {link1 && (
         <ExplorerLink
           copyValue={link1.copyValue}
+          queryParams={{}}
           showCopyOnHover
           // Should ellipse when it is not tx hash, contract addr, user addr
           textFormat={link1.type !== "code_id" ? "truncate" : "normal"}
+          textLabel={undefined}
           type={link1.type}
           value={link1.value}
         />
@@ -103,9 +105,11 @@ export const SingleMsg = ({
       {link2 && (
         <ExplorerLink
           copyValue={link2.copyValue}
+          queryParams={{}}
           showCopyOnHover
           // Should ellipse when it is not tx hash, contract addr, user addr
           textFormat={link2.type !== "code_id" ? "truncate" : "normal"}
+          textLabel={undefined}
           type={link2.type}
           value={link2.value}
         />

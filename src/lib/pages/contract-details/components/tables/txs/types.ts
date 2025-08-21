@@ -1,8 +1,9 @@
-import type { BechAddr32, Option } from "lib/types";
+import type { BechAddr } from "lib/types";
 
 export interface TxsTableProps {
-  contractAddress: BechAddr32;
-  refetchCount: () => void;
-  scrollComponentId: string;
-  totalData: Option<number>;
+  contractAddress: BechAddr;
+  onViewMore?: () => void;
+  refetchCount?: () => void;
+  scrollComponentId?: string;
+  totalData?: number;
 }

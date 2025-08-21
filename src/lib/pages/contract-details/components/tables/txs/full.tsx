@@ -66,13 +66,13 @@ export const TxsTableFull = ({
           totalData={totalData}
           onPageChange={(nextPage) => {
             setCurrentPage(nextPage);
-            refetchCount();
+            refetchCount?.();
           }}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
-            refetchCount();
+            refetchCount?.();
           }}
         />
       )}

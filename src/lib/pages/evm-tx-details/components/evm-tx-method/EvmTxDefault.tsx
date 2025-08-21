@@ -1,7 +1,8 @@
 import type { TxDataJsonRpc } from "lib/services/types";
 
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Spinner, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { useEvmVerifyInfos } from "lib/services/verification/evm";
 
 import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 
@@ -9,11 +10,12 @@ interface EvmTxDefaultProps {
   evmTxData: TxDataJsonRpc;
 }
 
-export const EvmTxDefault = ({ evmTxData }: EvmTxDefaultProps) => (
-  <>
-    <Heading as="h6" variant="h6">
-      Sender / Receiver
-    </Heading>
+export const EvmTxDefault = ({ evmTxData }: EvmTxDefaultProps) => {
+  const contractAddress = evmTxData.txReceipt.to;
+  const { data: evmVerifyInfos, isLoading: isEvmVerifInfosLoading } =
+    useEvmVerifyInfos(contractAddress ? [contractAddress] : []);
+
+  return (
     <Flex direction="column" gap={4}>
       <EvmInfoLabelValue
         label="From"
@@ -30,14 +32,24 @@ export const EvmTxDefault = ({ evmTxData }: EvmTxDefaultProps) => (
       <EvmInfoLabelValue
         label="To"
         value={
-          evmTxData.txReceipt.to ? (
-            <ExplorerLink
-              fixedHeight={false}
-              showCopyOnHover
-              textFormat="normal"
-              type="evm_contract_address"
-              value={evmTxData.txReceipt.to}
-            />
+          contractAddress ? (
+            <>
+              {isEvmVerifInfosLoading ? (
+                <Spinner boxSize={4} />
+              ) : (
+                <ExplorerLink
+                  fixedHeight={false}
+                  showCopyOnHover
+                  textFormat="normal"
+                  textLabel={
+                    evmVerifyInfos?.[contractAddress.toLowerCase()]
+                      ?.contractName
+                  }
+                  type="evm_contract_address"
+                  value={contractAddress}
+                />
+              )}
+            </>
           ) : (
             <Text color="text.disabled" variant="body2">
               -
@@ -46,5 +58,5 @@ export const EvmTxDefault = ({ evmTxData }: EvmTxDefaultProps) => (
         }
       />
     </Flex>
-  </>
-);
+  );
+};
