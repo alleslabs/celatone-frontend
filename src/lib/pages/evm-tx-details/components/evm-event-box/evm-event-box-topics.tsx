@@ -2,9 +2,8 @@ import type { LogDescription } from "ethers";
 import type { Option } from "lib/types";
 
 import { Flex, Stack, Text } from "@chakra-ui/react";
-
-import { EvmEventBoxTabs } from "../../types";
-import { EvmEventBoxDecoded } from "./evm-event-box-decoded";
+import { EvmBoxDecoded } from "lib/components/EvmBoxDecoded";
+import { EvmEventBoxTabs } from "lib/types";
 
 interface EvmEventBoxTopicProps {
   index: number;
@@ -52,10 +51,10 @@ export const EvmEventBoxTopics = ({
             {parsedLog.fragment.inputs
               .slice(0, topics.length - 1)
               .map((input, index) => (
-                <EvmEventBoxDecoded
+                <EvmBoxDecoded
                   key={topics[index]}
                   decode={parsedLog.args.slice(0, topics.length - 1)[index]}
-                  index={index}
+                  index={index + 1}
                   input={input}
                 />
               ))}
