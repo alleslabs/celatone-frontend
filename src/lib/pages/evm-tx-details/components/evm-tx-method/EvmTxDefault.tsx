@@ -21,7 +21,6 @@ export const EvmTxDefault = ({ evmTxData }: EvmTxDefaultProps) => {
         label="From"
         value={
           <ExplorerLink
-            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
             type="user_address"
@@ -38,7 +37,6 @@ export const EvmTxDefault = ({ evmTxData }: EvmTxDefaultProps) => {
                 <Spinner boxSize={4} />
               ) : (
                 <ExplorerLink
-                  fixedHeight={false}
                   showCopyOnHover
                   textFormat="normal"
                   textLabel={

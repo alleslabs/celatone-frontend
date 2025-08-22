@@ -253,7 +253,7 @@ export const ExplorerLink = ({
   chainId,
   copyValue,
   externalLink,
-  fixedHeight = true,
+  fixedHeight = false,
   hideCopy = false,
   isReadOnly = false,
   leftIcon = null,
@@ -341,7 +341,7 @@ export const ExplorerLink = ({
       }}
       transition="all 0.15s ease-in-out"
       w="fit-content"
-      onMouseEnter={() => setHoveredText(textValue)}
+      onMouseEnter={() => setHoveredText(value)}
       onMouseLeave={() => setHoveredText(null)}
       {...componentProps}
     >

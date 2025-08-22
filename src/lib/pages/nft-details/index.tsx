@@ -219,7 +219,6 @@ const NftDetailsBody = ({
                       <Flex>
                         <ExplorerLink
                           ampCopierSection="nft-address-nft-detail-top"
-                          fixedHeight={false}
                           maxWidth="full"
                           textFormat="normal"
                           type="user_address"
@@ -243,7 +242,6 @@ const NftDetailsBody = ({
                   <NftInfoItem label="Holder">
                     <ExplorerLink
                       ampCopierSection="holder-address-nft-detail-top"
-                      fixedHeight={false}
                       maxWidth="full"
                       textFormat="normal"
                       type="user_address"
