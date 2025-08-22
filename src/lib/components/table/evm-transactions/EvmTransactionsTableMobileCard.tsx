@@ -9,13 +9,11 @@ import {
   coinToTokenWithValue,
   dateFromNow,
   formatEvmTxHash,
-  formatPrice,
   formatUTC,
   formatUTokenWithPrecision,
   getEvmAmount,
   getTokenLabel,
 } from "lib/utils";
-import { isUndefined } from "lodash";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
@@ -43,26 +41,20 @@ export const EvmTransactionsTableMobileCard = ({
           <Grid gap={3} gridTemplateColumns="1fr 1fr">
             <Stack gap={0}>
               <MobileLabel label="Amount" variant="body3" />
-              <Flex align="center" gap={2}>
-                <Text variant="body2">
-                  {formatUTokenWithPrecision(
-                    token.amount,
-                    token.precision ?? 0,
-                    true,
-                    token.precision ? 6 : 0
-                  )}{" "}
-                  {getTokenLabel(token.denom, token.symbol)}
-                </Text>
-                {!isUndefined(token.value) && (
-                  <Text color="text.dark" variant="body3">
-                    ({formatPrice(token.value)})
-                  </Text>
-                )}
-              </Flex>
+              <Text variant="body2">
+                {formatUTokenWithPrecision(
+                  token.amount,
+                  token.precision ?? 0,
+                  true,
+                  token.precision ? 6 : 0
+                )}{" "}
+                {getTokenLabel(token.denom, token.symbol)}
+              </Text>
             </Stack>
             <Stack gap={0}>
               <MobileLabel label="Sender" variant="body3" />
               <ExplorerLink
+                marginLeft={-1}
                 showCopyOnHover
                 type="user_address"
                 value={evmTransaction.tx.from}
