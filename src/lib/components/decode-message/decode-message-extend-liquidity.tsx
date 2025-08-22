@@ -72,7 +72,7 @@ export const DecodeMessageExtendLiquidity = ({
       >
         <TokenImageWithAmount token={lpToken} />
         <Text color="text.dark">for</Text>
-        <Text>{formatDayJSDuration(extendedPeriod)}</Text>
+        <Text whiteSpace="nowrap">{formatDayJSDuration(extendedPeriod)}</Text>
         <Text color="text.dark">via</Text>
         <ValidatorBadge
           badgeSize={4}

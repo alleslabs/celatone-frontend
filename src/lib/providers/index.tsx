@@ -3,6 +3,7 @@ import { AppProvider, NavProvider } from "lib/app-provider";
 import { AmplitudeProvider } from "./amplitude";
 import { ChakraProvider } from "./chakra";
 import { CosmosKitProvider } from "./cosmos-kit";
+import { HoverProvider } from "./hover";
 import { InitiaWidgetProvider } from "./initia-widget";
 import { NetworkGuard } from "./network-guard";
 import { QueryClientProvider } from "./query-client";
@@ -19,11 +20,13 @@ export default ({ children }: { children: React.ReactNode }) => (
             <CosmosKitProvider>
               <InitiaWidgetProvider>
                 <TxDecoderProvider>
-                  <NavProvider>
-                    <AmplitudeProvider>
-                      <TxBroadcastProvider>{children}</TxBroadcastProvider>
-                    </AmplitudeProvider>
-                  </NavProvider>
+                  <HoverProvider>
+                    <NavProvider>
+                      <AmplitudeProvider>
+                        <TxBroadcastProvider>{children}</TxBroadcastProvider>
+                      </AmplitudeProvider>
+                    </NavProvider>
+                  </HoverProvider>
                 </TxDecoderProvider>
               </InitiaWidgetProvider>
             </CosmosKitProvider>
