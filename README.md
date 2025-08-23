@@ -1,48 +1,36 @@
 # Scan Frontend
 
-An explorer for a [CosmWasm](https://cosmwasm.com/)-powered [Cosmos](http://cosmos.network/) ecosystem.
+Scan is a blockchain explorer service that provides comprehensive transaction and contract analysis for CosmWasm-powered Cosmos ecosystems so that users can efficiently explore, debug, and monitor their blockchain interactions.
 
-## Development
+A powerful web-based explorer designed for developers and users working with CosmWasm smart contracts and Cosmos blockchain networks, offering detailed transaction analysis, contract interaction tools, and network monitoring capabilities.
 
-### Stack
+## Table of Contents
 
-The Scan frontend uses the following technologies:
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Running Locally](#running-locally)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Scripts](#scripts)
+- [License](#license)
 
-- Language: [TypeScript](https://www.typescriptlang.org/)
-- Framework: [React](https://reactjs.org/) & [Next.js](https://nextjs.org/)
-- Components: [Chakra UI](https://chakra-ui.com/)
-- Deployment: [Vercel](https://vercel.com/)
+## Installation
 
-### Prerequisites
-
-1. [Node.js](https://nodejs.org/en/) (version >= 20) or using node version manager [nvm](https://github.com/nvm-sh/nvm#intro) (recommended, installation guide for nvm [here](https://collabnix.com/how-to-install-and-configure-nvm-on-mac-os/)).
-
-### Develop
-
-1. Clone the project either using the standard Git CLI or the GitHub [gh](https://github.com/cli/cli) CLI
-
-```bash
-# Git CLI
-git clone https://github.com/alleslabs/celatone-frontend
-```
-
-```bash
-# gh CLI
-gh repo clone alleslabs/celatone-frontend
-```
-
-2. Install the dependencies
-
-```bash
-# Navigate to the cloned repository
+```sh
+git clone https://github.com/alleslabs/celatone-frontend.git
 cd celatone-frontend
-# Install dependencies
-pnpm i
+pnpm install
 ```
 
-3. Create a `.env.local` file in the root of the project and add the following environment variables
+## Configuration
 
-```bash
+Copy `.env` and fill values:
+
+```sh
+cp .env.example .env.local
+```
+
+```env
 # The mnemonic of the wallet that will be used for estimate gas fees
 NEXT_PUBLIC_DUMMY_MNEMONIC="your mnemonic here"
 NEXT_PUBLIC_SUPPORTED_NETWORK_TYPES=local,devnet,testnet,mainnet
@@ -51,128 +39,63 @@ NEXT_PUBLIC_INITIA_API=http://localhost:8080
 NEXT_PUBLIC_CELATONE_API=http://localhost:8081
 ```
 
-4. Finally, run the development server
+For local development, modify `devChainConfigs.ts` under `src/config/chain` by adding your own chain configuration with the appropriate network settings, RPC endpoints, and feature flags.
 
-```bash
+## Running Locally
+
+```sh
 pnpm dev
 ```
 
-The website will then be live on [http://localhost:3000](http://localhost:3000)
+The server will start on `http://localhost:3000`
 
-### Running Local
+## Tech Stack
 
-1. Modify a `devChainConfigs.ts` under `src/config/chain` by adding your own chain config
+- Framework: [React](https://reactjs.org/) & [Next.js](https://nextjs.org/)
+- Language: [TypeScript](https://www.typescriptlang.org/)
+- Components: [Chakra UI](https://chakra-ui.com/)
+- State Management: [MobX](https://mobx.js.org/) & [TanStack Query](https://tanstack.com/query)
+- HTTP Client: [Axios](https://axios-http.com/)
+- Blockchain: [CosmJS](https://github.com/cosmos/cosmjs) & [Initia.js](https://github.com/initia-labs/initia.js)
+- Wallet Integration: [Cosmos Kit](https://cosmoskit.com/) & [Initia Wallet](https://github.com/initia-labs/wallet)
+- Deployment: [Vercel](https://vercel.com/)
 
-```ts
-{
-    tier: "lite",
-    chainId: "localinitia",
-    chain: "localinitia",
-    registryChainName: "localinitia",
-    prettyName: "Local Initia",
-    rest: "http://localhost:1317",
-    rpc: "http://localhost:26657",
-    wallets: ["keplr"], // keplr, compass, station
-    features: {
-      faucet: {
-        enabled: false,
-      },
-      wasm: {
-        enabled: false,
-      },
-      move: {
-        enabled: true,
-        moduleMaxFileSize: 1_048_576,
-      },
-      pool: {
-        enabled: false,
-      },
-      publicProject: {
-        enabled: false,
-      },
-      gov: {
-        enabled: true,
-        version: "v1",
-        hideOpenProposal: true,
-      },
-      nft: {
-        enabled: false,
-      },
-    },
-    gas: {
-      gasAdjustment: 1.5,
-      maxGasLimit: 200_000_000,
-    },
-    extra: {
-      layer: "1",
-    },
-    network_type: "testnet",
-    logo_URIs: {
-      png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
-      svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.svg",
-    },
-    fees: {
-      fee_tokens: [
-        {
-          denom: "uinit",
-          fixed_min_gas_price: 0.15,
-          low_gas_price: 0.15,
-          average_gas_price: 0.15,
-          high_gas_price: 0.4,
-        },
-      ],
-    },
-    registry: {
-      bech32_prefix: "init",
-      slip44: 118,
-      staking: {
-        staking_tokens: [
-          {
-            denom: "uinit",
-          },
-        ],
-      },
-      assets: [
-        {
-          description: "The native token of Initia",
-          denom_units: [
-            {
-              denom: "uinit",
-              exponent: 0,
-            },
-            {
-              denom: "INIT",
-              exponent: 6,
-            },
-          ],
-          base: "uinit",
-          display: "INIT",
-          name: "Initia Native Token",
-          symbol: "INIT",
-          images: [
-            {
-              png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
-              svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.svg",
-            },
-          ],
-          logo_URIs: {
-            png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
-            svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.svg",
-          },
-        },
-      ],
-    },
-  }
+## Project Structure
+
+```
+celatone-frontend/
+├── src/
+│   ├── components/        # Reusable React components
+│   ├── config/            # Configuration files and chain configs
+│   ├── hooks/             # Custom React hooks
+│   ├── lib/               # External library configurations
+│   ├── pages/             # Next.js pages and routing
+│   ├── stores/            # MobX state management
+│   ├── types/             # TypeScript type definitions
+│   ├── utils/             # Utility functions and helpers
+│   └── styles/            # Global styles and themes
+├── public/                # Static assets
+├── .env                   # Environment variables template
+├── next.config.js         # Next.js configuration
+├── package.json
+└── tsconfig.json          # TypeScript configuration
 ```
 
-2. Update your project environment variables by
+## Scripts
 
-- adding `local` type into `NEXT_PUBLIC_SUPPORTED_NETWORK_TYPES`
-- (move only) setting another variable `NEXT_PUBLIC_INITIA_MOVE_DECODER`
-
-```bash
-NEXT_PUBLIC_SUPPORTED_NETWORK_TYPES=local
-
-# move only
-NEXT_PUBLIC_INITIA_MOVE_DECODER=https://celatone-move-api-prod-jiod42ec2q-as.a.run.app
+```sh
+pnpm build          # Build production bundle
+pnpm dev            # Start development server
+pnpm start          # Start production server
+pnpm test           # Run test suite
+pnpm type-check     # Run TypeScript type checking
+pnpm lint           # Run ESLint
+pnpm lint:fix       # Fix ESLint issues and format code
+pnpm format         # Format code with Prettier
+pnpm storybook      # Start Storybook development server
+pnpm build-storybook # Build Storybook for production
 ```
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
