@@ -13,6 +13,7 @@ import type { TxMsgData } from "../tx-message";
 import { AppLink } from "../AppLink";
 import { NftImage } from "../nft/NftImage";
 import { DecodeMessageBody } from "./decode-message-body";
+import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
@@ -165,6 +166,7 @@ export const DecodeMessageObjectTransfer = ({
             />
           )}
         </DecodeMessageRow>
+        <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>
   );

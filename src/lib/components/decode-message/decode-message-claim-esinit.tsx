@@ -13,6 +13,7 @@ import type { TxMsgData } from "../tx-message";
 import { ChainBadge } from "../ChainBadge";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { DecodeMessageBody } from "./decode-message-body";
+import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
@@ -74,6 +75,7 @@ export const DecodeMessageClaimEsinit = ({
         <DecodeMessageRow title="Amount">
           <CoinsComponent coins={[coin]} />
         </DecodeMessageRow>
+        <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>
   );

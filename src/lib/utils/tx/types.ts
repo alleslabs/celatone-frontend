@@ -66,6 +66,14 @@ export interface MsgExecuteModuleDetails extends MsgBaseDetails {
   type_args: string[];
 }
 
+export interface MsgExecuteJsonModuleDetails extends MsgBaseDetails {
+  args: string[];
+  function_name: string;
+  module_address: string;
+  module_name: string;
+  sender: BechAddr;
+  type_args: string[];
+}
 export interface MsgMigrateDetails extends MsgBaseDetails {
   code_id: string;
   contract: BechAddr32;
@@ -697,220 +705,222 @@ export interface MsgCreateCosmWasmPoolDetails extends MsgBaseDetails {
 export type MsgReturnType<T extends TypeUrl> =
   T extends "/initia.move.v1.MsgExecute"
     ? MsgExecuteModuleDetails
-    : T extends "/cosmwasm.wasm.v1.MsgStoreCode"
-      ? MsgStoreCodeDetails
-      : T extends "/cosmwasm.wasm.v1.MsgInstantiateContract"
-        ? MsgInstantiateDetails
-        : T extends "/cosmwasm.wasm.v1.MsgInstantiateContract2"
-          ? MsgInstantiate2Details
-          : T extends "/cosmwasm.wasm.v1.MsgExecuteContract"
-            ? MsgExecuteDetails
-            : T extends "/cosmwasm.wasm.v1.MsgMigrateContract"
-              ? MsgMigrateDetails
-              : T extends "/cosmwasm.wasm.v1.MsgUpdateAdmin"
-                ? MsgUpdateAdminDetails
-                : T extends "/cosmwasm.wasm.v1.MsgClearAdmin"
-                  ? MsgClearAdminDetails
-                  : T extends "/cosmos.bank.v1beta1.MsgSend"
-                    ? MsgSendDetails
-                    : T extends "/cosmos.bank.v1beta1.MsgMultiSend"
-                      ? MsgMultiSendDetails
-                      : T extends "/cosmos.authz.v1beta1.MsgGrant"
-                        ? MsgGrantDetails
-                        : T extends "/cosmos.authz.v1beta1.MsgRevoke"
-                          ? MsgRevokeDetails
-                          : T extends "/cosmos.authz.v1beta1.MsgExec"
-                            ? MsgExecDetails
-                            : T extends "/cosmos.crisis.v1beta1.MsgVerifyInvariant"
-                              ? MsgVerifyInvariantDetails
-                              : T extends "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress"
-                                ? MsgSetWithdrawAddressDetails
-                                : T extends "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward"
-                                  ? MsgWithdrawDelegatorRewardDetails
-                                  : T extends "/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission"
-                                    ? MsgWithdrawValidatorCommissionDetails
-                                    : T extends "/cosmos.distribution.v1beta1.MsgFundCommunityPool"
-                                      ? MsgFundCommunityPoolDetails
-                                      : T extends "/cosmos.evidence.v1beta1.MsgSubmitEvidence"
-                                        ? MsgSubmitEvidenceDetails
-                                        : T extends "/cosmos.feegrant.v1beta1.MsgGrantAllowance"
-                                          ? MsgGrantAllowanceDetails
-                                          : T extends "/cosmos.feegrant.v1beta1.MsgRevokeAllowance"
-                                            ? MsgRevokeAllowanceDetails
-                                            : T extends "/cosmos.gov.v1beta1.MsgSubmitProposal"
-                                              ? MsgSubmitProposalDetails
-                                              : T extends "/cosmos.gov.v1beta1.MsgVote"
-                                                ? MsgVoteDetails
-                                                : T extends "/cosmos.gov.v1beta1.MsgVoteWeighted"
-                                                  ? MsgVoteWeightedDetails
-                                                  : T extends "/cosmos.gov.v1beta1.MsgDeposit"
-                                                    ? MsgDepositDetails
-                                                    : T extends "/cosmos.slashing.v1beta1.MsgUnjail"
-                                                      ? MsgUnjailDetails
-                                                      : T extends "/cosmos.staking.v1beta1.MsgCreateValidator"
-                                                        ? MsgCreateValidatorDetails
-                                                        : T extends "/cosmos.staking.v1beta1.MsgEditValidator"
-                                                          ? MsgEditValidatorDetails
-                                                          : T extends "/cosmos.staking.v1beta1.MsgDelegate"
-                                                            ? MsgDelegateDetails
-                                                            : T extends "/cosmos.staking.v1beta1.MsgUndelegate"
-                                                              ? MsgUndelegateDetails
-                                                              : T extends "/cosmos.staking.v1beta1.MsgBeginRedelegate"
-                                                                ? MsgBeginRedelegateDetails
-                                                                : T extends "/ibc.applications.transfer.v1.MsgTransfer"
-                                                                  ? MsgTransferDetails
-                                                                  : T extends "/ibc.core.client.v1.MsgCreateClient"
-                                                                    ? MsgCreateClientDetails
-                                                                    : T extends "/ibc.core.client.v1.MsgUpdateClient"
-                                                                      ? MsgUpdateClientDetails
-                                                                      : T extends "/ibc.core.client.v1.MsgUpgradeClient"
-                                                                        ? MsgUpgradeClientDetails
-                                                                        : T extends "/ibc.core.client.v1.MsgSubmitMisbehaviour"
-                                                                          ? MsgSubmitMisbehaviourDetails
-                                                                          : T extends "/ibc.core.connection.v1.MsgConnectionOpenInit"
-                                                                            ? MsgConnectionOpenInitDetails
-                                                                            : T extends "/ibc.core.connection.v1.MsgConnectionOpenTry"
-                                                                              ? MsgConnectionOpenTryDetails
-                                                                              : T extends "/ibc.core.connection.v1.MsgConnectionOpenAck"
-                                                                                ? MsgConnectionOpenAckDetails
-                                                                                : T extends "/ibc.core.connection.v1.MsgConnectionOpenConfirm"
-                                                                                  ? MsgConnectionOpenConfirmDetails
-                                                                                  : T extends "/ibc.core.channel.v1.MsgChannelOpenInit"
-                                                                                    ? MsgChannelOpenInitDetails
-                                                                                    : T extends "/ibc.core.channel.v1.MsgChannelOpenTry"
-                                                                                      ? MsgChannelOpenTryDetails
-                                                                                      : T extends "/ibc.core.channel.v1.MsgChannelOpenAck"
-                                                                                        ? MsgChannelOpenAckDetails
-                                                                                        : T extends "/ibc.core.channel.v1.MsgChannelOpenConfirm"
-                                                                                          ? MsgChannelOpenConfirmDetails
-                                                                                          : T extends "/ibc.core.channel.v1.MsgChannelCloseInit"
-                                                                                            ? MsgChannelCloseInitDetails
-                                                                                            : T extends "/ibc.core.channel.v1.MsgChannelCloseConfirm"
-                                                                                              ? MsgChannelCloseConfirmDetails
-                                                                                              : T extends "/ibc.core.channel.v1.MsgRecvPacket"
-                                                                                                ? MsgRecvPacketDetails
-                                                                                                : T extends "/ibc.core.channel.v1.MsgTimeout"
-                                                                                                  ? MsgTimeoutDetails
-                                                                                                  : T extends "/ibc.core.channel.v1.MsgTimeoutOnClose"
-                                                                                                    ? MsgTimeoutOnCloseDetails
-                                                                                                    : T extends "/ibc.core.channel.v1.MsgAcknowledgement"
-                                                                                                      ? MsgAcknowledgementDetails
-                                                                                                      : T extends "/osmosis.gamm.poolmodels.balancer.v1beta1.MsgCreateBalancerPool"
-                                                                                                        ? MsgCreateBalancerPoolDetails
-                                                                                                        : T extends "/osmosis.gamm.poolmodels.stableswap.v1beta1.MsgCreateStableswapPool"
-                                                                                                          ? MsgCreateStableswapPoolDetails
-                                                                                                          : T extends "/osmosis.gamm.poolmodels.stableswap.v1beta1.MsgStableSwapAdjustScalingFactors"
-                                                                                                            ? MsgStableSwapAdjustScalingFactorsDetails
-                                                                                                            : T extends "/osmosis.gamm.v1beta1.MsgJoinPool"
-                                                                                                              ? MsgJoinPoolDetails
-                                                                                                              : T extends "/osmosis.gamm.v1beta1.MsgExitPool"
-                                                                                                                ? MsgExitPoolDetails
-                                                                                                                : T extends
-                                                                                                                      | "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn"
-                                                                                                                      | "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn"
-                                                                                                                  ? MsgSwapExactAmountInDetails
+    : T extends "/initia.move.v1.MsgExecuteJSON"
+      ? MsgExecuteJsonModuleDetails
+      : T extends "/cosmwasm.wasm.v1.MsgStoreCode"
+        ? MsgStoreCodeDetails
+        : T extends "/cosmwasm.wasm.v1.MsgInstantiateContract"
+          ? MsgInstantiateDetails
+          : T extends "/cosmwasm.wasm.v1.MsgInstantiateContract2"
+            ? MsgInstantiate2Details
+            : T extends "/cosmwasm.wasm.v1.MsgExecuteContract"
+              ? MsgExecuteDetails
+              : T extends "/cosmwasm.wasm.v1.MsgMigrateContract"
+                ? MsgMigrateDetails
+                : T extends "/cosmwasm.wasm.v1.MsgUpdateAdmin"
+                  ? MsgUpdateAdminDetails
+                  : T extends "/cosmwasm.wasm.v1.MsgClearAdmin"
+                    ? MsgClearAdminDetails
+                    : T extends "/cosmos.bank.v1beta1.MsgSend"
+                      ? MsgSendDetails
+                      : T extends "/cosmos.bank.v1beta1.MsgMultiSend"
+                        ? MsgMultiSendDetails
+                        : T extends "/cosmos.authz.v1beta1.MsgGrant"
+                          ? MsgGrantDetails
+                          : T extends "/cosmos.authz.v1beta1.MsgRevoke"
+                            ? MsgRevokeDetails
+                            : T extends "/cosmos.authz.v1beta1.MsgExec"
+                              ? MsgExecDetails
+                              : T extends "/cosmos.crisis.v1beta1.MsgVerifyInvariant"
+                                ? MsgVerifyInvariantDetails
+                                : T extends "/cosmos.distribution.v1beta1.MsgSetWithdrawAddress"
+                                  ? MsgSetWithdrawAddressDetails
+                                  : T extends "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward"
+                                    ? MsgWithdrawDelegatorRewardDetails
+                                    : T extends "/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission"
+                                      ? MsgWithdrawValidatorCommissionDetails
+                                      : T extends "/cosmos.distribution.v1beta1.MsgFundCommunityPool"
+                                        ? MsgFundCommunityPoolDetails
+                                        : T extends "/cosmos.evidence.v1beta1.MsgSubmitEvidence"
+                                          ? MsgSubmitEvidenceDetails
+                                          : T extends "/cosmos.feegrant.v1beta1.MsgGrantAllowance"
+                                            ? MsgGrantAllowanceDetails
+                                            : T extends "/cosmos.feegrant.v1beta1.MsgRevokeAllowance"
+                                              ? MsgRevokeAllowanceDetails
+                                              : T extends "/cosmos.gov.v1beta1.MsgSubmitProposal"
+                                                ? MsgSubmitProposalDetails
+                                                : T extends "/cosmos.gov.v1beta1.MsgVote"
+                                                  ? MsgVoteDetails
+                                                  : T extends "/cosmos.gov.v1beta1.MsgVoteWeighted"
+                                                    ? MsgVoteWeightedDetails
+                                                    : T extends "/cosmos.gov.v1beta1.MsgDeposit"
+                                                      ? MsgDepositDetails
+                                                      : T extends "/cosmos.slashing.v1beta1.MsgUnjail"
+                                                        ? MsgUnjailDetails
+                                                        : T extends "/cosmos.staking.v1beta1.MsgCreateValidator"
+                                                          ? MsgCreateValidatorDetails
+                                                          : T extends "/cosmos.staking.v1beta1.MsgEditValidator"
+                                                            ? MsgEditValidatorDetails
+                                                            : T extends "/cosmos.staking.v1beta1.MsgDelegate"
+                                                              ? MsgDelegateDetails
+                                                              : T extends "/cosmos.staking.v1beta1.MsgUndelegate"
+                                                                ? MsgUndelegateDetails
+                                                                : T extends "/cosmos.staking.v1beta1.MsgBeginRedelegate"
+                                                                  ? MsgBeginRedelegateDetails
+                                                                  : T extends "/ibc.applications.transfer.v1.MsgTransfer"
+                                                                    ? MsgTransferDetails
+                                                                    : T extends "/ibc.core.client.v1.MsgCreateClient"
+                                                                      ? MsgCreateClientDetails
+                                                                      : T extends "/ibc.core.client.v1.MsgUpdateClient"
+                                                                        ? MsgUpdateClientDetails
+                                                                        : T extends "/ibc.core.client.v1.MsgUpgradeClient"
+                                                                          ? MsgUpgradeClientDetails
+                                                                          : T extends "/ibc.core.client.v1.MsgSubmitMisbehaviour"
+                                                                            ? MsgSubmitMisbehaviourDetails
+                                                                            : T extends "/ibc.core.connection.v1.MsgConnectionOpenInit"
+                                                                              ? MsgConnectionOpenInitDetails
+                                                                              : T extends "/ibc.core.connection.v1.MsgConnectionOpenTry"
+                                                                                ? MsgConnectionOpenTryDetails
+                                                                                : T extends "/ibc.core.connection.v1.MsgConnectionOpenAck"
+                                                                                  ? MsgConnectionOpenAckDetails
+                                                                                  : T extends "/ibc.core.connection.v1.MsgConnectionOpenConfirm"
+                                                                                    ? MsgConnectionOpenConfirmDetails
+                                                                                    : T extends "/ibc.core.channel.v1.MsgChannelOpenInit"
+                                                                                      ? MsgChannelOpenInitDetails
+                                                                                      : T extends "/ibc.core.channel.v1.MsgChannelOpenTry"
+                                                                                        ? MsgChannelOpenTryDetails
+                                                                                        : T extends "/ibc.core.channel.v1.MsgChannelOpenAck"
+                                                                                          ? MsgChannelOpenAckDetails
+                                                                                          : T extends "/ibc.core.channel.v1.MsgChannelOpenConfirm"
+                                                                                            ? MsgChannelOpenConfirmDetails
+                                                                                            : T extends "/ibc.core.channel.v1.MsgChannelCloseInit"
+                                                                                              ? MsgChannelCloseInitDetails
+                                                                                              : T extends "/ibc.core.channel.v1.MsgChannelCloseConfirm"
+                                                                                                ? MsgChannelCloseConfirmDetails
+                                                                                                : T extends "/ibc.core.channel.v1.MsgRecvPacket"
+                                                                                                  ? MsgRecvPacketDetails
+                                                                                                  : T extends "/ibc.core.channel.v1.MsgTimeout"
+                                                                                                    ? MsgTimeoutDetails
+                                                                                                    : T extends "/ibc.core.channel.v1.MsgTimeoutOnClose"
+                                                                                                      ? MsgTimeoutOnCloseDetails
+                                                                                                      : T extends "/ibc.core.channel.v1.MsgAcknowledgement"
+                                                                                                        ? MsgAcknowledgementDetails
+                                                                                                        : T extends "/osmosis.gamm.poolmodels.balancer.v1beta1.MsgCreateBalancerPool"
+                                                                                                          ? MsgCreateBalancerPoolDetails
+                                                                                                          : T extends "/osmosis.gamm.poolmodels.stableswap.v1beta1.MsgCreateStableswapPool"
+                                                                                                            ? MsgCreateStableswapPoolDetails
+                                                                                                            : T extends "/osmosis.gamm.poolmodels.stableswap.v1beta1.MsgStableSwapAdjustScalingFactors"
+                                                                                                              ? MsgStableSwapAdjustScalingFactorsDetails
+                                                                                                              : T extends "/osmosis.gamm.v1beta1.MsgJoinPool"
+                                                                                                                ? MsgJoinPoolDetails
+                                                                                                                : T extends "/osmosis.gamm.v1beta1.MsgExitPool"
+                                                                                                                  ? MsgExitPoolDetails
                                                                                                                   : T extends
-                                                                                                                        | "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut"
-                                                                                                                        | "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut"
-                                                                                                                    ? MsgSwapExactAmountOutDetails
-                                                                                                                    : T extends "/osmosis.poolmanager.v1beta1.MsgSplitRouteSwapExactAmountIn"
-                                                                                                                      ? MsgSplitRouteSwapExactAmountInDetails
-                                                                                                                      : T extends "/osmosis.poolmanager.v1beta1.MsgSplitRouteSwapExactAmountOut"
-                                                                                                                        ? MsgSplitRouteSwapExactAmountOutDetails
-                                                                                                                        : T extends "/osmosis.gamm.v1beta1.MsgJoinSwapExternAmountIn"
-                                                                                                                          ? MsgJoinSwapExternAmountInDetails
-                                                                                                                          : T extends "/osmosis.gamm.v1beta1.MsgJoinSwapShareAmountOut"
-                                                                                                                            ? MsgJoinSwapShareAmountOutDetails
-                                                                                                                            : T extends "/osmosis.gamm.v1beta1.MsgExitSwapShareAmountIn"
-                                                                                                                              ? MsgExitSwapShareAmountInDetails
-                                                                                                                              : T extends "/osmosis.gamm.v1beta1.MsgExitSwapExternAmountOut"
-                                                                                                                                ? MsgExitSwapExternAmountOutDetails
-                                                                                                                                : T extends "/osmosis.incentives.MsgCreateGauge"
-                                                                                                                                  ? MsgCreateGaugeDetails
-                                                                                                                                  : T extends "/osmosis.incentives.MsgAddToGauge"
-                                                                                                                                    ? MsgAddToGaugeDetails
-                                                                                                                                    : T extends "/osmosis.lockup.MsgLockTokens"
-                                                                                                                                      ? MsgLockTokensDetails
-                                                                                                                                      : T extends "/osmosis.lockup.MsgBeginUnlockingAll"
-                                                                                                                                        ? MsgBeginUnlockingAllDetails
-                                                                                                                                        : T extends "/osmosis.lockup.MsgBeginUnlocking"
-                                                                                                                                          ? MsgBeginUnlockingDetails
-                                                                                                                                          : T extends "/osmosis.lockup.MsgForceUnlock"
-                                                                                                                                            ? MsgForceUnlockDetails
-                                                                                                                                            : T extends "/osmosis.lockup.MsgExtendLockup"
-                                                                                                                                              ? MsgExtendLockupDetails
-                                                                                                                                              : T extends "/osmosis.lockup.MsgSetRewardReceiverAddress"
-                                                                                                                                                ? MsgSetRewardReceiverAddressDetails
-                                                                                                                                                : T extends "/osmosis.superfluid.MsgSuperfluidDelegate"
-                                                                                                                                                  ? MsgSuperfluidDelegateDetails
-                                                                                                                                                  : T extends "/osmosis.superfluid.MsgSuperfluidUndelegate"
-                                                                                                                                                    ? MsgSuperfluidUndelegateDetails
-                                                                                                                                                    : T extends "/osmosis.superfluid.MsgSuperfluidUnbondLock"
-                                                                                                                                                      ? MsgSuperfluidUnbondLockDetails
-                                                                                                                                                      : T extends "/osmosis.superfluid.MsgLockAndSuperfluidDelegate"
-                                                                                                                                                        ? MsgLockAndSuperfluidDelegateDetails
-                                                                                                                                                        : T extends "/osmosis.superfluid.MsgUnPoolWhitelistedPool"
-                                                                                                                                                          ? MsgUnPoolWhitelistedPoolDetails
-                                                                                                                                                          : T extends "/osmosis.superfluid.MsgSuperfluidUndelegateAndUnbondLock"
-                                                                                                                                                            ? MsgSuperfluidUndelegateAndUnbondLockDetails
-                                                                                                                                                            : T extends "/osmosis.superfluid.MsgCreateFullRangePositionAndSuperfluidDelegate"
-                                                                                                                                                              ? MsgCreateFullRangePositionAndSuperfluidDelegateDetails
-                                                                                                                                                              : T extends "/osmosis.superfluid.MsgUnlockAndMigrateSharesToFullRangeConcentratedPosition"
-                                                                                                                                                                ? MsgUnlockAndMigrateSharesToFullRangeConcentratedPositionDetails
-                                                                                                                                                                : T extends "/osmosis.superfluid.MsgAddToConcentratedLiquiditySuperfluidPosition"
-                                                                                                                                                                  ? MsgAddToConcentratedLiquiditySuperfluidPositionDetails
-                                                                                                                                                                  : T extends "/osmosis.superfluid.MsgLockExistingFullRangePositionAndSFStake"
-                                                                                                                                                                    ? MsgLockExistingFullRangePositionAndSFStakeDetails
-                                                                                                                                                                    : T extends "/osmosis.tokenfactory.v1beta1.MsgCreateDenom"
-                                                                                                                                                                      ? MsgCreateDenomDetails
-                                                                                                                                                                      : T extends "/osmosis.tokenfactory.v1beta1.MsgMint"
-                                                                                                                                                                        ? MsgMintDetails
-                                                                                                                                                                        : T extends "/osmosis.tokenfactory.v1beta1.MsgBurn"
-                                                                                                                                                                          ? MsgBurnDetails
-                                                                                                                                                                          : T extends "/osmosis.tokenfactory.v1beta1.MsgChangeAdmin"
-                                                                                                                                                                            ? MsgChangeAdminDetails
-                                                                                                                                                                            : T extends "/osmosis.tokenfactory.v1beta1.MsgSetDenomMetadata"
-                                                                                                                                                                              ? MsgSetDenomMetadataDetails
-                                                                                                                                                                              : T extends "/osmosis.tokenfactory.v1beta1.MsgForceTransfer"
-                                                                                                                                                                                ? MsgForceTransferDetails
-                                                                                                                                                                                : T extends "/osmosis.tokenfactory.v1beta1.MsgSetBeforeSendHook"
-                                                                                                                                                                                  ? MsgSetBeforeSendHookDetails
-                                                                                                                                                                                  : T extends "/osmosis.protorev.v1beta1.MsgSetHotRoutes"
-                                                                                                                                                                                    ? MsgSetHotRoutesDetails
-                                                                                                                                                                                    : T extends "/osmosis.protorev.v1beta1.MsgSetBaseDenoms"
-                                                                                                                                                                                      ? MsgSetBaseDenomsDetails
-                                                                                                                                                                                      : T extends "/osmosis.protorev.v1beta1.MsgSetDeveloperAccount"
-                                                                                                                                                                                        ? MsgSetDeveloperAccountDetails
-                                                                                                                                                                                        : T extends "/osmosis.protorev.v1beta1.MsgSetPoolWeights"
-                                                                                                                                                                                          ? MsgSetPoolWeightsDetails
-                                                                                                                                                                                          : T extends "/osmosis.protorev.v1beta1.MsgSetMaxPoolPointsPerTx"
-                                                                                                                                                                                            ? MsgSetMaxPoolPointsPerTxDetails
-                                                                                                                                                                                            : T extends "/osmosis.protorev.v1beta1.MsgSetMaxPoolPointsPerBlock"
-                                                                                                                                                                                              ? MsgSetMaxPoolPointsPerBlockDetails
-                                                                                                                                                                                              : T extends "/osmosis.valsetpref.v1beta1.MsgDelegateToValidatorSet"
-                                                                                                                                                                                                ? MsgDelegateToValidatorSetDetails
-                                                                                                                                                                                                : T extends "/osmosis.valsetpref.v1beta1.MsgUndelegateFromValidatorSet"
-                                                                                                                                                                                                  ? MsgUndelegateFromValidatorSetDetails
-                                                                                                                                                                                                  : T extends "/osmosis.valsetpref.v1beta1.MsgRedelegateValidatorSet"
-                                                                                                                                                                                                    ? MsgRedelegateValidatorSetDetails
-                                                                                                                                                                                                    : T extends "/osmosis.valsetpref.v1beta1.MsgWithdrawDelegationRewards"
-                                                                                                                                                                                                      ? MsgWithdrawDelegationRewardsDetails
-                                                                                                                                                                                                      : T extends "/osmosis.valsetpref.v1beta1.MsgDelegateBondedTokens"
-                                                                                                                                                                                                        ? MsgDelegateBondedTokensDetails
-                                                                                                                                                                                                        : T extends "/osmosis.valsetpref.v1beta1.MsgSetValidatorSetPreference"
-                                                                                                                                                                                                          ? MsgSetValidatorSetPreferenceDetails
-                                                                                                                                                                                                          : T extends "/osmosis.valsetpref.v1beta1.MsgCreatePosition"
-                                                                                                                                                                                                            ? MsgCreatePositionDetails
-                                                                                                                                                                                                            : T extends "/osmosis.valsetpref.v1beta1.MsgAddToPosition"
-                                                                                                                                                                                                              ? MsgAddToPositionDetails
-                                                                                                                                                                                                              : T extends "/osmosis.valsetpref.v1beta1.MsgWithdrawPosition"
-                                                                                                                                                                                                                ? MsgWithdrawPositionDetails
-                                                                                                                                                                                                                : T extends "/osmosis.valsetpref.v1beta1.MsgCollectSpreadRewards"
-                                                                                                                                                                                                                  ? MsgCollectSpreadRewardsDetails
-                                                                                                                                                                                                                  : T extends "/osmosis.valsetpref.v1beta1.MsgCollectIncentives"
-                                                                                                                                                                                                                    ? MsgCollectIncentivesDetails
-                                                                                                                                                                                                                    : T extends "/osmosis.concentratedliquidity.poolmodel.concentrated.v1beta1.MsgCreateConcentratedPool"
-                                                                                                                                                                                                                      ? MsgCreateConcentratedPoolDetails
-                                                                                                                                                                                                                      : T extends "/osmosis.cosmwasmpool.v1beta1.MsgCreateCosmWasmPool"
-                                                                                                                                                                                                                        ? MsgCreateCosmWasmPoolDetails
-                                                                                                                                                                                                                        : MsgBaseDetails;
+                                                                                                                        | "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn"
+                                                                                                                        | "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn"
+                                                                                                                    ? MsgSwapExactAmountInDetails
+                                                                                                                    : T extends
+                                                                                                                          | "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut"
+                                                                                                                          | "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut"
+                                                                                                                      ? MsgSwapExactAmountOutDetails
+                                                                                                                      : T extends "/osmosis.poolmanager.v1beta1.MsgSplitRouteSwapExactAmountIn"
+                                                                                                                        ? MsgSplitRouteSwapExactAmountInDetails
+                                                                                                                        : T extends "/osmosis.poolmanager.v1beta1.MsgSplitRouteSwapExactAmountOut"
+                                                                                                                          ? MsgSplitRouteSwapExactAmountOutDetails
+                                                                                                                          : T extends "/osmosis.gamm.v1beta1.MsgJoinSwapExternAmountIn"
+                                                                                                                            ? MsgJoinSwapExternAmountInDetails
+                                                                                                                            : T extends "/osmosis.gamm.v1beta1.MsgJoinSwapShareAmountOut"
+                                                                                                                              ? MsgJoinSwapShareAmountOutDetails
+                                                                                                                              : T extends "/osmosis.gamm.v1beta1.MsgExitSwapShareAmountIn"
+                                                                                                                                ? MsgExitSwapShareAmountInDetails
+                                                                                                                                : T extends "/osmosis.gamm.v1beta1.MsgExitSwapExternAmountOut"
+                                                                                                                                  ? MsgExitSwapExternAmountOutDetails
+                                                                                                                                  : T extends "/osmosis.incentives.MsgCreateGauge"
+                                                                                                                                    ? MsgCreateGaugeDetails
+                                                                                                                                    : T extends "/osmosis.incentives.MsgAddToGauge"
+                                                                                                                                      ? MsgAddToGaugeDetails
+                                                                                                                                      : T extends "/osmosis.lockup.MsgLockTokens"
+                                                                                                                                        ? MsgLockTokensDetails
+                                                                                                                                        : T extends "/osmosis.lockup.MsgBeginUnlockingAll"
+                                                                                                                                          ? MsgBeginUnlockingAllDetails
+                                                                                                                                          : T extends "/osmosis.lockup.MsgBeginUnlocking"
+                                                                                                                                            ? MsgBeginUnlockingDetails
+                                                                                                                                            : T extends "/osmosis.lockup.MsgForceUnlock"
+                                                                                                                                              ? MsgForceUnlockDetails
+                                                                                                                                              : T extends "/osmosis.lockup.MsgExtendLockup"
+                                                                                                                                                ? MsgExtendLockupDetails
+                                                                                                                                                : T extends "/osmosis.lockup.MsgSetRewardReceiverAddress"
+                                                                                                                                                  ? MsgSetRewardReceiverAddressDetails
+                                                                                                                                                  : T extends "/osmosis.superfluid.MsgSuperfluidDelegate"
+                                                                                                                                                    ? MsgSuperfluidDelegateDetails
+                                                                                                                                                    : T extends "/osmosis.superfluid.MsgSuperfluidUndelegate"
+                                                                                                                                                      ? MsgSuperfluidUndelegateDetails
+                                                                                                                                                      : T extends "/osmosis.superfluid.MsgSuperfluidUnbondLock"
+                                                                                                                                                        ? MsgSuperfluidUnbondLockDetails
+                                                                                                                                                        : T extends "/osmosis.superfluid.MsgLockAndSuperfluidDelegate"
+                                                                                                                                                          ? MsgLockAndSuperfluidDelegateDetails
+                                                                                                                                                          : T extends "/osmosis.superfluid.MsgUnPoolWhitelistedPool"
+                                                                                                                                                            ? MsgUnPoolWhitelistedPoolDetails
+                                                                                                                                                            : T extends "/osmosis.superfluid.MsgSuperfluidUndelegateAndUnbondLock"
+                                                                                                                                                              ? MsgSuperfluidUndelegateAndUnbondLockDetails
+                                                                                                                                                              : T extends "/osmosis.superfluid.MsgCreateFullRangePositionAndSuperfluidDelegate"
+                                                                                                                                                                ? MsgCreateFullRangePositionAndSuperfluidDelegateDetails
+                                                                                                                                                                : T extends "/osmosis.superfluid.MsgUnlockAndMigrateSharesToFullRangeConcentratedPosition"
+                                                                                                                                                                  ? MsgUnlockAndMigrateSharesToFullRangeConcentratedPositionDetails
+                                                                                                                                                                  : T extends "/osmosis.superfluid.MsgAddToConcentratedLiquiditySuperfluidPosition"
+                                                                                                                                                                    ? MsgAddToConcentratedLiquiditySuperfluidPositionDetails
+                                                                                                                                                                    : T extends "/osmosis.superfluid.MsgLockExistingFullRangePositionAndSFStake"
+                                                                                                                                                                      ? MsgLockExistingFullRangePositionAndSFStakeDetails
+                                                                                                                                                                      : T extends "/osmosis.tokenfactory.v1beta1.MsgCreateDenom"
+                                                                                                                                                                        ? MsgCreateDenomDetails
+                                                                                                                                                                        : T extends "/osmosis.tokenfactory.v1beta1.MsgMint"
+                                                                                                                                                                          ? MsgMintDetails
+                                                                                                                                                                          : T extends "/osmosis.tokenfactory.v1beta1.MsgBurn"
+                                                                                                                                                                            ? MsgBurnDetails
+                                                                                                                                                                            : T extends "/osmosis.tokenfactory.v1beta1.MsgChangeAdmin"
+                                                                                                                                                                              ? MsgChangeAdminDetails
+                                                                                                                                                                              : T extends "/osmosis.tokenfactory.v1beta1.MsgSetDenomMetadata"
+                                                                                                                                                                                ? MsgSetDenomMetadataDetails
+                                                                                                                                                                                : T extends "/osmosis.tokenfactory.v1beta1.MsgForceTransfer"
+                                                                                                                                                                                  ? MsgForceTransferDetails
+                                                                                                                                                                                  : T extends "/osmosis.tokenfactory.v1beta1.MsgSetBeforeSendHook"
+                                                                                                                                                                                    ? MsgSetBeforeSendHookDetails
+                                                                                                                                                                                    : T extends "/osmosis.protorev.v1beta1.MsgSetHotRoutes"
+                                                                                                                                                                                      ? MsgSetHotRoutesDetails
+                                                                                                                                                                                      : T extends "/osmosis.protorev.v1beta1.MsgSetBaseDenoms"
+                                                                                                                                                                                        ? MsgSetBaseDenomsDetails
+                                                                                                                                                                                        : T extends "/osmosis.protorev.v1beta1.MsgSetDeveloperAccount"
+                                                                                                                                                                                          ? MsgSetDeveloperAccountDetails
+                                                                                                                                                                                          : T extends "/osmosis.protorev.v1beta1.MsgSetPoolWeights"
+                                                                                                                                                                                            ? MsgSetPoolWeightsDetails
+                                                                                                                                                                                            : T extends "/osmosis.protorev.v1beta1.MsgSetMaxPoolPointsPerTx"
+                                                                                                                                                                                              ? MsgSetMaxPoolPointsPerTxDetails
+                                                                                                                                                                                              : T extends "/osmosis.protorev.v1beta1.MsgSetMaxPoolPointsPerBlock"
+                                                                                                                                                                                                ? MsgSetMaxPoolPointsPerBlockDetails
+                                                                                                                                                                                                : T extends "/osmosis.valsetpref.v1beta1.MsgDelegateToValidatorSet"
+                                                                                                                                                                                                  ? MsgDelegateToValidatorSetDetails
+                                                                                                                                                                                                  : T extends "/osmosis.valsetpref.v1beta1.MsgUndelegateFromValidatorSet"
+                                                                                                                                                                                                    ? MsgUndelegateFromValidatorSetDetails
+                                                                                                                                                                                                    : T extends "/osmosis.valsetpref.v1beta1.MsgRedelegateValidatorSet"
+                                                                                                                                                                                                      ? MsgRedelegateValidatorSetDetails
+                                                                                                                                                                                                      : T extends "/osmosis.valsetpref.v1beta1.MsgWithdrawDelegationRewards"
+                                                                                                                                                                                                        ? MsgWithdrawDelegationRewardsDetails
+                                                                                                                                                                                                        : T extends "/osmosis.valsetpref.v1beta1.MsgDelegateBondedTokens"
+                                                                                                                                                                                                          ? MsgDelegateBondedTokensDetails
+                                                                                                                                                                                                          : T extends "/osmosis.valsetpref.v1beta1.MsgSetValidatorSetPreference"
+                                                                                                                                                                                                            ? MsgSetValidatorSetPreferenceDetails
+                                                                                                                                                                                                            : T extends "/osmosis.valsetpref.v1beta1.MsgCreatePosition"
+                                                                                                                                                                                                              ? MsgCreatePositionDetails
+                                                                                                                                                                                                              : T extends "/osmosis.valsetpref.v1beta1.MsgAddToPosition"
+                                                                                                                                                                                                                ? MsgAddToPositionDetails
+                                                                                                                                                                                                                : T extends "/osmosis.valsetpref.v1beta1.MsgWithdrawPosition"
+                                                                                                                                                                                                                  ? MsgWithdrawPositionDetails
+                                                                                                                                                                                                                  : T extends "/osmosis.valsetpref.v1beta1.MsgCollectSpreadRewards"
+                                                                                                                                                                                                                    ? MsgCollectSpreadRewardsDetails
+                                                                                                                                                                                                                    : T extends "/osmosis.valsetpref.v1beta1.MsgCollectIncentives"
+                                                                                                                                                                                                                      ? MsgCollectIncentivesDetails
+                                                                                                                                                                                                                      : T extends "/osmosis.concentratedliquidity.poolmodel.concentrated.v1beta1.MsgCreateConcentratedPool"
+                                                                                                                                                                                                                        ? MsgCreateConcentratedPoolDetails
+                                                                                                                                                                                                                        : T extends "/osmosis.cosmwasmpool.v1beta1.MsgCreateCosmWasmPool"
+                                                                                                                                                                                                                          ? MsgCreateCosmWasmPoolDetails
+                                                                                                                                                                                                                          : MsgBaseDetails;

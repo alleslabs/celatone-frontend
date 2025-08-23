@@ -1378,7 +1378,8 @@ export const generateReceipts = (
         },
       ];
     }
-    case "/initia.move.v1.MsgExecute": {
+    case "/initia.move.v1.MsgExecute":
+    case "/initia.move.v1.MsgExecuteJSON": {
       const details = extractTxDetails(type, body, log);
       return [
         {
