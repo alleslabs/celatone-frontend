@@ -19,6 +19,7 @@ import {
   type HexAddr,
   type HexAddr32,
   type Option,
+  zHexAddr32,
 } from "lib/types";
 import { useCallback } from "react";
 
@@ -205,7 +206,7 @@ export const useNftByTokenId = (
 
   // Nft address is available for Move VM only
   const nftAddress = moveConfig.enabled
-    ? (formatAddresses(tokenId).hex as HexAddr32)
+    ? zHexAddr32.parse(formatAddresses(tokenId).hex)
     : undefined;
 
   return useQuery(
@@ -383,7 +384,11 @@ export const useNftTransactionsSequencer = (
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery(
-      [CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_SEQUENCER, indexerEndpoint],
+      [
+        CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_SEQUENCER,
+        indexerEndpoint,
+        nftAddress,
+      ],
       async ({ pageParam }) =>
         getNftTransactionsSequencer(indexerEndpoint, pageParam, nftAddress),
       {
