@@ -81,12 +81,7 @@ export const DecodeMessageGaugeVote = ({
               >
                 <ChainBadge chainId={rollup} />
                 <Flex align="center" gap={2}>
-                  <Text variant="body2">
-                    {formatDecimal({
-                      decimalPoints: 6,
-                      delimiter: true,
-                    })(amount, "0")}
-                  </Text>
+                  <Text variant="body2">{amount}</Text>
                   <Text color="text.dark" variant="body2">
                     voting power
                   </Text>
