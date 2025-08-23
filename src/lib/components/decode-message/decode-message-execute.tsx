@@ -18,7 +18,11 @@ export const DecodeMessageExecute = ({
 }: DecodeMessageExecuteProps) => {
   const { "@type": type, ...body } = msgBody;
 
-  if (type !== "/initia.move.v1.MsgExecute") return null;
+  if (
+    type !== "/initia.move.v1.MsgExecute" &&
+    type !== "/initia.move.v1.MsgExecuteJSON"
+  )
+    return null;
 
   const details = extractTxDetails(type, body, log);
 

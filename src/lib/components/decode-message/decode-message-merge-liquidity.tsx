@@ -14,6 +14,7 @@ import { MergedPositions } from "../MergedPositions";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { ValidatorBadge } from "../ValidatorBadge";
 import { DecodeMessageBody } from "./decode-message-body";
+import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
@@ -106,6 +107,7 @@ export const DecodeMessageMergeLiquidity = ({
             {formatUTC(releaseTimestamp)}
           </DecodeMessageRow>
         )}
+        <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>
   );
