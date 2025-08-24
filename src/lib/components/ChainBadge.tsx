@@ -1,0 +1,90 @@
+import { Flex, Text } from "@chakra-ui/react";
+import { useChainConfigs } from "lib/app-provider";
+
+import { TokenImageRender } from "./token";
+import { Tooltip } from "./Tooltip";
+
+interface ChainBadgeProps {
+  chainId: string | string[];
+}
+
+const ChainBadgeSingle = ({ chainId }: { chainId: string }) => {
+  const { chainConfigs } = useChainConfigs();
+  const chainInfo = chainConfigs[chainId];
+
+  if (!chainInfo)
+    return (
+      <Flex
+        className="copier-wrapper"
+        align="center"
+        gap={1}
+        minWidth="max-content"
+      >
+        <TokenImageRender boxSize={4} logo={undefined} minW={4} />
+        <Text whiteSpace="nowrap">{chainId}</Text>
+      </Flex>
+    );
+
+  const logo =
+    chainInfo.logo_URIs?.svg ||
+    chainInfo.logo_URIs?.png ||
+    chainInfo.logo_URIs?.jpeg;
+
+  return (
+    <Tooltip label={`Chain ID: ${chainId}`}>
+      <Flex
+        className="copier-wrapper"
+        align="center"
+        gap={1}
+        minWidth="max-content"
+      >
+        <TokenImageRender boxSize={4} logo={logo} minW={4} />
+        <Text fontWeight={400} variant="body2" whiteSpace="nowrap">
+          {chainInfo.prettyName}
+        </Text>
+      </Flex>
+    </Tooltip>
+  );
+};
+
+const ChainBadgeMultiple = ({ chainId }: { chainId: string[] }) => {
+  const { chainConfigs } = useChainConfigs();
+  const chainInfos = chainId.map((id) => chainConfigs[id]).filter(Boolean);
+
+  return (
+    <Flex overflow="visible">
+      {chainInfos.length
+        ? chainInfos.map((chainInfo, index) => {
+            const logo =
+              chainInfo.logo_URIs?.svg ||
+              chainInfo.logo_URIs?.png ||
+              chainInfo.logo_URIs?.jpeg;
+
+            return (
+              <Flex
+                key={chainInfo.chainId}
+                align="center"
+                marginInlineStart={index === 0 ? 0 : "-4px"}
+                zIndex={index}
+              >
+                <TokenImageRender boxSize={4} logo={logo} minW={4} />
+              </Flex>
+            );
+          })
+        : chainId.map((chain) => (
+            <Flex key={chain} align="center" marginInlineEnd="-4px">
+              <TokenImageRender boxSize={4} logo={undefined} minW={4} />
+            </Flex>
+          ))}
+    </Flex>
+  );
+};
+
+export const ChainBadge = ({ chainId }: ChainBadgeProps) => {
+  if (typeof chainId === "string")
+    return <ChainBadgeSingle chainId={chainId} />;
+
+  if (chainId.length === 1) return <ChainBadgeSingle chainId={chainId[0]} />;
+
+  return <ChainBadgeMultiple chainId={chainId} />;
+};

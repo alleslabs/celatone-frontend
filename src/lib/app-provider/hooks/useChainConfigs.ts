@@ -6,7 +6,6 @@ import { devChainConfigs } from "config/chain";
 import { CHAIN, SUPPORTED_NETWORK_TYPES } from "env";
 import { useLocalChainConfigStore } from "lib/providers/store";
 import { useApiChainConfigs } from "lib/services/chain-config";
-import { getArchivalEndpoint } from "lib/services/utils";
 import { getRegistryAssets, getRegistryChain } from "lib/utils";
 import { isUndefined, unionBy } from "lodash";
 import { useMemo } from "react";
@@ -62,8 +61,6 @@ export const useChainConfigs = (): {
           ...acc.chainConfigs,
           [each.chainId]: {
             ...each,
-            // TODO: Remove this once new indexer is deployed
-            rest: getArchivalEndpoint(each.rest, each.rest),
           },
         },
         registryAssets: [...acc.registryAssets, getRegistryAssets(each)],

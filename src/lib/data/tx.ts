@@ -50,6 +50,9 @@ export type TypeUrl =
   | "/ibc.core.connection.v1.MsgConnectionOpenConfirm"
   | "/ibc.core.connection.v1.MsgConnectionOpenInit"
   | "/ibc.core.connection.v1.MsgConnectionOpenTry"
+  // initia
+  | "/initia.move.v1.MsgExecute"
+  | "/initia.move.v1.MsgExecuteJSON"
   // osmosis
   | "/osmosis.concentratedliquidity.poolmodel.concentrated.v1beta1.MsgCreateConcentratedPool"
   | "/osmosis.concentratedliquidity.v1beta1.MsgAddToPosition"

@@ -9,6 +9,7 @@ interface CopierProps {
   amptrackSection?: string;
   copyLabel?: string;
   display?: LayoutProps["display"];
+  hoverLabel?: string;
   ml?: IconProps["ml"];
   type: string;
   value: string;
@@ -18,12 +19,14 @@ export const Copier = ({
   amptrackSection,
   copyLabel,
   display = "inline",
+  hoverLabel,
   ml = 2,
   type,
   value,
 }: CopierProps) => (
   <CopyTemplate
     copyLabel={copyLabel}
+    hoverLabel={hoverLabel}
     triggerElement={
       <CustomIcon
         id={type}

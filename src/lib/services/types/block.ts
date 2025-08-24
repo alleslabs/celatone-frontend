@@ -1,10 +1,4 @@
-import type {
-  Block,
-  BlockData,
-  Message,
-  TransactionWithSignerPubkey,
-  Validator,
-} from "lib/types";
+import type { Block, BlockData, Message, Validator } from "lib/types";
 
 import {
   ActionMsgType,
@@ -23,6 +17,8 @@ import {
   snakeToCamel,
 } from "lib/utils";
 import { z } from "zod";
+
+import type { TxsResponseItemFromRest } from "./tx";
 
 import { zTx, zTxJsonRpc, zTxReceiptJsonRpc } from "./tx";
 
@@ -109,7 +105,7 @@ export const zBlockDataResponseRest = zBlockRest
   .transform<{
     block: BlockData;
     rawProposerConsensusAddress: string;
-    transactions: TransactionWithSignerPubkey[];
+    transactions: TxsResponseItemFromRest[];
   }>((val) => {
     // 1. Create Tx Hashes
     const txHashes = val.block.data.txs.map(createTxHash);
@@ -117,7 +113,7 @@ export const zBlockDataResponseRest = zBlockRest
     const offset = txHashes.length === val.txs.length + 1 ? 1 : 0;
 
     // 2. Parse Tx to Transaction
-    const transactions = val.txs.map((tx, idx) => {
+    const transactions: TxsResponseItemFromRest[] = val.txs.map((tx, idx) => {
       const txBody = tx.body;
 
       const messages = txBody.messages.map<Message>((msg) => ({
@@ -138,20 +134,24 @@ export const zBlockDataResponseRest = zBlockRest
       );
 
       return {
-        // TODO: implement below later
-        actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
-        created: val.block.header.time,
-        furtherAction: MsgFurtherAction.NONE,
-        hash: txHashes[idx + offset],
-        height: val.block.header.height,
-        isEvm,
-        isIbc,
-        isInstantiate: false,
-        isOpinit,
-        isSigner: true,
-        messages,
-        signerPubkey: tx.authInfo.signerInfos[0].publicKey,
-        success: false, // NOTE: Hidden in Lite Tier,
+        item: {
+          // TODO: implement below later
+          actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
+          created: val.block.header.time,
+          furtherAction: MsgFurtherAction.NONE,
+          hash: txHashes[idx + offset],
+          height: val.block.header.height,
+          isEvm,
+          isIbc,
+          isInstantiate: false,
+          isOpinit,
+          isSigner: true,
+          messages,
+          signerPubkey: tx.authInfo.signerInfos[0].publicKey,
+          success: false, // NOTE: Hidden in Lite Tier,
+        },
+        rawTxResponse: undefined,
+        txResponse: undefined,
       };
     });
 

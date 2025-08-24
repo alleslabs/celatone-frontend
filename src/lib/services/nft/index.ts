@@ -12,6 +12,7 @@ import {
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
   type BechAddr,
   type BechAddr32,
@@ -69,7 +70,7 @@ export const useNfts = (
   const { tier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("nfts");
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
   return useQuery<NftsResponse>(
@@ -82,7 +83,7 @@ export const useNfts = (
       search,
       tier,
       apiEndpoint,
-      restEndpoint,
+      indexerEndpoint,
     ],
     async () =>
       handleQueryByTier({
@@ -95,7 +96,7 @@ export const useNfts = (
             offset
           ),
         querySequencer: () =>
-          getNftsSequencerLoop(restEndpoint, collectionAddressBech).then(
+          getNftsSequencerLoop(indexerEndpoint, collectionAddressBech).then(
             (nfts) => {
               const filteredData = nfts.filter((val) => {
                 if (!val.nftAddress) return true;
@@ -132,14 +133,19 @@ export const useNftsSequencer = (
   enabled = true
 ) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const { isSequencerTier } = useTierConfig();
 
   const queryfn = useCallback(
     async (pageParam: Option<string>) =>
-      getNftsSequencer(restEndpoint, collectionAddressBech, pageParam, limit),
-    [restEndpoint, collectionAddressBech, limit]
+      getNftsSequencer(
+        indexerEndpoint,
+        collectionAddressBech,
+        pageParam,
+        limit
+      ),
+    [indexerEndpoint, collectionAddressBech, limit]
   );
 
   const {
@@ -153,7 +159,7 @@ export const useNftsSequencer = (
   } = useInfiniteQuery(
     [
       CELATONE_QUERY_KEYS.NFTS_SEQUENCER,
-      restEndpoint,
+      indexerEndpoint,
       collectionAddressBech,
       limit,
     ],
@@ -196,8 +202,12 @@ export const useNftByTokenId = (
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
+  const formatAddresses = useFormatAddresses();
+
   // Nft address is available for Move VM only
-  const nftAddress = moveConfig.enabled ? zHexAddr32.parse(tokenId) : undefined;
+  const nftAddress = moveConfig.enabled
+    ? zHexAddr32.parse(formatAddresses(tokenId).hex)
+    : undefined;
 
   return useQuery(
     [
@@ -275,14 +285,14 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
   const { tier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("nfts");
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
   return useQuery<NftMintInfo>(
     [
       CELATONE_QUERY_KEYS.NFT_TOKEN_MINT_INFO,
       apiEndpoint,
-      restEndpoint,
+      indexerEndpoint,
       tier,
       nftAddress,
       bech32Prefix,
@@ -291,7 +301,7 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
       handleQueryByTier({
         queryFull: () => getNftMintInfo(apiEndpoint, nftAddress),
         querySequencer: () =>
-          getNftMintInfoSequencer(restEndpoint, bech32Prefix, nftAddress),
+          getNftMintInfoSequencer(indexerEndpoint, bech32Prefix, nftAddress),
         threshold: "sequencer",
         tier,
       }),
@@ -308,18 +318,12 @@ export const useMetadata = (
   height?: string
 ) => {
   const { currentChainId } = useCelatoneApp();
-
   return useQuery<Metadata>(
     [CELATONE_QUERY_KEYS.NFT_METADATA, nft],
     async () => {
       if (!nft) throw new Error("NFT is required (useMetadata)");
       const baseUri = await getMetadata(nft.uri ?? "");
-
-      if (
-        baseUri.image.startsWith("ipfs://") &&
-        nft.collectionAddress &&
-        (nft.nftAddress || nft.tokenId)
-      ) {
+      if (baseUri.image && nft.collectionAddress) {
         try {
           const image: Blob = await getGlyphImage(
             currentChainId,
@@ -375,14 +379,18 @@ export const useNftTransactionsSequencer = (
   enabled = true
 ) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery(
-      [CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_SEQUENCER, restEndpoint],
+      [
+        CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_SEQUENCER,
+        indexerEndpoint,
+        nftAddress,
+      ],
       async ({ pageParam }) =>
-        getNftTransactionsSequencer(restEndpoint, pageParam, nftAddress),
+        getNftTransactionsSequencer(indexerEndpoint, pageParam, nftAddress),
       {
         enabled,
         getNextPageParam: (lastPage) =>
@@ -484,20 +492,20 @@ export const useNftsByAccountByCollectionSequencer = (
   enabled = true
 ) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
   return useQuery<NftsByAccountAddressResponse>(
     [
       CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_BY_COLLECTION_SEQUENCER,
-      restEndpoint,
+      indexerEndpoint,
       accountAddress,
       collectionAddress,
       search,
     ],
     async () =>
       getNftsByAccountSequencer(
-        restEndpoint,
+        indexerEndpoint,
         accountAddress,
         collectionAddress
       ),
