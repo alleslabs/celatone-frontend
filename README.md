@@ -36,7 +36,8 @@ NEXT_PUBLIC_DUMMY_MNEMONIC="your mnemonic here"
 NEXT_PUBLIC_SUPPORTED_NETWORK_TYPES=local,devnet,testnet,mainnet
 NEXT_PUBLIC_CHAIN=<chain-name>
 NEXT_PUBLIC_INITIA_API=http://localhost:8080
-NEXT_PUBLIC_CELATONE_API=http://localhost:8081
+NEXT_PUBLIC_CELATONE_API=http://localhost:8081 # only use for non-initia
+NEXT_PUBLIC_SCAN_API=http://localhost:8081 # only use for initia
 ```
 
 For local development, modify `devChainConfigs.ts` under `src/config/chain` by adding your own chain configuration with the appropriate network settings, RPC endpoints, and feature flags.
