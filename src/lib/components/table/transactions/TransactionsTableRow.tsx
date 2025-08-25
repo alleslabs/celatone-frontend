@@ -38,7 +38,6 @@ const NARow = () => (
 export const TransactionsTableRow = ({
   showAction,
   showRelations,
-  showSuccess,
   showTimestamp,
   templateColumns,
   transaction,
@@ -70,24 +69,7 @@ export const TransactionsTableRow = ({
             />
           )}
         </TableRow>
-        <TableRow gap={1}>
-          {showSuccess && (
-            <>
-              {transaction.success ? (
-                <CustomIcon
-                  boxSize={3}
-                  color="success.main"
-                  name="check-circle-solid"
-                />
-              ) : (
-                <CustomIcon
-                  boxSize={3}
-                  color="error.main"
-                  name="close-circle-solid"
-                />
-              )}
-            </>
-          )}
+        <TableRow>
           <ExplorerLink
             showCopyOnHover
             type="tx_hash"
@@ -106,7 +88,7 @@ export const TransactionsTableRow = ({
               <Spinner boxSize={4} />
             ) : (
               <>
-                {txResponse && decodedTx ? (
+                {txResponse && decodedTx && decodedTx.messages.length > 0 ? (
                   <DecodeMessage
                     compact
                     decodedMessage={decodedTx.messages[0].decodedMessage}

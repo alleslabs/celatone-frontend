@@ -13,6 +13,7 @@ import { AppLink } from "../AppLink";
 import { ExplorerLink } from "../ExplorerLink";
 import { NftImage } from "../nft/NftImage";
 import { DecodeMessageBody } from "./decode-message-body";
+import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
@@ -112,8 +113,9 @@ export const DecodeMessageNftMint = ({
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
+            textLabel={collection.name}
             type="nft_collection"
-            value={collection.name}
+            value={collectionAddress}
             wordBreak="break-word"
           />
         </DecodeMessageRow>
@@ -142,6 +144,7 @@ export const DecodeMessageNftMint = ({
             />
           )}
         </DecodeMessageRow>
+        <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>
   );

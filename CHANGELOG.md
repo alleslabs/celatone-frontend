@@ -39,12 +39,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1402](https://github.com/alleslabs/celatone-frontend/pull/1402) Replace qrcode.react with qr-code-styling, update UI according to redesign
 - [#1352](https://github.com/alleslabs/celatone-frontend/pull/1352) Support link module in execution message tx details, and new tx decoder UI
 - [#1350](https://github.com/alleslabs/celatone-frontend/pull/1350) Support new APIs v2
 
 ### Improvements
 
+- [#1405](https://github.com/alleslabs/celatone-frontend/pull/1405) Enhance Readme.md and add CODEOWNERS
+
 ### Bug fixes
+
+- [#1412](https://github.com/alleslabs/celatone-frontend/pull/1412) Fix explorer link component minor bugs
+- [#1373](https://github.com/alleslabs/celatone-frontend/pull/1373) Fix pagination in Nft page
 
 ## v1.14.0
 

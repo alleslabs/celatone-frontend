@@ -311,6 +311,7 @@ export const TxMsgExpand = ({
       );
       break;
     case "/initia.move.v1.MsgExecute":
+    case "/initia.move.v1.MsgExecuteJSON":
       msgLabel = `${body.moduleName}::${body.functionName}`;
       break;
     default: {

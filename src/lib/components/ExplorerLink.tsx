@@ -136,7 +136,13 @@ export const getNavigationUrl = ({
       break;
   }
 
-  if (value) return `${url}/${value}`;
+  if (value) {
+    const safe = value
+      .split("/")
+      .map((seg) => encodeURIComponent(seg))
+      .join("/");
+    return `${url}/${safe}`;
+  }
 
   return url;
 };
@@ -190,7 +196,7 @@ const LinkRender = ({
   isEllipsis,
   isInternal,
   openNewTab,
-  textLabel,
+  textFormat,
   textValue,
   textVariant,
   type,
@@ -201,7 +207,7 @@ const LinkRender = ({
   isEllipsis: boolean;
   isInternal: boolean;
   openNewTab: Option<boolean>;
-  textLabel?: string;
+  textFormat: TextFormat;
   textValue: string;
   textVariant: TextProps["variant"];
   type: string;
@@ -212,7 +218,7 @@ const LinkRender = ({
       className={isEllipsis ? "ellipsis" : undefined}
       color={textValue.length ? "primary.main" : "text.disabled"}
       fontFamily="mono"
-      isTruncated={!!textLabel}
+      isTruncated={textFormat === "truncate"}
       pointerEvents={hrefLink ? "auto" : "none"}
       variant={textVariant}
       wordBreak={{ base: "break-all", md: "inherit" }}
@@ -341,7 +347,7 @@ export const ExplorerLink = ({
       }}
       transition="all 0.15s ease-in-out"
       w="fit-content"
-      onMouseEnter={() => setHoveredText(textValue)}
+      onMouseEnter={() => setHoveredText(value)}
       onMouseLeave={() => setHoveredText(null)}
       {...componentProps}
     >
@@ -358,7 +364,7 @@ export const ExplorerLink = ({
           isEllipsis={textFormat === "ellipsis"}
           isInternal={isUndefined(externalLink)}
           openNewTab={openNewTab}
-          textLabel={textLabel}
+          textFormat={textFormat}
           textValue={textValue}
           textVariant={textVariant}
           type={type}

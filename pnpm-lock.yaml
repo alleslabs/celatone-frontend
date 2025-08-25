@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@alleslabs/shared':
-        specifier: 1.0.0-dev7
-        version: 1.0.0-dev7
+        specifier: 1.0.0-dev10
+        version: 1.0.0-dev10
       '@amplitude/analytics-browser':
         specifier: ^2.3.3
         version: 2.11.11
@@ -108,8 +108,8 @@ importers:
         specifier: 1.6.13
         version: 1.6.13(ynzntg7rzwpbrm4vasidchkxma)
       '@initia/tx-decoder':
-        specifier: 0.4.1
-        version: 0.4.1(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
+        specifier: 0.5.0
+        version: 0.5.0(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       '@initia/utils':
         specifier: 1.6.3
         version: 1.6.3(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.1)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.0)(@keplr-wallet/types@0.12.215(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.2.3)(ramda@0.30.1)(rxjs@7.8.1)(zod@3.24.2)
@@ -248,9 +248,9 @@ importers:
       plur:
         specifier: ^5.1.0
         version: 5.1.0
-      qrcode.react:
-        specifier: ^4.2.0
-        version: 4.2.0(react@19.1.0)
+      qr-code-styling:
+        specifier: ^1.9.2
+        version: 1.9.2
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -432,8 +432,8 @@ packages:
   '@adraffy/ens-normalize@1.11.0':
     resolution: {integrity: sha512-/3DDPKHqqIqxUULp8yP4zODUY1i+2xvVWsv8A79xGWdCAG+8sb0hRh0Rk2QyOJUnnbyPUAZYcpBuRe3nS2OIUg==}
 
-  '@alleslabs/shared@1.0.0-dev7':
-    resolution: {integrity: sha512-ckjGvmhFlQKKk36lb9zd6CJkasTWlNEfFTHOvGJyn+WqLR4olUm65pr9LkPeBMGgX3/pQnIb8T7/4TZQ7754Cw==}
+  '@alleslabs/shared@1.0.0-dev10':
+    resolution: {integrity: sha512-c3tUWg53jDwOSToiC+1sfT00W1kxzhUTlJ1SQqFFwzH3dFZAsjmZacFbjIClyV2fwvcrx0F86DBeyQscPx+m1w==}
 
   '@amplitude/analytics-browser@2.11.11':
     resolution: {integrity: sha512-AdpNNPwoNPezojeeU2ITcyqKcrrW8edVBHlCEvDNIXYkf5Y0i5Blbes3x6rgONsOeV2hx85trTXhhVkilWgHcg==}
@@ -2436,8 +2436,9 @@ packages:
       react: ^19.1.0
       rxjs: ^7.8.2
 
-  '@initia/tx-decoder@0.4.1':
-    resolution: {integrity: sha512-Bro/nT29KnrkF7Qymcnyq/FvWzVRi39pnPgEdyQG9gp8X70u+0eMaTjOQY1a8tc+Pb+IQ7tOHgTzw1CklhuefA==}
+  '@initia/tx-decoder@0.5.0':
+    resolution: {integrity: sha512-OYUBUBTtaPWsXSXGlQut37C3OsyyJDN9gcZbLmBVkqCam6z1zVgMWvR3bhdhdi03g4LUAdA/G0FJp3P21u8O1w==}
+    engines: {node: '>=22.0.0'}
 
   '@initia/utils@1.6.13':
     resolution: {integrity: sha512-uQ80MP9bFY2riAonuI5b7dqvfj6Hz+X4uHOWr+6FB/iaSrzCnW9WfLSTcaAgZjkqHTF3T4V8wexTcAtcTIqYVA==}
@@ -8859,10 +8860,12 @@ packages:
   pure-rand@6.1.0:
     resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
 
-  qrcode.react@4.2.0:
-    resolution: {integrity: sha512-QpgqWi8rD9DsS9EP3z7BT+5lY5SFhsqGjpgW5DY/i3mK4M9DTBNz3ErMi8BWYEfI3L0d8GIbGmcdFAS1uIRGjA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  qr-code-styling@1.9.2:
+    resolution: {integrity: sha512-RgJaZJ1/RrXJ6N0j7a+pdw3zMBmzZU4VN2dtAZf8ZggCfRB5stEQ3IoDNGaNhYY3nnZKYlYSLl5YkfWN5dPutg==}
+    engines: {node: '>=18.18.0'}
+
+  qrcode-generator@1.5.2:
+    resolution: {integrity: sha512-pItrW0Z9HnDBnFmgiNrY1uxRdri32Uh9EjNYLPVC2zZ3ZRIIEqBoDgm4DkvDwNNDHTK7FNkmr8zAa77BYc9xNw==}
 
   qs@6.13.0:
     resolution: {integrity: sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==}
@@ -10659,7 +10662,7 @@ snapshots:
 
   '@adraffy/ens-normalize@1.11.0': {}
 
-  '@alleslabs/shared@1.0.0-dev7':
+  '@alleslabs/shared@1.0.0-dev10':
     dependencies:
       '@chain-registry/types': 0.45.20
 
@@ -13582,7 +13585,7 @@ snapshots:
       react: 19.1.0
       rxjs: 7.8.1
 
-  '@initia/tx-decoder@0.4.1(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
+  '@initia/tx-decoder@0.5.0(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
     dependencies:
       '@cosmjs/encoding': 0.33.1
       '@initia/utils': 2.0.0-alpha.3(@cosmjs/encoding@0.33.1)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
@@ -17660,7 +17663,7 @@ snapshots:
 
   bip32@5.0.0-rc.0(typescript@5.3.3):
     dependencies:
-      '@noble/hashes': 1.7.1
+      '@noble/hashes': 1.8.0
       '@scure/base': 1.2.4
       uint8array-tools: 0.0.8
       valibot: 0.37.0(typescript@5.3.3)
@@ -17670,7 +17673,7 @@ snapshots:
 
   bip39@3.1.0:
     dependencies:
-      '@noble/hashes': 1.7.0
+      '@noble/hashes': 1.8.0
 
   bl@4.1.0:
     dependencies:
@@ -22156,9 +22159,11 @@ snapshots:
 
   pure-rand@6.1.0: {}
 
-  qrcode.react@4.2.0(react@19.1.0):
+  qr-code-styling@1.9.2:
     dependencies:
-      react: 19.1.0
+      qrcode-generator: 1.5.2
+
+  qrcode-generator@1.5.2: {}
 
   qs@6.13.0:
     dependencies:
