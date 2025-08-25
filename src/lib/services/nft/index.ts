@@ -102,10 +102,10 @@ export const useNfts = (
             formattedCollectionAddress
           ).then((nfts) => {
             const filteredData = nfts.filter((val) => {
-              if (!val.nftAddress) return true;
+              const lowerCaseSearch = search.toLowerCase();
               return (
-                val.tokenId.toLowerCase().includes(search.toLowerCase()) ||
-                val.nftAddress?.toLowerCase() === search.toLowerCase()
+                val.tokenId.toLowerCase().includes(lowerCaseSearch) ||
+                val.nftAddress?.toLowerCase() === lowerCaseSearch
               );
             });
 
