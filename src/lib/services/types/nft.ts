@@ -107,13 +107,14 @@ const zNftSequencer = z
     // Revisit this address type
     collection_addr: zHexAddr32,
     collection_name: z.string(),
+    collection_origin_name: z.string(),
     nft: z.object({
-      description: z.string(),
+      description: z.string().default(""),
       token_id: z.string(),
       uri: z.string(),
     }),
     object_addr: zHexAddr32,
-    owner_addr: zHexAddr,
+    owner: zHexAddr,
   })
   .transform<Nft>((val) => ({
     collectionAddress: val.collection_addr,
@@ -121,7 +122,7 @@ const zNftSequencer = z
     description: val.nft.description,
     isBurned: false,
     nftAddress: val.object_addr ? val.object_addr : null,
-    ownerAddress: val.owner_addr,
+    ownerAddress: val.owner,
     tokenId: val.nft.token_id,
     uri: val.nft.uri,
   }));

@@ -7,6 +7,7 @@ export * from "./useHandleSave";
 export * from "./useIsCurrentPage";
 export * from "./useL1InfoByNetworkType";
 export * from "./useLocalStorage";
+export * from "./useNftAddressFormat";
 export * from "./useOpenTab";
 export * from "./usePinnedNetworks";
 export * from "./useRedo";
