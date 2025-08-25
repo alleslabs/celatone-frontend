@@ -1,10 +1,4 @@
-import type {
-  BechAddr,
-  BechAddr32,
-  HexAddr32,
-  Nullable,
-  Option,
-} from "lib/types";
+import type { Addr32, BechAddr, Nullable, Option } from "lib/types";
 
 import axios from "axios";
 import {
@@ -22,7 +16,7 @@ import {
 
 export const getNftsSequencerLoop = async (
   endpoint: string,
-  collectionAddress: BechAddr32
+  collectionAddress: Addr32
 ) => {
   const nfts: Nft[] = [];
 
@@ -50,7 +44,7 @@ export const getNftsSequencerLoop = async (
 
 export const getNftsSequencer = async (
   endpoint: string,
-  collectionAddress: BechAddr32,
+  collectionAddress: Addr32,
   paginationKey: Option<string>,
   limit: number
 ) => {
@@ -69,7 +63,7 @@ export const getNftsSequencer = async (
 export const getNftsByAccountSequencer = async (
   endpoint: string,
   accountAddress: BechAddr,
-  collectionAddress?: BechAddr32
+  collectionAddress?: Addr32
 ) => {
   const nfts: Nft[] = [];
 
@@ -105,7 +99,7 @@ export const getNftsByAccountSequencer = async (
 export const getNftMintInfoSequencer = async (
   endpoint: string,
   prefix: string,
-  nftAddress: HexAddr32
+  nftAddress: Addr32
 ): Promise<NftMintInfo> => {
   const txsByNftAddress = await getTxsByAccountAddressSequencer({
     address: nftAddress,
@@ -136,7 +130,7 @@ export const getNftMintInfoSequencer = async (
 export const getNftTransactionsSequencer = async (
   endpoint: string,
   paginationKey: Option<string>,
-  nftAddress: HexAddr32
+  nftAddress: Addr32
 ) => {
   const txsByNftAddress = await getTxsByAccountAddressSequencer({
     address: nftAddress,

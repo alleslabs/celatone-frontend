@@ -12,7 +12,7 @@ import {
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
-import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
+import { useNftAddressFormat } from "lib/hooks";
 
 import type {
   ActivitiesResponse,
@@ -68,7 +68,7 @@ export const useNftCollectionsSequencer = (limit: number, search?: string) => {
   const {
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
-  const formatAddresses = useFormatAddresses();
+  const formatAddresses = useNftAddressFormat();
   const { isSomeValidAddress } = useValidateAddress();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
@@ -85,7 +85,7 @@ export const useNftCollectionsSequencer = (limit: number, search?: string) => {
             const formattedAddress = formatAddresses(search);
             return getNftCollectionsByCollectionAddressSequencer(
               indexerEndpoint,
-              formattedAddress.address as BechAddr32
+              formattedAddress
             );
           }
 
@@ -115,8 +115,7 @@ export const useNftCollectionsSequencer = (limit: number, search?: string) => {
 };
 
 export const useNftCollectionByCollectionAddress = (
-  collectionAddressBech: BechAddr32,
-  collectionAddressHex: HexAddr32,
+  collectionAddress: HexAddr32,
   enabled = true
 ) => {
   const { tier } = useTierConfig();
@@ -125,6 +124,7 @@ export const useNftCollectionByCollectionAddress = (
   const {
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
+  const formatAddress = useNftAddressFormat();
 
   return useQuery(
     [
@@ -132,26 +132,25 @@ export const useNftCollectionByCollectionAddress = (
       apiEndpoint,
       indexerEndpoint,
       tier,
-      collectionAddressBech,
-      collectionAddressHex,
+      collectionAddress,
     ],
-    () =>
-      handleQueryByTier<Nullable<CollectionByCollectionAddressResponse>>({
-        queryFull: () =>
-          getNftCollectionByCollectionAddress(
-            apiEndpoint,
-            collectionAddressHex
-          ),
-        querySequencer: () =>
-          getNftCollectionByCollectionAddressSequencer(
-            indexerEndpoint,
-            collectionAddressBech,
-            collectionAddressHex,
-            isMove
-          ),
-        threshold: "sequencer",
-        tier,
-      }),
+    () => {
+      const formattedCollectionAddress = formatAddress(collectionAddress);
+      return handleQueryByTier<Nullable<CollectionByCollectionAddressResponse>>(
+        {
+          queryFull: () =>
+            getNftCollectionByCollectionAddress(apiEndpoint, collectionAddress),
+          querySequencer: () =>
+            getNftCollectionByCollectionAddressSequencer(
+              indexerEndpoint,
+              formattedCollectionAddress,
+              isMove
+            ),
+          threshold: "sequencer",
+          tier,
+        }
+      );
+    },
     {
       enabled,
       refetchOnWindowFocus: false,
