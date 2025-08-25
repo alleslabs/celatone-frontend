@@ -129,7 +129,13 @@ export const getNavigationUrl = ({
       break;
   }
 
-  if (value) return `${url}/${value}`;
+  if (value) {
+    const safe = value
+      .split("/")
+      .map((seg) => encodeURIComponent(seg))
+      .join("/");
+    return `${url}/${safe}`;
+  }
 
   return url;
 };
