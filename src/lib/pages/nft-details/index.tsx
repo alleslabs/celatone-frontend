@@ -70,10 +70,7 @@ const NftDetailsBody = ({
   const collectionAddressHex = zHexAddr32.parse(formattedAddresses.hex);
 
   const { data: collection, isLoading: isCollectionLoading } =
-    useNftCollectionByCollectionAddress(
-      collectionAddressBech,
-      collectionAddressHex
-    );
+    useNftCollectionByCollectionAddress(collectionAddressHex);
 
   const { data: nft, isLoading: isNftLoading } = useNftByTokenId(
     collectionAddressHex,

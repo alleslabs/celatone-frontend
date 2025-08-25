@@ -1,4 +1,4 @@
-import type { BechAddr32, HexAddr, HexAddr32 } from "lib/types";
+import type { Addr32, BechAddr32, HexAddr } from "lib/types";
 
 import { zHexAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
@@ -13,7 +13,7 @@ import { getContractQueryRest } from "../wasm/contract/rest";
 
 export const getCollectionByCollectionAddressMoveRest = (
   endpoint: string,
-  collectionAddress: HexAddr32
+  collectionAddress: Addr32
 ) =>
   Promise.all([
     getMoveViewJsonRest(
