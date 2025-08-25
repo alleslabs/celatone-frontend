@@ -1,4 +1,4 @@
-import type { BechAddr32, HexAddr32 } from "lib/types";
+import type { HexAddr32 } from "lib/types";
 
 import { Box } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
@@ -12,13 +12,11 @@ import { useNfts } from "lib/services/nft";
 import { useEffect, useState } from "react";
 
 interface CollectionSuppliesProps {
-  collectionAddressBech: BechAddr32;
   collectionAddressHex: HexAddr32;
   totalSupply: number;
 }
 
 export const CollectionSuppliesFull = ({
-  collectionAddressBech,
   collectionAddressHex,
   totalSupply,
 }: CollectionSuppliesProps) => {
@@ -42,7 +40,6 @@ export const CollectionSuppliesFull = ({
     },
   });
   const { data: nfts, isLoading } = useNfts(
-    collectionAddressBech,
     collectionAddressHex,
     pageSize,
     offset,
