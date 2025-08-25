@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { usePathname } from "next/navigation";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type HoverContextType = {
   hoveredText: string | null;
@@ -9,6 +10,11 @@ const HoverContext = createContext<HoverContextType | undefined>(undefined);
 
 export const HoverProvider = ({ children }: { children: React.ReactNode }) => {
   const [hoveredText, setHoveredText] = useState<string | null>(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setHoveredText(null);
+  }, [pathname]);
 
   return (
     <HoverContext.Provider value={{ hoveredText, setHoveredText }}>

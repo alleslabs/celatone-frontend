@@ -129,7 +129,7 @@ export const getNavigationUrl = ({
       break;
   }
 
-  if (value) return `${url}/${encodeURIComponent(value)}`;
+  if (value) return `${url}/${value}`;
 
   return url;
 };
