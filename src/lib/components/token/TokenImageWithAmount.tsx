@@ -33,7 +33,7 @@ export const TokenImageWithAmount = ({
         fontWeight={fontWeight}
         ml={1}
         variant={variant}
-        whiteSpace="nowrap"
+        wordBreak="break-all"
       >
         {formatTokenWithValue({ token })}
       </Text>
