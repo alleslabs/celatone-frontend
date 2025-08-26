@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1414](https://github.com/alleslabs/celatone-frontend/pull/1414) Fix accordion txs table missing value
 - [#1412](https://github.com/alleslabs/celatone-frontend/pull/1412) Fix explorer link component minor bugs
 - [#1373](https://github.com/alleslabs/celatone-frontend/pull/1373) Fix pagination in Nft page
 
