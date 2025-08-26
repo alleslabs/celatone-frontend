@@ -61,9 +61,10 @@ export const useSimulateFeeEvmQuery = ({
         value: value ? toBeHex(value) : null,
       });
     },
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_EVM,
-      walletProvider,
+      walletProvider.type,
       address,
       evm,
       data,
