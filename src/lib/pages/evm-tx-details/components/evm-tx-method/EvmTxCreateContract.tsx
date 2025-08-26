@@ -74,7 +74,6 @@ export const EvmTxCreateContract = ({
         label="Creator"
         value={
           <ExplorerLink
-            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
             type="user_address"
@@ -92,7 +91,6 @@ export const EvmTxCreateContract = ({
                   <Spinner boxSize={4} />
                 ) : (
                   <ExplorerLink
-                    fixedHeight={false}
                     leftIcon={
                       <CustomIcon
                         boxSize={3}

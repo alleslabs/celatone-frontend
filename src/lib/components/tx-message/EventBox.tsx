@@ -32,7 +32,6 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
         valueComponent = (
           <ExplorerLink
             ampCopierSection="tx_page_event_logs"
-            fixedHeight={false}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
@@ -46,7 +45,6 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
         valueComponent = (
           <ExplorerLink
             ampCopierSection="tx_page_event_logs"
-            fixedHeight={false}
             maxWidth="full"
             queryParams={{}}
             showCopyOnHover
@@ -61,7 +59,6 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
         valueComponent = (
           <ExplorerLink
             ampCopierSection="tx_page_event_logs"
-            fixedHeight={false}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"

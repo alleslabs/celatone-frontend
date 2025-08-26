@@ -93,9 +93,17 @@ export const TransactionsTableMobileCard = ({
             {showSuccess && !isTxHasNoData && (
               <>
                 {transaction.success ? (
-                  <CustomIcon color="success.main" name="check" />
+                  <CustomIcon
+                    boxSize={3}
+                    color="success.main"
+                    name="check-circle-solid"
+                  />
                 ) : (
-                  <CustomIcon color="error.main" name="close" />
+                  <CustomIcon
+                    boxSize={3}
+                    color="error.main"
+                    name="close-circle-solid"
+                  />
                 )}
               </>
             )}

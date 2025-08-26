@@ -259,7 +259,7 @@ export const ExplorerLink = ({
   chainId,
   copyValue,
   externalLink,
-  fixedHeight = true,
+  fixedHeight = false,
   hideCopy = false,
   isReadOnly = false,
   leftIcon = null,
