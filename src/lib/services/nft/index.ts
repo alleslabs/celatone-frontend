@@ -29,7 +29,6 @@ import type {
   NftMintInfo,
   NftMutateEventsResponse,
   NftsByAccountAddressResponse,
-  NftSequencer,
   NftsResponse,
   NftTxsResponse,
 } from "../types";
@@ -175,7 +174,7 @@ export const useNftsSequencer = (
   );
 
   return {
-    data: data?.pages.flatMap<NftSequencer>((page) => page.tokens),
+    data: data?.pages.flatMap<Nft>((page) => page.tokens),
     error,
     fetchNextPage,
     hasNextPage,
@@ -491,9 +490,79 @@ export const useNftsByAccountAddress = (
   );
 };
 
-export const useNftsByAccountByCollectionSequencer = (
+export const useNftsByAccountSequencer = (
   accountAddress: BechAddr,
-  search = "",
+  collectionAddress?: HexAddr32,
+  tokenId?: string,
+  limit?: number,
+  enabled = true
+) => {
+  const {
+    chainConfig: { indexer: indexerEndpoint },
+  } = useCelatoneApp();
+  const formatAddress = useNftAddressFormat();
+  const formattedCollectionAddress = collectionAddress
+    ? formatAddress(collectionAddress)
+    : undefined;
+
+  const queryfn = useCallback(
+    async (pageParam: Option<string>) =>
+      getNftsByAccountSequencer(
+        indexerEndpoint,
+        accountAddress,
+        pageParam,
+        formattedCollectionAddress,
+        tokenId,
+        limit
+      ),
+    [
+      indexerEndpoint,
+      accountAddress,
+      limit,
+      formattedCollectionAddress,
+      tokenId,
+    ]
+  );
+
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteQuery(
+    [
+      CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_SEQUENCER,
+      indexerEndpoint,
+      accountAddress,
+      ...(limit ? [limit] : []),
+      ...(collectionAddress ? [collectionAddress] : []),
+      ...(tokenId ? [tokenId] : []),
+    ],
+    ({ pageParam }) => queryfn(pageParam),
+    {
+      enabled,
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+      retry: 1,
+    }
+  );
+
+  return {
+    data: data?.pages.flatMap<Nft>((page) => page.items),
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    isLoading,
+  };
+};
+
+export const useNftsByAccountCountSequencer = (
+  accountAddress: BechAddr,
   collectionAddress?: HexAddr32,
   enabled = true
 ) => {
@@ -505,24 +574,25 @@ export const useNftsByAccountByCollectionSequencer = (
     ? formatAddress(collectionAddress)
     : undefined;
 
-  return useQuery<NftsByAccountAddressResponse>(
+  return useQuery(
     [
-      CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_BY_COLLECTION_SEQUENCER,
+      CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_COUNT_SEQUENCER,
       indexerEndpoint,
       accountAddress,
-      collectionAddress,
-      search,
+      ...(collectionAddress ? [collectionAddress] : []),
     ],
     async () =>
       getNftsByAccountSequencer(
         indexerEndpoint,
         accountAddress,
+        undefined,
         formattedCollectionAddress
       ),
     {
       enabled,
       refetchOnWindowFocus: false,
       retry: 1,
+      select: (data) => data.pagination.total,
     }
   );
 };

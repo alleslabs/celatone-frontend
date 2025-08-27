@@ -245,6 +245,7 @@ export const getNftCollectionsByAccountAddressSequencer = async (
       {
         params: {
           "pagination.count_total": false,
+          "pagination.limit": 1000,
           "pagination.reverse": true,
         },
       }

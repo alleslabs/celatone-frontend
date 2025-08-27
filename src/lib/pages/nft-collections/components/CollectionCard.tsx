@@ -1,5 +1,5 @@
 import type { Collection } from "lib/services/types";
-import type { BechAddr32, HexAddr32 } from "lib/types";
+import type { HexAddr32 } from "lib/types";
 
 import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { useEvmConfig, useMobile } from "lib/app-provider";
@@ -45,7 +45,6 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
   ]);
 
   const firstNftImage = useGetFirstNftAsCollectionImage(
-    formattedCollection.address as BechAddr32,
     formattedCollection.hex as HexAddr32
   );
 

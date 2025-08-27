@@ -129,7 +129,6 @@ const zNftSequencer = z
     tokenId: val.nft.token_id,
     uri: val.nft.uri,
   }));
-export type NftSequencer = z.infer<typeof zNftSequencer>;
 
 export const zNftsResponseSequencer = z.object({
   pagination: zPagination,
