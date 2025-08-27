@@ -48,7 +48,8 @@ export const useCosmosEvmTxs = (address: BechAddr20) => {
     if (
       isUndefined(cosmosTxs) ||
       isUndefined(newEvmTxHashes) ||
-      isUndefined(newEvmTxsData)
+      isUndefined(newEvmTxsData) ||
+      paginationKey === null
     )
       return;
 
