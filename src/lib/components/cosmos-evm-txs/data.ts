@@ -39,7 +39,6 @@ export const useCosmosEvmTxs = (address: BechAddr20) => {
     data: newEvmTxsData,
     isError: isNewEvmTxsDataError,
     isFetching: isNewEvmTxsDataFetching,
-    remove: removeNewEvmTxsData,
   } = useEvmTxsDataJsonRpc(
     newEvmTxHashes?.filter((tx) => tx !== null) as string[],
     !isCosmosTxsFetching && !isNewEvmHashesFetching
@@ -67,9 +66,6 @@ export const useCosmosEvmTxs = (address: BechAddr20) => {
     setPaginationKey(cosmosTxs.pagination.nextKey);
     setIsInitialLoading(false);
 
-    // Note: cosmosTxs and newEvmTxHashes are undefined when paginationKey is changed
-    // So, we need to remove newEvmTxsData every time we fetch new data
-    removeNewEvmTxsData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newEvmTxsData]);
 
