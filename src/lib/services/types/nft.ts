@@ -134,16 +134,7 @@ export const zNftsResponseSequencer = z.object({
   pagination: zPagination,
   tokens: z.array(zNftSequencer),
 });
-
-export const zNftsByAccountResponseSequencer = z
-  .object({
-    pagination: zPagination,
-    tokens: z.array(zNftSequencer),
-  })
-  .transform((val) => ({
-    items: val.tokens,
-    pagination: val.pagination,
-  }));
+export type NftsResponseSequencer = z.infer<typeof zNftsResponseSequencer>;
 
 export const zNftInfoMoveRest = z
   .object({

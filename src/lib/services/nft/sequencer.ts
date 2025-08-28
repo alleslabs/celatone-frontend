@@ -9,10 +9,7 @@ import {
 import type { Nft, NftMintInfo, NftTxResponse } from "../types";
 
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
-import {
-  zNftsByAccountResponseSequencer,
-  zNftsResponseSequencer,
-} from "../types";
+import { zNftsResponseSequencer } from "../types";
 
 export const getNftsSequencerLoop = async (
   endpoint: string,
@@ -80,7 +77,7 @@ export const getNftsByAccountSequencer = async (
       },
     }
   );
-  return parseWithError(zNftsByAccountResponseSequencer, data);
+  return parseWithError(zNftsResponseSequencer, data);
 };
 
 export const getNftMintInfoSequencer = async (

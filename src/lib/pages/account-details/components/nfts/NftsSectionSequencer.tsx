@@ -8,7 +8,10 @@ import { LoadNext } from "lib/components/LoadNext";
 import { NftList } from "lib/components/nft";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
-import { useNftsByAccountSequencer } from "lib/services/nft";
+import {
+  useNftsByAccountCountSequencerBatch,
+  useNftsByAccountSequencer,
+} from "lib/services/nft";
 import { useNftCollectionsByAccountAddress } from "lib/services/nft-collection";
 import { useState } from "react";
 
@@ -43,6 +46,13 @@ export const NftsSectionSequencer = ({
   const { data: collections } =
     useNftCollectionsByAccountAddress(accountHexAddress);
 
+  const collectionAddresses =
+    collections?.items.map((collection) => collection.collectionAddress) ?? [];
+  const nftCountsByCollection = useNftsByAccountCountSequencerBatch(
+    accountAddress,
+    collectionAddresses
+  );
+
   if (isLoading) return <Loading />;
   if (!collections) return <ErrorFetching dataName="collections" />;
   if (!Object.keys(collections).length)
@@ -73,10 +83,11 @@ export const NftsSectionSequencer = ({
             isDefault
             onClick={() => setSelectedCollection(undefined)}
           />
-          {collections.items.map((collection) => (
+          {collections.items.map((collection, index) => (
             <FilterItem
               key={collection.collectionAddress}
               collectionName={collection.collectionName}
+              count={nftCountsByCollection[index].data}
               isActive={selectedCollection === collection.collectionAddress}
               uri={
                 accountNfts?.find(

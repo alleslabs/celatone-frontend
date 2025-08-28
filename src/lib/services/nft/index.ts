@@ -1,6 +1,6 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueries, useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -30,6 +30,7 @@ import type {
   NftMutateEventsResponse,
   NftsByAccountAddressResponse,
   NftsResponse,
+  NftsResponseSequencer,
   NftTxsResponse,
 } from "../types";
 
@@ -551,7 +552,7 @@ export const useNftsByAccountSequencer = (
   );
 
   return {
-    data: data?.pages.flatMap<Nft>((page) => page.items),
+    data: data?.pages.flatMap<Nft>((page) => page.tokens),
     error,
     fetchNextPage,
     hasNextPage,
@@ -576,7 +577,7 @@ export const useNftsByAccountCountSequencer = (
 
   return useQuery(
     [
-      CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_COUNT_SEQUENCER,
+      CELATONE_QUERY_KEYS.NFTS_COUNT_BY_ACCOUNT_SEQUENCER,
       indexerEndpoint,
       accountAddress,
       ...(collectionAddress ? [collectionAddress] : []),
@@ -595,6 +596,43 @@ export const useNftsByAccountCountSequencer = (
       select: (data) => data.pagination.total,
     }
   );
+};
+
+// To find nft count by collection address in account
+export const useNftsByAccountCountSequencerBatch = (
+  accountAddress: BechAddr,
+  collectionAddresses: HexAddr32[],
+  enabled = true
+) => {
+  const {
+    chainConfig: { indexer: indexerEndpoint },
+  } = useCelatoneApp();
+  const formatAddress = useNftAddressFormat();
+
+  return useQueries({
+    queries: collectionAddresses.map((collectionAddress) => {
+      const formattedCollectionAddress = formatAddress(collectionAddress);
+      return {
+        enabled,
+        queryFn: async () =>
+          getNftsByAccountSequencer(
+            indexerEndpoint,
+            accountAddress,
+            undefined,
+            formattedCollectionAddress
+          ),
+        queryKey: [
+          CELATONE_QUERY_KEYS.NFTS_COUNT_BY_ACCOUNT_SEQUENCER,
+          indexerEndpoint,
+          accountAddress,
+          collectionAddress,
+        ],
+        refetchOnWindowFocus: false,
+        retry: 1,
+        select: (data: NftsResponseSequencer) => data.pagination.total,
+      };
+    }),
+  });
 };
 
 export const useNftRoyaltyInfoEvmSequencer = (collectionAddress: HexAddr32) => {
