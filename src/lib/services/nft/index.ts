@@ -1,6 +1,7 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 
 import { useInfiniteQuery, useQueries, useQuery } from "@tanstack/react-query";
+import { GLYPH_API_URL } from "env";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -34,9 +35,8 @@ import type {
   NftTxsResponse,
 } from "../types";
 
-import { getIpfsUrl, handleQueryByTier } from "../utils";
+import { handleQueryByTier } from "../utils";
 import {
-  getGlyphImage,
   getMetadata,
   getNftByNftAddress,
   getNftMintInfo,
@@ -329,25 +329,16 @@ export const useMetadata = (
       if (!nft) throw new Error("NFT is required (useMetadata)");
       const baseUri = await getMetadata(nft.uri ?? "");
 
-      if (
-        baseUri.image.startsWith("ipfs://") &&
-        nft.collectionAddress &&
-        (nft.nftAddress || nft.tokenId)
-      ) {
-        try {
-          const image: Blob = await getGlyphImage(
-            currentChainId,
-            nft.collectionAddress,
-            nft.nftAddress ?? nft.tokenId ?? "",
-            width,
-            height
-          );
+      const params = new URLSearchParams();
+      if (width) params.set("width", width);
+      if (height) params.set("height", height);
 
-          baseUri.image = URL.createObjectURL(image);
-        } catch {
-          baseUri.image = getIpfsUrl(baseUri.image);
-        }
-      }
+      const objectAddress =
+        nft.nftAddress && nft.nftAddress !== "0x"
+          ? nft.nftAddress
+          : (nft.tokenId ?? "");
+
+      baseUri.image = `${GLYPH_API_URL}/${currentChainId}/${nft.collectionAddress}/${objectAddress}${params.toString() ? `?${params}` : ""}`;
 
       return baseUri;
     },
