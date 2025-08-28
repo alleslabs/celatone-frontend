@@ -5,7 +5,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useEvmConfig, useMoveConfig } from "lib/app-provider";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useMetadata } from "lib/services/nft";
+import { useNftMetadata } from "lib/services/nft";
 
 import { AppLink } from "../AppLink";
 
@@ -15,7 +15,7 @@ interface NftCardProps {
 }
 
 export const NftCard = ({ nft, showCollection = false }: NftCardProps) => {
-  const { data: metadata } = useMetadata(nft);
+  const { data: metadata } = useNftMetadata(nft);
   const {
     collectionAddress: collectionAddressParam,
     collectionName,

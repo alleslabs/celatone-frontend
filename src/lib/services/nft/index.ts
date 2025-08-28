@@ -25,8 +25,8 @@ import {
 import { useCallback } from "react";
 
 import type {
-  Metadata,
   Nft,
+  NftMetadata,
   NftMintInfo,
   NftMutateEventsResponse,
   NftsByAccountAddressResponse,
@@ -37,8 +37,8 @@ import type {
 
 import { handleQueryByTier } from "../utils";
 import {
-  getMetadata,
   getNftByNftAddress,
+  getNftMetadata,
   getNftMintInfo,
   getNftMutateEvents,
   getNftsByAccountAddress,
@@ -316,31 +316,32 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
   );
 };
 
-export const useMetadata = (
-  nft: Option<Partial<Nft>>,
+export const useNftMetadata = (
+  nft: Option<Nft>,
   width?: string,
   height?: string
 ) => {
   const { currentChainId } = useCelatoneApp();
 
-  return useQuery<Metadata>(
+  return useQuery<NftMetadata>(
     [CELATONE_QUERY_KEYS.NFT_METADATA, nft],
     async () => {
-      if (!nft) throw new Error("NFT is required (useMetadata)");
-      const baseUri = await getMetadata(nft.uri ?? "");
+      if (!nft) throw new Error("NFT is required (useNftMetadata)");
+
+      const metadata = await getNftMetadata(nft.uri);
 
       const params = new URLSearchParams();
       if (width) params.set("width", width);
       if (height) params.set("height", height);
 
-      const objectAddress =
+      const tokenId =
         nft.nftAddress && nft.nftAddress !== "0x"
           ? nft.nftAddress
-          : (nft.tokenId ?? "");
+          : nft.tokenId;
 
-      baseUri.image = `${GLYPH_API_URL}/${currentChainId}/${nft.collectionAddress}/${objectAddress}${params.toString() ? `?${params}` : ""}`;
+      metadata.image = `${GLYPH_API_URL}/${currentChainId}/${nft.collectionAddress}/${tokenId}${params.toString() ? `?${params}` : ""}`;
 
-      return baseUri;
+      return metadata;
     },
     {
       enabled: !!nft,

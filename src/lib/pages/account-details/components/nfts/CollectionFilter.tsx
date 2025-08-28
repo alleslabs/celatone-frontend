@@ -5,7 +5,6 @@ import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useGetFirstNftAsCollectionImage } from "lib/hooks";
-import { useMetadata } from "lib/services/nft";
 
 const COMMON_STYLES = {
   container: {
@@ -59,12 +58,8 @@ export const CollectionFilter = ({
   count,
   isActive,
   onClick,
-  uri,
 }: CollectionFilterProps) => {
-  const firstNftImage = useGetFirstNftAsCollectionImage(collectionAddress);
-  const { data: metadata } = useMetadata({ uri });
-
-  const collectionImage = collectionAddress ? firstNftImage : metadata?.image;
+  const collectionImage = useGetFirstNftAsCollectionImage(collectionAddress);
 
   return (
     <Flex

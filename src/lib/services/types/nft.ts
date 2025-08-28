@@ -50,7 +50,7 @@ export const zNftMintInfoResponse = z
   .optional();
 export type NftMintInfo = z.infer<typeof zNftMintInfoResponse>;
 
-export const zMetadata = z
+export const zNftMetadata = z
   .object({
     attributes: z
       .object({
@@ -66,7 +66,7 @@ export const zMetadata = z
     name: z.string(),
   })
   .transform(snakeToCamel);
-export type Metadata = z.infer<typeof zMetadata>;
+export type NftMetadata = z.infer<typeof zNftMetadata>;
 
 export const zNftTxResponse = z
   .object({
