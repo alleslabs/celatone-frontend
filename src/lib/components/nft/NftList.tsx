@@ -28,7 +28,7 @@ export const NftList = ({
     <SimpleGrid columns={{ base: 2, lg: 3, xl: 5 }} gap={6} mb={8} mt={4}>
       {nfts.map((nft) => (
         <NftCard
-          key={nft.collectionAddress + nft.tokenId}
+          key={nft.collectionAddress + nft.tokenId + nft.uri}
           nft={nft}
           showCollection={showCollection}
         />

@@ -6,12 +6,11 @@ import { useEvmConfig, useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
+import { useGetFirstNftAsCollectionImage } from "lib/hooks";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useMetadata } from "lib/services/nft";
 import { extractNftDescription } from "lib/utils/nftDescription";
 import { useMemo } from "react";
-
-import { useGetFirstNftAsCollectionImage } from "../data";
 
 interface CollectionCardProps {
   collectionInfo: Collection;

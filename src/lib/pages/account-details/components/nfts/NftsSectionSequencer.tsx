@@ -15,7 +15,7 @@ import {
 import { useNftCollectionsByAccountAddress } from "lib/services/nft-collection";
 import { useState } from "react";
 
-import { FilterItem } from "./FilterItem";
+import { CollectionFilter, CollectionFilterDefault } from "./CollectionFilter";
 
 interface NftsSectionSequencerProps {
   accountAddress: BechAddr;
@@ -76,16 +76,16 @@ export const NftsSectionSequencer = ({
           spacing="8px"
           w={{ base: "100%", lg: "25%", md: "35%" }}
         >
-          <FilterItem
+          <CollectionFilterDefault
             collectionName="All collections"
             count={totalData}
             isActive={selectedCollection === undefined}
-            isDefault
             onClick={() => setSelectedCollection(undefined)}
           />
           {collections.items.map((collection, index) => (
-            <FilterItem
+            <CollectionFilter
               key={collection.collectionAddress}
+              collectionAddress={collection.collectionAddress}
               collectionName={collection.collectionName}
               count={nftCountsByCollection[index].data}
               isActive={selectedCollection === collection.collectionAddress}
@@ -127,11 +127,13 @@ export const NftsSectionSequencer = ({
             nfts={accountNfts}
             showCollection
           />
-          <LoadNext
-            fetchNextPage={fetchNextPage}
-            isFetchingNextPage={isFetchingNextPage}
-            text="Load more 10 NFTs"
-          />
+          {totalData > 10 && (
+            <LoadNext
+              fetchNextPage={fetchNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              text="Load more 10 NFTs"
+            />
+          )}
         </Stack>
       </Flex>
     </Box>
