@@ -28,29 +28,29 @@ export const TokenImageRender = ({
   Array.isArray(logo) ? (
     <Flex minW="fit-content">
       <TokenImage
+        {...props}
         alt={logo[0]}
         boxSize={boxSize}
         minW={boxSize}
         src={logo[0]}
         zIndex={1}
-        {...props}
       />
       <TokenImage
+        {...props}
         alt={logo[1]}
         boxSize={boxSize}
         minW={boxSize}
         ml="-6px"
         src={logo[1]}
-        {...props}
       />
     </Flex>
   ) : (
     <TokenImage
+      {...props}
       alt={logo}
       boxSize={boxSize}
       minW={boxSize}
       src={logo}
-      {...props}
     />
   );
 
