@@ -20,14 +20,38 @@ interface TokenImageRenderProps extends ChakraImageProps {
   logo: Option<string> | Option<string>[];
 }
 
-export const TokenImageRender = ({ logo, ...props }: TokenImageRenderProps) =>
+export const TokenImageRender = ({
+  boxSize,
+  logo,
+  ...props
+}: TokenImageRenderProps) =>
   Array.isArray(logo) ? (
     <Flex minW="fit-content">
-      <TokenImage alt={logo[0]} src={logo[0]} zIndex={1} {...props} />
-      <TokenImage alt={logo[1]} ml="-6px" src={logo[1]} {...props} />
+      <TokenImage
+        {...props}
+        alt={logo[0]}
+        boxSize={boxSize}
+        minW={boxSize}
+        src={logo[0]}
+        zIndex={1}
+      />
+      <TokenImage
+        {...props}
+        alt={logo[1]}
+        boxSize={boxSize}
+        minW={boxSize}
+        ml="-6px"
+        src={logo[1]}
+      />
     </Flex>
   ) : (
-    <TokenImage alt={logo} src={logo} {...props} />
+    <TokenImage
+      {...props}
+      alt={logo}
+      boxSize={boxSize}
+      minW={boxSize}
+      src={logo}
+    />
   );
 
 export const TokenImageRenderWithCache = (props: ImageProps) => {
