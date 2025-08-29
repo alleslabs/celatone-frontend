@@ -252,9 +252,11 @@ export const zTxsResponseItemFromRest = z.preprocess(
       const logs = extractTxLogs(val);
 
       const messages = txBody.messages.map<Message>((msg, idx) => ({
+        detail: {
+          ...msg,
+        },
         log: logs[idx],
         type: msg["@type"] ?? msg["type"],
-        ...msg,
       }));
 
       const { isEvm, isIbc, isOpinit } = messages.reduce(
