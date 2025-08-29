@@ -49,7 +49,7 @@ interface CollectionDataResponse extends CollectionInfosResponse {
 
 // MOVE
 const useNftCollectionInfosMove = (
-  collectionAddress: BechAddr32
+  collectionAddress: HexAddr32
 ): CollectionInfosResponse => {
   const { data: resourcesData, isFetching } =
     useResourcesByAddressRest(collectionAddress);
@@ -110,10 +110,7 @@ export const useNftCollectionData = (
   // ########################## Base ############################
   // ############################################################
   const { data: collection, isLoading: isCollectionLoading } =
-    useNftCollectionByCollectionAddress(
-      collectionAddressBech,
-      collectionAddressHex
-    );
+    useNftCollectionByCollectionAddress(collectionAddressHex);
 
   // ############################################################
   // ###################### VM Specific #########################
@@ -121,7 +118,7 @@ export const useNftCollectionData = (
   const {
     collectionInfos: collectionInfosMove,
     isLoading: isCollectionInfosMoveLoading,
-  } = useNftCollectionInfosMove(collectionAddressBech);
+  } = useNftCollectionInfosMove(collectionAddressHex);
 
   const {
     data: collectionInfosWasm,
@@ -131,10 +128,7 @@ export const useNftCollectionData = (
   const {
     data: collectionRoyaltyInfoEvm,
     isFetching: isCollectionInfosEvmLoading,
-  } = useNftRoyaltyInfoEvmSequencer(
-    collectionAddressHex,
-    collectionAddressBech
-  );
+  } = useNftRoyaltyInfoEvmSequencer(collectionAddressHex);
 
   if (isMoveEnabled)
     return {

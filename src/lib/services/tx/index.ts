@@ -430,15 +430,15 @@ export const useTxsByAddressRest = (
 
 export const useTxsSequencer = (limit = 10) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
   const queryfn = useCallback(
     async (pageParam: Option<string>) => {
-      return getTxsSequencer(restEndpoint, pageParam, limit);
+      return getTxsSequencer(indexerEndpoint, pageParam, limit);
     },
-    [restEndpoint, limit]
+    [indexerEndpoint, limit]
   );
 
   const {
@@ -449,7 +449,7 @@ export const useTxsSequencer = (limit = 10) => {
     isFetchingNextPage,
     isLoading,
   } = useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.TXS_SEQUENCER, restEndpoint, limit],
+    [CELATONE_QUERY_KEYS.TXS_SEQUENCER, indexerEndpoint, limit],
     ({ pageParam }) => queryfn(pageParam),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
@@ -481,12 +481,12 @@ export const useTxsSequencer = (limit = 10) => {
 
 export const useTxsCountSequencer = () => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.TXS_COUNT_SEQUENCER, restEndpoint],
-    async () => getTxsCountSequencer(restEndpoint),
+    [CELATONE_QUERY_KEYS.TXS_COUNT_SEQUENCER, indexerEndpoint],
+    async () => getTxsCountSequencer(indexerEndpoint),
     { refetchOnWindowFocus: false, retry: 1 }
   );
 };
@@ -515,7 +515,7 @@ export const useTxsByAddressSequencer = (
   limit = 10
 ) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
@@ -523,7 +523,10 @@ export const useTxsByAddressSequencer = (
     async (pageParam: Option<string>) => {
       return (async () => {
         if (search && isTxHash(search)) {
-          const txsByHash = await getTxsByHashSequencer(restEndpoint, search);
+          const txsByHash = await getTxsByHashSequencer(
+            indexerEndpoint,
+            search
+          );
 
           if (txsByHash.pagination.total === 0)
             throw new Error("transaction not found (getTxsByHashSequencer)");
@@ -555,13 +558,13 @@ export const useTxsByAddressSequencer = (
 
         return getTxsByAccountAddressSequencer({
           address,
-          endpoint: restEndpoint,
+          endpoint: indexerEndpoint,
           limit,
           paginationKey: pageParam,
         });
       })();
     },
-    [address, restEndpoint, bech32Prefix, search, limit]
+    [address, indexerEndpoint, bech32Prefix, search, limit]
   );
 
   const {
@@ -575,7 +578,7 @@ export const useTxsByAddressSequencer = (
   } = useInfiniteQuery(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_SEQUENCER,
-      restEndpoint,
+      indexerEndpoint,
       address,
       search,
       limit,
@@ -614,13 +617,13 @@ export const useTxsByAddressPaginationSequencer = (
   enabled = true
 ) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { rest: indexerEndpoint },
   } = useCelatoneApp();
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_PAGINATION_SEQUENCER,
-      restEndpoint,
+      indexerEndpoint,
       address,
       paginationKey,
       limit,
@@ -628,7 +631,7 @@ export const useTxsByAddressPaginationSequencer = (
     () =>
       getTxsByAccountAddressSequencer({
         address,
-        endpoint: restEndpoint,
+        endpoint: indexerEndpoint,
         limit,
         paginationKey,
       }),
@@ -643,19 +646,19 @@ export const useTxsByAddressPaginationSequencer = (
 
 export const useTxsByBlockHeightSequencer = (height: number) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_SEQUENCER,
-      restEndpoint,
+      indexerEndpoint,
       height,
       bech32Prefix,
     ],
     async () => {
-      const txs = await getTxsByBlockHeightSequencer(restEndpoint, height);
+      const txs = await getTxsByBlockHeightSequencer(indexerEndpoint, height);
 
       return txs.map<Transaction>((tx) => ({
         ...tx,

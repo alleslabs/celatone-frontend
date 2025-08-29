@@ -11,14 +11,12 @@ import {
   coinToTokenWithValue,
   dateFromNow,
   formatEvmTxHash,
-  formatPrice,
   formatUTC,
   formatUTokenWithPrecision,
   getEvmAmount,
   getEvmToAddress,
   getTokenLabel,
 } from "lib/utils";
-import { isUndefined } from "lodash";
 
 import { TableRow } from "../tableComponents";
 
@@ -107,11 +105,6 @@ export const EvmTransactionsTableRow = ({
           </Text>
           {getTokenLabel(token.denom, token.symbol)}
         </Text>
-        {!isUndefined(token.value) && (
-          <Text color="text.dark" variant="body3">
-            ({formatPrice(token.value)})
-          </Text>
-        )}
       </TableRow>
       {showTimestamp && (
         <TableRow>

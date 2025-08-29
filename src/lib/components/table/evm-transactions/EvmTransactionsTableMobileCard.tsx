@@ -11,14 +11,12 @@ import {
   coinToTokenWithValue,
   dateFromNow,
   formatEvmTxHash,
-  formatPrice,
   formatUTC,
   formatUTokenWithPrecision,
   getEvmAmount,
   getEvmToAddress,
   getTokenLabel,
 } from "lib/utils";
-import { isUndefined } from "lodash";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
@@ -82,11 +80,6 @@ export const EvmTransactionsTableMobileCard = ({
                 </Text>
                 {getTokenLabel(token.denom, token.symbol)}
               </Text>
-              {!isUndefined(token.value) && (
-                <Text color="text.dark" variant="body3">
-                  ({formatPrice(token.value)})
-                </Text>
-              )}
             </Flex>
           </Flex>
         </Stack>

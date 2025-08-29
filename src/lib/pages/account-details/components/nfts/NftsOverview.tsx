@@ -6,7 +6,7 @@ import { NftList } from "lib/components/nft";
 import { MobileTitle, ViewMore } from "lib/components/table";
 import {
   useNftsByAccountAddress,
-  useNftsByAccountByCollectionSequencer,
+  useNftsByAccountSequencer,
 } from "lib/services/nft";
 
 import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
@@ -38,16 +38,20 @@ export const NftsOverview = ({
       enabled: isFullTier,
     }
   );
-  const accountNftsSequencer = useNftsByAccountByCollectionSequencer(
+  const accountNftsSequencer = useNftsByAccountSequencer(
     accountAddress,
     undefined,
     undefined,
+    limit,
     isSequencerTier
   );
 
-  const { data, isFetching } = isFullTier
-    ? accountNftsFull
-    : accountNftsSequencer;
+  const data = isFullTier
+    ? accountNftsFull.data?.items
+    : accountNftsSequencer.data;
+  const isFetching = isFullTier
+    ? accountNftsFull.isFetching
+    : accountNftsSequencer.isFetching;
 
   return (
     <Box mb={{ base: 0, md: 8 }} mt={{ base: 4, md: 8 }}>
@@ -64,7 +68,7 @@ export const NftsOverview = ({
                 />
               }
               isLoading={isFetching}
-              nfts={data?.items.slice(0, limit)}
+              nfts={data}
               showCollection
             />
             {onViewMore && !!totalCount && totalCount > 5 && (

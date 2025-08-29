@@ -3,7 +3,6 @@ import type { MutateEvent } from "lib/types";
 import {
   zAddr,
   zBechAddr,
-  zHexAddr,
   zHexAddr20,
   zHexAddr32,
   zPagination,
@@ -51,7 +50,7 @@ export const zNftMintInfoResponse = z
   .optional();
 export type NftMintInfo = z.infer<typeof zNftMintInfoResponse>;
 
-export const zMetadata = z
+export const zNftMetadata = z
   .object({
     attributes: z
       .object({
@@ -67,7 +66,7 @@ export const zMetadata = z
     name: z.string(),
   })
   .transform(snakeToCamel);
-export type Metadata = z.infer<typeof zMetadata>;
+export type NftMetadata = z.infer<typeof zNftMetadata>;
 
 export const zNftTxResponse = z
   .object({
@@ -107,13 +106,18 @@ const zNftSequencer = z
     // Revisit this address type
     collection_addr: zHexAddr32,
     collection_name: z.string(),
+    collection_origin_name: z.string().optional(),
     nft: z.object({
-      description: z.string(),
+      description: z.string().default(""),
       token_id: z.string(),
       uri: z.string(),
     }),
     object_addr: zHexAddr32,
-    owner_addr: zHexAddr,
+    owner: zAddr.optional(),
+    owner_addr: zAddr.optional(),
+  })
+  .refine((val) => val.owner || val.owner_addr, {
+    message: "Either owner or owner_addr must be present",
   })
   .transform<Nft>((val) => ({
     collectionAddress: val.collection_addr,
@@ -121,26 +125,16 @@ const zNftSequencer = z
     description: val.nft.description,
     isBurned: false,
     nftAddress: val.object_addr ? val.object_addr : null,
-    ownerAddress: val.owner_addr,
+    ownerAddress: (val.owner_addr ?? val.owner)!,
     tokenId: val.nft.token_id,
     uri: val.nft.uri,
   }));
-export type NftSequencer = z.infer<typeof zNftSequencer>;
 
 export const zNftsResponseSequencer = z.object({
   pagination: zPagination,
   tokens: z.array(zNftSequencer),
 });
-
-export const zNftsByAccountResponseSequencer = z
-  .object({
-    pagination: zPagination,
-    tokens: z.array(zNftSequencer),
-  })
-  .transform((val) => ({
-    items: val.tokens,
-    pagination: val.pagination,
-  }));
+export type NftsResponseSequencer = z.infer<typeof zNftsResponseSequencer>;
 
 export const zNftInfoMoveRest = z
   .object({

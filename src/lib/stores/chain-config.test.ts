@@ -28,6 +28,7 @@ const MOCK_CONFIG: ChainConfig = {
     gasAdjustment: 1.5,
     maxGasLimit: 100,
   },
+  indexer: "https://indexer.testonly.com",
   network_type: "local",
   prettyName: "Test Only",
   registry: {
