@@ -36,6 +36,7 @@ export const NftsSectionSequencer = ({
   const {
     data: accountNfts,
     fetchNextPage,
+    hasNextPage,
     isFetchingNextPage,
     isLoading,
   } = useNftsByAccountSequencer(
@@ -127,7 +128,7 @@ export const NftsSectionSequencer = ({
             nfts={accountNfts}
             showCollection
           />
-          {totalData > 10 && (
+          {hasNextPage && (
             <LoadNext
               fetchNextPage={fetchNextPage}
               isFetchingNextPage={isFetchingNextPage}
