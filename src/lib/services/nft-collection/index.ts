@@ -333,6 +333,7 @@ export const useNftCollectionsByAccountAddress = (accountAddress: Addr) => {
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const { tier } = useTierConfig();
+  const formatAddress = useNftAddressFormat();
 
   return useQuery(
     [
@@ -342,18 +343,23 @@ export const useNftCollectionsByAccountAddress = (accountAddress: Addr) => {
       tier,
       accountAddress,
     ],
-    async () =>
-      handleQueryByTier({
+    async () => {
+      const formattedAccountAddress = formatAddress(accountAddress);
+      return handleQueryByTier({
         queryFull: () =>
-          getNftCollectionsByAccountAddress(apiEndpoint, accountAddress),
+          getNftCollectionsByAccountAddress(
+            apiEndpoint,
+            formattedAccountAddress
+          ),
         querySequencer: () =>
           getNftCollectionsByAccountAddressSequencer(
             indexerEndpoint,
-            accountAddress
+            formattedAccountAddress
           ),
         threshold: "sequencer",
         tier,
-      }),
+      });
+    },
     {
       refetchOnWindowFocus: false,
       retry: 1,
