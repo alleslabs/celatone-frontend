@@ -2,6 +2,7 @@ import type { FlexProps } from "@chakra-ui/react";
 import type { AssetInfo, Option, Token, U, USD } from "lib/types";
 
 import { Badge, Flex, Image, Text } from "@chakra-ui/react";
+import { useEvmConfig } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { Tooltip } from "lib/components/Tooltip";
 import { NAToken } from "lib/icon";
@@ -28,6 +29,7 @@ export const AssetCard = ({
   denom,
   ...cardProps
 }: AssetCardProps) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
   const symbol = getTokenLabel(denom, assetInfo?.symbol, false);
   return (
     <Tooltip label={`Token ID: ${denom}`} maxW="240px" textAlign="center">
@@ -76,11 +78,12 @@ export const AssetCard = ({
 
         <Flex direction="column">
           <Text fontWeight="700" variant="body2">
-            {formatUTokenWithPrecision(
-              amount as U<Token>,
-              assetInfo?.precision ?? 0,
-              false
-            )}
+            {formatUTokenWithPrecision({
+              amount: amount as U<Token>,
+              isEvm: evm.enabled,
+              isSuffix: false,
+              precision: assetInfo?.precision ?? 0,
+            })}
           </Text>
           {assetInfo && (
             <Text color="text.dark" variant="body3">

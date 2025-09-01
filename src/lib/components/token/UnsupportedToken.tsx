@@ -3,7 +3,7 @@ import type { AddressReturnType } from "lib/app-provider";
 import type { TokenWithValue } from "lib/types";
 
 import { Flex, Tag, Text } from "@chakra-ui/react";
-import { useGetAddressType, useMobile } from "lib/app-provider";
+import { useEvmConfig, useGetAddressType, useMobile } from "lib/app-provider";
 import {
   formatUTokenWithPrecision,
   getTokenLabel,
@@ -28,6 +28,7 @@ export const UnsupportedToken = ({
   ...props
 }: UnsupportedTokenProps) => {
   const isMobile = useMobile();
+  const evm = useEvmConfig({ shouldRedirect: false });
   const getAddressType = useGetAddressType();
   const tokenType = !token.denom.includes("/")
     ? getTokenTypeWithAddress(getAddressType(token.denom))
@@ -99,7 +100,11 @@ export const UnsupportedToken = ({
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Text fontWeight="900" variant="body2">
-          {formatUTokenWithPrecision(token.amount, token.precision ?? 0, false)}
+          {formatUTokenWithPrecision({
+            amount: token.amount,
+            isEvm: evm.enabled,
+            precision: token.precision ?? 0,
+          })}
         </Text>
         {!isMobile && (
           <Text
