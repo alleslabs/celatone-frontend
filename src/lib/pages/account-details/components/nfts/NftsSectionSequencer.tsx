@@ -1,4 +1,4 @@
-import type { BechAddr, HexAddr, HexAddr32, Option } from "lib/types";
+import type { BechAddr, HexAddr32, Option } from "lib/types";
 
 import { Badge, Box, Flex, Heading, Stack } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
@@ -19,13 +19,11 @@ import { CollectionFilter, CollectionFilterDefault } from "./CollectionFilter";
 
 interface NftsSectionSequencerProps {
   accountAddress: BechAddr;
-  accountHexAddress: HexAddr;
   totalData: Option<number>;
 }
 
 export const NftsSectionSequencer = ({
   accountAddress,
-  accountHexAddress,
   totalData = 0,
 }: NftsSectionSequencerProps) => {
   const isMobile = useMobile();
@@ -45,7 +43,7 @@ export const NftsSectionSequencer = ({
     debouncedSearchByTokenId
   );
   const { data: collections } =
-    useNftCollectionsByAccountAddress(accountHexAddress);
+    useNftCollectionsByAccountAddress(accountAddress);
 
   const collectionAddresses =
     collections?.items.map((collection) => collection.collectionAddress) ?? [];
@@ -56,7 +54,7 @@ export const NftsSectionSequencer = ({
 
   if (isLoading) return <Loading />;
   if (!collections) return <ErrorFetching dataName="collections" />;
-  if (!Object.keys(collections).length)
+  if (!collections.items.length)
     return (
       <EmptyState
         imageVariant="empty"

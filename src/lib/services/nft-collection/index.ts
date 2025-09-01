@@ -1,5 +1,5 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
-import type { BechAddr32, HexAddr, HexAddr32, Nullable } from "lib/types";
+import type { Addr, BechAddr32, HexAddr32, Nullable } from "lib/types";
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
@@ -327,7 +327,7 @@ export const useNftCollectionMutateEvents = (
   );
 };
 
-export const useNftCollectionsByAccountAddress = (accountAddress: HexAddr) => {
+export const useNftCollectionsByAccountAddress = (accountAddress: Addr) => {
   const apiEndpoint = useBaseApiRoute("nft_collections");
   const {
     chainConfig: { indexer: indexerEndpoint },

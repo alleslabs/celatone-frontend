@@ -493,7 +493,6 @@ const AccountDetailsBody = ({
               sequencer={
                 <NftsSectionSequencer
                   accountAddress={accountAddress}
-                  accountHexAddress={hexAddress}
                   totalData={totalNfts}
                 />
               }
