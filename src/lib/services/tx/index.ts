@@ -617,7 +617,7 @@ export const useTxsByAddressPaginationSequencer = (
   enabled = true
 ) => {
   const {
-    chainConfig: { rest: indexerEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
   return useQuery(
