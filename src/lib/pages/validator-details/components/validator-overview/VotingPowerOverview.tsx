@@ -9,7 +9,7 @@ import type {
 } from "lib/types";
 
 import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
-import { useMobile, useTierConfig } from "lib/app-provider";
+import { useEvmConfig, useMobile, useTierConfig } from "lib/app-provider";
 import { TokenImageRender } from "lib/components/token";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
@@ -37,13 +37,15 @@ const VotingPowerDetail = ({
   label: string;
   ratio: Ratio<number>;
 }) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
   const formattedPercent = formatPrettyPercent(ratio, 2, true);
-  const formattedAmount = formatUTokenWithPrecision(
+  const formattedAmount = formatUTokenWithPrecision({
     amount,
-    assetInfo?.precision ?? 0,
-    true,
-    2
-  );
+    decimalPoints: 2,
+    isEvm: evm.enabled,
+    isSuffix: true,
+    precision: assetInfo?.precision ?? 0,
+  });
   const formattedValue = assetInfo
     ? formatPrice(
         calculateAssetValue(
@@ -99,6 +101,7 @@ export const VotingPowerOverview = ({
 }: VotingPowerOverviewProps) => {
   const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
+  const evm = useEvmConfig({ shouldRedirect: false });
   const assetInfo = getStakingAssetInfo(singleStakingDenom, assetInfos);
 
   const votingPowerPercent = formatPrettyPercent(
@@ -110,12 +113,13 @@ export const VotingPowerOverview = ({
     2,
     true
   );
-  const votingPowerAmount = formatUTokenWithPrecision(
-    votingPower as U<Token<Big>>,
-    assetInfo?.precision ?? 0,
-    false,
-    2
-  );
+  const votingPowerAmount = formatUTokenWithPrecision({
+    amount: votingPower as U<Token<Big>>,
+    decimalPoints: 2,
+    isEvm: evm.enabled,
+    isSuffix: false,
+    precision: assetInfo?.precision ?? 0,
+  });
   const votingPowerValueFormatted = assetInfo
     ? formatPrice(
         calculateAssetValue(

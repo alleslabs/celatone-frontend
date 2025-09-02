@@ -3,6 +3,7 @@ import type { TxData } from "lib/services/types";
 import type { Option, Ratio } from "lib/types";
 
 import { chakra, Flex, Text } from "@chakra-ui/react";
+import { useEvmConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { UserDocsLink } from "lib/components/UserDocsLink";
@@ -34,6 +35,7 @@ export const TxInfo = ({
   txData,
   ...flexProps
 }: TxInfoProps) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
   const { data: assetInfos } = useAssetInfos({
     withPrices: true,
   });
@@ -63,7 +65,7 @@ export const TxInfo = ({
       </LabelText>
       <LabelText label="Transaction fee">
         {feeToken ? (
-          formatTokenWithValue(feeToken)
+          formatTokenWithValue({ isEvm: evm.enabled, token: feeToken })
         ) : (
           <Text color="text.dark" variant="body2">
             No fee

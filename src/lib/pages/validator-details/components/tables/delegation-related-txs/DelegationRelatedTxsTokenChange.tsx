@@ -11,6 +11,7 @@ import type {
 } from "lib/types";
 
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { useEvmConfig } from "lib/app-provider/hooks/useConfig";
 import { TokenImageRender } from "lib/components/token";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
 import {
@@ -33,6 +34,7 @@ export const DelegationRelatedTxsTokenChange = ({
   movePoolInfos,
   txHash,
 }: DelegationRelatedTxsTokenChangeProps) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
   const token = coinToTokenWithValue(
     coin.denom,
     coin.amount,
@@ -40,7 +42,7 @@ export const DelegationRelatedTxsTokenChange = ({
     movePoolInfos
   );
   const isPositiveAmount = token.amount.gte(0);
-  const formattedAmount = `${isPositiveAmount ? "+" : "-"}${formatUTokenWithPrecision(token.amount.abs() as U<Token<Big>>, token.precision ?? 0, false, 2)}`;
+  const formattedAmount = `${isPositiveAmount ? "+" : "-"}${formatUTokenWithPrecision({ amount: token.amount.abs() as U<Token<Big>>, decimalPoints: 2, isEvm: evm.enabled, isSuffix: false, precision: token.precision ?? 0 })}`;
 
   return (
     <Flex
