@@ -10,8 +10,7 @@ import { useEffect, useState } from "react";
 
 export const useCosmosEvmTxs = (address: BechAddr20) => {
   const [evmTxs, setEvmTxs] = useState<TxDataWithTimeStampJsonRpc[]>([]);
-  const [paginationKey, setPaginationKey] =
-    useState<Nullish<string>>(undefined);
+  const [paginationKey, setPaginationKey] = useState<Nullish<string>>();
   const [cosmosTxsCount, setCosmosTxsCount] = useState(0);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
 

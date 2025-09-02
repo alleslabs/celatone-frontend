@@ -241,6 +241,41 @@ describe("formatUTokenWithPrecision", () => {
       })
     ).toEqual("<0.01");
   });
+  test("isEvm true", () => {
+    // Basic test with isEvm true, no suffix
+    expect(
+      formatUTokenWithPrecision({
+        amount: "1000000" as U<Token>,
+        isEvm: true,
+        isSuffix: false,
+        precision: 6,
+      })
+    ).toEqual("1");
+
+    // With hasTrailingZeros true, but isEvm disables trailing zeros
+    expect(
+      formatUTokenWithPrecision({
+        amount: "1000000" as U<Token>,
+        decimalPoints: 6,
+        hasTrailingZeros: true,
+        isEvm: true,
+        isSuffix: false,
+        precision: 6,
+      })
+    ).toEqual("1");
+
+    // With hasTrailingZeros false, isEvm true
+    expect(
+      formatUTokenWithPrecision({
+        amount: "1234560" as U<Token>,
+        decimalPoints: 6,
+        hasTrailingZeros: false,
+        isEvm: true,
+        isSuffix: false,
+        precision: 6,
+      })
+    ).toEqual("1.23456");
+  });
   test("no suffix", () => {
     expect(
       formatUTokenWithPrecision({

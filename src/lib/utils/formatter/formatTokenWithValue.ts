@@ -3,19 +3,6 @@ import type { TokenWithValue } from "lib/types";
 import { formatUTokenWithPrecision } from "./token";
 import { getTokenLabel } from "./tokenType";
 
-// export const formatTokenWithValue = (
-//   token: TokenWithValue,
-//   decimalPoints?: number,
-//   hasTrailingZeros?: boolean
-// ) =>
-//   `${formatUTokenWithPrecision(
-//     token.amount,
-//     token.precision ?? 0,
-//     false,
-//     decimalPoints,
-//     hasTrailingZeros
-//   )} ${getTokenLabel(token.denom, token.symbol)}`;
-
 export const formatTokenWithValue = ({
   decimalPoints,
   hasTrailingZeros,
