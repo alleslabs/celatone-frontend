@@ -24,8 +24,8 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
-  useMetadata,
   useNftByTokenId,
+  useNftMetadata,
   useNftMutateEvents,
   useNftTransactions,
 } from "lib/services/nft";
@@ -91,7 +91,7 @@ const NftDetailsBody = ({
     enabled: isFullTier && !!nftAddress,
   });
 
-  const { data: metadata } = useMetadata(nft);
+  const { data: metadata } = useNftMetadata(nft);
 
   if (isCollectionLoading || isNftLoading) return <Loading />;
   if (!collection || !nft) return <InvalidNft />;

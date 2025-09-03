@@ -3,7 +3,7 @@ import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 import { Flex, Stack, Text } from "@chakra-ui/react";
 import { useGetAddressType } from "lib/app-provider";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useMetadata } from "lib/services/nft";
+import { useNftMetadata } from "lib/services/nft";
 import { zAddr, zHexAddr32 } from "lib/types";
 import { useState } from "react";
 
@@ -42,7 +42,7 @@ export const DecodeMessageNftMint = ({
   const getAddressType = useGetAddressType();
   const formatAddresses = useFormatAddresses();
   const nftMetadata = metadata?.[tokenAddress];
-  const { data: nft } = useMetadata({
+  const { data: nft } = useNftMetadata({
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
     nftAddress: zHexAddr32.parse(formatAddresses(tokenAddress).hex),
     tokenId: nftMetadata?.tokenId,

@@ -7,7 +7,7 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useNftCollectionsByAccountAddress } from "lib/services/nft-collection";
 import { useState } from "react";
 
-import { FilterItem } from "./FilterItem";
+import { CollectionFilter, CollectionFilterDefault } from "./CollectionFilter";
 import { NftsByCollectionFull } from "./NftsByCollectionFull";
 
 interface SelectedCollection {
@@ -56,16 +56,16 @@ export const NftsSectionFull = ({
           spacing="8px"
           w={{ base: "100%", lg: "25%", md: "35%" }}
         >
-          <FilterItem
+          <CollectionFilterDefault
             collectionName="All collections"
             count={totalData}
             isActive={selectedCollection === undefined}
-            isDefault
             onClick={() => handleOnClick(undefined)}
           />
           {collections.items.map((item) => (
-            <FilterItem
+            <CollectionFilter
               key={item.collectionAddress}
+              collectionAddress={item.collectionAddress}
               collectionName={item.collectionName}
               count={item.hold}
               isActive={

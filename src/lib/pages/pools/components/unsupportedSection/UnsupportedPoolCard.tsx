@@ -11,7 +11,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { trackUseExpand, trackWebsite } from "lib/amplitude";
-import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
+import {
+  useEvmConfig,
+  useInternalNavigate,
+  usePoolConfig,
+} from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import { TokenImageRender } from "lib/components/token";
@@ -41,6 +45,7 @@ const StyledIconButton = chakra(IconButton, {
 const hoverBgColor = "gray.700";
 
 export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
   const poolConfig = usePoolConfig({ shouldRedirect: true });
   // Remark: the empty string has never been used when poolConfig is disabled
   const poolUrl = poolConfig.enabled ? poolConfig.url : "";
@@ -136,10 +141,11 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                         logo={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
                       />
                       <Text color="text.main" fontWeight="bold" variant="body2">
-                        {formatUTokenWithPrecision(
-                          asset.amount,
-                          asset.precision ?? 0
-                        )}
+                        {formatUTokenWithPrecision({
+                          amount: asset.amount,
+                          isEvm: evm.enabled,
+                          precision: asset.precision ?? 0,
+                        })}
                       </Text>
                       <Flex>
                         {getTokenLabel(asset.denom, asset.symbol, false)}
