@@ -22,14 +22,12 @@ export const useStakingParamsRest = (enabled: boolean) => {
   } = useCelatoneApp();
   const gov = useGovConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.STAKING_PARAMS_REST, restEndpoint],
-    () => getStakingParamsRest(restEndpoint),
-    {
-      enabled: enabled && gov.enabled,
-      refetchOnWindowFocus: false,
-    }
-  );
+  return useQuery({
+    queryKey: [CELATONE_QUERY_KEYS.STAKING_PARAMS_REST, restEndpoint],
+    queryFn: () => getStakingParamsRest(restEndpoint),
+    enabled: enabled && gov.enabled,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export const useDelegationsByAddressRest = (
@@ -41,14 +39,16 @@ export const useDelegationsByAddressRest = (
   } = useCelatoneApp();
   const gov = useGovConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.DELEGATIONS_BY_ADDRESS_REST, restEndpoint, address],
-    () => getDelegationsByAddressRest(restEndpoint, address),
-    {
-      enabled: enabled && gov.enabled,
-      refetchOnWindowFocus: false,
-    }
-  );
+  return useQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.DELEGATIONS_BY_ADDRESS_REST,
+      restEndpoint,
+      address,
+    ],
+    queryFn: () => getDelegationsByAddressRest(restEndpoint, address),
+    enabled: enabled && gov.enabled,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export const useUnbondingsByAddressRest = (
@@ -60,14 +60,16 @@ export const useUnbondingsByAddressRest = (
   } = useCelatoneApp();
   const gov = useGovConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.UNBONDINGS_BY_ADDRESS_REST, restEndpoint, address],
-    () => getUnbondingsByAddressRest(restEndpoint, address),
-    {
-      enabled: enabled && gov.enabled,
-      refetchOnWindowFocus: false,
-    }
-  );
+  return useQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.UNBONDINGS_BY_ADDRESS_REST,
+      restEndpoint,
+      address,
+    ],
+    queryFn: () => getUnbondingsByAddressRest(restEndpoint, address),
+    enabled: enabled && gov.enabled,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export const useRedelegationsByAddressRest = (
@@ -79,26 +81,26 @@ export const useRedelegationsByAddressRest = (
   } = useCelatoneApp();
   const gov = useGovConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.REDELEGATIONS_BY_ADDRESS_REST, restEndpoint, address],
-    () => getRedelegationsByAddressRest(restEndpoint, address),
-    {
-      enabled: enabled && gov.enabled,
-      refetchOnWindowFocus: false,
-    }
-  );
+  return useQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.REDELEGATIONS_BY_ADDRESS_REST,
+      restEndpoint,
+      address,
+    ],
+    queryFn: () => getRedelegationsByAddressRest(restEndpoint, address),
+    enabled: enabled && gov.enabled,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export const useDelegationData = (address: BechAddr, enabled: boolean) => {
   const endpoint = useBaseApiRoute("accounts");
   const gov = useGovConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.DELEGATIONS_BY_ADDRESS, endpoint, address],
-    () => getDelegationData(endpoint, address),
-    {
-      enabled: enabled && gov.enabled,
-      refetchOnWindowFocus: false,
-    }
-  );
+  return useQuery({
+    queryKey: [CELATONE_QUERY_KEYS.DELEGATIONS_BY_ADDRESS, endpoint, address],
+    queryFn: () => getDelegationData(endpoint, address),
+    enabled: enabled && gov.enabled,
+    refetchOnWindowFocus: false,
+  });
 };

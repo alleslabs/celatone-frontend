@@ -1,7 +1,6 @@
-import type { UseQueryOptions } from "@tanstack/react-query";
-import type { ContractsResponse } from "lib/services/types";
 import type { ContractInfo, Option } from "lib/types";
 
+import { useQueryEvents } from "lib/hooks/useQueryEvents";
 import { useContractStore } from "lib/providers/store";
 import { useCodeRest } from "lib/services/wasm/code";
 import {
@@ -30,15 +29,14 @@ export const useCodeContracts = (
   codeId: number,
   limit: number,
   offset: number,
-  options: Pick<UseQueryOptions<ContractsResponse>, "onSuccess"> = {}
+  onSuccess: (data: number) => void
 ) => {
   const { getContractLocalInfo } = useContractStore();
-  const { data, isLoading } = useContractsByCodeId(
-    codeId,
-    limit,
-    offset,
-    options
-  );
+  const contractsByCodeIdQuery = useContractsByCodeId(codeId, limit, offset);
+  useQueryEvents(contractsByCodeIdQuery, {
+    onSuccess: ({ total }) => onSuccess(total),
+  });
+  const { data, isLoading } = contractsByCodeIdQuery;
 
   const contracts: Option<ContractInfo[]> = data?.items?.map<ContractInfo>(
     (contract) => ({

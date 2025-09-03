@@ -1,6 +1,6 @@
 import type { WidgetWallet } from "@initia/utils";
 
-import { MAINNET, TESTNET } from "@initia/react-wallet-widget/ssr";
+import { MAINNET, TESTNET } from "@initia/interwovenkit-react";
 import { SUPPORTED_NETWORK_TYPES } from "env";
 import { useCelatoneApp } from "lib/app-provider";
 import { zHexAddr32 } from "lib/types";
@@ -16,8 +16,8 @@ export const useL1InfoByNetworkType = () => {
   if (networkType === "mainnet") {
     return {
       configs: MAINNET,
-      l1Rest: MAINNET.apiUrl.replace("api", "rest"),
-      l1Usernames: zHexAddr32.parse(MAINNET.modules.usernames),
+      l1Rest: "", // TODO: add rest url
+      l1Usernames: zHexAddr32.parse(MAINNET.usernamesModuleAddress),
     };
   }
 
@@ -27,7 +27,7 @@ export const useL1InfoByNetworkType = () => {
       filterWallet: (wallet: WidgetWallet) =>
         !chainConfig.features.evm.enabled || wallet.type === "evm",
     },
-    l1Rest: TESTNET.apiUrl.replace("api", "rest"),
-    l1Usernames: zHexAddr32.parse(TESTNET.modules.usernames),
+    l1Rest: "", // TODO: add rest url
+    l1Usernames: zHexAddr32.parse(TESTNET.usernamesModuleAddress),
   };
 };

@@ -4,6 +4,7 @@ import { Box } from "@chakra-ui/react";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
+import { useQueryEvents } from "lib/hooks";
 import { useNftTransactions } from "lib/services/nft";
 
 import { TxsTable } from "./TxsTable";
@@ -29,12 +30,11 @@ export const TxsFull = ({ nftAddress }: TxsFullProps) => {
     },
   });
 
-  const { data: transactions, isLoading } = useNftTransactions(
-    nftAddress,
-    pageSize,
-    offset,
-    { onSuccess: ({ total }) => setTotalData(total) }
-  );
+  const nftTransactionsQuery = useNftTransactions(nftAddress, pageSize, offset);
+  useQueryEvents(nftTransactionsQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data: transactions, isLoading } = nftTransactionsQuery;
 
   return (
     <Box>

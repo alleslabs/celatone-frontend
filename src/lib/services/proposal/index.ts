@@ -1,4 +1,4 @@
-import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
+import type { UseQueryResult } from "@tanstack/react-query";
 import type {
   BechAddr,
   BechAddr20,
@@ -13,7 +13,11 @@ import type {
   ProposalVoteType,
 } from "lib/types";
 
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useQuery,
+} from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -27,7 +31,6 @@ import type {
   ProposalDataResponse,
   ProposalDataResponseRest,
   ProposalsResponse,
-  ProposalsResponseRest,
   ProposalValidatorVotesResponse,
   ProposalVotesResponse,
   RelatedProposalsResponse,
@@ -64,20 +67,22 @@ export const useProposalParams = () => {
     ? [apiEndpoint, getProposalParams]
     : [restEndpoint, getProposalParamsRest];
 
-  return useQuery<ProposalParams<Coin>>(
-    [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],
-    async () => queryFn(endpoint),
-    { refetchOnWindowFocus: false, retry: 1 }
-  );
+  return useQuery<ProposalParams<Coin>>({
+    queryKey: [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],
+    queryFn: async () => queryFn(endpoint),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useProposalTypes = () => {
   const endpoint = useBaseApiRoute("proposals");
-  return useQuery<ProposalType[]>(
-    [CELATONE_QUERY_KEYS.PROPOSAL_TYPES, endpoint],
-    async () => getProposalTypes(endpoint),
-    { refetchOnWindowFocus: false, retry: 1 }
-  );
+  return useQuery<ProposalType[]>({
+    queryKey: [CELATONE_QUERY_KEYS.PROPOSAL_TYPES, endpoint],
+    queryFn: async () => getProposalTypes(endpoint),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useProposals = (
@@ -86,14 +91,13 @@ export const useProposals = (
   proposer: Option<BechAddr20>,
   statuses: ProposalStatus[],
   types: ProposalType[],
-  search: string,
-  options: Pick<UseQueryOptions<ProposalsResponse>, "onSuccess"> = {}
+  search: string
 ) => {
   const endpoint = useBaseApiRoute("proposals");
   const trimmedSearch = search.trim();
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.PROPOSALS,
       endpoint,
       limit,
@@ -103,7 +107,7 @@ export const useProposals = (
       types,
       trimmedSearch,
     ],
-    async () =>
+    queryFn: async () =>
       getProposals(
         endpoint,
         limit,
@@ -113,8 +117,9 @@ export const useProposals = (
         types,
         trimmedSearch
       ),
-    { ...options, refetchOnWindowFocus: false, retry: 1 }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useProposalsRest = (
@@ -132,15 +137,19 @@ export const useProposalsRest = (
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useInfiniteQuery<ProposalsResponseRest>(
-    [CELATONE_QUERY_KEYS.PROPOSALS_REST, restEndpoint, status],
-    ({ pageParam }) =>
+  } = useInfiniteQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.PROPOSALS_REST,
+      restEndpoint,
+      status,
+      isInitia,
+    ],
+    queryFn: ({ pageParam }: { pageParam?: string }) =>
       getProposalsRest(isInitia, restEndpoint, pageParam, status),
-    {
-      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
-      refetchOnWindowFocus: false,
-    }
-  );
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+    refetchOnWindowFocus: false,
+  });
 
   return {
     data: data?.pages.flatMap((page) => page.proposals),
@@ -159,17 +168,19 @@ export const useProposalsByAddress = (
 ): UseQueryResult<ProposalsResponse> => {
   const endpoint = useBaseApiRoute("accounts");
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.PROPOSALS_BY_ADDRESS,
       endpoint,
       address,
       limit,
       offset,
     ],
-    async () => getProposalsByAddress(endpoint, address, limit, offset),
-    { refetchOnWindowFocus: false, retry: 1 }
-  );
+    queryFn: async () =>
+      getProposalsByAddress(endpoint, address, limit, offset),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useRelatedProposalsByContractAddress = (
@@ -179,36 +190,35 @@ export const useRelatedProposalsByContractAddress = (
 ) => {
   const endpoint = useBaseApiRoute("contracts");
 
-  return useQuery<RelatedProposalsResponse>(
-    [
-      CELATONE_QUERY_KEYS.RELATED_PROPOSALS_BY_CONTRACT_ADDRESS,
-      endpoint,
-      contractAddress,
-      limit,
-      offset,
-    ],
-    async () =>
+  return useQuery<RelatedProposalsResponse>({
+    placeholderData: keepPreviousData,
+    queryFn: async () =>
       getRelatedProposalsByContractAddress(
         endpoint,
         contractAddress,
         limit,
         offset
       ),
-    {
-      keepPreviousData: true,
-      retry: 1,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.RELATED_PROPOSALS_BY_CONTRACT_ADDRESS,
+      endpoint,
+      contractAddress,
+      limit,
+      offset,
+    ],
+    retry: 1,
+  });
 };
 
 export const useProposalData = (id: number, enabled = true) => {
   const endpoint = useBaseApiRoute("proposals");
 
-  return useQuery<ProposalDataResponse>(
-    [CELATONE_QUERY_KEYS.PROPOSAL_DATA, endpoint, id],
-    async () => getProposalData(endpoint, id),
-    { enabled, retry: 1 }
-  );
+  return useQuery<ProposalDataResponse>({
+    enabled,
+    queryFn: async () => getProposalData(endpoint, id),
+    queryKey: [CELATONE_QUERY_KEYS.PROPOSAL_DATA, endpoint, id],
+    retry: 1,
+  });
 };
 
 export const useProposalDataRest = (id: number, enabled = true) => {
@@ -217,15 +227,18 @@ export const useProposalDataRest = (id: number, enabled = true) => {
   } = useCelatoneApp();
   const isInitia = useInitia();
 
-  return useQuery<ProposalDataResponseRest>(
-    [CELATONE_QUERY_KEYS.PROPOSAL_DATA_REST, restEndpoint, id],
-    async () => getProposalDataRest(isInitia, restEndpoint, id),
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+  return useQuery<ProposalDataResponseRest>({
+    enabled,
+    queryFn: async () => getProposalDataRest(isInitia, restEndpoint, id),
+    queryKey: [
+      CELATONE_QUERY_KEYS.PROPOSAL_DATA_REST,
+      restEndpoint,
+      id,
+      isInitia,
+    ],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useProposalDepositsRest = (id: number, enabled = true) => {
@@ -233,15 +246,13 @@ export const useProposalDepositsRest = (id: number, enabled = true) => {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  return useQuery<ProposalDeposit<Coin>[]>(
-    [CELATONE_QUERY_KEYS.PROPOSAL_DEPOSITS_REST, restEndpoint, id],
-    async () => getProposalDepositsRest(restEndpoint, id),
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+  return useQuery<ProposalDeposit<Coin>[]>({
+    enabled,
+    queryFn: async () => getProposalDepositsRest(restEndpoint, id),
+    queryKey: [CELATONE_QUERY_KEYS.PROPOSAL_DEPOSITS_REST, restEndpoint, id],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useProposalVotesInfo = (id: number, enabled: boolean) => {
@@ -255,11 +266,13 @@ export const useProposalVotesInfo = (id: number, enabled: boolean) => {
     ? [apiEndpoint, getProposalVotesInfo]
     : [restEndpoint, getProposalVotesInfoRest];
 
-  return useQuery<ProposalVotesInfo>(
-    [CELATONE_QUERY_KEYS.PROPOSAL_VOTES_INFO, endpoint, id],
-    async () => queryFn(endpoint, id),
-    { enabled, refetchOnWindowFocus: false, retry: 1 }
-  );
+  return useQuery<ProposalVotesInfo>({
+    enabled,
+    queryFn: async () => queryFn(endpoint, id),
+    queryKey: [CELATONE_QUERY_KEYS.PROPOSAL_VOTES_INFO, endpoint, id],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useProposalVotes = (
@@ -267,13 +280,12 @@ export const useProposalVotes = (
   limit: number,
   offset: number,
   answer: ProposalVoteType,
-  search: string,
-  options: Pick<UseQueryOptions<ProposalVotesResponse>, "onSuccess"> = {}
+  search: string
 ): UseQueryResult<ProposalVotesResponse> => {
   const endpoint = useBaseApiRoute("proposals");
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.PROPOSAL_VOTES,
       endpoint,
       id,
@@ -282,9 +294,11 @@ export const useProposalVotes = (
       search,
       answer,
     ],
-    async () => getProposalVotes(endpoint, id, limit, offset, answer, search),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
-  );
+    queryFn: async () =>
+      getProposalVotes(endpoint, id, limit, offset, answer, search),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useProposalValidatorVotes = (
@@ -292,16 +306,12 @@ export const useProposalValidatorVotes = (
   limit: number,
   offset: number,
   answer: ProposalVoteType,
-  search: string,
-  options: Pick<
-    UseQueryOptions<ProposalValidatorVotesResponse>,
-    "onSuccess"
-  > = {}
-) => {
+  search: string
+): UseQueryResult<ProposalValidatorVotesResponse> => {
   const endpoint = useBaseApiRoute("proposals");
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.PROPOSAL_VALIDATOR_VOTES,
       endpoint,
       id,
@@ -310,10 +320,11 @@ export const useProposalValidatorVotes = (
       answer,
       search,
     ],
-    async () =>
+    queryFn: async () =>
       getProposalValidatorVotes(endpoint, id, limit, offset, answer, search),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useProposalAnswerCounts = (
@@ -322,9 +333,11 @@ export const useProposalAnswerCounts = (
 ): UseQueryResult<ProposalAnswerCountsResponse> => {
   const endpoint = useBaseApiRoute("proposals");
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.PROPOSAL_ANSWER_COUNTS, endpoint, id],
-    async () => getProposalAnswerCounts(endpoint, id),
-    { enabled, refetchOnWindowFocus: false, retry: 1 }
-  );
+  return useQuery({
+    queryKey: [CELATONE_QUERY_KEYS.PROPOSAL_ANSWER_COUNTS, endpoint, id],
+    queryFn: async () => getProposalAnswerCounts(endpoint, id),
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };

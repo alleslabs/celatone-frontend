@@ -146,6 +146,28 @@ export default defineConfig([
           partitionByNewLine: true,
         },
       ],
+      "perfectionist/sort-objects": [
+        "error",
+        {
+          type: "unsorted",
+          useConfigurationIf: {
+            allNamesMatchPattern: [
+              "^enabled$",
+              "^queryKey$",
+              "^queryFn$",
+              "^initialPageParam$",
+              "^getNextPageParam$",
+              "^refetchOnWindowFocus$",
+              "^retry$",
+            ],
+          },
+        },
+        {
+          order: "asc",
+          partitionByNewLine: true,
+          type: "alphabetical",
+        },
+      ],
       "perfectionist/sort-union-types": [
         "error",
         {

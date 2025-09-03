@@ -19,7 +19,7 @@ import { CopyButton } from "lib/components/copy";
 import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
 import { EvmAbiForm } from "lib/components/evm-abi";
 import { CustomIcon } from "lib/components/icon";
-import { useTxBroadcast } from "lib/hooks";
+import { useQueryEvents, useTxBroadcast } from "lib/hooks";
 import { useSimulateFeeEvmQuery } from "lib/services/tx";
 import { encodeEvmFunctionData } from "lib/utils";
 import { isUndefined } from "lodash";
@@ -75,9 +75,13 @@ export const WriteBox = ({
   // ------------------------------------------//
   // -----------------REACT QUERY--------------//
   // ------------------------------------------//
-  const { isFetching } = useSimulateFeeEvmQuery({
+  const simulateFeeEvmQuery = useSimulateFeeEvmQuery({
     data: data ?? "",
     enabled: enabledExecute,
+    to: contractAddress,
+    value,
+  });
+  useQueryEvents(simulateFeeEvmQuery, {
     onError: (e) => {
       setSimulateFeeError(e.message);
       setFee(undefined);
@@ -87,9 +91,8 @@ export const WriteBox = ({
       if (gasRes) setFee(gasRes);
       else setFee(undefined);
     },
-    to: contractAddress,
-    value,
   });
+  const { isFetching } = simulateFeeEvmQuery;
 
   // ------------------------------------------//
   // ------------------CALLBACKS---------------//

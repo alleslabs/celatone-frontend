@@ -22,6 +22,7 @@ import { AccessType } from "lib/types";
 import { useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { useQueryEvents } from "./useQueryEvents";
 import { useTxBroadcast } from "./useTxBroadcast";
 
 export const useUploadCode = (
@@ -89,12 +90,16 @@ export const useUploadCode = (
     JSON.stringify(addresses),
   ]);
 
-  const { isFetching: isSimulating } = useSimulateFeeForStoreCode({
+  const simulateFeeForStoreCodeQuery = useSimulateFeeForStoreCode({
     // Remarks: disableAnyOfAddresses is only used for Cosmos SDK 0.26
     addresses: disableAnyOfAddresses
       ? undefined
       : addresses.map((addr) => addr.address),
     enabled: Boolean(wasmFile && address && !shouldNotSimulate),
+    permission: isInitia ? undefined : permission,
+    wasmFile,
+  });
+  useQueryEvents(simulateFeeForStoreCodeQuery, {
     onError: (e) => {
       if (shouldNotSimulate) {
         setDefaultBehavior();
@@ -117,9 +122,8 @@ export const useUploadCode = (
         }
       }
     },
-    permission: isInitia ? undefined : permission,
-    wasmFile,
   });
+  const { isFetching: isSimulating } = simulateFeeForStoreCodeQuery;
 
   const proceed = useCallback(async () => {
     if (address) {

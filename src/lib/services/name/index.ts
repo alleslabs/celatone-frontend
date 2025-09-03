@@ -32,15 +32,17 @@ export const useIcnsNamesByAddressRest = (
     return icnsNames;
   };
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.ICNS_NAMES_BY_ADDRESS_REST, restEndpoint, address],
+  return useQuery({
+    enabled,
     queryFn,
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.ICNS_NAMES_BY_ADDRESS_REST,
+      restEndpoint,
+      address,
+    ],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useAddressByIcnsNameRest = (name: string, enabled = true) => {

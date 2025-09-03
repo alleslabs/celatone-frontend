@@ -127,7 +127,6 @@ const AccountDetailsBody = ({
   const { data: accountNfts } = useNftsByAccountByCollectionSequencer(
     accountAddress,
     undefined,
-    undefined,
     isSequencerTier
   );
 

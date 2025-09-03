@@ -26,8 +26,6 @@ interface SimulateQueryEvmParams {
 export const useSimulateFeeEvmQuery = ({
   data,
   enabled,
-  onError,
-  onSuccess,
   retry = 2,
   to,
   value,
@@ -41,16 +39,14 @@ export const useSimulateFeeEvmQuery = ({
 
   return useQuery({
     enabled: enabled && !!address,
-    onError,
-    onSuccess,
     queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useSimulateFeeEvmQuery)");
       if (!address)
         throw new Error("No address provided (useSimulateFeeEvmQuery)");
       if (
-        walletProvider.type !== "initia-widget" ||
-        walletProvider.context.wallet?.type !== "evm"
+        walletProvider.type !== "initia-widget"
+        // || walletProvider.context.wallet?.type !== "evm"
       )
         throw new Error("Please reconnect to EVM wallet");
 
@@ -61,7 +57,7 @@ export const useSimulateFeeEvmQuery = ({
         value: value ? toBeHex(value) : null,
       });
     },
-    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_EVM,
       walletProvider.type,

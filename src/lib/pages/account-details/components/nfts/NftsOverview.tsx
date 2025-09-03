@@ -41,7 +41,6 @@ export const NftsOverview = ({
   const accountNftsSequencer = useNftsByAccountByCollectionSequencer(
     accountAddress,
     undefined,
-    undefined,
     isSequencerTier
   );
 

@@ -1,56 +1,31 @@
-import type { WalletWidget, WidgetConfig } from "@initia/utils";
-import type { PropsWithChildren, ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 
-import { context, loadScript } from "@initia/react-wallet-widget/ssr";
-import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
-import { LoadingOverlay } from "lib/components/LoadingOverlay";
+import {
+  injectStyles,
+  InterwovenKitProvider,
+} from "@initia/interwovenkit-react";
+import initiaWidgetStyles from "@initia/interwovenkit-react/styles.js";
+import { useCelatoneApp } from "lib/app-provider";
 import { useL1InfoByNetworkType } from "lib/hooks";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { createConfig, http, WagmiProvider } from "wagmi";
+import { mainnet } from "wagmi/chains";
 
-import pkg from "../../../package.json";
+const wagmiConfig = createConfig({
+  chains: [mainnet],
+  transports: { [mainnet.id]: http() },
+});
 
-declare global {
-  interface Window {
-    createWalletWidget?: (config: WidgetConfig) => Promise<WalletWidget>;
-  }
-}
-
-const WalletWidgetProvider = ({
-  children,
-  fallback = null,
-  ...config
-}: PropsWithChildren<WidgetConfig> & {
-  fallback?: ReactNode;
-}) => {
-  const [widget, setWidget] = useState<WalletWidget | null>(null);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    async function setup() {
-      await loadScript(
-        `https://cdn.jsdelivr.net/npm/@initia/wallet-widget@${pkg.dependencies["@initia/react-wallet-widget"]}/dist/index.js`
-      );
-      const widget = await window.createWalletWidget!(config);
-      setWidget(widget);
-    }
-
-    setup();
-  }, [config]);
-
-  if (!widget) return fallback;
-
-  return <context.Provider value={widget}>{children}</context.Provider>;
-};
-
-export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
+const WithInitiaWidget = ({ children }: PropsWithChildren) => {
   const { chainConfig, currentChainId } = useCelatoneApp();
-  const enabledWasm = useWasmConfig({ shouldRedirect: false });
   const { configs } = useL1InfoByNetworkType();
+  useEffect(() => {
+    injectStyles(initiaWidgetStyles);
+  }, []);
+
   return (
-    <WalletWidgetProvider
-      key={currentChainId}
-      customLayer={
+    <InterwovenKitProvider
+      customChain={
         chainConfig.network_type === "local"
           ? {
               apis: {
@@ -72,11 +47,21 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
             }
           : undefined
       }
-      fallback={<LoadingOverlay />}
-      useKeplrAsDirectSigner={enabledWasm.enabled}
       {...configs}
     >
       {children}
-    </WalletWidgetProvider>
+    </InterwovenKitProvider>
+  );
+};
+
+export const InitiaWidgetProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  return (
+    <WagmiProvider config={wagmiConfig}>
+      <WithInitiaWidget>{children}</WithInitiaWidget>
+    </WagmiProvider>
   );
 };

@@ -6,6 +6,8 @@ import { MsgType } from "lib/types";
 import { composeMsg } from "lib/utils";
 import { useEffect, useState } from "react";
 
+import { useQueryEvents } from ".";
+
 export const useExecuteCmds = (contractAddress: BechAddr32) => {
   const [execCmds, setExecCmds] = useState<[string, string][]>([]);
   const { dummyAddress } = useDummyWallet();
@@ -14,7 +16,7 @@ export const useExecuteCmds = (contractAddress: BechAddr32) => {
     if (!contractAddress) setExecCmds([]);
   }, [contractAddress]);
 
-  const { isFetching } = useSimulateFeeQuery({
+  const simulateFeeQuery = useSimulateFeeQuery({
     enabled: !!contractAddress && !!dummyAddress,
     isDummyUser: true,
     messages: dummyAddress
@@ -27,6 +29,9 @@ export const useExecuteCmds = (contractAddress: BechAddr32) => {
           }),
         ]
       : [],
+    retry: false,
+  });
+  useQueryEvents(simulateFeeQuery, {
     onError: (e) => {
       const executeCmds: string[] = [];
 
@@ -50,7 +55,8 @@ export const useExecuteCmds = (contractAddress: BechAddr32) => {
         setExecCmds(executeCmds.map((cmd) => [cmd, `{"${cmd}": {}}`]));
       }
     },
-    retry: false,
   });
+  const { isFetching } = simulateFeeQuery;
+
   return { execCmds, isFetching };
 };

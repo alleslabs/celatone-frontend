@@ -10,7 +10,7 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTableWithWallet } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useDebounce } from "lib/hooks";
+import { useDebounce, useQueryEvents } from "lib/hooks";
 import { useTxsByAddressRest } from "lib/services/tx";
 import { useEffect, useState } from "react";
 
@@ -65,16 +65,19 @@ export const PastTxsLite = () => {
     },
   });
 
-  const { data, error, isLoading } = useTxsByAddressRest(
+  const txsByAddressRestQuery = useTxsByAddressRest(
     address,
     debouncedSearch,
     pageSize,
     offset,
     {
       enabled: !!address,
-      onSuccess: ({ total }) => setTotalData(total),
     }
   );
+  useQueryEvents(txsByAddressRestQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data, error, isLoading } = txsByAddressRestQuery;
 
   const handleOnSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);

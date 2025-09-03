@@ -28,7 +28,7 @@ export const NftsSectionSequencer = ({
 }: NftsSectionSequencerProps) => {
   const isMobile = useMobile();
   const { data: accountNfts, isLoading } =
-    useNftsByAccountByCollectionSequencer(accountAddress, undefined, undefined);
+    useNftsByAccountByCollectionSequencer(accountAddress, undefined);
 
   const collections = groupBy(accountNfts?.items, "collectionAddress");
 

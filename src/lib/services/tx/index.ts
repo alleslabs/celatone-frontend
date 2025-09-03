@@ -11,7 +11,11 @@ import type {
   TxFilters,
 } from "lib/types";
 
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useQuery,
+} from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -76,13 +80,11 @@ import {
 export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
   const { txDecoder } = useTxDecoderContext();
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.TX_DECODER, rawTxResponse?.txhash],
-    async () => txDecoder.decodeTransaction(rawTxResponse),
-    {
-      enabled: !!rawTxResponse,
-    }
-  );
+  return useQuery({
+    queryKey: [CELATONE_QUERY_KEYS.TX_DECODER, rawTxResponse],
+    queryFn: async () => txDecoder.decodeTransaction(rawTxResponse),
+    enabled: !!rawTxResponse,
+  });
 };
 
 export const useTxData = (
@@ -129,29 +131,23 @@ export const useTxData = (
     [bech32Prefix, currentChainId, endpoint, isFullTier, txDecoder]
   );
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.TX_DATA, endpoint, txHash],
-    async () => queryFn(txHash),
-    {
-      enabled: enabled && Boolean(txHash && isTxHash(txHash)),
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
-    }
-  );
+  return useQuery({
+    enabled: enabled && Boolean(txHash && isTxHash(txHash)),
+    queryFn: async () => queryFn(txHash),
+    queryKey: [CELATONE_QUERY_KEYS.TX_DATA, endpoint, txHash],
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+  });
 };
 
-export const useTxs = (
-  limit: number,
-  offset: number,
-  options: Pick<UseQueryOptions<TxsResponseWithTxResponse>, "onSuccess"> = {}
-) => {
+export const useTxs = (limit: number, offset: number) => {
   const endpoint = useBaseApiRoute("txs");
   const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
   const { enabled: moveEnable } = useMoveConfig({ shouldRedirect: false });
   const isInitia = useInitia();
 
-  return useQuery<TxsResponseWithTxResponse>(
-    [
+  return useQuery<TxsResponseWithTxResponse>({
+    queryKey: [
       CELATONE_QUERY_KEYS.TXS,
       endpoint,
       limit,
@@ -160,10 +156,11 @@ export const useTxs = (
       moveEnable,
       isInitia,
     ],
-    async () =>
+    queryFn: async () =>
       getTxs(endpoint, limit, offset, wasmEnable, moveEnable, isInitia),
-    { ...options, refetchOnWindowFocus: false, retry: 1 }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useTxsByPoolId = (
@@ -175,8 +172,8 @@ export const useTxsByPoolId = (
   const endpoint = useBaseApiRoute("pools");
   const { enabled: poolEnable } = usePoolConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.POOL_TRANSACTION_BY_ID,
       endpoint,
       poolId,
@@ -185,16 +182,14 @@ export const useTxsByPoolId = (
       offset,
       poolEnable,
     ],
-    async () => {
+    queryFn: async () => {
       if (!poolEnable) throw new Error("Pool is not enabled (useTxsByPoolId)");
 
       return getTxsByPoolId(endpoint, poolId, type, limit, offset);
     },
-    {
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useTxsByPoolIdTableCounts = (
@@ -204,25 +199,23 @@ export const useTxsByPoolIdTableCounts = (
   const endpoint = useBaseApiRoute("pools");
   const { enabled: poolEnable } = usePoolConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.POOL_TRANSACTION_BY_ID_COUNT,
       endpoint,
       poolId,
       type,
       poolEnable,
     ],
-    async () => {
+    queryFn: async () => {
       if (!poolEnable)
         throw new Error("Pool is not enabled (useTxsByPoolIdTableCounts)");
 
       return getTxsByPoolIdTableCounts(endpoint, poolId, type);
     },
-    {
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useTxsByAddress = (
@@ -231,16 +224,15 @@ export const useTxsByAddress = (
   isSigner: Option<boolean>,
   txFilters: TxFilters,
   limit: number,
-  offset: number,
-  options: UseQueryOptions<AccountTxsResponse> = {}
+  offset: number
 ) => {
   const endpoint = useBaseApiRoute("accounts");
   const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
   const { enabled: isMove } = useMoveConfig({ shouldRedirect: false });
   const isInitia = useInitia();
 
-  return useQuery<AccountTxsResponse>(
-    [
+  return useQuery<AccountTxsResponse>({
+    queryKey: [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS,
       endpoint,
       address,
@@ -251,8 +243,9 @@ export const useTxsByAddress = (
       offset,
       isWasm,
       isMove,
+      isInitia,
     ],
-    async () => {
+    queryFn: async () => {
       if (!address) throw new Error("address is undefined (useTxsByAddress)");
       return getTxsByAddress(
         endpoint,
@@ -267,33 +260,25 @@ export const useTxsByAddress = (
         isInitia
       );
     },
-    { refetchOnWindowFocus: false, retry: 1, ...options }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useTxsByBlockHeight = (
   height: number,
   limit: number,
-  offset: number,
-  options: Pick<UseQueryOptions<BlockTxsResponse>, "onSuccess"> = {}
+  offset: number
 ) => {
   const endpoint = useBaseApiRoute("blocks");
   const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
   const { enabled: moveEnable } = useMoveConfig({ shouldRedirect: false });
   const isInitia = useInitia();
 
-  return useQuery<BlockTxsResponse>(
-    [
-      CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT,
-      endpoint,
-      limit,
-      offset,
-      height,
-      wasmEnable,
-      moveEnable,
-      isInitia,
-    ],
-    async () =>
+  return useQuery<BlockTxsResponse>({
+    enabled: !!height,
+    placeholderData: keepPreviousData,
+    queryFn: async () =>
       getTxsByBlockHeight(
         endpoint,
         height,
@@ -303,12 +288,17 @@ export const useTxsByBlockHeight = (
         moveEnable,
         isInitia
       ),
-    {
-      ...options,
-      enabled: !!height,
-      keepPreviousData: true,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT,
+      endpoint,
+      limit,
+      offset,
+      height,
+      wasmEnable,
+      moveEnable,
+      isInitia,
+    ],
+  });
 };
 
 export const useTxsCountByAddress = (
@@ -320,16 +310,17 @@ export const useTxsCountByAddress = (
   const endpoint = useBaseApiRoute("accounts");
   const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.TXS_COUNT_BY_ADDRESS,
       endpoint,
       address,
       search,
       isSigner,
       JSON.stringify(txFilters),
+      wasmEnable,
     ],
-    async () => {
+    queryFn: async () => {
       if (!address)
         throw new Error("address is undefined (useTxsCountByAddress)");
       return getTxsCountByAddress(
@@ -341,15 +332,15 @@ export const useTxsCountByAddress = (
         wasmEnable
       );
     },
-    { refetchOnWindowFocus: false, retry: 1 }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useTxsByContractAddressRest = (
   address: BechAddr32,
   limit: number,
-  offset: number,
-  options: UseQueryOptions<TxsResponseWithTxResponse> = {}
+  offset: number
 ) => {
   const {
     chainConfig: { rest: restEndpoint },
@@ -375,17 +366,18 @@ export const useTxsByContractAddressRest = (
     [address, restEndpoint, limit, offset, bech32Prefix]
   );
 
-  return useQuery<TxsResponseWithTxResponse>(
-    [
+  return useQuery<TxsResponseWithTxResponse>({
+    queryKey: [
       CELATONE_QUERY_KEYS.TXS_BY_CONTRACT_ADDRESS_REST,
       restEndpoint,
       address,
       limit,
       offset,
     ],
-    queryfn,
-    { refetchOnWindowFocus: false, retry: 1, ...options }
-  );
+    queryFn: queryfn,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useTxsByAddressRest = (
@@ -393,7 +385,7 @@ export const useTxsByAddressRest = (
   search: Option<string>,
   limit: number,
   offset: number,
-  options: UseQueryOptions<TxsResponseWithTxResponse> = {}
+  options: Partial<UseQueryOptions<TxsResponseWithTxResponse>> = {}
 ) => {
   const {
     chainConfig: { rest: restEndpoint },
@@ -441,8 +433,8 @@ export const useTxsByAddressRest = (
     };
   }, [address, restEndpoint, limit, offset, bech32Prefix, search]);
 
-  return useQuery<TxsResponseWithTxResponse>(
-    [
+  return useQuery<TxsResponseWithTxResponse>({
+    queryKey: [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_REST,
       restEndpoint,
       address,
@@ -450,9 +442,11 @@ export const useTxsByAddressRest = (
       limit,
       offset,
     ],
-    createQueryFnWithTimeout(queryfn, 20000),
-    { ...options, refetchOnWindowFocus: false, retry: 1 }
-  );
+    queryFn: createQueryFnWithTimeout(queryfn, 20000),
+    refetchOnWindowFocus: false,
+    retry: 1,
+    ...options,
+  });
 };
 
 export const useTxsSequencer = (limit = 10) => {
@@ -475,14 +469,13 @@ export const useTxsSequencer = (limit = 10) => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.TXS_SEQUENCER, indexerEndpoint, limit],
-    ({ pageParam }) => queryfn(pageParam),
-    {
-      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
-      refetchOnWindowFocus: false,
-    }
-  );
+  } = useInfiniteQuery({
+    queryKey: [CELATONE_QUERY_KEYS.TXS_SEQUENCER, indexerEndpoint, limit],
+    queryFn: ({ pageParam }: { pageParam?: string }) => queryfn(pageParam),
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+    refetchOnWindowFocus: false,
+  });
 
   return {
     data: data?.pages.flatMap<TransactionWithTxResponse>((page) =>
@@ -513,11 +506,12 @@ export const useTxsCountSequencer = () => {
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.TXS_COUNT_SEQUENCER, indexerEndpoint],
-    async () => getTxsCountSequencer(indexerEndpoint),
-    { refetchOnWindowFocus: false, retry: 1 }
-  );
+  return useQuery({
+    queryKey: [CELATONE_QUERY_KEYS.TXS_COUNT_SEQUENCER, indexerEndpoint],
+    queryFn: async () => getTxsCountSequencer(indexerEndpoint),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 const mapTxsByAddressSequencerItems = (
@@ -606,21 +600,20 @@ export const useTxsByAddressSequencer = (
     isError,
     isFetchingNextPage,
     isLoading,
-  } = useInfiniteQuery(
-    [
+  } = useInfiniteQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_SEQUENCER,
       indexerEndpoint,
       address,
       search,
       limit,
     ],
-    ({ pageParam }) => queryfn(pageParam),
-    {
-      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    queryFn: ({ pageParam }: { pageParam?: string }) => queryfn(pageParam),
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 
   return {
     data: data?.pages.flatMap<TransactionWithTxResponse>(
@@ -651,28 +644,26 @@ export const useTxsByAddressPaginationSequencer = (
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_PAGINATION_SEQUENCER,
-      indexerEndpoint,
-      address,
-      paginationKey,
-      limit,
-    ],
-    () =>
+  return useQuery({
+    enabled,
+    queryFn: () =>
       getTxsByAccountAddressSequencer({
         address,
         endpoint: indexerEndpoint,
         limit,
         paginationKey,
       }),
-    {
-      enabled,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_PAGINATION_SEQUENCER,
+      indexerEndpoint,
+      address,
+      paginationKey,
+      limit,
+    ],
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };
 
 export const useTxsByBlockHeightSequencer = (height: number) => {
@@ -681,14 +672,14 @@ export const useTxsByBlockHeightSequencer = (height: number) => {
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_SEQUENCER,
       indexerEndpoint,
       height,
       bech32Prefix,
     ],
-    async () => {
+    queryFn: async () => {
       const txs = await getTxsByBlockHeightSequencer(indexerEndpoint, height);
 
       return txs.map<TransactionWithTxResponse>((tx) => ({
@@ -701,20 +692,17 @@ export const useTxsByBlockHeightSequencer = (height: number) => {
         txResponse: tx.txResponse,
       }));
     },
-    { refetchOnWindowFocus: false, retry: 1 }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: Option<string>) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.EVM_TX_HASH_BY_COSMOS_TX_HASH,
-      evm.enabled && evm.jsonRpc,
-      cosmosTxHash ?? "",
-    ],
-    async () => {
+  return useQuery({
+    enabled: evm.enabled && !!evm.jsonRpc && !!cosmosTxHash,
+    queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useEvmTxHashByCosmosTxHash)");
       if (!cosmosTxHash)
@@ -724,13 +712,15 @@ export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: Option<string>) => {
 
       return getEvmTxHashByCosmosTxHash(evm.jsonRpc, cosmosTxHash);
     },
-    {
-      enabled: evm.enabled && !!evm.jsonRpc && !!cosmosTxHash,
-      refetchOnWindowFocus: false,
-      retry: false,
-      staleTime: Infinity,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.EVM_TX_HASH_BY_COSMOS_TX_HASH,
+      evm.enabled && evm.jsonRpc,
+      cosmosTxHash ?? "",
+    ],
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: Infinity,
+  });
 };
 
 export const useEvmTxHashesByCosmosTxHashes = (
@@ -739,13 +729,9 @@ export const useEvmTxHashesByCosmosTxHashes = (
 ) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.EVM_TX_HASHES_BY_COSMOS_TX_HASHES,
-      evm.enabled && evm.jsonRpc,
-      cosmosTxHashes ?? [],
-    ],
-    async () => {
+  return useQuery({
+    enabled: enabled && evm.enabled && !!evm.jsonRpc && !!cosmosTxHashes,
+    queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useEvmTxHashesByCosmosTxHashes)");
       if (!cosmosTxHashes)
@@ -756,48 +742,44 @@ export const useEvmTxHashesByCosmosTxHashes = (
       if (!cosmosTxHashes.length) return [];
       return getEvmTxHashesByCosmosTxHashes(evm.jsonRpc, cosmosTxHashes);
     },
-    {
-      enabled: enabled && evm.enabled && !!evm.jsonRpc && !!cosmosTxHashes,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.EVM_TX_HASHES_BY_COSMOS_TX_HASHES,
+      evm.enabled && evm.jsonRpc,
+      cosmosTxHashes ?? [],
+    ],
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };
 
 export const useEvmTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.TX_DATA_JSON_RPC,
       evm.enabled && evm.jsonRpc,
       evmTxHash,
     ],
-    async () => {
+    queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useEvmTxDataJsonRpc)");
 
       return getTxDataJsonRpc(evm.jsonRpc, evmTxHash);
     },
-    {
-      enabled: enabled && evm.enabled && !!evm.jsonRpc,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    enabled: enabled && evm.enabled && !!evm.jsonRpc,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };
 
 export const useCosmosTxHashByEvmTxHash = (evmTxHash: Option<string>) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.COSMOS_TX_HASH_BY_EVM_TX_HASH,
-      evm.enabled && evm.jsonRpc,
-      evmTxHash,
-    ],
-    async () => {
+  return useQuery({
+    enabled: evm.enabled && !!evm.jsonRpc && !!evmTxHash,
+    queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useCosmosTxHashByEvmTxHash)");
       if (!evmTxHash)
@@ -805,13 +787,15 @@ export const useCosmosTxHashByEvmTxHash = (evmTxHash: Option<string>) => {
 
       return getCosmosTxHashByEvmTxHash(evm.jsonRpc, evmTxHash);
     },
-    {
-      enabled: evm.enabled && !!evm.jsonRpc && !!evmTxHash,
-      refetchOnWindowFocus: false,
-      retry: false,
-      staleTime: Infinity,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.COSMOS_TX_HASH_BY_EVM_TX_HASH,
+      evm.enabled && evm.jsonRpc,
+      evmTxHash,
+    ],
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: Infinity,
+  });
 };
 
 export const useEvmTxsDataJsonRpc = (
@@ -820,13 +804,9 @@ export const useEvmTxsDataJsonRpc = (
 ) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.TXS_DATA_JSON_RPC,
-      evm.enabled && evm.jsonRpc,
-      evmTxHashes ?? [],
-    ],
-    async () => {
+  return useQuery({
+    enabled: enabled && evm.enabled && !!evm.jsonRpc && !!evmTxHashes,
+    queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useEvmTxsDataJsonRpc)");
       if (!evmTxHashes)
@@ -835,13 +815,15 @@ export const useEvmTxsDataJsonRpc = (
       if (!evmTxHashes.length) return [];
       return getTxsDataJsonRpc(evm.jsonRpc, evmTxHashes);
     },
-    {
-      enabled: enabled && evm.enabled && !!evm.jsonRpc && !!evmTxHashes,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.TXS_DATA_JSON_RPC,
+      evm.enabled && evm.jsonRpc,
+      evmTxHashes ?? [],
+    ],
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };
 
 const useCosmosTxDataByEvmTxHash = (evmTxHash: Option<string>) => {
