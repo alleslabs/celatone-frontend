@@ -29,6 +29,7 @@ export function useQueryEvents<RespT, ErrT>(
   // This is safe to do during the render phase and is more efficient than a useEffect.
   onSuccessRef.current = onSuccess;
   onErrorRef.current = onError;
+  onSettledRef.current = onSettled;
 
   // This effect is the "trigger" for the success callback.
   // It runs ONLY when `query.data` changes.

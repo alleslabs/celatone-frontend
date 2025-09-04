@@ -373,6 +373,7 @@ export const useTxsByContractAddressRest = (
       address,
       limit,
       offset,
+      bech32Prefix,
     ],
     queryFn: queryfn,
     refetchOnWindowFocus: false,

@@ -33,7 +33,7 @@ export const useIcnsNamesByAddressRest = (
   };
 
   return useQuery({
-    enabled,
+    enabled: enabled && Boolean(address),
     queryFn,
     queryKey: [
       CELATONE_QUERY_KEYS.ICNS_NAMES_BY_ADDRESS_REST,

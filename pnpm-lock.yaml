@@ -10,6 +10,10 @@ overrides:
   '@cosmjs/cosmwasm-stargate': 0.36.0
   '@cosmjs/stargate': 0.36.0
   '@cosmjs/amino': 0.36.0
+  '@cosmjs/crypto': 0.36.0
+  '@cosmjs/encoding': 0.36.0
+  '@cosmjs/math': 0.36.0
+  '@cosmjs/tendermint-rpc': 0.36.0
 
 importers:
 
@@ -64,7 +68,7 @@ importers:
         specifier: 0.36.0
         version: 0.36.0
       '@cosmjs/math':
-        specifier: '>=0.36.0'
+        specifier: 0.36.0
         version: 0.36.0
       '@cosmjs/proto-signing':
         specifier: 0.36.0
@@ -73,7 +77,7 @@ importers:
         specifier: 0.36.0
         version: 0.36.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@cosmjs/tendermint-rpc':
-        specifier: ^0.36.0
+        specifier: 0.36.0
         version: 0.36.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@cosmos-kit/compass':
         specifier: 2.13.3
@@ -109,10 +113,10 @@ importers:
         specifier: ^3.9.0
         version: 3.10.0(react-hook-form@7.54.2(react@19.1.0))
       '@initia/amino-converter':
-        specifier: '>=1.0.0'
+        specifier: ^1.0.0
         version: 1.0.4(@cosmjs/cosmwasm-stargate@0.36.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@cosmjs/proto-signing@0.36.0)(@cosmjs/stargate@0.36.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@initia/icons-react':
-        specifier: '>=1.0.0'
+        specifier: ^1.0.0
         version: 1.0.0(react-native@0.80.1(@babel/core@7.26.0)(@types/react@19.1.0)(bufferutil@4.0.9)(react@19.1.0)(utf-8-validate@5.0.10))(react@19.1.0)
       '@initia/initia.js':
         specifier: 1.0.6
@@ -136,25 +140,25 @@ importers:
         specifier: 1.23.9
         version: 1.23.9(@types/react@19.1.0)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@lukemorales/query-key-factory':
-        specifier: '>=1.0.0'
+        specifier: ^1.0.0
         version: 1.3.4(@tanstack/query-core@5.81.5)(@tanstack/react-query@5.81.5(react@19.1.0))
       '@monaco-editor/react':
         specifier: ^4.6.0
         version: 4.6.0(monaco-editor@0.44.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@mysten/bcs':
-        specifier: '>=1.0.0'
+        specifier: ^1.0.0
         version: 1.2.0
       '@noble/hashes':
-        specifier: '>=1.0.0'
+        specifier: ^1.0.0
         version: 1.8.0
       '@privy-io/cross-app-connect':
-        specifier: '>=0.2.0'
+        specifier: ^0.2.0
         version: 0.2.2(@rainbow-me/rainbowkit@2.2.8(@tanstack/react-query@5.81.5(react@19.1.0))(@types/react@19.1.0)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.3.3)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))(wagmi@2.15.6(@tanstack/query-core@5.81.5)(@tanstack/react-query@5.81.5(react@19.1.0))(@types/react@19.1.0)(bufferutil@4.0.9)(immer@10.1.1)(react@19.1.0)(typescript@5.3.3)(utf-8-validate@5.0.10)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2)))(@wagmi/core@2.17.3(@tanstack/query-core@5.81.5)(@types/react@19.1.0)(immer@10.1.1)(react@19.1.0)(typescript@5.3.3)(use-sync-external-store@1.4.0(react@19.1.0))(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)))(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       '@rainbow-me/rainbowkit':
-        specifier: '>=2.0.0'
+        specifier: ^2.0.0
         version: 2.2.8(@tanstack/react-query@5.81.5(react@19.1.0))(@types/react@19.1.0)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.3.3)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))(wagmi@2.15.6(@tanstack/query-core@5.81.5)(@tanstack/react-query@5.81.5(react@19.1.0))(@types/react@19.1.0)(bufferutil@4.0.9)(immer@10.1.1)(react@19.1.0)(typescript@5.3.3)(utf-8-validate@5.0.10)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2))
       '@react-spring/web':
-        specifier: '>=10.0.0'
+        specifier: ^10.0.0
         version: 10.0.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@rjsf/chakra-ui':
         specifier: v5.18.1
@@ -211,7 +215,7 @@ importers:
         specifier: ^6.2.1
         version: 6.2.2
       bignumber.js:
-        specifier: '>=9.0.0'
+        specifier: ^9.0.0
         version: 9.1.2
       camelcase:
         specifier: ^7.0.0
@@ -226,7 +230,7 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0(@chakra-ui/react@2.8.2(@emotion/react@11.14.0(@types/react@19.1.0)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.0)(react@19.1.0))(@types/react@19.1.0)(react@19.1.0))(@types/react@19.1.0)(framer-motion@11.16.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-markdown@9.0.3(@types/react@19.1.0)(react@19.1.0))
       change-case:
-        specifier: '>=5.0.0'
+        specifier: ^5.0.0
         version: 5.4.4
       chart.js:
         specifier: ^4.4.1
@@ -235,7 +239,7 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0(chart.js@4.4.7)
       clsx:
-        specifier: '>=2.0.0'
+        specifier: ^2.0.0
         version: 2.1.1
       cosmjs-types:
         specifier: ^0.9.0
@@ -256,13 +260,13 @@ importers:
         specifier: ^11.0.3
         version: 11.16.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       jotai:
-        specifier: '>=2.0.0'
+        specifier: ^2.0.0
         version: 2.12.5(@types/react@19.1.0)(react@19.1.0)
       js-base64:
         specifier: ^3.7.4
         version: 3.7.7
       ky:
-        specifier: '>=1.0.0'
+        specifier: ^1.0.0
         version: 1.8.0
       localforage:
         specifier: ^1.10.0
@@ -292,7 +296,7 @@ importers:
         specifier: ^0.44.0
         version: 0.44.0
       nanoid:
-        specifier: '>=5.0.0'
+        specifier: ^5.0.0
         version: 5.1.5
       next:
         specifier: 15.3.1
@@ -310,7 +314,7 @@ importers:
         specifier: ^1.9.2
         version: 1.9.2
       radix-ui:
-        specifier: '>=1.0.0'
+        specifier: ^1.0.0
         version: 1.4.2(@types/react-dom@19.1.1(@types/react@19.1.0))(@types/react@19.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       ramda:
         specifier: ^0.31.3
@@ -331,7 +335,7 @@ importers:
         specifier: ^14.2.3
         version: 14.3.5(react@19.1.0)
       react-error-boundary:
-        specifier: '>=6.0.0'
+        specifier: ^6.0.0
         version: 6.0.0(react@19.1.0)
       react-hook-form:
         specifier: ^7.39.7
@@ -340,7 +344,7 @@ importers:
         specifier: ^4.6.0
         version: 4.12.0(react@19.1.0)
       react-intersection-observer:
-        specifier: '>=9.0.0'
+        specifier: ^9.0.0
         version: 9.16.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-linkify:
         specifier: ^1.0.0-alpha
@@ -349,7 +353,7 @@ importers:
         specifier: ^9.0.1
         version: 9.0.3(@types/react@19.1.0)(react@19.1.0)
       react-merge-refs:
-        specifier: '>=3.0.0'
+        specifier: ^3.0.0
         version: 3.0.2(react@19.1.0)
       react-responsive:
         specifier: ^9.0.0
@@ -367,7 +371,7 @@ importers:
         specifier: ^1.1.0
         version: 1.1.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       usehooks-ts:
-        specifier: '>=3.0.0'
+        specifier: ^3.0.0
         version: 3.1.1(react@19.1.0)
       uuid:
         specifier: ^9.0.1
@@ -379,7 +383,7 @@ importers:
         specifier: ^2.15.6
         version: 2.15.6(@tanstack/query-core@5.81.5)(@tanstack/react-query@5.81.5(react@19.1.0))(@types/react@19.1.0)(bufferutil@4.0.9)(immer@10.1.1)(react@19.1.0)(typescript@5.3.3)(utf-8-validate@5.0.10)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2)
       xss:
-        specifier: '>=1.0.0'
+        specifier: ^1.0.0
         version: 1.0.15
       zod:
         specifier: ^3.24.2
@@ -1880,9 +1884,6 @@ packages:
   '@cosmjs/crypto@0.36.0':
     resolution: {integrity: sha512-IdzJETWBfMlJIpWmcAi4wiAa0sdHKZDbxKdhasrpSLvhwIItXBYMvApCFx6zr+V/Hby4KnsWduI7HomiRDFr+g==}
 
-  '@cosmjs/encoding@0.33.1':
-    resolution: {integrity: sha512-nuNxf29fUcQE14+1p//VVQDwd1iau5lhaW/7uMz7V2AH3GJbFJoJVaKvVyZvdFk+Cnu+s3wCqgq4gJkhRCJfKw==}
-
   '@cosmjs/encoding@0.36.0':
     resolution: {integrity: sha512-xFJNd1096EqNxTsdOJN+DODC5HxKmqY0L2iWEnvPFq9UD/W2olYnv0bxV0S+XTs5tF/8/NAZHU3KXxeHTZ97DA==}
 
@@ -2473,12 +2474,12 @@ packages:
       '@amplitude/analytics-browser': '>=2.0.0'
       '@base-ui-components/react': 1.0.0-beta.2
       '@cosmjs/amino': 0.36.0
-      '@cosmjs/crypto': '>=0.36.0'
-      '@cosmjs/encoding': '>=0.36.0'
-      '@cosmjs/math': '>=0.36.0'
+      '@cosmjs/crypto': 0.36.0
+      '@cosmjs/encoding': 0.36.0
+      '@cosmjs/math': 0.36.0
       '@cosmjs/proto-signing': 0.36.0
       '@cosmjs/stargate': 0.36.0
-      '@cosmjs/tendermint-rpc': '>=0.36.0'
+      '@cosmjs/tendermint-rpc': 0.36.0
       '@initia/amino-converter': '>=1.0.0'
       '@initia/icons-react': '>=1.0.0'
       '@initia/utils': 2.0.0-alpha.6
@@ -2528,7 +2529,7 @@ packages:
   '@initia/utils@2.0.0-alpha.3':
     resolution: {integrity: sha512-q0M8oaOez5hPHEYotQJXOvNK8L2z6NqnY8j9rsSrm8EMinIqKn0jQO7pXZqbpAWqzDZzfB7Hyf2t03lWM53VrA==}
     peerDependencies:
-      '@cosmjs/encoding': ^0
+      '@cosmjs/encoding': 0.36.0
       '@mysten/bcs': ^1
       '@noble/hashes': ^1
       bignumber.js: ^9
@@ -2537,7 +2538,7 @@ packages:
   '@initia/utils@2.0.0-alpha.6':
     resolution: {integrity: sha512-DnrBZDwBn8rgGv05Bl/5uprLzXrb7zBKfR4kZeEQDcW9uZtiUQDPNLXFvElm+seyXw13dOwN+Ebyc+xzD5aUhA==}
     peerDependencies:
-      '@cosmjs/encoding': '>=0.34.0'
+      '@cosmjs/encoding': 0.36.0
       '@mysten/bcs': '>=1.0.0'
       '@noble/hashes': '>=1.0.0'
       bignumber.js: '>=9.0.0'
@@ -13537,7 +13538,7 @@ snapshots:
       framer-motion: 11.16.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
-      react-remove-scroll: 2.6.2(@types/react@19.1.0)(react@19.1.0)
+      react-remove-scroll: 2.7.1(@types/react@19.1.0)(react@19.1.0)
     transitivePeerDependencies:
       - '@types/react'
 
@@ -14254,12 +14255,6 @@ snapshots:
       '@noble/curves': 1.9.2
       '@noble/hashes': 1.8.0
       hash-wasm: 4.12.0
-
-  '@cosmjs/encoding@0.33.1':
-    dependencies:
-      base64-js: 1.5.1
-      bech32: 1.1.4
-      readonly-date: 1.0.0
 
   '@cosmjs/encoding@0.36.0':
     dependencies:
@@ -15107,8 +15102,8 @@ snapshots:
 
   '@initia/tx-decoder@0.6.0(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
     dependencies:
-      '@cosmjs/encoding': 0.33.1
-      '@initia/utils': 2.0.0-alpha.3(@cosmjs/encoding@0.33.1)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
+      '@cosmjs/encoding': 0.36.0
+      '@initia/utils': 2.0.0-alpha.3(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       '@noble/hashes': 1.8.0
       axios: 1.10.0
       big.js: 7.0.1
@@ -15121,9 +15116,9 @@ snapshots:
       - debug
       - viem
 
-  '@initia/utils@2.0.0-alpha.3(@cosmjs/encoding@0.33.1)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
+  '@initia/utils@2.0.0-alpha.3(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
     dependencies:
-      '@cosmjs/encoding': 0.33.1
+      '@cosmjs/encoding': 0.36.0
       '@mysten/bcs': 1.2.0
       '@noble/hashes': 1.8.0
       bignumber.js: 9.1.2

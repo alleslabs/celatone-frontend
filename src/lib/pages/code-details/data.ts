@@ -29,12 +29,12 @@ export const useCodeContracts = (
   codeId: number,
   limit: number,
   offset: number,
-  onSuccess: (data: number) => void
+  onSuccess?: (data: number) => void
 ) => {
   const { getContractLocalInfo } = useContractStore();
   const contractsByCodeIdQuery = useContractsByCodeId(codeId, limit, offset);
   useQueryEvents(contractsByCodeIdQuery, {
-    onSuccess: ({ total }) => onSuccess(total),
+    onSuccess: ({ total }) => onSuccess?.(total),
   });
   const { data, isLoading } = contractsByCodeIdQuery;
 

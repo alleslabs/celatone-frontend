@@ -148,11 +148,12 @@ const defaultTheme = (isExpand: boolean) => ({
     return (
       <TableContainer
         sx={{
-          "@media screen and (min-width: 1280px)": {
-            width: isExpand ? "calc(100vw - 800px)" : "calc(100vw - 600px)",
-          },
           "@media screen and (min-width: 768px)": {
             width: isExpand ? "calc(100vw - 370px)" : "calc(100vw - 180px)",
+          },
+          // eslint-disable-next-line perfectionist/sort-objects
+          "@media screen and (min-width: 1280px)": {
+            width: isExpand ? "calc(100vw - 800px)" : "calc(100vw - 600px)",
           },
           "&::-webkit-scrollbar": {
             height: "8px",
