@@ -3,6 +3,7 @@ import type { HistoricalPowersResponse } from "lib/services/types";
 import type { AssetInfo, Option, Token, U } from "lib/types";
 
 import { Flex, Heading, Text } from "@chakra-ui/react";
+import { useEvmConfig } from "lib/app-provider";
 import { big } from "lib/types";
 import { formatUTokenWithPrecision, getTokenLabel } from "lib/utils";
 import { useMemo } from "react";
@@ -30,6 +31,7 @@ export const VotingPowerChartDetails = ({
   historicalPowers,
   singleStakingDenom,
 }: VotingPowerChartDetailsProps) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
   const currency = singleStakingDenom
     ? `${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`
     : "";
@@ -38,13 +40,14 @@ export const VotingPowerChartDetails = ({
     historicalPowers && historicalPowers.items.length > 0;
 
   const currentVotingPower = isHistoricalPowersContainsData
-    ? formatUTokenWithPrecision(
-        historicalPowers.items[historicalPowers.items.length - 1]
+    ? formatUTokenWithPrecision({
+        amount: historicalPowers.items[historicalPowers.items.length - 1]
           .votingPower as U<Token<Big>>,
-        assetInfo?.precision ?? 0,
-        true,
-        2
-      )
+        decimalPoints: 2,
+        isEvm: evm.enabled,
+        isSuffix: true,
+        precision: assetInfo?.precision ?? 0,
+      })
     : "";
 
   // NOTE: compute 24 hrs voting power change
@@ -61,10 +64,13 @@ export const VotingPowerChartDetails = ({
   }, [historicalPowers.items, isHistoricalPowersContainsData]);
 
   const formattedVotingPower = `${formatArithmetic(compareVotingPower)}${formatUTokenWithPrecision(
-    compareVotingPower.abs() as U<Token<Big>>,
-    assetInfo?.precision ?? 0,
-    true,
-    2
+    {
+      amount: compareVotingPower.abs() as U<Token<Big>>,
+      decimalPoints: 2,
+      isEvm: evm.enabled,
+      isSuffix: true,
+      precision: assetInfo?.precision ?? 0,
+    }
   )}`;
 
   return (

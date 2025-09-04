@@ -1,17 +1,15 @@
 import type { Collection } from "lib/services/types";
-import type { BechAddr32, HexAddr32 } from "lib/types";
+import type { HexAddr32 } from "lib/types";
 
 import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { useEvmConfig, useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
+import { useGetFirstNftAsCollectionImage } from "lib/hooks";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useMetadata } from "lib/services/nft";
 import { extractNftDescription } from "lib/utils/nftDescription";
 import { useMemo } from "react";
-
-import { useGetFirstNftAsCollectionImage } from "../data";
 
 interface CollectionCardProps {
   collectionInfo: Collection;
@@ -19,8 +17,7 @@ interface CollectionCardProps {
 
 export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
   const isMobile = useMobile();
-  const { description, name, uri } = collectionInfo;
-  const { data: metadata } = useMetadata({ uri });
+  const { description, name } = collectionInfo;
   const { enabled: isEvmEnabled } = useEvmConfig({ shouldRedirect: false });
   const formatAddresses = useFormatAddresses();
 
@@ -44,16 +41,9 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
     formattedCollection,
   ]);
 
-  const firstNftImage = useGetFirstNftAsCollectionImage(
-    formattedCollection.address as BechAddr32,
+  const collectionImage = useGetFirstNftAsCollectionImage(
     formattedCollection.hex as HexAddr32
   );
-
-  // Note: Use collection image from metadata if available, otherwise use first nft image
-  const collectionImage =
-    !metadata || metadata.image.startsWith("ipfs://")
-      ? firstNftImage
-      : metadata.image;
 
   return (
     <AppLink href={`/nft-collections/${collectionAddress}`}>

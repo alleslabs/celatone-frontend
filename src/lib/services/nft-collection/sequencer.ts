@@ -1,6 +1,7 @@
 import type {
+  Addr,
+  Addr32,
   BechAddr32,
-  HexAddr,
   HexAddr32,
   Nullable,
   Option,
@@ -31,10 +32,10 @@ import { getCollectionByCollectionAddressMoveRest } from "./rest";
 // ####### NFT COLLECTION #######
 const getNftCollectionByCollectionAddressBaseSequencer = async (
   endpoint: string,
-  collectionAddressBech: BechAddr32
+  collectionAddress: Addr32
 ) => {
   const { data } = await axios.get(
-    `${endpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddressBech)}`
+    `${endpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddress)}`
   );
 
   return parseWithError(zCollectionByCollectionAddressResponseSequencer, data);
@@ -42,20 +43,19 @@ const getNftCollectionByCollectionAddressBaseSequencer = async (
 
 export const getNftCollectionByCollectionAddressSequencer = async (
   endpoint: string,
-  collectionAddressBech: BechAddr32,
-  collectionAddressHex: HexAddr32,
+  collectionAddress: Addr32,
   isMove: boolean
 ): Promise<Nullable<CollectionByCollectionAddressResponse>> => {
   try {
     const { collection } =
       await getNftCollectionByCollectionAddressBaseSequencer(
         endpoint,
-        collectionAddressBech
+        collectionAddress
       );
 
     // TEMPORARY PATCH: Remove this when backend fix the `/indexer/nft/v1/collections` endpoint
     const { data: nftsResponse } = await axios.get(
-      `${endpoint}/indexer/nft/v1/tokens/by_collection/${encodeURI(collectionAddressBech)}`,
+      `${endpoint}/indexer/nft/v1/tokens/by_collection/${encodeURI(collectionAddress)}`,
       {
         params: {
           "pagination.count_total": true,
@@ -79,7 +79,7 @@ export const getNftCollectionByCollectionAddressSequencer = async (
         // Fallback to lite version if the collection is not found (Support Move only)
         return await getCollectionByCollectionAddressMoveRest(
           endpoint,
-          collectionAddressHex
+          collectionAddress
         );
       }
     } catch {
@@ -204,13 +204,13 @@ export const getNftCollecitonsByNameSequencer = async (
 
 export const getNftCollectionsByCollectionAddressSequencer = async (
   endpoint: string,
-  collectionAddressBech: BechAddr32
+  collectionAddress: Addr32
 ): Promise<CollectionsResponseSequencer> => {
   try {
     const { collection } =
       await getNftCollectionByCollectionAddressBaseSequencer(
         endpoint,
-        collectionAddressBech
+        collectionAddress
       );
 
     if (collection) {
@@ -237,7 +237,7 @@ export const getNftCollectionsByCollectionAddressSequencer = async (
 
 export const getNftCollectionsByAccountAddressSequencer = async (
   endpoint: string,
-  accountAddress: HexAddr
+  accountAddress: Addr
 ) =>
   axios
     .get(
@@ -245,6 +245,7 @@ export const getNftCollectionsByAccountAddressSequencer = async (
       {
         params: {
           "pagination.count_total": false,
+          "pagination.limit": 1000,
           "pagination.reverse": true,
         },
       }

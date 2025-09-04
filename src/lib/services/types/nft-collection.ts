@@ -162,10 +162,10 @@ const zCollectionNftsSequencer = z.object({
 const zCollectionSequencer = z.object({
   // Revisit this address type, it can be empty string
   creator: zHexAddr32,
-  description: z.string(),
+  description: z.string().default(""),
   name: z.string(),
   nfts: zCollectionNftsSequencer,
-  uri: z.string(),
+  uri: z.string().default(""),
 });
 
 export const zCollectionResponseSequencer = z
@@ -214,7 +214,7 @@ export const zCollectionByCollectionAddressResponseWasm = z
   .object({
     data: z.object({
       creator: zBechAddr,
-      description: z.string(),
+      description: z.string().optional(),
       image: z.string(),
       royalty_info: z
         .object({

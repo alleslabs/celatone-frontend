@@ -9,7 +9,7 @@ import type {
 } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { useInternalNavigate } from "lib/app-provider";
+import { useEvmConfig, useInternalNavigate } from "lib/app-provider";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import {
@@ -36,7 +36,7 @@ export const ValidatorsTableMobileCard = ({
   validator,
 }: ValidatorsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
-
+  const evm = useEvmConfig({ shouldRedirect: false });
   const isZeroUptime = !validator.uptime;
   const isMinCommissionRate = minCommissionRate === validator.commissionRate;
   return (
@@ -72,12 +72,13 @@ export const ValidatorsTableMobileCard = ({
             </Text>
             <Text color="text.dark" variant="body3">
               (
-              {formatUTokenWithPrecision(
-                validator.votingPower as U<Token<Big>>,
-                assetInfo?.precision ?? 0,
-                false,
-                2
-              )}
+              {formatUTokenWithPrecision({
+                amount: validator.votingPower as U<Token<Big>>,
+                decimalPoints: 2,
+                isEvm: evm.enabled,
+                isSuffix: false,
+                precision: assetInfo?.precision ?? 0,
+              })}
               {assetInfo?.id
                 ? ` ${getTokenLabel(assetInfo.id, assetInfo.symbol)}`
                 : undefined}
