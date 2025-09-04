@@ -151,7 +151,6 @@
     "node-gzip": "^1.1.2",
     "plur": "^5.1.0",
     "qr-code-styling": "^1.9.2",
-    "radix-ui": "^1.0.0",
     "ramda": "^0.31.3",
     "react": "^19.1.0",
     "react-ace": "^10.1.0",

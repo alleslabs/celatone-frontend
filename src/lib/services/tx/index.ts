@@ -442,6 +442,7 @@ export const useTxsByAddressRest = (
       search,
       limit,
       offset,
+      bech32Prefix,
     ],
     queryFn: createQueryFnWithTimeout(queryfn, 20000),
     refetchOnWindowFocus: false,
