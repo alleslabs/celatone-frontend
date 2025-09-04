@@ -11,9 +11,9 @@ import {
 import { AmpEvent, track } from "lib/amplitude";
 import { useMobile, useMoveConfig, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
+import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { JsonLink } from "lib/components/JsonLink";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
@@ -251,7 +251,7 @@ const NftDetailsBody = ({
                   </NftInfoItem>
                 )}
                 <NftInfoItem isCentered={false} label="Token URI">
-                  <JsonLink type="token_uri" uri={uri} />
+                  <CopyLink type="token_uri" value={uri} />
                 </NftInfoItem>
               </Flex>
             </Flex>
