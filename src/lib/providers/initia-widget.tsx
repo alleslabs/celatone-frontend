@@ -1,10 +1,11 @@
 import type { PropsWithChildren } from "react";
 
 import {
+  initiaPrivyWalletConnector,
   injectStyles,
   InterwovenKitProvider,
 } from "@initia/interwovenkit-react";
-import initiaWidgetStyles from "@initia/interwovenkit-react/styles.js";
+import InterwovenKitStyles from "@initia/interwovenkit-react/styles.js";
 import { useCelatoneApp } from "lib/app-provider";
 import { useL1InfoByNetworkType } from "lib/hooks";
 import { useEffect } from "react";
@@ -13,14 +14,16 @@ import { mainnet } from "wagmi/chains";
 
 const wagmiConfig = createConfig({
   chains: [mainnet],
+  connectors: [initiaPrivyWalletConnector],
   transports: { [mainnet.id]: http() },
 });
 
 const WithInitiaWidget = ({ children }: PropsWithChildren) => {
   const { chainConfig, currentChainId } = useCelatoneApp();
   const { configs } = useL1InfoByNetworkType();
+
   useEffect(() => {
-    injectStyles(initiaWidgetStyles);
+    injectStyles(InterwovenKitStyles);
   }, []);
 
   return (
