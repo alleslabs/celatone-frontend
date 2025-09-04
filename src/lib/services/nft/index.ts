@@ -316,31 +316,32 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
   );
 };
 
-export const useNftMetadata = (
+export const useNftGlyphImage = (
   nft: Option<Nft>,
   width?: string,
   height?: string
 ) => {
   const { currentChainId } = useCelatoneApp();
 
-  return useQuery<NftMetadata>(
+  if (!nft) return "";
+
+  const params = new URLSearchParams();
+  if (width) params.set("width", width);
+  if (height) params.set("height", height);
+
+  const tokenId =
+    nft.nftAddress && nft.nftAddress !== "0x" ? nft.nftAddress : nft.tokenId;
+
+  return `${GLYPH_API_URL}/${currentChainId}/${nft.collectionAddress}/${tokenId}${params.toString() ? `?${params}` : ""}`;
+};
+
+export const useNftMetadata = (nft: Option<Nft>) =>
+  useQuery<NftMetadata>(
     [CELATONE_QUERY_KEYS.NFT_METADATA, nft],
     async () => {
       if (!nft) throw new Error("NFT is required (useNftMetadata)");
 
       const metadata = await getNftMetadata(nft.uri);
-
-      const params = new URLSearchParams();
-      if (width) params.set("width", width);
-      if (height) params.set("height", height);
-
-      const tokenId =
-        nft.nftAddress && nft.nftAddress !== "0x"
-          ? nft.nftAddress
-          : nft.tokenId;
-
-      metadata.image = `${GLYPH_API_URL}/${currentChainId}/${nft.collectionAddress}/${tokenId}${params.toString() ? `?${params}` : ""}`;
-
       return metadata;
     },
     {
@@ -349,7 +350,6 @@ export const useNftMetadata = (
       retry: 1,
     }
   );
-};
 
 export const useNftTransactions = (
   nftAddress: Option<HexAddr32>,
