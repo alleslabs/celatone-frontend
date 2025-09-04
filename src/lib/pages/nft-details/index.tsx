@@ -25,6 +25,7 @@ import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
   useNftByTokenId,
+  useNftGlyphImage,
   useNftMetadata,
   useNftMutateEvents,
   useNftTransactions,
@@ -92,6 +93,7 @@ const NftDetailsBody = ({
   });
 
   const { data: metadata } = useNftMetadata(nft);
+  const nftImage = useNftGlyphImage(nft);
 
   if (isCollectionLoading || isNftLoading) return <Loading />;
   if (!collection || !nft) return <InvalidNft />;
@@ -165,7 +167,7 @@ const NftDetailsBody = ({
                 borderRadius="8px"
                 fallbackSrc={NFT_IMAGE_PLACEHOLDER}
                 fallbackStrategy="beforeLoadOrError"
-                src={metadata?.image}
+                src={nftImage}
               />
             </div>
             {!isMobile && (
