@@ -9,6 +9,7 @@ import {
   useDummyWallet,
   useSimulateFee,
 } from "lib/app-provider/hooks";
+import { useQueryEvents } from "lib/hooks";
 import { composeStoreCodeMsg, composeStoreCodeProposalMsg } from "lib/utils";
 import { gzip } from "node-gzip";
 
@@ -27,6 +28,8 @@ export const useSimulateFeeQuery = ({
   extraQueryKey = [],
   isDummyUser,
   messages,
+  onError,
+  onSuccess,
   retry = 2,
 }: SimulateQueryParams) => {
   const { address, chainId } = useCurrentChain();
@@ -40,7 +43,7 @@ export const useSimulateFeeQuery = ({
     return simulateFee({ address: userAddress, isDummyUser, messages });
   };
 
-  return useQuery({
+  const simulateFeeQuery = useQuery({
     enabled,
     queryFn: simulateFn,
     queryKey: [
@@ -55,6 +58,13 @@ export const useSimulateFeeQuery = ({
     refetchOnWindowFocus: false,
     retry,
   });
+
+  useQueryEvents(simulateFeeQuery, {
+    onError,
+    onSuccess,
+  });
+
+  return simulateFeeQuery;
 };
 
 interface SimulateQueryParamsForStoreCode {

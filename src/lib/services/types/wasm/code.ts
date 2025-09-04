@@ -13,16 +13,19 @@ import { z } from "zod";
 
 export const zUploadAccessParams = z
   .object({
-    code_upload_access: z.object({
-      addresses: zBechAddr.array(),
-      permission: z.nativeEnum(AccessConfigPermission),
+    params: z.object({
+      code_upload_access: z.object({
+        addresses: zBechAddr.array(),
+        permission: z.nativeEnum(AccessConfigPermission),
+      }),
+      instantiate_default_permission: z.nativeEnum(AccessConfigPermission),
     }),
-    instantiate_default_permission: z.nativeEnum(AccessConfigPermission),
   })
   .transform((val) => ({
     isPermissionedNetwork:
-      val.code_upload_access.permission !== AccessConfigPermission.EVERYBODY,
-    ...snakeToCamel(val),
+      val.params.code_upload_access.permission !==
+      AccessConfigPermission.EVERYBODY,
+    ...snakeToCamel(val.params),
   }));
 export type UploadAccessParams = z.infer<typeof zUploadAccessParams>;
 

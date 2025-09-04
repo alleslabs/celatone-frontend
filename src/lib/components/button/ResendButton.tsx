@@ -4,7 +4,7 @@ import type { Gas, Message, Msg, Option } from "lib/types";
 import { Button } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useFabricateFee, useResendTx } from "lib/app-provider";
-import { useQueryEvents, useTxBroadcast } from "lib/hooks";
+import { useTxBroadcast } from "lib/hooks";
 import { useSimulateFeeQuery } from "lib/services/tx";
 import { camelToSnake, encode } from "lib/utils";
 import { useCallback, useState } from "react";
@@ -59,18 +59,13 @@ export const ResendButton = ({
     [broadcast, composedMsgs, fabricateFee, resendTx]
   );
 
-  const simulateFeeQuery = useSimulateFeeQuery({
+  const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: isProcessing,
     extraQueryKey: [txHash, msgIndex],
     messages: composedMsgs,
     onError: () => setIsProcessing(false),
     onSuccess: proceed,
   });
-  useQueryEvents(simulateFeeQuery, {
-    onError: () => setIsProcessing(false),
-    onSuccess: (data) => proceed(data),
-  });
-  const { isFetching: isSimulating } = simulateFeeQuery;
 
   return (
     <Button

@@ -15,7 +15,7 @@ import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useQueryEvents, useTxBroadcast } from "lib/hooks";
+import { useTxBroadcast } from "lib/hooks";
 import { useSimulateFeeQuery } from "lib/services/tx";
 import { composeScriptMsg, getAbiInitialData } from "lib/utils";
 import { useRouter } from "next/router";
@@ -87,7 +87,7 @@ export const DeployScript = () => {
     setAbiErrors([["form", "initial"]]);
   }, []);
 
-  const simulateFeeQuery = useSimulateFeeQuery({
+  const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: enableDeploy,
     messages: composeScriptMsg(
       address,
@@ -95,8 +95,6 @@ export const DeployScript = () => {
       fileState.decodeRes,
       inputData
     ),
-  });
-  useQueryEvents(simulateFeeQuery, {
     onError: (e) => {
       setSimulateError(e.message);
       setEstimatedFee(undefined);
@@ -108,7 +106,6 @@ export const DeployScript = () => {
       } else setEstimatedFee(undefined);
     },
   });
-  const { isFetching: isSimulating } = simulateFeeQuery;
 
   const proceed = useCallback(async () => {
     const stream = await deployScriptTx({
