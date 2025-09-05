@@ -9,6 +9,7 @@ import {
   useDummyWallet,
   useSimulateFee,
 } from "lib/app-provider/hooks";
+import { useQueryEvents } from "lib/hooks";
 import { composeStoreCodeMsg, composeStoreCodeProposalMsg } from "lib/utils";
 import { gzip } from "node-gzip";
 
@@ -42,10 +43,8 @@ export const useSimulateFeeQuery = ({
     return simulateFee({ address: userAddress, isDummyUser, messages });
   };
 
-  return useQuery({
+  const simulateFeeQuery = useQuery({
     enabled,
-    onError,
-    onSuccess,
     queryFn: simulateFn,
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE,
@@ -59,6 +58,13 @@ export const useSimulateFeeQuery = ({
     refetchOnWindowFocus: false,
     retry,
   });
+
+  useQueryEvents(simulateFeeQuery, {
+    onError,
+    onSuccess,
+  });
+
+  return simulateFeeQuery;
 };
 
 interface SimulateQueryParamsForStoreCode {
@@ -98,10 +104,9 @@ export const useSimulateFeeForStoreCode = ({
     const craftMsg = await submitStoreCodeMsg();
     return simulateFee({ address, messages: [craftMsg] });
   };
-  return useQuery({
+
+  const simulateFeeQuery = useQuery({
     enabled,
-    onError,
-    onSuccess,
     queryFn: simulateFn,
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE,
@@ -114,6 +119,13 @@ export const useSimulateFeeForStoreCode = ({
     refetchOnWindowFocus: false,
     retry: 2,
   });
+
+  useQueryEvents(simulateFeeQuery, {
+    onError,
+    onSuccess,
+  });
+
+  return simulateFeeQuery;
 };
 
 interface SimulateQueryParamsForProposalStoreCode {
@@ -186,10 +198,8 @@ export const useSimulateFeeForProposalStoreCode = ({
     return simulateFee({ address, messages: [craftMsg] });
   };
 
-  return useQuery({
+  const simulateFeeQuery = useQuery({
     enabled,
-    onError,
-    onSuccess,
     queryFn: simulateFn,
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE_PROPOSAL,
@@ -209,4 +219,11 @@ export const useSimulateFeeForProposalStoreCode = ({
     refetchOnWindowFocus: false,
     retry: 2,
   });
+
+  useQueryEvents(simulateFeeQuery, {
+    onError,
+    onSuccess,
+  });
+
+  return simulateFeeQuery;
 };

@@ -2,6 +2,7 @@ import type { Option } from "lib/types";
 
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { useQueryEvents } from "lib/hooks";
 import { useValidators } from "lib/services/validator";
 import { useEffect } from "react";
 
@@ -45,20 +46,21 @@ export const ValidatorsBodyFull = ({
       pageSize: 100,
     },
   });
-  const { data, isFetching: isLoading } = useValidators(
+  const validatorsQuery = useValidators(
     pageSize,
     offset,
     isActive,
     order,
     isDesc,
-    search,
-    {
-      onSuccess: ({ metadata, total }) => {
-        setTotalData(total);
-        setCounts(metadata);
-      },
-    }
+    search
   );
+  useQueryEvents(validatorsQuery, {
+    onSuccess: ({ metadata, total }) => {
+      setTotalData(total);
+      setCounts(metadata);
+    },
+  });
+  const { data, isFetching: isLoading } = validatorsQuery;
 
   useEffect(() => {
     setCurrentPage(1);

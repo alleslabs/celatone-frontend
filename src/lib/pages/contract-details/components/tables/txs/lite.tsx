@@ -2,6 +2,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
+import { useQueryEvents } from "lib/hooks";
 import { useTxsByContractAddressRest } from "lib/services/tx";
 
 import type { TxsTableProps } from "./types";
@@ -29,14 +30,15 @@ export const TxsTableLite = ({
     total: totalData,
   });
 
-  const { data, error, isLoading } = useTxsByContractAddressRest(
+  const txsByContractAddressRestQuery = useTxsByContractAddressRest(
     contractAddress,
     pageSize,
-    offset,
-    {
-      onSuccess: ({ total }) => setTotalData(total),
-    }
+    offset
   );
+  useQueryEvents(txsByContractAddressRestQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data, error, isLoading } = txsByContractAddressRestQuery;
 
   return (
     <>

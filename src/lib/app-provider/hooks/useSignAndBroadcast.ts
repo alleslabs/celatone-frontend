@@ -85,9 +85,9 @@ export const useSignAndBroadcast = () => {
       messages,
     }: SignAndBroadcastParams): Promise<DeliverTxResponse> => {
       if (walletProvider.type === "initia-widget") {
-        const { requestTx } = walletProvider.context;
-        const txHash = await requestTx({ messages }, { chainId });
-        return getTxResponse(rpcEndpoint, txHash);
+        const { requestTxBlock } = walletProvider.context;
+        const txResponse = await requestTxBlock({ chainId, messages });
+        return getTxResponse(rpcEndpoint, txResponse.transactionHash);
       }
 
       // cosmos-kit

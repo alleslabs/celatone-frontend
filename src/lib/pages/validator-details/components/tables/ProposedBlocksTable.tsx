@@ -9,6 +9,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TableTitle, ViewMore } from "lib/components/table";
 import { BlocksTable } from "lib/components/table/blocks";
+import { useQueryEvents } from "lib/hooks";
 import { useValidatorProposedBlocks } from "lib/services/validator";
 
 const scrollComponentId = "proposed-block-table-header";
@@ -41,14 +42,15 @@ export const ProposedBlocksTable = ({
     },
   });
 
-  const { data, isLoading } = useValidatorProposedBlocks(
+  const validatorProposedBlocksQuery = useValidatorProposedBlocks(
     validatorAddress,
     onViewMore ? 5 : pageSize,
-    offset,
-    {
-      onSuccess: ({ total }) => setTotalData(total),
-    }
+    offset
   );
+  useQueryEvents(validatorProposedBlocksQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data, isLoading } = validatorProposedBlocksQuery;
 
   return isMoibleOverview ? (
     <Flex

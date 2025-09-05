@@ -82,9 +82,11 @@ export const useResourcesByAddressRest = (
         totalCount: resources.total,
       };
     });
-  return useQuery(
-    [CELATONE_QUERY_KEYS.RESOURCES_BY_ADDRESS, restEndpoint, address],
+  return useQuery({
+    queryKey: [CELATONE_QUERY_KEYS.RESOURCES_BY_ADDRESS, restEndpoint, address],
     queryFn,
-    { enabled, refetchOnWindowFocus: false, retry: 1 }
-  );
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };

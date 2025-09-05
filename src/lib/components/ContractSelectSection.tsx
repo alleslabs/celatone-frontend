@@ -4,6 +4,7 @@ import type { BechAddr, BechAddr32, Option } from "lib/types";
 
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
+import { useQueryEvents } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useContractData } from "lib/services/wasm/contract";
@@ -162,8 +163,10 @@ export const ContractSelectSection = observer(
       mode: "all",
     });
 
-    const { isFetching, refetch } = useContractData(contractAddress, {
+    const contractDataQuery = useContractData(contractAddress, {
       enabled: !!contractAddress,
+    });
+    useQueryEvents(contractDataQuery, {
       onError: () => reset(defaultValues),
       onSuccess: (data) => {
         successCallback?.(data);
@@ -177,6 +180,7 @@ export const ContractSelectSection = observer(
         setCodeHash(data.contract.codeHash);
       },
     });
+    const { isFetching, refetch } = contractDataQuery;
 
     const {
       data: derivedWasmVerifyInfo,

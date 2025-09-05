@@ -58,6 +58,7 @@ export const StepperItem = ({
       align="center"
       gap={2}
       sx={{
+        ":not(:last-of-type)": { flex: 1 },
         "&:not(:last-of-type)::after": {
           backgroundColor: "gray.400",
           content: '""',
@@ -65,7 +66,6 @@ export const StepperItem = ({
           height: "1px",
           marginInlineEnd: "8px",
         },
-        ":not(:last-of-type)": { flex: 1 },
       }}
     >
       <StepLabel currentStep={currentStep} disabled={disabled} step={step} />

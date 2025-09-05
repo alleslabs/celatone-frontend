@@ -1,12 +1,11 @@
-import type { WidgetWallet } from "@initia/utils";
-
-import { MAINNET, TESTNET } from "@initia/react-wallet-widget/ssr";
+import { MAINNET, TESTNET } from "@initia/interwovenkit-react";
 import { SUPPORTED_NETWORK_TYPES } from "env";
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useChainConfigs } from "lib/app-provider";
 import { zHexAddr32 } from "lib/types";
 
 export const useL1InfoByNetworkType = () => {
   const { chainConfig } = useCelatoneApp();
+  const { chainConfigs } = useChainConfigs();
 
   const networkType =
     SUPPORTED_NETWORK_TYPES.length > 1
@@ -16,18 +15,16 @@ export const useL1InfoByNetworkType = () => {
   if (networkType === "mainnet") {
     return {
       configs: MAINNET,
-      l1Rest: MAINNET.apiUrl.replace("api", "rest"),
-      l1Usernames: zHexAddr32.parse(MAINNET.modules.usernames),
+      l1Rest: chainConfigs[MAINNET.defaultChainId]?.rest ?? "",
+      l1Usernames: zHexAddr32.parse(MAINNET.usernamesModuleAddress),
     };
   }
 
   return {
     configs: {
       ...TESTNET,
-      filterWallet: (wallet: WidgetWallet) =>
-        !chainConfig.features.evm.enabled || wallet.type === "evm",
     },
-    l1Rest: TESTNET.apiUrl.replace("api", "rest"),
-    l1Usernames: zHexAddr32.parse(TESTNET.modules.usernames),
+    l1Rest: chainConfigs[TESTNET.defaultChainId]?.rest ?? "",
+    l1Usernames: zHexAddr32.parse(TESTNET.usernamesModuleAddress),
   };
 };

@@ -19,6 +19,7 @@ import JsonInput from "lib/components/json/JsonInput";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { DEFAULT_RPC_ERROR } from "lib/data";
+import { useQueryEvents } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import {
   useContractQueryMsgsRest,
@@ -61,9 +62,12 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
     setRes("");
   }, [contractAddress, initialMsg]);
 
-  const { isFetching, refetch } = useContractQueryRest(contractAddress, msg, {
-    cacheTime: 0,
+  const contractQueryRestQuery = useContractQueryRest(contractAddress, msg, {
     enabled: false,
+    gcTime: 0,
+    retry: false,
+  });
+  useQueryEvents(contractQueryRestQuery, {
     onError: (err) =>
       setRes(
         (err as AxiosError<RpcQueryError>).response?.data.message ||
@@ -81,8 +85,8 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
         type: "query",
       });
     },
-    retry: false,
   });
+  const { isFetching, refetch } = contractQueryRestQuery;
 
   const handleQuery = () => {
     trackActionQuery(AmpEvent.ACTION_QUERY, "json-input", true);

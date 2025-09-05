@@ -1,5 +1,5 @@
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import type { AccountType, BechAddr, Option } from "lib/types";
+import type { AccountType, AccountTypeRest, BechAddr, Option } from "lib/types";
 
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -36,46 +36,54 @@ export const useAccountData = (
   const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
   const endpoint = isFullTier ? apiEndpoint : restEndpoint;
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_DATA, endpoint, address],
-    async () => {
+  return useQuery({
+    enabled: !!address,
+    queryFn: async () => {
       if (isFullTier) return getAccountData(endpoint, address);
       if (isWasm) return getAccountDataRest(endpoint, address);
 
       throw new Error("Account data not found (useAccountData)");
     },
-    { enabled: !!address, refetchOnWindowFocus: false, retry: 1 }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.ACCOUNT_DATA,
+      endpoint,
+      address,
+      isFullTier,
+      isWasm,
+    ],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useAccountTableCounts = (
   address: BechAddr,
-  options?: UseQueryOptions<AccountTableCounts>
+  options?: Partial<UseQueryOptions<AccountTableCounts>>
 ) => {
   const endpoint = useBaseApiRoute("accounts");
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
   const { enabled: isWasm } = useWasmConfig({ shouldRedirect: false });
 
-  return useQuery<AccountTableCounts>(
-    [
+  return useQuery<AccountTableCounts>({
+    queryFn: async () =>
+      getAccountTableCounts(endpoint, address, isGov, isWasm),
+    queryKey: [
       CELATONE_QUERY_KEYS.ACCOUNT_TABLE_COUNTS,
       endpoint,
       address,
       isGov,
       isWasm,
     ],
-    async () => getAccountTableCounts(endpoint, address, isGov, isWasm),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+    ...options,
+  });
 };
 
 export const useAccountType = (
   address: Option<BechAddr>,
-  options: Pick<
-    UseQueryOptions<AccountType, Error>,
-    "enabled" | "onError" | "onSuccess"
-  > = {}
-): UseQueryResult<AccountType> => {
+  enabled = false
+): UseQueryResult<AccountType | AccountTypeRest> => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("accounts");
   const {
@@ -93,25 +101,26 @@ export const useAccountType = (
     return getAccountTypeRest(restEndpoint, address);
   }, [restEndpoint, address, apiEndpoint, isFullTier]);
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_TYPE, apiEndpoint, restEndpoint, address],
+  return useQuery({
+    enabled: enabled && Boolean(address),
     queryFn,
-    {
-      ...options,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.ACCOUNT_TYPE,
+      apiEndpoint,
+      restEndpoint,
+      address,
+    ],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useAccountBech32 = (
   endpoint: string
 ): UseQueryResult<AccountBech32RestResponse> =>
-  useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_BECH_32_REST, endpoint],
-    async () => getAccountBech32Rest(endpoint),
-    {
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+  useQuery({
+    queryFn: async () => getAccountBech32Rest(endpoint),
+    queryKey: [CELATONE_QUERY_KEYS.ACCOUNT_BECH_32_REST, endpoint],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });

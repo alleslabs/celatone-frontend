@@ -18,12 +18,10 @@ export const useOverviewsStats = (
 ): UseQueryResult<OverviewsStats> => {
   const endpoint = useBaseApiRoute("overviews");
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.OVERVIEWS_STATS, endpoint],
-    async () => getOverviewsStats(endpoint),
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-    }
-  );
+  return useQuery({
+    enabled,
+    queryFn: async () => getOverviewsStats(endpoint),
+    queryKey: [CELATONE_QUERY_KEYS.OVERVIEWS_STATS, endpoint],
+    refetchOnWindowFocus: false,
+  });
 };

@@ -15,7 +15,7 @@ import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state";
-import { useOpenNewTab } from "lib/hooks";
+import { useOpenNewTab, useQueryEvents } from "lib/hooks";
 import { useModuleByAddressRest } from "lib/services/move/module";
 import { useMoveVerifyInfo } from "lib/services/verification/move";
 import { resolveMoveVerifyStatus } from "lib/utils";
@@ -191,29 +191,32 @@ const InteractBody = ({
     module?.moduleName
   );
 
-  const { refetch } = useModuleByAddressRest({
+  const moduleByAddressRestQuery = useModuleByAddressRest({
     address: address as Addr,
     moduleName,
     options: {
       enabled: false,
-      onSuccess: (data) => {
-        setModule(data);
-        if (functionName) {
-          const fn = data.parsedAbi.exposed_functions.find(
-            (exposedFn) => exposedFn.name === functionName
-          );
-          if (fn) {
-            handleSetSelectedType(fn.is_view ? "view" : "execute");
-            setSelectedFn(fn);
-          }
-        } else if (functionType) {
-          handleSetSelectedType(functionType);
-        }
-      },
       refetchOnWindowFocus: false,
       retry: false,
     },
   });
+  useQueryEvents(moduleByAddressRestQuery, {
+    onSuccess: (data) => {
+      setModule(data);
+      if (functionName) {
+        const fn = data.parsedAbi.exposed_functions.find(
+          (exposedFn) => exposedFn.name === functionName
+        );
+        if (fn) {
+          handleSetSelectedType(fn.is_view ? "view" : "execute");
+          setSelectedFn(fn);
+        }
+      } else if (functionType) {
+        handleSetSelectedType(functionType);
+      }
+    },
+  });
+  const { refetch } = moduleByAddressRestQuery;
 
   const moveVerifyStatus = useMemo(
     () => resolveMoveVerifyStatus(module?.digest, verificationData?.digest),

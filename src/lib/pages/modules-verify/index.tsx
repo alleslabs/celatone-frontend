@@ -53,7 +53,7 @@ export const ModulesVerifyBody = observer(
     const router = useRouter();
     const isMobile = useMobile();
     const { currentChainId } = useCelatoneApp();
-    const { isError, isLoading, mutateAsync } = useSubmitMoveVerify();
+    const { isError, isPending, mutateAsync } = useSubmitMoveVerify();
     const { isOpen, onClose, onOpen } = useDisclosure();
     const { addMoveVerifyTask } = useMoveVerifyTaskStore();
 
@@ -194,7 +194,7 @@ export const ModulesVerifyBody = observer(
                 <ModuleVerifyModalBody
                   control={control}
                   isError={isError}
-                  isLoading={isLoading}
+                  isLoading={isPending}
                   onClose={onClose}
                 />
               </ModalContent>

@@ -1,6 +1,6 @@
-import type { PermissionFilterValue } from "lib/hooks";
 import type { BechAddr20, CodeInfo, Option } from "lib/types";
 
+import { type PermissionFilterValue, useQueryEvents } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useCodes, useCodesRest } from "lib/services/wasm/code";
 
@@ -12,17 +12,18 @@ export const useRecentCodes = (
   setTotalData: (totalData: number) => void
 ) => {
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
-  const { data: codes, isLoading } = useCodes(
+  const codesQuery = useCodes(
     pageSize,
     offset,
     address,
     permissionValue === "all"
       ? undefined
-      : permissionValue === "without-proposal",
-    {
-      onSuccess: (data) => setTotalData(data.total),
-    }
+      : permissionValue === "without-proposal"
   );
+  useQueryEvents(codesQuery, {
+    onSuccess: (data) => setTotalData(data.total),
+  });
+  const { data: codes, isLoading } = codesQuery;
 
   if (!codes) return { data: undefined, isLoading };
   return {

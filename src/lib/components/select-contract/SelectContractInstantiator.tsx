@@ -24,6 +24,7 @@ import {
   useValidateAddress,
 } from "lib/app-provider";
 import { DEFAULT_RPC_ERROR } from "lib/data";
+import { useQueryEvents } from "lib/hooks";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
 import { useContractData } from "lib/services/wasm/contract";
@@ -73,21 +74,21 @@ export const SelectContractInstantiator = ({
     resetOnClose();
   };
 
-  const { isFetching, isRefetching, refetch } = useContractData(
-    searchContract,
-    {
-      cacheTime: 0,
-      enabled: false,
-      onError: (err) =>
-        setInvalid(
-          (err as AxiosError<RpcQueryError>).response?.data.message ||
-            DEFAULT_RPC_ERROR
-        ),
-      onSuccess: () => onSelectThenClose(searchContract),
-      refetchOnReconnect: false,
-      retry: false,
-    }
-  );
+  const contractDataQuery = useContractData(searchContract, {
+    enabled: false,
+    gcTime: 0,
+    refetchOnReconnect: false,
+    retry: false,
+  });
+  useQueryEvents(contractDataQuery, {
+    onError: (err) =>
+      setInvalid(
+        (err as AxiosError<RpcQueryError>).response?.data.message ||
+          DEFAULT_RPC_ERROR
+      ),
+    onSuccess: () => onSelectThenClose(searchContract),
+  });
+  const { isFetching, isRefetching, refetch } = contractDataQuery;
 
   const handleListSelect = (slug: string) => {
     setListSlug(slug);

@@ -39,8 +39,8 @@ export const useSimulateFee = () => {
 
       // If the user has connected with Initia Widget
       if (walletProvider.type === "initia-widget") {
-        const { estimateTx } = walletProvider.context;
-        return estimateTx({ messages }, chainId).then(zGas(z.number()).parse);
+        const { estimateGas } = walletProvider.context;
+        return estimateGas({ chainId, messages }).then(zGas(z.number()).parse);
       }
 
       // Otherwise, use the CosmosKit

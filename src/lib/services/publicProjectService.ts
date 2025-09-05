@@ -49,15 +49,13 @@ export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
       );
   }, [projectsApiRoute]);
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.PUBLIC_PROJECTS, projectsApiRoute],
+  return useQuery({
+    enabled: projectConfig.enabled,
     queryFn,
-    {
-      enabled: projectConfig.enabled,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    queryKey: [CELATONE_QUERY_KEYS.PUBLIC_PROJECTS, projectsApiRoute],
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };
 
 export const usePublicProjectBySlug = (
@@ -77,14 +75,16 @@ export const usePublicProjectBySlug = (
       }));
   }, [projectsApiRoute, slug]);
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_SLUG, projectsApiRoute, slug],
+  return useQuery({
+    enabled: Boolean(slug) && projectConfig.enabled,
     queryFn,
-    {
-      enabled: Boolean(slug) && projectConfig.enabled,
-      retry: false,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_SLUG,
+      projectsApiRoute,
+      slug,
+    ],
+    retry: false,
+  });
 };
 
 export const usePublicProjectByCodeId = (
@@ -103,15 +103,17 @@ export const usePublicProjectByCodeId = (
       .then(({ data: projectInfo }) => parseCode(projectInfo));
   }, [projectsApiRoute, codeId]);
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_CODE_ID, projectsApiRoute, codeId],
+  return useQuery({
+    enabled: isId(codeId) && projectConfig.enabled && wasmConfig.enabled,
     queryFn,
-    {
-      enabled: isId(codeId) && projectConfig.enabled && wasmConfig.enabled,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_CODE_ID,
+      projectsApiRoute,
+      codeId,
+    ],
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };
 
 export const usePublicProjectByAccountAddress = (
@@ -129,19 +131,17 @@ export const usePublicProjectByAccountAddress = (
       .get<PublicInfo>(`${projectsApiRoute}/${accountAddress}`)
       .then(({ data: projectInfo }) => projectInfo);
   }, [accountAddress, projectsApiRoute]);
-  return useQuery(
-    [
+  return useQuery({
+    enabled: Boolean(accountAddress) && projectConfig.enabled,
+    queryFn,
+    queryKey: [
       CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_WALLET_ADDRESS,
       projectsApiRoute,
       accountAddress,
     ],
-    queryFn,
-    {
-      enabled: Boolean(accountAddress) && projectConfig.enabled,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };
 
 export const usePublicProjectByModulePath = (
@@ -162,18 +162,16 @@ export const usePublicProjectByModulePath = (
       .then(({ data: projectInfo }) => projectInfo);
   }, [projectsApiRoute, address, name]);
 
-  return useQuery(
-    [
+  return useQuery({
+    enabled: Boolean(address) && projectConfig.enabled && moveConfig.enabled,
+    queryFn,
+    queryKey: [
       CELATONE_QUERY_KEYS.PUBLIC_PROJECT_BY_MODULE_PATH,
       projectsApiRoute,
       address,
       name,
     ],
-    queryFn,
-    {
-      enabled: Boolean(address) && projectConfig.enabled && moveConfig.enabled,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };

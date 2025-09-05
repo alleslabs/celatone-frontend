@@ -18,9 +18,9 @@ export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
   } = useCelatoneApp();
   const registryAssets = registry?.assets ?? [];
 
-  return useQuery<AssetInfos>(
-    [CELATONE_QUERY_KEYS.ASSET_INFOS, endpoint, withPrices],
-    async () =>
+  return useQuery<AssetInfos>({
+    queryKey: [CELATONE_QUERY_KEYS.ASSET_INFOS, endpoint, withPrices],
+    queryFn: async () =>
       getAssetInfos(endpoint, withPrices).then((assets) => {
         const assetsMap = assets.reduce<AssetInfos>(
           (acc, asset) => ({ ...acc, [asset.id]: asset }),
@@ -56,8 +56,10 @@ export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
 
         return assetsMap;
       }),
-    { enabled: Boolean(endpoint), refetchOnWindowFocus: false, retry: 1 }
-  );
+    enabled: Boolean(endpoint),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useAssetInfosByType = ({

@@ -9,6 +9,7 @@ import { DropZone } from "lib/components/dropzone";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { UploadCard } from "lib/components/upload";
+import { useQueryEvents } from "lib/hooks";
 import { useDecodeModule } from "lib/services/move/module";
 import { useCallback, useState } from "react";
 
@@ -58,36 +59,39 @@ export const UploadModuleCard = ({
   const [decodeError, setDecodeError] = useState("");
   const { address } = useCurrentChain();
 
-  const { isFetching } = useDecodeModule({
+  const decodeModuleQuery = useDecodeModule({
     base64EncodedFile: tempFile.base64,
     options: {
       enabled: Boolean(tempFile.base64),
-      onError: () => {
-        setDecodeError(
-          "Failed to decode .mv file. Please make sure the file is a module."
-        );
-        setTempFile(DEFAULT_TEMP_FILE);
-      },
-      onSuccess: (data) => {
-        setFile(
-          tempFile.file,
-          tempFile.base64,
-          data,
-          statusResolver({
-            address,
-            data,
-            index,
-            modules,
-            policy,
-          })
-        );
-        setDecodeError("");
-        setTempFile(DEFAULT_TEMP_FILE);
-      },
       refetchOnWindowFocus: false,
       retry: 0,
     },
   });
+  useQueryEvents(decodeModuleQuery, {
+    onError: () => {
+      setDecodeError(
+        "Failed to decode .mv file. Please make sure the file is a module."
+      );
+      setTempFile(DEFAULT_TEMP_FILE);
+    },
+    onSuccess: (data) => {
+      setFile(
+        tempFile.file,
+        tempFile.base64,
+        data,
+        statusResolver({
+          address,
+          data,
+          index,
+          modules,
+          policy,
+        })
+      );
+      setDecodeError("");
+      setTempFile(DEFAULT_TEMP_FILE);
+    },
+  });
+  const { isFetching } = decodeModuleQuery;
 
   const handleFileDrop = useCallback(async (target: File) => {
     const reader = new FileReader();

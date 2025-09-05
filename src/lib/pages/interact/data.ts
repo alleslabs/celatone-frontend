@@ -1,5 +1,6 @@
 import type { Addr, IndexedModule, Option } from "lib/types";
 
+import { useQueryEvents } from "lib/hooks";
 import {
   useModuleByAddressRest,
   useModulesByAddress,
@@ -19,25 +20,32 @@ export const useSearchModules = ({
   onModulesSuccess: (modules: IndexedModule[]) => void;
   onModuleSuccess: (modules: IndexedModule) => void;
 }) => {
-  const { isFetching: isModuleFetching, refetch: refetchModule } =
-    useModuleByAddressRest({
-      address,
-      moduleName: moduleName ?? "",
-      options: {
-        enabled: false,
-        onError,
-        onSuccess: onModuleSuccess,
-        refetchOnWindowFocus: false,
-        retry: false,
-      },
-    });
-  const { isFetching: isModulesFetching, refetch: refetchModules } =
-    useModulesByAddress({
-      address,
+  const moduleByAddressRestQuery = useModuleByAddressRest({
+    address,
+    moduleName: moduleName ?? "",
+    options: {
       enabled: false,
-      onError,
-      onSuccess: ({ items }) => onModulesSuccess(items),
-    });
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  });
+  useQueryEvents(moduleByAddressRestQuery, {
+    onError,
+    onSuccess: onModuleSuccess,
+  });
+  const { isFetching: isModuleFetching, refetch: refetchModule } =
+    moduleByAddressRestQuery;
+
+  const modulesByAddressQuery = useModulesByAddress({
+    address,
+    enabled: false,
+  });
+  useQueryEvents(modulesByAddressQuery, {
+    onError,
+    onSuccess: ({ items }) => onModulesSuccess(items),
+  });
+  const { isFetching: isModulesFetching, refetch: refetchModules } =
+    modulesByAddressQuery;
 
   const refetch = useMemo(
     () => (moduleName ? refetchModule : refetchModules),

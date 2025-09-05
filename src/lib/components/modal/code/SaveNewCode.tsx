@@ -7,7 +7,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { NumberInput, TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
-import { useGetMaxLengthError } from "lib/hooks";
+import { useGetMaxLengthError, useQueryEvents } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useCodeRest } from "lib/services/wasm/code";
 import {
@@ -60,9 +60,12 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const { getCodeLocalInfo, isCodeIdSaved, saveNewCode, updateCodeInfo } =
     useCodeStore();
 
-  const { isFetching, isRefetching, refetch } = useCodeRest(Number(codeId), {
-    cacheTime: 0,
+  const codeRestQuery = useCodeRest(Number(codeId), {
     enabled: false,
+    gcTime: 0,
+    retry: false,
+  });
+  useQueryEvents(codeRestQuery, {
     onError: () => {
       setCodeIdStatus({ message: "Invalid code ID", state: "error" });
       setUploader("Not found");
@@ -82,8 +85,8 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       setUploader(data.uploader);
       setUploaderStatus({ state: "success" });
     },
-    retry: false,
   });
+  const { isFetching, isRefetching, refetch } = codeRestQuery;
 
   /* CALLBACK */
   const reset = () => {

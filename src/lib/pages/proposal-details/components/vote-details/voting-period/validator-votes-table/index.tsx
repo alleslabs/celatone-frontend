@@ -11,7 +11,7 @@ import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import { useDebounce } from "lib/hooks";
+import { useDebounce, useQueryEvents } from "lib/hooks";
 import { useProposalValidatorVotes } from "lib/services/proposal";
 import { ProposalVoteType } from "lib/types";
 import { useMemo, useState } from "react";
@@ -121,14 +121,17 @@ export const ValidatorVotesTable = ({
     },
   });
 
-  const { data, isLoading, refetch } = useProposalValidatorVotes(
+  const proposalValidatorVotesQuery = useProposalValidatorVotes(
     id,
     pageSize,
     offset,
     answerFilter,
-    debouncedSearch,
-    { onSuccess: ({ total }) => setTotalData(total) }
+    debouncedSearch
   );
+  useQueryEvents(proposalValidatorVotesQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data, isLoading, refetch } = proposalValidatorVotesQuery;
 
   const isSearching =
     debouncedSearch !== "" || answerFilter !== ProposalVoteType.ALL;

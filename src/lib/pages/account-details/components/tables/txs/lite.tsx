@@ -12,6 +12,7 @@ import {
   TransactionsTable,
   ViewMore,
 } from "lib/components/table";
+import { useQueryEvents } from "lib/hooks";
 import { useTxsByAddressRest } from "lib/services/tx";
 
 import type { TxsTableProps } from "./types";
@@ -40,15 +41,16 @@ export const TxsTableLite = ({
     },
   });
 
-  const { data, error, isLoading } = useTxsByAddressRest(
+  const txsByAddressRestQuery = useTxsByAddressRest(
     address as BechAddr20,
     undefined,
     onViewMore ? 5 : pageSize,
-    offset,
-    {
-      onSuccess: ({ total }) => setTotalData(total),
-    }
+    offset
   );
+  useQueryEvents(txsByAddressRestQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data, error, isLoading } = txsByAddressRestQuery;
 
   const isMobileOverview = isMobile && !!onViewMore;
   const txsCount = data?.total;

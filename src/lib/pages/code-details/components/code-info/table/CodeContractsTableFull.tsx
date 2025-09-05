@@ -38,9 +38,12 @@ export const CodeContractsTableFull = observer(
       },
     });
 
-    const { data, isLoading } = useCodeContracts(codeId, pageSize, offset, {
-      onSuccess: ({ total }) => setTotalData(total),
-    });
+    const { data, isLoading } = useCodeContracts(
+      codeId,
+      pageSize,
+      offset,
+      setTotalData
+    );
 
     const tableHeaderId = "contractTableHeader";
 

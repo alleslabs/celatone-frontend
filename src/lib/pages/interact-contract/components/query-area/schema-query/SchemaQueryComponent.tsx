@@ -32,6 +32,7 @@ import {
   OutputMessageTabs,
 } from "lib/components/json-schema";
 import { DEFAULT_RPC_ERROR } from "lib/data";
+import { useQueryEvents } from "lib/hooks";
 import { useContractQueryRest } from "lib/services/wasm/contract";
 import {
   encode,
@@ -79,9 +80,12 @@ export const SchemaQueryComponent = ({
   const [queryError, setQueryError] = useState("");
   const [timestamp, setTimestamp] = useState<Date>();
 
-  const { isFetching, refetch } = useContractQueryRest(contractAddress, msg, {
-    cacheTime: 0,
+  const contractQueryRestQuery = useContractQueryRest(contractAddress, msg, {
     enabled: !msgSchema.inputRequired && opened,
+    gcTime: 0,
+    retry: false,
+  });
+  useQueryEvents(contractQueryRestQuery, {
     onError: (err) => {
       setQueryError(
         (err as AxiosError<RpcQueryError>).response?.data.message ||
@@ -104,8 +108,8 @@ export const SchemaQueryComponent = ({
         type: "query",
       });
     },
-    retry: false,
   });
+  const { isFetching, refetch } = contractQueryRestQuery;
 
   const handleQuery = useCallback(() => {
     trackActionQuery(

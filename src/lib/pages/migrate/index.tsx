@@ -18,7 +18,7 @@ import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { TierSwitcher } from "lib/components/TierSwitcher";
-import { useUploadCode } from "lib/hooks";
+import { useQueryEvents, useUploadCode } from "lib/hooks";
 import { useUploadAccessParamsRest } from "lib/services/wasm/code";
 import { useContractData } from "lib/services/wasm/contract";
 import { useRouter } from "next/router";
@@ -89,7 +89,8 @@ const MigrateBody = ({
     [codeId, firstStep, navigate]
   );
 
-  useContractData(contractAddress, {
+  const contractDataQuery = useContractData(contractAddress);
+  useQueryEvents(contractDataQuery, {
     onError: () => {
       setValue("admin", defaultValues.admin);
       setValue("contractAddress", defaultValues.contractAddress);

@@ -1,5 +1,5 @@
 import type { FormStatus } from "lib/components/forms";
-import type { BechAddr } from "lib/types";
+import type { AccountTypeRest, BechAddr } from "lib/types";
 import type { ReactNode } from "react";
 
 import { Flex } from "@chakra-ui/react";
@@ -13,7 +13,11 @@ import {
   useWasmConfig,
 } from "lib/app-provider";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
-import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
+import {
+  useGetMaxLengthError,
+  useHandleAccountSave,
+  useQueryEvents,
+} from "lib/hooks";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountStore } from "lib/providers/store";
 import { useAccountType } from "lib/services/account";
@@ -98,7 +102,7 @@ export function SaveNewAccountModal({
     setStatus({ message, state: "error" });
   };
 
-  const onSuccess = (type: AccountType) => {
+  const onSuccess = (type: AccountType | AccountTypeRest) => {
     if (type !== AccountType.ContractAccount) setStatus(statusSuccess);
     else {
       setErrorStatus("You need to save contract through Contract page.");
@@ -111,11 +115,12 @@ export function SaveNewAccountModal({
     setErrorStatus(err.message);
   };
 
-  const { refetch } = useAccountType(addressState, {
-    enabled: false,
+  const accountTypeQuery = useAccountType(addressState);
+  useQueryEvents(accountTypeQuery, {
     onError,
     onSuccess,
   });
+  const { refetch } = accountTypeQuery;
 
   useEffect(() => {
     if (addressState.trim().length === 0) {

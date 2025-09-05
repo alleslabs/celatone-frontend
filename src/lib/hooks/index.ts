@@ -11,6 +11,7 @@ export * from "./useLocalStorage";
 export * from "./useNftAddressFormat";
 export * from "./useOpenTab";
 export * from "./usePinnedNetworks";
+export * from "./useQueryEvents";
 export * from "./useRedo";
 export * from "./useSingleMessageProps";
 export * from "./useStepper";

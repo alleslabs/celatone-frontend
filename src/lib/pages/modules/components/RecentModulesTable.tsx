@@ -4,6 +4,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ModulesTable } from "lib/components/table";
+import { useQueryEvents } from "lib/hooks";
 import { useModules } from "lib/services/move/module";
 import { useMoveVerifyInfos } from "lib/services/verification/move";
 import { mergeModulePath } from "lib/utils";
@@ -25,9 +26,11 @@ export const RecentModulesTable = () => {
       pageSize: 10,
     },
   });
-  const { data, error, isLoading } = useModules(pageSize, offset, {
+  const modulesQuery = useModules(pageSize, offset);
+  useQueryEvents(modulesQuery, {
     onSuccess: ({ total }) => setTotalData(total),
   });
+  const { data, error, isLoading } = modulesQuery;
 
   const results = useMoveVerifyInfos(
     data?.items.map((module) => ({

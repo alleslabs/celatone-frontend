@@ -10,7 +10,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableTitle, ViewMore } from "lib/components/table";
-import { useDebounce } from "lib/hooks";
+import { useDebounce, useQueryEvents } from "lib/hooks";
 import {
   useValidatorVotedProposals,
   useValidatorVotedProposalsAnswerCounts,
@@ -55,14 +55,18 @@ export const VotedProposalsTable = ({
     },
   });
 
-  const { data, isLoading } = useValidatorVotedProposals(
+  const validatorVotedProposalsQuery = useValidatorVotedProposals(
     validatorAddress,
     onViewMore ? 5 : pageSize,
     offset,
     answerFilter,
-    debouncedSearch,
-    { onSuccess: ({ total }) => setTotalData(total) }
+    debouncedSearch
   );
+  useQueryEvents(validatorVotedProposalsQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data, isLoading } = validatorVotedProposalsQuery;
+
   const { data: answers } =
     useValidatorVotedProposalsAnswerCounts(validatorAddress);
 

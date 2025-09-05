@@ -55,15 +55,13 @@ export const useMovePoolInfos = ({ withPrices }: { withPrices: boolean }) => {
     data: pools,
     error: poolsErrors,
     isFetching: isPoolsFetching,
-  } = useQuery(
-    [CELATONE_QUERY_KEYS.MOVE_POOL_INFOS, moveEndpoint],
-    async () => getMovePoolInfos(moveEndpoint),
-    {
-      enabled: moveConfig.enabled,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+  } = useQuery({
+    enabled: moveConfig.enabled,
+    queryFn: async () => getMovePoolInfos(moveEndpoint),
+    queryKey: [CELATONE_QUERY_KEYS.MOVE_POOL_INFOS, moveEndpoint],
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 
   const data = pools?.reduce<MovePoolInfos>((acc, curr) => {
     const coinAInfo = assetInfos?.[curr.coin_a.denom];

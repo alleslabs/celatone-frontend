@@ -23,7 +23,7 @@ import { TextInput } from "lib/components/forms";
 import { CelatoneSeo } from "lib/components/Seo";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useTxBroadcast } from "lib/hooks";
+import { useQueryEvents, useTxBroadcast } from "lib/hooks";
 import { useSimulateFeeQuery } from "lib/services/tx";
 import { useContractData } from "lib/services/wasm/contract";
 import { MsgType } from "lib/types";
@@ -101,7 +101,8 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
   /**
    * @remarks Contract admin validation
    */
-  useContractData(contractAddress, {
+  const contractDataQuery = useContractData(contractAddress);
+  useQueryEvents(contractDataQuery, {
     onError: () => onContractPathChange(),
     onSuccess: (data) => {
       if (data.contract.admin !== address) onContractPathChange();

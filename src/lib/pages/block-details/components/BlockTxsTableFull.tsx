@@ -2,6 +2,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TableTitle, TransactionsTable } from "lib/components/table";
+import { useQueryEvents } from "lib/hooks";
 import { useTxsByBlockHeight } from "lib/services/tx";
 
 const scrollComponentId = "block_tx_table_header";
@@ -26,9 +27,11 @@ export const BlockTxsTableFull = ({ height }: BlockTxsTableProps) => {
       pageSize: 10,
     },
   });
-  const { data, isLoading } = useTxsByBlockHeight(height, pageSize, offset, {
+  const txsByBlockHeightQuery = useTxsByBlockHeight(height, pageSize, offset);
+  useQueryEvents(txsByBlockHeightQuery, {
     onSuccess: ({ total }) => setTotalData(total),
   });
+  const { data, isLoading } = txsByBlockHeightQuery;
 
   return (
     <>

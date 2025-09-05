@@ -9,7 +9,7 @@ import { useExampleAddresses, useValidateAddress } from "lib/app-provider";
 import { ControllerInput } from "lib/components/forms";
 import { OffChainForm } from "lib/components/OffChainForm";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import { useHandleContractSave } from "lib/hooks";
+import { useHandleContractSave, useQueryEvents } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { useContractData } from "lib/services/wasm/contract";
 import {
@@ -92,8 +92,13 @@ export function SaveNewContractModal({
     });
   };
 
-  const { refetch } = useContractData(contractAddressState as BechAddr32, {
-    enabled: false,
+  const contractDataQuery = useContractData(
+    contractAddressState as BechAddr32,
+    {
+      enabled: false,
+    }
+  );
+  useQueryEvents(contractDataQuery, {
     onError: (err) => {
       resetForm(false);
       setStatus({
@@ -126,6 +131,7 @@ export function SaveNewContractModal({
       });
     },
   });
+  const { refetch } = contractDataQuery;
 
   useEffect(() => {
     if (contractAddressState.trim().length === 0) {
