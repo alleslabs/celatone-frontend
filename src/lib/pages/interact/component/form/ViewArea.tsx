@@ -68,7 +68,19 @@ export const ViewArea = ({
         (err as AxiosError<RpcQueryError>).response?.data.message ||
           DEFAULT_RPC_ERROR
       ),
-    onSuccess: (data) => setRes(JSON.parse(data)),
+    onSuccess: (data) => {
+      try {
+        setRes(JSON.parse(data));
+        setError(undefined);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Invalid JSON response (ViewArea)");
+        }
+        setRes(undefined);
+      }
+    },
   });
   const {
     isFetching: queryFetching,

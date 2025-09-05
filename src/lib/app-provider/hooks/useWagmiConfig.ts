@@ -1,3 +1,5 @@
+import type { Chain } from "wagmi/chains";
+
 import { initiaPrivyWalletConnector } from "@initia/interwovenkit-react";
 import { useEvmParams } from "lib/services/evm";
 import { convertCosmosChainIdToEvmChainId } from "lib/utils";
@@ -17,7 +19,6 @@ export const useWagmiConfig = () => {
   const {
     chainConfig: {
       features: { evm },
-      logo_URIs,
       prettyName,
       registry,
     },
@@ -43,8 +44,7 @@ export const useWagmiConfig = () => {
         unit.exponent > max.exponent ? unit : max
       );
 
-      const customChain = {
-        iconUrls: Object.values(logo_URIs ?? {}),
+      const customChain: Chain = {
         id: evmChainId,
         name: prettyName,
         nativeCurrency: {

@@ -44,11 +44,7 @@ import {
   SimulateMessageRender,
   UploadCard,
 } from "lib/components/upload";
-import {
-  useGetMaxLengthError,
-  useQueryEvents,
-  useTxBroadcast,
-} from "lib/hooks";
+import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
 import { useGovParamsDeprecated } from "lib/model/proposal";
 import { useSimulateFeeForProposalStoreCode } from "lib/services/tx";
 import { useUploadAccessParamsRest } from "lib/services/wasm/code";
@@ -247,23 +243,13 @@ const StoreCodeProposal = () => {
     setHashValue();
   }, [setHashValue]);
 
-  const simulateFeeForProposalStoreCodeQuery =
-    useSimulateFeeForProposalStoreCode({
-      addresses: addresses.map((addr) => addr.address),
-      builder,
-      codeHash,
-      description: proposalDesc,
-      enabled: Boolean(walletAddress && enabledTx),
-      initialDeposit,
-      permission,
-      precision: minDeposit?.precision,
-      runAs,
-      source,
-      title,
-      unpinCode,
-      wasmFile,
-    });
-  useQueryEvents(simulateFeeForProposalStoreCodeQuery, {
+  const { isFetching: isSimulating } = useSimulateFeeForProposalStoreCode({
+    addresses: addresses.map((addr) => addr.address),
+    builder,
+    codeHash,
+    description: proposalDesc,
+    enabled: Boolean(walletAddress && enabledTx),
+    initialDeposit,
     onError: (e) => {
       setSimulateStatus({ message: e.message, status: "failed" });
       setEstimatedFee(undefined);
@@ -277,8 +263,14 @@ const StoreCodeProposal = () => {
         setEstimatedFee(fabricateFee(fee));
       }
     },
+    permission,
+    precision: minDeposit?.precision,
+    runAs,
+    source,
+    title,
+    unpinCode,
+    wasmFile,
   });
-  const { isFetching: isSimulating } = simulateFeeForProposalStoreCodeQuery;
 
   const proceed = useCallback(async () => {
     if (!wasmFile) return null;

@@ -70,6 +70,8 @@ export const useSimulateFeeQuery = ({
 interface SimulateQueryParamsForStoreCode {
   addresses?: BechAddr[];
   enabled: boolean;
+  onError?: (err: Error) => void;
+  onSuccess?: (gas: Option<Gas>) => void;
   permission?: AccessType;
   wasmFile: Option<File>;
 }
@@ -77,6 +79,8 @@ interface SimulateQueryParamsForStoreCode {
 export const useSimulateFeeForStoreCode = ({
   addresses,
   enabled,
+  onError,
+  onSuccess,
   permission,
   wasmFile,
 }: SimulateQueryParamsForStoreCode) => {
@@ -100,7 +104,8 @@ export const useSimulateFeeForStoreCode = ({
     const craftMsg = await submitStoreCodeMsg();
     return simulateFee({ address, messages: [craftMsg] });
   };
-  return useQuery({
+
+  const simulateFeeQuery = useQuery({
     enabled,
     queryFn: simulateFn,
     queryKey: [
@@ -114,6 +119,13 @@ export const useSimulateFeeForStoreCode = ({
     refetchOnWindowFocus: false,
     retry: 2,
   });
+
+  useQueryEvents(simulateFeeQuery, {
+    onError,
+    onSuccess,
+  });
+
+  return simulateFeeQuery;
 };
 
 interface SimulateQueryParamsForProposalStoreCode {
@@ -141,6 +153,8 @@ export const useSimulateFeeForProposalStoreCode = ({
   description,
   enabled,
   initialDeposit,
+  onError,
+  onSuccess,
   permission,
   precision,
   runAs,
@@ -184,7 +198,7 @@ export const useSimulateFeeForProposalStoreCode = ({
     return simulateFee({ address, messages: [craftMsg] });
   };
 
-  return useQuery({
+  const simulateFeeQuery = useQuery({
     enabled,
     queryFn: simulateFn,
     queryKey: [
@@ -205,4 +219,11 @@ export const useSimulateFeeForProposalStoreCode = ({
     refetchOnWindowFocus: false,
     retry: 2,
   });
+
+  useQueryEvents(simulateFeeQuery, {
+    onError,
+    onSuccess,
+  });
+
+  return simulateFeeQuery;
 };

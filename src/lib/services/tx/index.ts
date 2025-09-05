@@ -134,7 +134,7 @@ export const useTxData = (
   return useQuery({
     enabled: enabled && Boolean(txHash && isTxHash(txHash)),
     queryFn: async () => queryFn(txHash),
-    queryKey: [CELATONE_QUERY_KEYS.TX_DATA, endpoint, txHash],
+    queryKey: [CELATONE_QUERY_KEYS.TX_DATA, endpoint, txHash, bech32Prefix],
     refetchOnWindowFocus: false,
     staleTime: Infinity,
   });

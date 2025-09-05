@@ -97,9 +97,10 @@ export const useEthCall = (
     ? zHexAddr20.parse(bech32AddressToHex(address))
     : undefined;
   const evm = useEvmConfig({ shouldRedirect: false });
+  const { enabled: optEnabled, ...restOptions } = options;
 
   return useQuery<string>({
-    enabled: evm.enabled && !!evm.jsonRpc,
+    enabled: (optEnabled ?? true) && evm.enabled && !!evm.jsonRpc,
     queryFn: async () => {
       if (!evm.enabled) throw new Error("EVM is not enabled (useEthCall)");
       return getEthCall(evm.jsonRpc, from ?? null, to, data);
@@ -114,7 +115,7 @@ export const useEthCall = (
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     retry: false,
-    ...options,
+    ...restOptions,
   });
 };
 
