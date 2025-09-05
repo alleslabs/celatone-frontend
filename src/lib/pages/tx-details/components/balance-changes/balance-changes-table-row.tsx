@@ -1,88 +1,31 @@
-import type { FtChange, Metadata, ObjectChange } from "@initia/tx-decoder";
+import type { Metadata } from "@initia/tx-decoder";
 
-import { Divider, Flex, Grid, Stack, Text } from "@chakra-ui/react";
+import { Divider, Grid, Stack } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
 import { useGetAddressType } from "lib/app-provider";
-import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { NftImage } from "lib/components/nft/NftImage";
 import { TableRow } from "lib/components/table";
-import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useNftGlyphImage, useNftMetadata } from "lib/services/nft";
-import { zAddr, zHexAddr32 } from "lib/types";
 
+import { BalanceChangeNft } from "./balance-changes-nft";
 import { BalanceChangesToken } from "./balance-changes-token";
 
 interface BalanceChangesTableRowProps {
   address: string;
-  ftChange: FtChange;
+  ftChangeEntries: [string, string][];
   metadata?: Metadata;
-  objectChange: ObjectChange;
+  objectChangeEntries: [string, string][];
   templateColumns: string;
 }
 
-const BalanceChangeNft = ({
-  change,
-  id,
-  metadata,
-}: {
-  change: number;
-  id: string;
-  metadata: Metadata;
-}) => {
-  const formatAddresses = useFormatAddresses();
-  const nftMetadata = metadata[id];
-  const nftObject = {
-    collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
-    nftAddress: zHexAddr32.parse(formatAddresses(id).hex),
-    tokenId: nftMetadata?.tokenId,
-    uri: nftMetadata?.tokenUri,
-  };
-  const { data: nft } = useNftMetadata(nftObject);
-  const nftImage = useNftGlyphImage(nftObject);
-
-  if (!nft) return null;
-
-  const isPositiveAmount = change > 0;
-  const formattedAmount = `${isPositiveAmount ? "+" : "-"}${" "}${nft?.name}`;
-
-  return (
-    <Flex align="center" gap={1}>
-      <AppLink
-        href={`/nft-collections/${nftMetadata.collectionAddress}/nft/${id}`}
-      >
-        <NftImage
-          borderRadius="4px"
-          height="20px"
-          src={nftImage}
-          width="20px"
-        />
-      </AppLink>
-      <Text color={isPositiveAmount ? "success.main" : "error.main"}>
-        {formattedAmount}
-      </Text>
-    </Flex>
-  );
-};
-
 export const BalanceChangesTableRow = ({
   address,
-  ftChange,
+  ftChangeEntries,
   metadata,
-  objectChange,
+  objectChangeEntries,
   templateColumns,
 }: BalanceChangesTableRowProps) => {
   const getAddressType = useGetAddressType();
 
-  const ftChangeEntries = ftChange
-    ? Object.entries(ftChange).filter(([, amount]) => amount !== "0")
-    : [];
-  const objectChangeEntries = objectChange
-    ? Object.entries(objectChange).filter(([, amount]) => amount !== "0")
-    : [];
-  const count = ftChangeEntries.length + objectChangeEntries.length;
-
-  if (!count) return null;
   return (
     <Grid bg="gray.900" rounded={8} templateColumns={templateColumns}>
       <TableRow borderBottom={0} minH={0} p={4}>
