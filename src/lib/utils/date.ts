@@ -1,3 +1,4 @@
+import type { Duration } from "dayjs/plugin/duration";
 import type { Option } from "lib/types";
 
 import dayjs from "dayjs";
@@ -26,9 +27,22 @@ export const parseNanosecondsToDate = (date: string): Date =>
 export const parseDateOpt = (dateOpt: Option<string>): Option<Date> =>
   dateOpt ? parseDate(dateOpt) : undefined;
 
+export const parseUnixToDate = (unix: number | string): Date =>
+  dayjs.unix(Number(unix)).toDate();
+
+export const parseUnixToDateOpt = (
+  unix: Option<number | string>
+): Option<Date> =>
+  unix !== undefined && isNumeric(String(unix))
+    ? dayjs.unix(Number(unix)).toDate()
+    : undefined;
+
 // TODO: remove default fn
 export const parseDateDefault = (dateOpt: Option<string>): Date =>
   dateOpt ? parseDate(dateOpt) : getDefaultDate();
+
+export const parseSecondsToDuration = (seconds: number) =>
+  dayjs.duration(seconds * 1000);
 
 export const formatUTC = (date: Date) =>
   dayjs.utc(date).format("MMM DD, YYYY, h:mm:ss A [(UTC)]");
@@ -38,6 +52,9 @@ export const formatHHmm = (date: Date) => dayjs.utc(date).format("HH:mm");
 export const formatMMMDD = (date: Date) => dayjs.utc(date).format("MMM DD");
 
 export const dateFromNow = (date: Date) => dayjs.utc(date).fromNow();
+
+export const dateDiffDuration = (date1: Date, date2: Date) =>
+  dayjs.duration(dayjs.utc(date1).diff(dayjs.utc(date2)));
 
 export const formatSeconds = (sec: Option<string>) => {
   if (sec === undefined || Number.isNaN(parseInt(sec, 10))) return "N/A";
@@ -61,6 +78,17 @@ export const formatSeconds = (sec: Option<string>) => {
     default:
       return `${formatSec.toFixed()} ${plur("second", formatSec.toNumber())}`;
   }
+};
+
+export const formatDayJSDuration = (duration: Duration) => {
+  const years = duration.years();
+  const months = duration.months();
+  const days = duration.days();
+  const parts = [];
+  if (years > 0) parts.push(`${years} ${plur("year", years)}`);
+  if (months > 0) parts.push(`${months} ${plur("month", months)}`);
+  if (days > 0) parts.push(`${days} ${plur("day", days)}`);
+  return parts.length > 0 ? parts.join(" ") : "0 day";
 };
 
 export const formatDuration = (duration: number | string) => {

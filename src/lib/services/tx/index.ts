@@ -7,8 +7,7 @@ import type {
   Nullable,
   Option,
   PoolTxFilter,
-  Transaction,
-  TransactionWithSignerPubkey,
+  TransactionWithTxResponse,
   TxFilters,
 } from "lib/types";
 
@@ -25,6 +24,7 @@ import {
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
+import { useTxDecoderContext } from "lib/providers/tx-decoder";
 import { createQueryFnWithTimeout } from "lib/services/utils";
 import { zHexAddr20 } from "lib/types";
 import {
@@ -37,8 +37,10 @@ import { useCallback } from "react";
 import type {
   AccountTxsResponse,
   BlockTxsResponse,
+  RawTxResponse,
   TxData,
-  TxsResponse,
+  TxsResponseItemFromRest,
+  TxsResponseWithTxResponse,
 } from "../types";
 
 import {
@@ -71,16 +73,30 @@ import {
   getTxsSequencer,
 } from "./sequencer";
 
+export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
+  const { txDecoder } = useTxDecoderContext();
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.TX_DECODER, rawTxResponse?.txhash],
+    async () => txDecoder.decodeTransaction(rawTxResponse),
+    {
+      enabled: !!rawTxResponse,
+    }
+  );
+};
+
 export const useTxData = (
   txHash: Option<string>,
   enabled = true
 ): UseQueryResult<TxData> => {
+  const { bech32Prefix } = useCurrentChain();
   const {
     chainConfig: { rest: restEndpoint },
     currentChainId,
   } = useCelatoneApp();
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("txs");
+  const { txDecoder } = useTxDecoderContext();
 
   const endpoint = isFullTier ? apiEndpoint : restEndpoint;
 
@@ -92,18 +108,25 @@ export const useTxData = (
         ? await getTxData(endpoint, hash)
         : await getTxDataRest(endpoint, hash);
 
-      const { txResponse } = txData;
+      const { rawTxResponse, txResponse } = txData;
 
-      const logs = extractTxLogs(txResponse);
+      const signer = convertAccountPubkeyToAccountAddress(
+        txResponse.tx.authInfo.signerInfos[0].publicKey,
+        bech32Prefix
+      );
 
+      const logs = extractTxLogs(rawTxResponse);
+      const decodedTx = await txDecoder.decodeTransaction(rawTxResponse);
       return {
         ...txResponse,
         chainId: currentChainId,
+        decodedTx,
         isTxFailed: Boolean(txResponse.code),
         logs,
+        signer,
       };
     },
-    [currentChainId, endpoint, isFullTier]
+    [bech32Prefix, currentChainId, endpoint, isFullTier, txDecoder]
   );
 
   return useQuery(
@@ -120,14 +143,14 @@ export const useTxData = (
 export const useTxs = (
   limit: number,
   offset: number,
-  options: Pick<UseQueryOptions<TxsResponse>, "onSuccess"> = {}
+  options: Pick<UseQueryOptions<TxsResponseWithTxResponse>, "onSuccess"> = {}
 ) => {
   const endpoint = useBaseApiRoute("txs");
   const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
   const { enabled: moveEnable } = useMoveConfig({ shouldRedirect: false });
   const isInitia = useInitia();
 
-  return useQuery<TxsResponse>(
+  return useQuery<TxsResponseWithTxResponse>(
     [
       CELATONE_QUERY_KEYS.TXS,
       endpoint,
@@ -326,7 +349,7 @@ export const useTxsByContractAddressRest = (
   address: BechAddr32,
   limit: number,
   offset: number,
-  options: UseQueryOptions<TxsResponse> = {}
+  options: UseQueryOptions<TxsResponseWithTxResponse> = {}
 ) => {
   const {
     chainConfig: { rest: restEndpoint },
@@ -337,12 +360,14 @@ export const useTxsByContractAddressRest = (
     () =>
       getTxsByContractAddressRest(restEndpoint, address, limit, offset).then(
         (txs) => ({
-          items: txs.items.map<Transaction>((tx) => ({
-            ...tx,
+          items: txs.items.map<TransactionWithTxResponse>((tx) => ({
+            ...tx.item,
+            rawTxResponse: tx.rawTxResponse,
             sender: convertAccountPubkeyToAccountAddress(
-              tx.signerPubkey,
+              tx.item.signerPubkey,
               bech32Prefix
             ),
+            txResponse: tx.txResponse,
           })),
           total: txs.total,
         })
@@ -350,7 +375,7 @@ export const useTxsByContractAddressRest = (
     [address, restEndpoint, limit, offset, bech32Prefix]
   );
 
-  return useQuery<TxsResponse>(
+  return useQuery<TxsResponseWithTxResponse>(
     [
       CELATONE_QUERY_KEYS.TXS_BY_CONTRACT_ADDRESS_REST,
       restEndpoint,
@@ -368,7 +393,7 @@ export const useTxsByAddressRest = (
   search: Option<string>,
   limit: number,
   offset: number,
-  options: UseQueryOptions<TxsResponse> = {}
+  options: UseQueryOptions<TxsResponseWithTxResponse> = {}
 ) => {
   const {
     chainConfig: { rest: restEndpoint },
@@ -385,7 +410,7 @@ export const useTxsByAddressRest = (
 
         const tx = txsByHash.items[0];
         const sender = convertAccountPubkeyToAccountAddress(
-          tx.signerPubkey,
+          tx.item.signerPubkey,
           bech32Prefix
         );
 
@@ -403,18 +428,20 @@ export const useTxsByAddressRest = (
     })();
 
     return {
-      items: txs.items.map<Transaction>((tx) => ({
-        ...tx,
+      items: txs.items.map<TransactionWithTxResponse>((tx) => ({
+        ...tx.item,
+        rawTxResponse: tx.rawTxResponse,
         sender: convertAccountPubkeyToAccountAddress(
-          tx.signerPubkey,
+          tx.item.signerPubkey,
           bech32Prefix
         ),
+        txResponse: tx.txResponse,
       })),
       total: txs.total,
     };
   }, [address, restEndpoint, limit, offset, bech32Prefix, search]);
 
-  return useQuery<TxsResponse>(
+  return useQuery<TxsResponseWithTxResponse>(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_REST,
       restEndpoint,
@@ -458,16 +485,18 @@ export const useTxsSequencer = (limit = 10) => {
   );
 
   return {
-    data: data?.pages.flatMap<Transaction>((page) =>
-      page.items.map((item) => {
+    data: data?.pages.flatMap<TransactionWithTxResponse>((page) =>
+      page.items.map((item: TxsResponseItemFromRest) => {
         const sender = convertAccountPubkeyToAccountAddress(
-          item.signerPubkey,
+          item.item.signerPubkey,
           bech32Prefix
         );
 
         return {
-          ...item,
+          ...item.item,
+          rawTxResponse: item.rawTxResponse,
           sender,
+          txResponse: item.txResponse,
         };
       })
     ),
@@ -494,18 +523,20 @@ export const useTxsCountSequencer = () => {
 const mapTxsByAddressSequencerItems = (
   prefix: string,
   address: Option<BechAddr>,
-  items: Option<TransactionWithSignerPubkey[]>
+  items: Option<TxsResponseItemFromRest[]>
 ) =>
-  items?.map((item) => {
+  items?.map((item: TxsResponseItemFromRest) => {
     const sender = convertAccountPubkeyToAccountAddress(
-      item.signerPubkey,
+      item.item.signerPubkey,
       prefix
     );
 
     return {
-      ...item,
-      isSigner: sender === address,
+      ...item.item,
+      isSigner: address === sender,
+      rawTxResponse: item.rawTxResponse,
       sender,
+      txResponse: item.txResponse,
     };
   });
 
@@ -533,13 +564,13 @@ export const useTxsByAddressSequencer = (
 
           const tx = txsByHash.items[0];
           const sender = convertAccountPubkeyToAccountAddress(
-            tx.signerPubkey,
+            tx.item.signerPubkey,
             bech32Prefix
           );
 
           if (address === sender) return txsByHash;
 
-          const findAddressFromEvents = tx.events?.some((event) =>
+          const findAddressFromEvents = tx.item.events?.some((event) =>
             event.attributes.some((attr) => attr.value === address)
           );
 
@@ -592,7 +623,7 @@ export const useTxsByAddressSequencer = (
   );
 
   return {
-    data: data?.pages.flatMap(
+    data: data?.pages.flatMap<TransactionWithTxResponse>(
       (page) =>
         mapTxsByAddressSequencerItems(bech32Prefix, address, page.items) ?? []
     ),
@@ -660,12 +691,14 @@ export const useTxsByBlockHeightSequencer = (height: number) => {
     async () => {
       const txs = await getTxsByBlockHeightSequencer(indexerEndpoint, height);
 
-      return txs.map<Transaction>((tx) => ({
-        ...tx,
+      return txs.map<TransactionWithTxResponse>((tx) => ({
+        ...tx.item,
+        rawTxResponse: tx.rawTxResponse,
         sender: convertAccountPubkeyToAccountAddress(
-          tx.signerPubkey,
+          tx.item.signerPubkey,
           bech32Prefix
         ),
+        txResponse: tx.txResponse,
       }));
     },
     { refetchOnWindowFocus: false, retry: 1 }

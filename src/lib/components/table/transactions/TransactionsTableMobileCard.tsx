@@ -1,10 +1,12 @@
-import type { Transaction } from "lib/types";
+import type { TransactionWithTxResponse } from "lib/types";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Spinner, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ActionMessages } from "lib/components/action-msg/ActionMessages";
+import { DecodeMessage } from "lib/components/decode-message";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { useTxDecoder } from "lib/services/tx";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
@@ -15,7 +17,7 @@ interface TransactionsTableMobileCardProps {
   showRelations: boolean;
   showSuccess: boolean;
   showTimestamp: boolean;
-  transaction: Transaction;
+  transaction: TransactionWithTxResponse;
 }
 export const TransactionsTableMobileCard = ({
   showRelations,
@@ -25,6 +27,9 @@ export const TransactionsTableMobileCard = ({
 }: TransactionsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
   const isTxHasNoData = transaction.height === 0;
+  const { rawTxResponse, txResponse } = transaction;
+  const { data: decodedTx, isFetching: isDecodedTxFetching } =
+    useTxDecoder(rawTxResponse);
 
   return (
     <MobileCardTemplate
@@ -60,7 +65,26 @@ export const TransactionsTableMobileCard = ({
             Unable to load data due to large transaction size
           </Text>
         ) : (
-          <ActionMessages transaction={transaction} />
+          <>
+            {isDecodedTxFetching ? (
+              <Spinner boxSize={4} />
+            ) : (
+              <>
+                {txResponse && decodedTx && decodedTx.messages.length > 0 ? (
+                  <DecodeMessage
+                    compact
+                    decodedMessage={decodedTx.messages[0].decodedMessage}
+                    log={undefined}
+                    metadata={decodedTx.metadata}
+                    msgBody={txResponse.tx.body.messages[0]}
+                    msgCount={txResponse.tx.body.messages.length}
+                  />
+                ) : (
+                  <ActionMessages transaction={transaction} />
+                )}
+              </>
+            )}
+          </>
         )
       }
       topContent={

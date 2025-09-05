@@ -46,7 +46,7 @@ export const CustomTab = ({
           color: "gray.500",
         },
         "&[aria-selected=true]": {
-          color: "primary.light",
+          color: "white",
         },
       }}
       variant="ghost-gray"
@@ -65,7 +65,7 @@ export const CustomTab = ({
         />
       ) : (
         count !== undefined && (
-          <Badge ml={2} variant={isSelected ? "primary" : "gray"}>
+          <Badge ml={2} variant={isSelected ? "white" : "gray"}>
             {count === null ? fallbackValue : count}
           </Badge>
         )

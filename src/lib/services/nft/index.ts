@@ -14,6 +14,7 @@ import {
   useWasmConfig,
 } from "lib/app-provider";
 import { useNftAddressFormat } from "lib/hooks";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
   type BechAddr,
   type BechAddr32,
@@ -64,7 +65,7 @@ export const useNfts = (
   limit: number,
   offset: number,
   search = "",
-  enabled = true
+  options?: Pick<UseQueryOptions<NftsResponse>, "enabled" | "onSuccess">
 ) => {
   const { tier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("nfts");
@@ -120,7 +121,8 @@ export const useNfts = (
     {
       // NOTE: use only in full tier for now.
       // There's no place where uses in sequencer
-      enabled: tier === "full" ? enabled : false,
+      ...options,
+      enabled: tier === "full" && (options?.enabled ?? true),
       refetchOnWindowFocus: false,
       retry: 1,
     }
@@ -204,8 +206,12 @@ export const useNftByTokenId = (
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
+  const formatAddresses = useFormatAddresses();
+
   // Nft address is available for Move VM only
-  const nftAddress = moveConfig.enabled ? zHexAddr32.parse(tokenId) : undefined;
+  const nftAddress = moveConfig.enabled
+    ? zHexAddr32.parse(formatAddresses(tokenId).hex)
+    : undefined;
 
   return useQuery(
     [
@@ -317,7 +323,7 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
 };
 
 export const useNftGlyphImage = (
-  nft: Option<Nft>,
+  nft: Option<Partial<Nft>>,
   width?: string,
   height?: string
 ) => {
@@ -335,13 +341,13 @@ export const useNftGlyphImage = (
   return `${GLYPH_API_URL}/${currentChainId}/${nft.collectionAddress}/${tokenId}${params.toString() ? `?${params}` : ""}`;
 };
 
-export const useNftMetadata = (nft: Option<Nft>) =>
+export const useNftMetadata = (nft: Option<Partial<Nft>>) =>
   useQuery<NftMetadata>(
     [CELATONE_QUERY_KEYS.NFT_METADATA, nft],
     async () => {
       if (!nft) throw new Error("NFT is required (useNftMetadata)");
 
-      const metadata = await getNftMetadata(nft.uri);
+      const metadata = await getNftMetadata(nft?.uri ?? "");
       return metadata;
     },
     {
@@ -386,7 +392,11 @@ export const useNftTransactionsSequencer = (
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery(
-      [CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_SEQUENCER, indexerEndpoint],
+      [
+        CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_SEQUENCER,
+        indexerEndpoint,
+        nftAddress,
+      ],
       async ({ pageParam }) =>
         getNftTransactionsSequencer(indexerEndpoint, pageParam, nftAddress),
       {

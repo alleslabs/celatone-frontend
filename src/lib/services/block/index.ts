@@ -1,6 +1,11 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 import type { BlocksResponse } from "lib/services/types";
-import type { BlockData, ConsensusAddr, Option, Transaction } from "lib/types";
+import type {
+  BlockData,
+  ConsensusAddr,
+  Option,
+  TransactionWithTxResponse,
+} from "lib/types";
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
@@ -60,7 +65,7 @@ export const useBlockDataRest = (height: number, enabled = true) => {
   return useQuery<{
     block: BlockData;
     proposerConsensusAddress: ConsensusAddr;
-    transactions: Transaction[];
+    transactions: TransactionWithTxResponse[];
   }>(
     [CELATONE_QUERY_KEYS.BLOCK_DATA_REST, restEndpoint, height],
     async () => {
@@ -72,12 +77,14 @@ export const useBlockDataRest = (height: number, enabled = true) => {
           rawProposerConsensusAddress,
           bech32Prefix
         ),
-        transactions: transactions.map<Transaction>((tx) => ({
-          ...tx,
+        transactions: transactions.map<TransactionWithTxResponse>((tx) => ({
+          ...tx.item,
+          rawTxResponse: tx.rawTxResponse,
           sender: convertAccountPubkeyToAccountAddress(
-            tx.signerPubkey,
+            tx.item.signerPubkey,
             bech32Prefix
           ),
+          txResponse: tx.txResponse,
         })),
       };
     },

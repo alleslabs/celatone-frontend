@@ -15,12 +15,18 @@ interface TxMsgDetailsProps extends TxMsgData {
   isExpand: boolean;
 }
 
-export const TxMsgDetails = ({ isExpand, ...txMsgData }: TxMsgDetailsProps) => {
+export const TxMsgDetails = ({
+  compact,
+  isExpand,
+  ...txMsgData
+}: TxMsgDetailsProps) => {
   const getAddressType = useGetAddressType();
-  const receipts = generateReceipts(txMsgData, getAddressType).filter(
-    Boolean
-  ) as TxReceipt[];
+  const receipts = generateReceipts(
+    { ...txMsgData, compact },
+    getAddressType
+  ).filter(Boolean) as TxReceipt[];
 
+  if (compact) return null;
   return (
     <Flex
       direction="column"

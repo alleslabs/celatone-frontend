@@ -23,6 +23,7 @@ export const getNftCollections = (
       params: {
         limit,
         offset,
+        reverse: false,
         search,
       },
     })

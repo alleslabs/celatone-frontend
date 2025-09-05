@@ -31,6 +31,7 @@ export const CollectionSuppliesFull = ({
     pagesQuantity,
     setCurrentPage,
     setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
       currentPage: 1,
@@ -42,7 +43,10 @@ export const CollectionSuppliesFull = ({
     collectionAddressHex,
     pageSize,
     offset,
-    debouncedSearch
+    debouncedSearch,
+    {
+      onSuccess: () => setTotalData(totalSupply),
+    }
   );
 
   useEffect(() => setCurrentPage(1), [debouncedSearch, setCurrentPage]);

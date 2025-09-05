@@ -1378,6 +1378,65 @@ export const generateReceipts = (
         },
       ];
     }
+    case "/initia.move.v1.MsgExecute":
+    case "/initia.move.v1.MsgExecuteJSON": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          html: getCommonReceiptHtml({
+            linkType: "contract_address",
+            type: "explorer",
+            value: details.module_address,
+          }),
+          title: "Module address",
+        },
+        {
+          html: getCommonReceiptHtml({
+            linkType: "module_name",
+            textLabel: details.module_name,
+            type: "explorer",
+            value: `${details.module_address}/${details.module_name}`,
+          }),
+          title: "Module name",
+        },
+        {
+          html: getCommonReceiptHtml({
+            linkType: "function_name",
+            queryParams: {
+              address: details.module_address,
+              functionName: details.function_name,
+              moduleName: details.module_name,
+            },
+            textLabel: details.function_name,
+            type: "explorer",
+            value: undefined,
+          }),
+          title: "Function name",
+        },
+        {
+          html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
+            type: "explorer",
+            value: details.sender,
+          }),
+          title: "Sender",
+        },
+        {
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.type_args,
+          }),
+          title: "Type args",
+        },
+        {
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.args,
+          }),
+          title: "Args",
+        },
+      ];
+    }
     // osmosis/gamm
     case "/osmosis.gamm.poolmodels.balancer.v1beta1.MsgCreateBalancerPool": {
       const details = extractTxDetails(type, body, log);

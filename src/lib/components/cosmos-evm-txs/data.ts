@@ -30,7 +30,7 @@ export const useCosmosEvmTxs = (address: BechAddr20) => {
     isError: isNewEvmHashesError,
     isFetching: isNewEvmHashesFetching,
   } = useEvmTxHashesByCosmosTxHashes(
-    cosmosTxs?.items.map((tx) => tx.hash) ?? [],
+    cosmosTxs?.items.map((tx) => tx.item.hash) ?? [],
     !!cosmosTxs && !isCosmosTxsFetching
   );
 
@@ -51,7 +51,7 @@ export const useCosmosEvmTxs = (address: BechAddr20) => {
       if (evmTxHash !== null && newEvmTxsData[index]) {
         pageEvmTxs.push({
           ...newEvmTxsData[index],
-          timestamp: cosmosTxs.items[index].created,
+          timestamp: cosmosTxs.items[index].item.created,
         });
       }
     });

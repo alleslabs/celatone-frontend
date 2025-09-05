@@ -39,9 +39,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1411](https://github.com/alleslabs/celatone-frontend/pull/1411) Introduce useNftAddressFormat to automatically switch based on VM, and do some refactoring
+- [#1352](https://github.com/alleslabs/celatone-frontend/pull/1352) Support link module in execution message tx details, and new tx decoder UI
+- [#1350](https://github.com/alleslabs/celatone-frontend/pull/1350) Support new APIs v2
+- [#1402](https://github.com/alleslabs/celatone-frontend/pull/1402) Replace qrcode.react with qr-code-styling, update UI according to redesign
+
 ### Improvements
 
+- [#1405](https://github.com/alleslabs/celatone-frontend/pull/1405) Enhance Readme.md and add CODEOWNERS
+
 ### Bug fixes
+
+- [#1423](https://github.com/alleslabs/celatone-frontend/pull/1423) Fix message body from L1, and L2
+- [#1414](https://github.com/alleslabs/celatone-frontend/pull/1414) Fix accordion txs table missing value
+- [#1412](https://github.com/alleslabs/celatone-frontend/pull/1412) Fix explorer link component minor bugs
+- [#1373](https://github.com/alleslabs/celatone-frontend/pull/1373) Fix pagination in Nft page
 
 ## v1.14.0
 
@@ -59,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#1415](https://github.com/alleslabs/celatone-frontend/pull/1415) Fix evm contracts simulate fee query keys
 - [#1369](https://github.com/alleslabs/celatone-frontend/pull/1369) Fix token card name spacing
 - [#1367](https://github.com/alleslabs/celatone-frontend/pull/1367) Fix network card search params replacement
+- [#1359](https://github.com/alleslabs/celatone-frontend/pull/1359) Remove unwanted 0 prefix for inactive validator
 - [#1357](https://github.com/alleslabs/celatone-frontend/pull/1357) Fix validate uint string rule
 
 ## v1.13.0

@@ -1,10 +1,8 @@
 import type { Option } from "lib/types";
 
 import { useQuery } from "@tanstack/react-query";
-import { CELATONE_API } from "env";
 import { useInitia } from "lib/app-provider";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
-import { isUrl } from "lib/utils";
 
 import { getApiChainConfigs, getChainProfile } from "./api";
 
@@ -16,7 +14,6 @@ export const useApiChainConfigs = (
     [CELATONE_QUERY_KEYS.CHAIN_CONFIGS, networkTypes, chain],
     () => getApiChainConfigs(networkTypes, chain),
     {
-      enabled: isUrl(String(CELATONE_API)),
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       retry: 1,

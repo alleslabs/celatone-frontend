@@ -4,28 +4,42 @@ import type { Nullish } from "lib/types";
 import {
   Alert,
   AlertDescription,
-  Badge,
   Flex,
-  Heading,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
+import { useEvmConfig, useMoveConfig } from "lib/app-provider";
+import { CustomTab } from "lib/components/CustomTab";
+import { DecodeMessage } from "lib/components/decode-message";
 import { CustomIcon } from "lib/components/icon";
+import { useState } from "react";
 
+import { TxMessage } from "../../../components/tx-message";
+import { BalanceChanges } from "./balance-changes";
 import { EvmRelatedTxSection } from "./evm-related-tx-section";
-import { TxMessage } from "./tx-message";
 
 interface MessageSectionProps {
   relatedEvmTxHash: Nullish<string>;
   txData: TxData;
 }
 
+enum MessageSectionTab {
+  Message = "message",
+  BalanceChange = "balanceChange",
+}
+
 export const MessageSection = ({
   relatedEvmTxHash,
   txData,
 }: MessageSectionProps) => {
+  const [tab, setTab] = useState(MessageSectionTab.Message);
   const evm = useEvmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
 
   const {
+    decodedTx,
     logs,
     tx: {
       body: { messages },
@@ -49,20 +63,60 @@ export const MessageSection = ({
         </Alert>
       )}
       {relatedEvmTxHash && <EvmRelatedTxSection evmTxHash={relatedEvmTxHash} />}
-      <Flex align="center" gap={2}>
-        <Heading as="h6" variant="h6">
-          {evm.enabled ? "Cosmos " : ""}Messages
-        </Heading>
-        <Badge>{messages.length}</Badge>
-      </Flex>
-      {messages.map((msg, idx) => (
-        <TxMessage
-          key={JSON.stringify(msg) + idx.toString()}
-          isSingleMsg={messages.length === 1}
-          log={logs[idx]}
-          msgBody={msg}
-        />
-      ))}
+      <Tabs
+        index={Object.values(MessageSectionTab).indexOf(tab)}
+        isLazy
+        lazyBehavior="keepMounted"
+      >
+        <TabList
+          borderBottomWidth="1px"
+          borderColor="gray.700"
+          overflowX="scroll"
+        >
+          <CustomTab
+            count={messages.length}
+            onClick={() => setTab(MessageSectionTab.Message)}
+          >
+            {evm.enabled ? "Cosmos " : ""}Messages
+          </CustomTab>
+          {move.enabled && (
+            <CustomTab onClick={() => setTab(MessageSectionTab.BalanceChange)}>
+              Balance changes
+            </CustomTab>
+          )}
+        </TabList>
+        <TabPanels>
+          <TabPanel px={0}>
+            {messages.map((msg, idx) =>
+              decodedTx.messages[idx] ? (
+                <DecodeMessage
+                  key={JSON.stringify(msg) + idx.toString()}
+                  compact={false}
+                  decodedMessage={decodedTx.messages[idx].decodedMessage}
+                  log={logs[idx]}
+                  metadata={decodedTx.metadata}
+                  msgBody={msg}
+                  msgCount={messages.length}
+                />
+              ) : (
+                <TxMessage
+                  key={JSON.stringify(msg) + idx.toString()}
+                  compact={false}
+                  log={logs[idx]}
+                  msgBody={msg}
+                  msgCount={messages.length}
+                />
+              )
+            )}
+          </TabPanel>
+          <TabPanel px={0}>
+            <BalanceChanges
+              metadata={decodedTx.metadata}
+              totalBalanceChanges={decodedTx.totalBalanceChanges}
+            />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Flex>
   );
 };

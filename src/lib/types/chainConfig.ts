@@ -203,7 +203,7 @@ export const zChainConfig = z
     }),
     fees: zFeeConfig,
     gas: zGasConfig,
-    indexer: z.string().default(""), // for non initia chains
+    indexer: zHttpsUrl,
     logo_URIs: z
       .object({
         jpeg: z.string().optional(),
