@@ -3,7 +3,7 @@ import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 import { Flex, Stack, Text } from "@chakra-ui/react";
 import { useGetAddressType } from "lib/app-provider";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useMetadata } from "lib/services/nft";
+import { useNftGlyphImage, useNftMetadata } from "lib/services/nft";
 import { zAddr, zHexAddr32 } from "lib/types";
 import { formatUTC, parseNanosecondsToDate } from "lib/utils";
 import { useState } from "react";
@@ -40,12 +40,14 @@ export const DecodeMessageIbcNft = ({
   const getAddressType = useGetAddressType();
   const formatAddresses = useFormatAddresses();
   const nftMetadata = metadata?.[data.tokenAddress];
-  const { data: nft } = useMetadata({
+  const nftObject = {
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
     nftAddress: zHexAddr32.parse(formatAddresses(data.tokenAddress).hex),
     tokenId: nftMetadata?.tokenId,
     uri: nftMetadata?.tokenUri,
-  });
+  };
+  const { data: nft } = useNftMetadata(nftObject);
+  const nftImage = useNftGlyphImage(nftObject);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -69,7 +71,7 @@ export const DecodeMessageIbcNft = ({
               <NftImage
                 borderRadius="4px"
                 height="20px"
-                src={nft.image}
+                src={nftImage}
                 width="20px"
               />
             </AppLink>
@@ -138,7 +140,7 @@ export const DecodeMessageIbcNft = ({
               <AppLink
                 href={`/nft-collections/${data.collectionId}/nft/${data.tokenAddress}`}
               >
-                <NftImage borderRadius="8px" src={nft.image} width="150px" />
+                <NftImage borderRadius="8px" src={nftImage} width="150px" />
               </AppLink>
               <ExplorerLink
                 showCopyOnHover

@@ -4,7 +4,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import { AppLink } from "lib/components/AppLink";
 import { NftImage } from "lib/components/nft/NftImage";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useMetadata } from "lib/services/nft";
+import { useNftGlyphImage, useNftMetadata } from "lib/services/nft";
 import { zAddr, zHexAddr32 } from "lib/types";
 
 interface BalanceChangeNftProps {
@@ -20,12 +20,14 @@ export const BalanceChangeNft = ({
 }: BalanceChangeNftProps) => {
   const formatAddresses = useFormatAddresses();
   const nftMetadata = metadata[id];
-  const { data: nft } = useMetadata({
+  const nftObject = {
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
     nftAddress: zHexAddr32.parse(formatAddresses(id).hex),
     tokenId: nftMetadata?.tokenId,
     uri: nftMetadata?.tokenUri,
-  });
+  };
+  const { data: nft } = useNftMetadata(nftObject);
+  const nftImage = useNftGlyphImage(nftObject);
 
   if (!nft) return null;
 
@@ -34,16 +36,25 @@ export const BalanceChangeNft = ({
 
   return (
     <Flex align="center" gap={1}>
-      <AppLink
-        href={`/nft-collections/${nftMetadata.collectionAddress}/nft/${id}`}
-      >
+      {nftMetadata?.collectionAddress ? (
+        <AppLink
+          href={`/nft-collections/${nftMetadata.collectionAddress}/nft/${id}`}
+        >
+          <NftImage
+            borderRadius="4px"
+            height="20px"
+            src={nftImage}
+            width="20px"
+          />
+        </AppLink>
+      ) : (
         <NftImage
           borderRadius="4px"
           height="20px"
-          src={nft.image}
+          src={nftImage}
           width="20px"
         />
-      </AppLink>
+      )}
       <Text color={isPositiveAmount ? "success.main" : "error.main"}>
         {formattedAmount}
       </Text>

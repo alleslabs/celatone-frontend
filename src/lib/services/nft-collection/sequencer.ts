@@ -1,7 +1,7 @@
 import type {
+  Addr,
   Addr32,
   BechAddr32,
-  HexAddr,
   HexAddr32,
   Nullable,
   Option,
@@ -241,7 +241,7 @@ export const getNftCollectionsByCollectionAddressSequencer = async (
 
 export const getNftCollectionsByAccountAddressSequencer = async (
   endpoint: string,
-  accountAddress: HexAddr
+  accountAddress: Addr
 ) =>
   axios
     .get(
@@ -249,6 +249,7 @@ export const getNftCollectionsByAccountAddressSequencer = async (
       {
         params: {
           "pagination.count_total": false,
+          "pagination.limit": 1000,
           "pagination.reverse": true,
         },
       }

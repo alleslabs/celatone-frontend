@@ -50,7 +50,7 @@ export const zNftMintInfoResponse = z
   .optional();
 export type NftMintInfo = z.infer<typeof zNftMintInfoResponse>;
 
-export const zMetadata = z
+export const zNftMetadata = z
   .object({
     attributes: z
       .object({
@@ -66,7 +66,7 @@ export const zMetadata = z
     name: z.string(),
   })
   .transform(snakeToCamel);
-export type Metadata = z.infer<typeof zMetadata>;
+export type NftMetadata = z.infer<typeof zNftMetadata>;
 
 export const zNftTxResponse = z
   .object({
@@ -129,22 +129,12 @@ const zNftSequencer = z
     tokenId: val.nft.token_id,
     uri: val.nft.uri,
   }));
-export type NftSequencer = z.infer<typeof zNftSequencer>;
 
 export const zNftsResponseSequencer = z.object({
   pagination: zPagination,
   tokens: z.array(zNftSequencer),
 });
-
-export const zNftsByAccountResponseSequencer = z
-  .object({
-    pagination: zPagination,
-    tokens: z.array(zNftSequencer),
-  })
-  .transform((val) => ({
-    items: val.tokens,
-    pagination: val.pagination,
-  }));
+export type NftsResponseSequencer = z.infer<typeof zNftsResponseSequencer>;
 
 export const zNftInfoMoveRest = z
   .object({

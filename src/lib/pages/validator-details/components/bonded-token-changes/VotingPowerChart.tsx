@@ -4,7 +4,7 @@ import type { AssetInfos, Option, Token, U, ValidatorAddr } from "lib/types";
 
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { trackUseViewMore } from "lib/amplitude";
-import { useMobile } from "lib/app-provider";
+import { useEvmConfig, useMobile } from "lib/app-provider";
 import { LineChart } from "lib/components/chart/LineChart";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -35,6 +35,7 @@ export const VotingPowerChart = ({
 }: VotingPowerChartProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
+  const evm = useEvmConfig({ shouldRedirect: false });
 
   const { data: historicalPowers, isLoading } =
     useValidatorHistoricalPowers(validatorAddress);
@@ -72,12 +73,13 @@ export const VotingPowerChart = ({
   const customizeTooltip = (tooltip: TooltipModel<"line">) => {
     const { dataIndex, raw } = tooltip.dataPoints[0];
 
-    const formattedAmount = formatUTokenWithPrecision(
-      raw as U<Token<BigSource>>,
-      assetInfo?.precision ?? 0,
-      false,
-      2
-    );
+    const formattedAmount = formatUTokenWithPrecision({
+      amount: raw as U<Token<BigSource>>,
+      decimalPoints: 2,
+      isEvm: evm.enabled,
+      isSuffix: false,
+      precision: assetInfo?.precision ?? 0,
+    });
 
     const formattedDate = formatUTC(
       historicalPowers.items[dataIndex].hourRoundedTimestamp
@@ -157,12 +159,13 @@ export const VotingPowerChart = ({
         <LineChart
           customizeTooltip={customizeTooltip}
           customizeYAxisTicks={(value) =>
-            formatUTokenWithPrecision(
-              value as U<Token<BigSource>>,
-              assetInfo?.precision ?? 0,
-              false,
-              2
-            )
+            formatUTokenWithPrecision({
+              amount: value as U<Token<BigSource>>,
+              decimalPoints: 2,
+              isEvm: evm.enabled,
+              isSuffix: false,
+              precision: assetInfo?.precision ?? 0,
+            })
           }
           dataset={dataset}
           labels={labels}

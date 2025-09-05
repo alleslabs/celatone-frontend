@@ -33,7 +33,7 @@ export const BalanceChanges = ({
           ...Object.keys(totalBalanceChanges.object),
         ])
       ),
-    [totalBalanceChanges]
+    [totalBalanceChanges.ft, totalBalanceChanges.object]
   );
 
   const mapped = useMemo(
@@ -60,7 +60,7 @@ export const BalanceChanges = ({
           };
         })
         .filter((item): item is NonNullable<typeof item> => Boolean(item)),
-    [addresses, totalBalanceChanges]
+    [addresses, totalBalanceChanges.ft, totalBalanceChanges.object]
   );
 
   if (!mapped.length)
