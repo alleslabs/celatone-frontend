@@ -1,22 +1,15 @@
 import type { PropsWithChildren } from "react";
 
 import {
-  initiaPrivyWalletConnector,
   injectStyles,
   InterwovenKitProvider,
 } from "@initia/interwovenkit-react";
 import InterwovenKitStyles from "@initia/interwovenkit-react/styles.js";
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useWagmiConfig } from "lib/app-provider";
+import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { useL1InfoByNetworkType } from "lib/hooks";
 import { useEffect } from "react";
-import { createConfig, http, WagmiProvider } from "wagmi";
-import { mainnet } from "wagmi/chains";
-
-const wagmiConfig = createConfig({
-  chains: [mainnet],
-  connectors: [initiaPrivyWalletConnector],
-  transports: { [mainnet.id]: http() },
-});
+import { WagmiProvider } from "wagmi";
 
 const WithInitiaWidget = ({ children }: PropsWithChildren) => {
   const { chainConfig, currentChainId } = useCelatoneApp();
@@ -62,6 +55,12 @@ export const InitiaWidgetProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const wagmiConfig = useWagmiConfig();
+
+  if (!wagmiConfig) {
+    return <LoadingOverlay />;
+  }
+
   return (
     <WagmiProvider config={wagmiConfig}>
       <WithInitiaWidget>{children}</WithInitiaWidget>

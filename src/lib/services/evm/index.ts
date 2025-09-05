@@ -23,6 +23,7 @@ import {
 export const useEvmParams = () => {
   const {
     chainConfig: {
+      chainId,
       features: { evm },
       rest: restEndpoint,
     },
@@ -32,9 +33,14 @@ export const useEvmParams = () => {
     enabled: evm.enabled,
     queryFn: async () => {
       if (!evm.enabled) throw new Error("EVM is not enabled (useEvmParams)");
-      return getEvmParams(restEndpoint);
+      const { params } = await getEvmParams(restEndpoint);
+      return {
+        chainId,
+        params,
+      };
     },
-    queryKey: [CELATONE_QUERY_KEYS.EVM_PARAMS_REST, restEndpoint, evm.enabled],
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: [CELATONE_QUERY_KEYS.EVM_PARAMS_REST, restEndpoint, chainId],
     refetchOnWindowFocus: false,
     retry: false,
     retryOnMount: false,

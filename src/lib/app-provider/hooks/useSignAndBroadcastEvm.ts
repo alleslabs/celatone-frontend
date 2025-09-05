@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import type { TransactionRequest } from "ethers";
 import type { TxReceiptJsonRpc } from "lib/services/types";
+import type { Hex } from "viem";
 
-import { useEvmParams } from "lib/services/evm";
 import { getEthGetTransactionReceipt } from "lib/services/evm/json-rpc";
 import { convertCosmosChainIdToEvmChainId, sleep } from "lib/utils";
 import { useCallback } from "react";
+import { parseEther } from "viem";
+import { useSendTransaction, useSwitchChain } from "wagmi";
 
 import { useCelatoneApp } from "../contexts";
 import { useCurrentChain } from "./useCurrentChain";
@@ -49,79 +49,46 @@ const getEvmTxResponse = async (jsonRpcEndpoint: string, txHash: string) => {
   });
 };
 
+type SignAndBroadcastEvmRequest = {
+  data: string;
+  to: string;
+  value: string;
+};
+
 export type SignAndBroadcastEvm = (
-  request: TransactionRequest
+  request: SignAndBroadcastEvmRequest
 ) => Promise<TxReceiptJsonRpc>;
 
 export const useSignAndBroadcastEvm = () => {
   const {
     chainConfig: {
+      chainId: cosmosChainId,
       features: { evm },
-      logo_URIs,
-      prettyName,
-      registry,
     },
   } = useCelatoneApp();
-  const { chainId, walletProvider } = useCurrentChain();
-  const { data } = useEvmParams();
+  const { walletProvider } = useCurrentChain();
+  const { switchChainAsync } = useSwitchChain();
+  const { sendTransactionAsync } = useSendTransaction();
 
   return useCallback(
-    async (request: TransactionRequest): Promise<TxReceiptJsonRpc> => {
-      // if (evm.enabled && walletProvider.type === "initia-widget") {
-      //   const { ethereum, requestEthereumTx, wallet } = walletProvider.context;
-      //   if (wallet?.type !== "evm")
-      //     throw new Error("Please reconnect to EVM wallet");
+    async (request: SignAndBroadcastEvmRequest): Promise<TxReceiptJsonRpc> => {
+      if (evm.enabled && walletProvider.type === "initia-widget") {
+        const evmChainId = convertCosmosChainIdToEvmChainId(cosmosChainId);
+        await switchChainAsync({ chainId: evmChainId });
 
-      //   const evmChainId = "0x".concat(
-      //     convertCosmosChainIdToEvmChainId(chainId).toString(16)
-      //   );
-
-      //   const feeDenom = data?.params.feeDenom.slice(-40) ?? "";
-      //   const foundAsset = registry?.assets.find((asset) =>
-      //     asset.denom_units.find(
-      //       (denom_unit) => denom_unit.denom.slice(-40) === feeDenom
-      //     )
-      //   );
-
-      //   if (foundAsset) {
-      //     const denomUnit = foundAsset.denom_units.reduce((max, unit) =>
-      //       unit.exponent > max.exponent ? unit : max
-      //     );
-
-      //     await ethereum?.request({
-      //       method: "wallet_addEthereumChain",
-      //       params: [
-      //         {
-      //           chainId: evmChainId,
-      //           chainName: prettyName,
-      //           iconUrls: Object.values(logo_URIs ?? {}),
-      //           nativeCurrency: {
-      //             decimals: denomUnit.exponent,
-      //             name: foundAsset.name,
-      //             symbol: foundAsset.symbol,
-      //           },
-      //           rpcUrls: [evm.jsonRpc],
-      //         },
-      //       ],
-      //     });
-      //   }
-
-      //   await ethereum?.request({
-      //     method: "wallet_switchEthereumChain",
-      //     params: [{ chainId: evmChainId }],
-      //   });
-
-      //   const txHash = await requestEthereumTx(
-      //     { ...request, chainId: evmChainId },
-      //     { chainId }
-      //   );
-      //   return getEvmTxResponse(evm.jsonRpc, txHash);
-      // }
+        const txHash = await sendTransactionAsync({
+          chainId: evmChainId,
+          data: request.data as Hex,
+          to: request.to as Hex,
+          value: parseEther(request.value),
+        });
+        return getEvmTxResponse(evm.jsonRpc, txHash);
+      }
       throw new Error("Unsupported wallet provider (useSignAndBroadcastEvm)");
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
-      chainId,
+      cosmosChainId,
       // eslint-disable-next-line react-hooks/exhaustive-deps
       evm.enabled && evm.jsonRpc,
       walletProvider.context,
