@@ -329,7 +329,7 @@ export const useNftGlyphImage = (
 ) => {
   const { currentChainId } = useCelatoneApp();
 
-  if (!nft) return "";
+  if (!nft || !GLYPH_API_URL) return "";
 
   const params = new URLSearchParams();
   if (width) params.set("width", width);
