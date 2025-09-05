@@ -75,7 +75,6 @@ export const TxMsgExpand = ({
             <ExplorerLink
               ampCopierSection="tx_page_message_header_send_address"
               showCopyOnHover
-              textVariant="body1"
               type={getAddressType(toAddress)}
               value={toAddress}
             />
@@ -95,7 +94,6 @@ export const TxMsgExpand = ({
               <ExplorerLink
                 ampCopierSection="tx_page_message_header_proposal"
                 showCopyOnHover
-                textVariant="body1"
                 type="proposal_id"
                 value={
                   findAttr(log.events, "submit_proposal", "proposal_id") ?? ""
@@ -118,7 +116,6 @@ export const TxMsgExpand = ({
           <ExplorerLink
             ampCopierSection="tx_page_message_header_proposal"
             showCopyOnHover
-            textVariant="body1"
             type="proposal_id"
             value={body.proposalId as string}
           />
@@ -133,7 +130,6 @@ export const TxMsgExpand = ({
           <ExplorerLink
             ampCopierSection="tx_page_message_header_delegator"
             showCopyOnHover
-            textVariant="body1"
             type={getAddressType(body.delegatorAddress as string)}
             value={body.delegatorAddress as string}
           />{" "}
@@ -141,7 +137,6 @@ export const TxMsgExpand = ({
           <ExplorerLink
             ampCopierSection="tx_page_message_header_validator"
             showCopyOnHover
-            textVariant="body1"
             type={getAddressType(body.validatorAddress as string)}
             value={body.validatorAddress as string}
           />
@@ -156,7 +151,6 @@ export const TxMsgExpand = ({
           <ExplorerLink
             ampCopierSection="tx_page_message_header_contract"
             showCopyOnHover
-            textVariant="body1"
             type="contract_address"
             value={body.contract as string}
           />
@@ -175,7 +169,6 @@ export const TxMsgExpand = ({
           <ExplorerLink
             ampCopierSection="tx_page_message_header_contract"
             showCopyOnHover
-            textVariant="body1"
             type="contract_address"
             value={body.contract as string}
           />
@@ -191,7 +184,6 @@ export const TxMsgExpand = ({
             <ExplorerLink
               ampCopierSection="tx_page_message_header_contract"
               showCopyOnHover
-              textVariant="body1"
               type="contract_address"
               value={
                 findAttr(log.events, "instantiate", "_contract_address") ?? ""
@@ -203,7 +195,6 @@ export const TxMsgExpand = ({
             ampCopierSection="tx_page_message_header_code"
             rightIcon={<WasmVerifyBadgeById codeId={Number(body.codeId)} />}
             showCopyOnHover
-            textVariant="body1"
             type="code_id"
             value={body.codeId as string}
           />
@@ -219,7 +210,6 @@ export const TxMsgExpand = ({
             <ExplorerLink
               ampCopierSection="tx_page_message_header_contract"
               showCopyOnHover
-              textVariant="body1"
               type="contract_address"
               value={
                 findAttr(log.events, "instantiate", "_contract_address") ?? ""
@@ -231,7 +221,6 @@ export const TxMsgExpand = ({
             ampCopierSection="tx_page_message_header_code"
             rightIcon={<WasmVerifyBadgeById codeId={Number(body.codeId)} />}
             showCopyOnHover
-            textVariant="body1"
             type="code_id"
             value={body.codeId as string}
           />
@@ -246,7 +235,6 @@ export const TxMsgExpand = ({
           <ExplorerLink
             ampCopierSection="tx_page_message_header_contract"
             showCopyOnHover
-            textVariant="body1"
             type="contract_address"
             value={body.contract as string}
           />{" "}
@@ -254,7 +242,6 @@ export const TxMsgExpand = ({
           <ExplorerLink
             ampCopierSection="tx_page_message_header_code"
             showCopyOnHover
-            textVariant="body1"
             type="code_id"
             value={body.codeId as string}
           />
@@ -277,7 +264,6 @@ export const TxMsgExpand = ({
                 fontSize="24px"
                 rightIcon={<WasmVerifyBadgeById codeId={Number(codeId)} />}
                 showCopyOnHover
-                textVariant="body1"
                 type="code_id"
                 value={codeId}
               />
@@ -295,7 +281,6 @@ export const TxMsgExpand = ({
           <ExplorerLink
             ampCopierSection="tx_page_message_header_contract"
             showCopyOnHover
-            textVariant="body1"
             type="contract_address"
             value={body.contract as string}
           />{" "}
@@ -303,7 +288,6 @@ export const TxMsgExpand = ({
           <ExplorerLink
             ampCopierSection="tx_page_message_header_admin"
             showCopyOnHover
-            textVariant="body1"
             type={getAddressType(body.newAdmin as string)}
             value={body.newAdmin as string}
           />
@@ -367,8 +351,7 @@ export const TxMsgExpand = ({
         flexWrap={
           compact && !isHoverOverflowContent && !isMobile ? "nowrap" : "wrap"
         }
-        fontSize="16px"
-        fontWeight={500}
+        fontSize="14px"
         gap={2}
       >
         <Tag gap={0.5} minWidth="auto" py={0} variant="gray">

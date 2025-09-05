@@ -7,6 +7,7 @@ import { Stack, TableContainer } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { EmptyState } from "lib/components/state";
 import { MobileTableContainer } from "lib/components/table";
+import { useMemo } from "react";
 
 import { BalanceChangesMobileCard } from "./balance-changes-mobile-card";
 import { BalanceChangesTableHeader } from "./balance-changes-table-header";
@@ -24,57 +25,86 @@ export const BalanceChanges = ({
   const isMobile = useMobile();
   const templateColumns = "230px 1fr";
 
-  const addresses = Array.from(
-    new Set([
-      ...Object.keys(totalBalanceChanges.ft),
-      ...Object.keys(totalBalanceChanges.object),
-    ])
+  const addresses = useMemo(
+    () =>
+      Array.from(
+        new Set([
+          ...Object.keys(totalBalanceChanges.ft),
+          ...Object.keys(totalBalanceChanges.object),
+        ])
+      ),
+    [totalBalanceChanges]
   );
 
-  const mapped = addresses.map((address) => {
-    const ftChange = totalBalanceChanges.ft[address];
-    const objectChange = totalBalanceChanges.object[address];
+  const mapped = useMemo(
+    () =>
+      addresses
+        .map((address) => {
+          const ftChange = totalBalanceChanges.ft[address];
+          const ftChangeEntries = Object.entries(ftChange ?? {}).filter(
+            ([, amount]) => amount !== "0"
+          );
 
-    return {
-      address,
-      ftChange,
-      objectChange,
-    };
-  });
+          const objectChange = totalBalanceChanges.object[address];
+          const objectChangeEntries = Object.entries(objectChange ?? {}).filter(
+            ([, amount]) => amount !== "0"
+          );
 
-  return isMobile ? (
-    <MobileTableContainer>
-      {Object.entries(totalBalanceChanges.ft).map(([address, changes]) => (
-        <BalanceChangesMobileCard
-          key={address}
-          address={address}
-          changes={changes}
-        />
-      ))}
-    </MobileTableContainer>
-  ) : mapped.length ? (
+          if (ftChangeEntries.length + objectChangeEntries.length === 0)
+            return null;
+
+          return {
+            address,
+            ftChangeEntries,
+            objectChangeEntries,
+          };
+        })
+        .filter((item): item is NonNullable<typeof item> => Boolean(item)),
+    [addresses, totalBalanceChanges]
+  );
+
+  if (!mapped.length)
+    return (
+      <EmptyState
+        alignItems="flex-start"
+        message="No balances were changed by this transaction."
+        my={0}
+        py={6}
+        textVariant="body2"
+      />
+    );
+
+  if (isMobile) {
+    return (
+      <MobileTableContainer>
+        {mapped.map(({ address, ftChangeEntries, objectChangeEntries }) => (
+          <BalanceChangesMobileCard
+            key={address}
+            address={address}
+            ftChangeEntries={ftChangeEntries}
+            metadata={metadata}
+            objectChangeEntries={objectChangeEntries}
+          />
+        ))}
+      </MobileTableContainer>
+    );
+  }
+
+  return (
     <TableContainer>
       <BalanceChangesTableHeader templateColumns={templateColumns} />
       <Stack>
-        {mapped.map(({ address, ftChange, objectChange }) => (
+        {mapped.map(({ address, ftChangeEntries, objectChangeEntries }) => (
           <BalanceChangesTableRow
             key={address}
             address={address}
-            ftChange={ftChange}
+            ftChangeEntries={ftChangeEntries}
             metadata={metadata}
-            objectChange={objectChange}
+            objectChangeEntries={objectChangeEntries}
             templateColumns={templateColumns}
           />
         ))}
       </Stack>
     </TableContainer>
-  ) : (
-    <EmptyState
-      alignItems="flex-start"
-      message="No balances were changed by this transaction."
-      my={0}
-      py={6}
-      textVariant="body2"
-    />
   );
 };
