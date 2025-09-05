@@ -1,6 +1,7 @@
 import type { TokenWithValue } from "lib/types";
 
 import { Flex, Heading, Text } from "@chakra-ui/react";
+import { useEvmConfig } from "lib/app-provider";
 import { TokenImageRender } from "lib/components/token";
 import {
   formatPrice,
@@ -14,19 +15,27 @@ interface SingleBondCardBodySingleProps {
 
 export const SingleBondCardBodySingle = ({
   token,
-}: SingleBondCardBodySingleProps) => (
-  <>
-    <Flex alignItems="center" gap={1}>
-      <Heading as="h6" variant="h6">
-        {formatUTokenWithPrecision(token.amount, token.precision ?? 0)}
-      </Heading>
-      <Text textColor="text.main" variant="body1">
-        {getTokenLabel(token.denom, token.symbol)}
+}: SingleBondCardBodySingleProps) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  return (
+    <>
+      <Flex alignItems="center" gap={1}>
+        <Heading as="h6" variant="h6">
+          {formatUTokenWithPrecision({
+            amount: token.amount,
+            isEvm: evm.enabled,
+            precision: token.precision ?? 0,
+          })}
+        </Heading>
+        <Text textColor="text.main" variant="body1">
+          {getTokenLabel(token.denom, token.symbol)}
+        </Text>
+        <TokenImageRender boxSize={6} logo={token.logo} />
+      </Flex>
+      <Text textColor="text.dark" variant="body2">
+        ({token?.value ? formatPrice(token.value) : "-"})
       </Text>
-      <TokenImageRender boxSize={6} logo={token.logo} />
-    </Flex>
-    <Text textColor="text.dark" variant="body2">
-      ({token?.value ? formatPrice(token.value) : "-"})
-    </Text>
-  </>
-);
+    </>
+  );
+};

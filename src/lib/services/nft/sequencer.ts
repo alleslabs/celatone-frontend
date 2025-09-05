@@ -9,10 +9,7 @@ import {
 import type { Nft, NftMintInfo, NftTxResponse } from "../types";
 
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
-import {
-  zNftsByAccountResponseSequencer,
-  zNftsResponseSequencer,
-} from "../types";
+import { zNftsResponseSequencer } from "../types";
 
 export const getNftsSequencerLoop = async (
   endpoint: string,
@@ -63,37 +60,24 @@ export const getNftsSequencer = async (
 export const getNftsByAccountSequencer = async (
   endpoint: string,
   accountAddress: BechAddr,
-  collectionAddress?: Addr32
+  paginationKey: Option<string>,
+  collectionAddress?: Addr32,
+  tokenId?: string,
+  limit = 10
 ) => {
-  const nfts: Nft[] = [];
-
-  const fetchFn = async (paginationKey: Nullable<string>) => {
-    const res = await axios
-      .get(
-        `${endpoint}/indexer/nft/v1/tokens/by_account/${encodeURI(accountAddress)}`,
-        {
-          params: {
-            collection_addr: collectionAddress,
-            "pagination.key": paginationKey,
-            "pagination.reverse": true,
-          },
-        }
-      )
-      .then(({ data }) =>
-        parseWithError(zNftsByAccountResponseSequencer, data)
-      );
-
-    nfts.push(...res.items);
-
-    if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
-  };
-
-  await fetchFn(null);
-
-  return {
-    items: nfts,
-    total: nfts.length,
-  };
+  const { data } = await axios.get(
+    `${endpoint}/indexer/nft/v1/tokens/by_account/${encodeURIComponent(accountAddress)}`,
+    {
+      params: {
+        collection_addr: collectionAddress,
+        "pagination.key": paginationKey,
+        "pagination.limit": limit,
+        "pagination.reverse": true,
+        token_id: tokenId ? encodeURIComponent(tokenId) : undefined,
+      },
+    }
+  );
+  return parseWithError(zNftsResponseSequencer, data);
 };
 
 export const getNftMintInfoSequencer = async (

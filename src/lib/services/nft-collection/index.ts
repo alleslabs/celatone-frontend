@@ -1,5 +1,5 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
-import type { BechAddr32, HexAddr, HexAddr32, Nullable } from "lib/types";
+import type { Addr, BechAddr32, HexAddr32, Nullable } from "lib/types";
 
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
@@ -265,7 +265,7 @@ export const useNftCollectionActivitiesSequencer = (
         indexerEndpoint,
         collectionAddress,
       ],
-      queryFn: async ({ pageParam }: { pageParam?: string }) =>
+      queryFn: ({ pageParam }: { pageParam?: string }) =>
         getNftCollectionActivitiesSequencer(
           indexerEndpoint,
           pageParam,
@@ -314,12 +314,13 @@ export const useNftCollectionMutateEvents = (
   });
 };
 
-export const useNftCollectionsByAccountAddress = (accountAddress: HexAddr) => {
+export const useNftCollectionsByAccountAddress = (accountAddress: Addr) => {
   const apiEndpoint = useBaseApiRoute("nft_collections");
   const {
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const { tier } = useTierConfig();
+  const formatAddress = useNftAddressFormat();
 
   return useQuery({
     queryKey: [
@@ -329,19 +330,23 @@ export const useNftCollectionsByAccountAddress = (accountAddress: HexAddr) => {
       tier,
       accountAddress,
     ],
-    queryFn: async () =>
-      handleQueryByTier({
+    queryFn: async () => {
+      const formattedAccountAddress = formatAddress(accountAddress);
+      return handleQueryByTier({
         queryFull: () =>
-          getNftCollectionsByAccountAddress(apiEndpoint, accountAddress),
-        // TODO: revisit this later, it isn't used now.
+          getNftCollectionsByAccountAddress(
+            apiEndpoint,
+            formattedAccountAddress
+          ),
         querySequencer: () =>
           getNftCollectionsByAccountAddressSequencer(
             indexerEndpoint,
-            accountAddress
+            formattedAccountAddress
           ),
         threshold: "sequencer",
         tier,
-      }),
+      });
+    },
     refetchOnWindowFocus: false,
     retry: 1,
   });

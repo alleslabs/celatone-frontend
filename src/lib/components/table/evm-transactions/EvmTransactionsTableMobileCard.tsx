@@ -71,12 +71,13 @@ export const EvmTransactionsTableMobileCard = ({
             <Flex align="center" gap={2}>
               <Text variant="body2">
                 <Text as="span" fontWeight={700} mr={1}>
-                  {formatUTokenWithPrecision(
-                    token.amount,
-                    token.precision ?? 0,
-                    true,
-                    token.precision ? 6 : 0
-                  )}
+                  {formatUTokenWithPrecision({
+                    amount: token.amount,
+                    decimalPoints: token.precision ? 6 : 0,
+                    isEvm: true,
+                    isSuffix: true,
+                    precision: token.precision ?? 0,
+                  })}
                 </Text>
                 {getTokenLabel(token.denom, token.symbol)}
               </Text>

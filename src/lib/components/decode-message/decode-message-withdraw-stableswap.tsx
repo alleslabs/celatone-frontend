@@ -2,6 +2,7 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
+import { useEvmConfig } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
 import { coinToTokenWithValue, formatTokenWithValue } from "lib/utils";
 import { useMemo, useState } from "react";
@@ -30,6 +31,7 @@ export const DecodeMessageWithdrawStableSwap = ({
   msgBody,
   msgCount,
 }: DecodeMessageWithdrawStableSwapProps) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
   const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
@@ -98,7 +100,12 @@ export const DecodeMessageWithdrawStableSwap = ({
           <DexPoolLink liquidityDenom={data.liquidityDenom} />
         </DecodeMessageRow>
         <DecodeMessageRow title="LP amount">
-          {formatTokenWithValue(lpToken, undefined, true)}
+          {formatTokenWithValue({
+            decimalPoints: undefined,
+            hasTrailingZeros: true,
+            isEvm: evm.enabled,
+            token: lpToken,
+          })}
         </DecodeMessageRow>
         <DecodeMessageRow title="Withdrawn assets">
           <CoinsComponent coins={coins} />

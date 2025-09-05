@@ -2,6 +2,7 @@ export * from "./useCodeFilter";
 export * from "./useDebounce";
 export * from "./useEaster";
 export * from "./useExecuteCmds";
+export * from "./useGetFirstNftAsCollectionImage";
 export * from "./useGetMaxLengthError";
 export * from "./useHandleSave";
 export * from "./useIsCurrentPage";
