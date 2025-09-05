@@ -9,7 +9,7 @@ import type {
 } from "lib/types";
 
 import { SkeletonText, Text } from "@chakra-ui/react";
-import { useGovConfig } from "lib/app-provider";
+import { useEvmConfig, useGovConfig } from "lib/app-provider";
 import {
   extractParams,
   mapDeposit,
@@ -73,6 +73,7 @@ export const ResultExplanation = ({
   proposalData,
   votesInfo,
 }: ResultExplanationProps) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
   const gov = useGovConfig({ shouldRedirect: false });
   if (
     gov.enabled &&
@@ -127,9 +128,9 @@ export const ResultExplanation = ({
     return (
       <Text variant="body2">
         The proposal is currently in the deposit period and requires an
-        additional deposit of {formatTokenWithValueList(required)} to advance to
-        the voting period. Failure to make the required deposit will result in
-        the rejection of the proposal.
+        additional deposit of {formatTokenWithValueList(required, evm.enabled)}{" "}
+        to advance to the voting period. Failure to make the required deposit
+        will result in the rejection of the proposal.
       </Text>
     );
   }

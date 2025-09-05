@@ -4,8 +4,8 @@ import axios from "axios";
 import { parseWithError } from "lib/utils";
 
 import {
-  zMetadata,
   zNft,
+  zNftMetadata,
   zNftMintInfoResponse,
   zNftMutateEventsResponse,
   zNftsByAccountAddressResponse,
@@ -66,12 +66,12 @@ export const getNftMintInfo = async (endpoint: string, nftAddress: HexAddr32) =>
     .get(`${endpoint}/nft/${encodeURI(nftAddress)}/mint-info`)
     .then(({ data }) => parseWithError(zNftMintInfoResponse, data));
 
-export const getMetadata = async (uri: string) => {
+export const getNftMetadata = async (uri: string) => {
   const baseUrl = getIpfsUrl(uri);
 
   const tryFetch = async (url: string) => {
     const { data } = await axios.get(url);
-    return parseWithError(zMetadata, data);
+    return parseWithError(zNftMetadata, data);
   };
 
   try {

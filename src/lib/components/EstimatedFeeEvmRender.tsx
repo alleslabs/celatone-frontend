@@ -2,6 +2,7 @@ import type Big from "big.js";
 import type { Option } from "lib/types";
 
 import { Spinner } from "@chakra-ui/react";
+import { useEvmConfig } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
 import { useEvmParams } from "lib/services/evm";
 import { coinToTokenWithValue, formatTokenWithValue } from "lib/utils";
@@ -15,6 +16,7 @@ export const EstimatedFeeEvmRender = ({
   gasUsed: Option<Big>;
   loading: boolean;
 }) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
   const { data: assetInfos, isLoading: isAssetInfoLoading } = useAssetInfos({
     withPrices: false,
   });
@@ -38,5 +40,14 @@ export const EstimatedFeeEvmRender = ({
     feeAmount.toFixed(),
     assetInfos
   );
-  return <>{formatTokenWithValue(feeToken, undefined, false)}</>;
+  return (
+    <>
+      {formatTokenWithValue({
+        decimalPoints: undefined,
+        hasTrailingZeros: false,
+        isEvm: evm.enabled,
+        token: feeToken,
+      })}
+    </>
+  );
 };

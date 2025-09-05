@@ -176,71 +176,192 @@ describe("toToken", () => {
 describe("formatUTokenWithPrecision", () => {
   describe("invalid", () => {
     test("empty string", () => {
-      expect(formatUTokenWithPrecision("" as U<Token>, 6, false)).toEqual(
-        "0.000000"
-      );
-      expect(formatUTokenWithPrecision("" as U<Token>, 6, true, 1)).toEqual(
-        "0.0"
-      );
+      expect(
+        formatUTokenWithPrecision({
+          amount: "" as U<Token>,
+          isEvm: false,
+          isSuffix: false,
+          precision: 6,
+        })
+      ).toEqual("0.000000");
+      expect(
+        formatUTokenWithPrecision({
+          amount: "" as U<Token>,
+          decimalPoints: 1,
+          isEvm: false,
+          isSuffix: true,
+          precision: 6,
+        })
+      ).toEqual("0.0");
     });
     test("NaN", () => {
       expect(
-        formatUTokenWithPrecision(NaN as U<Token<number>>, 8, false)
+        formatUTokenWithPrecision({
+          amount: NaN as U<Token<number>>,
+          isEvm: false,
+          isSuffix: false,
+          precision: 8,
+        })
       ).toEqual("0.00000000");
       expect(
-        formatUTokenWithPrecision(NaN as U<Token<number>>, 6, true, 3)
+        formatUTokenWithPrecision({
+          amount: NaN as U<Token<number>>,
+          decimalPoints: 3,
+          isEvm: false,
+          isSuffix: true,
+          precision: 6,
+        })
       ).toEqual("0.000");
     });
   });
   test("too small", () => {
-    expect(formatUTokenWithPrecision("0.1" as U<Token>, 6, false)).toEqual(
-      "<0.000001"
-    );
-    expect(formatUTokenWithPrecision("0.1" as U<Token>, 7, false)).toEqual(
-      "<0.0000001"
-    );
-    expect(formatUTokenWithPrecision("0.1" as U<Token>, 6, false, 2)).toEqual(
-      "<0.01"
-    );
+    expect(
+      formatUTokenWithPrecision({
+        amount: "0.1" as U<Token>,
+        isEvm: false,
+        isSuffix: false,
+        precision: 6,
+      })
+    ).toEqual("<0.000001");
+    expect(
+      formatUTokenWithPrecision({
+        amount: "0.1" as U<Token>,
+        isEvm: false,
+        isSuffix: false,
+        precision: 7,
+      })
+    ).toEqual("<0.0000001");
+    expect(
+      formatUTokenWithPrecision({
+        amount: "0.1" as U<Token>,
+        decimalPoints: 2,
+        isEvm: false,
+        isSuffix: false,
+        precision: 6,
+      })
+    ).toEqual("<0.01");
+  });
+  test("isEvm true", () => {
+    // Basic test with isEvm true, no suffix
+    expect(
+      formatUTokenWithPrecision({
+        amount: "1000000" as U<Token>,
+        isEvm: true,
+        isSuffix: false,
+        precision: 6,
+      })
+    ).toEqual("1");
+
+    // With hasTrailingZeros true, but isEvm disables trailing zeros
+    expect(
+      formatUTokenWithPrecision({
+        amount: "1000000" as U<Token>,
+        decimalPoints: 6,
+        hasTrailingZeros: true,
+        isEvm: true,
+        isSuffix: false,
+        precision: 6,
+      })
+    ).toEqual("1");
+
+    // With hasTrailingZeros false, isEvm true
+    expect(
+      formatUTokenWithPrecision({
+        amount: "1234560" as U<Token>,
+        decimalPoints: 6,
+        hasTrailingZeros: false,
+        isEvm: true,
+        isSuffix: false,
+        precision: 6,
+      })
+    ).toEqual("1.23456");
   });
   test("no suffix", () => {
     expect(
-      formatUTokenWithPrecision("12345678901234567890" as U<Token>, 6, false)
+      formatUTokenWithPrecision({
+        amount: "12345678901234567890" as U<Token>,
+        isEvm: false,
+        isSuffix: false,
+        precision: 6,
+      })
     ).toEqual("12,345,678,901,234.567890");
     expect(
-      formatUTokenWithPrecision("12345678901234567890" as U<Token>, 6, false, 2)
+      formatUTokenWithPrecision({
+        amount: "12345678901234567890" as U<Token>,
+        decimalPoints: 2,
+        isEvm: false,
+        isSuffix: false,
+        precision: 6,
+      })
     ).toEqual("12,345,678,901,234.56");
     expect(
-      formatUTokenWithPrecision("12345678901234567890" as U<Token>, 6, false, 8)
+      formatUTokenWithPrecision({
+        amount: "12345678901234567890" as U<Token>,
+        decimalPoints: 8,
+        isEvm: false,
+        isSuffix: false,
+        precision: 6,
+      })
     ).toEqual("12,345,678,901,234.56789000");
   });
   describe("with suffix", () => {
     test(">= T", () => {
       expect(
-        formatUTokenWithPrecision("12345678901234567890" as U<Token>, 6)
+        formatUTokenWithPrecision({
+          amount: "12345678901234567890" as U<Token>,
+          isEvm: false,
+          isSuffix: true,
+          precision: 6,
+        })
       ).toEqual("1.23e+13");
     });
     test(">= B", () => {
       expect(
-        formatUTokenWithPrecision("12345678901234567" as U<Token>, 6, true)
+        formatUTokenWithPrecision({
+          amount: "12345678901234567" as U<Token>,
+          isEvm: true,
+          isSuffix: true,
+          precision: 6,
+        })
       ).toEqual("12.34B");
     });
     test(">= M", () => {
       expect(
-        formatUTokenWithPrecision(12345678901234 as U<Token<number>>, 6, true)
+        formatUTokenWithPrecision({
+          amount: 12345678901234 as U<Token<number>>,
+          isEvm: true,
+          isSuffix: true,
+          precision: 6,
+        })
       ).toEqual("12.34M");
     });
     test(">= K", () => {
       expect(
-        formatUTokenWithPrecision(1234567890 as U<Token<number>>, 6, true)
+        formatUTokenWithPrecision({
+          amount: 1234567890 as U<Token<number>>,
+          isEvm: true,
+          isSuffix: true,
+          precision: 6,
+        })
       ).toEqual("1,234.56");
     });
     test("< K", () => {
       expect(
-        formatUTokenWithPrecision(123456789 as U<Token<number>>, 6, true)
+        formatUTokenWithPrecision({
+          amount: 123456789 as U<Token<number>>,
+          isEvm: true,
+          isSuffix: true,
+          precision: 6,
+        })
       ).toEqual("123.456789");
       expect(
-        formatUTokenWithPrecision(123456789 as U<Token<number>>, 6, true, 3)
+        formatUTokenWithPrecision({
+          amount: 123456789 as U<Token<number>>,
+          decimalPoints: 3,
+          isEvm: true,
+          isSuffix: true,
+          precision: 6,
+        })
       ).toEqual("123.456");
     });
   });

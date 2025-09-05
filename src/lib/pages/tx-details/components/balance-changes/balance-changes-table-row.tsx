@@ -8,7 +8,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { NftImage } from "lib/components/nft/NftImage";
 import { TableRow } from "lib/components/table";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useMetadata } from "lib/services/nft";
+import { useNftGlyphImage, useNftMetadata } from "lib/services/nft";
 import { zAddr, zHexAddr32 } from "lib/types";
 
 import { BalanceChangesToken } from "./balance-changes-token";
@@ -32,12 +32,14 @@ const BalanceChangeNft = ({
 }) => {
   const formatAddresses = useFormatAddresses();
   const nftMetadata = metadata[id];
-  const { data: nft } = useMetadata({
+  const nftObject = {
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
     nftAddress: zHexAddr32.parse(formatAddresses(id).hex),
     tokenId: nftMetadata?.tokenId,
     uri: nftMetadata?.tokenUri,
-  });
+  };
+  const { data: nft } = useNftMetadata(nftObject);
+  const nftImage = useNftGlyphImage(nftObject);
 
   if (!nft) return null;
 
@@ -52,7 +54,7 @@ const BalanceChangeNft = ({
         <NftImage
           borderRadius="4px"
           height="20px"
-          src={nft.image}
+          src={nftImage}
           width="20px"
         />
       </AppLink>

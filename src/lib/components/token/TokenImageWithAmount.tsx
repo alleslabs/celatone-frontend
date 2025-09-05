@@ -2,7 +2,7 @@ import type { ImageProps, TextProps } from "@chakra-ui/react";
 import type { TokenWithValue } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { useMobile } from "lib/app-provider";
+import { useEvmConfig, useMobile } from "lib/app-provider";
 import { formatTokenWithValue } from "lib/utils";
 
 import { Copier } from "../copy";
@@ -26,6 +26,7 @@ export const TokenImageWithAmount = ({
   variant = "body2",
 }: TokenImageWithAmountProps) => {
   const isMobile = useMobile();
+  const evm = useEvmConfig({ shouldRedirect: false });
 
   return (
     <Flex className="copier-wrapper" alignItems="center" minWidth="fit-content">
@@ -36,7 +37,7 @@ export const TokenImageWithAmount = ({
         variant={variant}
         whiteSpace="nowrap"
       >
-        {formatTokenWithValue(token, undefined, hasTrailingZeros)}
+        {formatTokenWithValue({ hasTrailingZeros, isEvm: evm.enabled, token })}
       </Text>
       <Copier
         display={showCopyOnHover && !isMobile ? "none" : "inline"}

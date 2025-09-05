@@ -67,13 +67,22 @@ export const toToken = (
  * If token is more than or equal to 1 billion, should add suffix B and format to 2 decimal point
  *
  */
-export const formatUTokenWithPrecision = (
-  amount: U<Token<BigSource>>,
-  precision: number,
+
+export const formatUTokenWithPrecision = ({
+  amount,
+  decimalPoints,
+  hasTrailingZeros,
+  isEvm,
   isSuffix = true,
-  decimalPoints?: number,
-  hasTrailingZeros?: boolean
-): string => {
+  precision,
+}: {
+  amount: U<Token<BigSource>>;
+  decimalPoints?: number;
+  hasTrailingZeros?: boolean;
+  isEvm: boolean;
+  isSuffix?: boolean;
+  precision: number;
+}): string => {
   const token = toToken(amount, precision);
 
   if (isSuffix) {
@@ -92,7 +101,7 @@ export const formatUTokenWithPrecision = (
   return formatDecimal({
     decimalPoints: decimalPoints ?? precision,
     delimiter: true,
-    hasTrailingZeros,
+    hasTrailingZeros: isEvm ? false : hasTrailingZeros,
   })(token, INVALID);
 };
 
