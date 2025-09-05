@@ -1,4 +1,4 @@
-import type { Chain } from "wagmi/chains";
+import type { Chain } from "viem";
 
 import { initiaPrivyWalletConnector } from "@initia/interwovenkit-react";
 import { useEvmParams } from "lib/services/evm";
