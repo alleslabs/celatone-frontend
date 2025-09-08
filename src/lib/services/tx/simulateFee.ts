@@ -45,6 +45,7 @@ export const useSimulateFeeQuery = ({
 
   const simulateFeeQuery = useQuery({
     enabled,
+    gcTime: 0,
     queryFn: simulateFn,
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE,
@@ -57,6 +58,7 @@ export const useSimulateFeeQuery = ({
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     retry,
+    staleTime: 0,
   });
 
   useQueryEvents(simulateFeeQuery, {
