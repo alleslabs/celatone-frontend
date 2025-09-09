@@ -34,14 +34,16 @@ export const useBalances = (
   const apiEndpoint = useBaseApiRoute("accounts");
   const endpoint = isSei ? apiEndpoint : restEndpoint;
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.BALANCES, endpoint, address, isSei],
-    async () => {
+  return useQuery({
+    enabled,
+    queryFn: async () => {
       if (!address) throw new Error("address is undefined (useBalances)");
       return getBalancesRest(endpoint, address);
     },
-    { enabled, refetchOnWindowFocus: false, retry: 1 }
-  );
+    queryKey: [CELATONE_QUERY_KEYS.BALANCES, endpoint, address, isSei],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useBalanceInfos = (address: BechAddr): BalanceInfos => {

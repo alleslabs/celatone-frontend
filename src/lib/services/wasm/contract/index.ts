@@ -13,7 +13,11 @@ import type {
   Option,
 } from "lib/types";
 
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useQuery,
+} from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -47,18 +51,16 @@ import {
 export const useContracts = (
   limit: number,
   offset: number,
-  options?: Pick<UseQueryOptions<ContractsResponse>, "onSuccess">
+  options?: Partial<UseQueryOptions<ContractsResponse>>
 ) => {
   const endpoint = useBaseApiRoute("contracts");
 
-  return useQuery<ContractsResponse>(
-    [CELATONE_QUERY_KEYS.CONTRACTS, endpoint, limit, offset],
-    async () => getContracts(endpoint, limit, offset),
-    {
-      retry: 1,
-      ...options,
-    }
-  );
+  return useQuery<ContractsResponse>({
+    queryFn: async () => getContracts(endpoint, limit, offset),
+    queryKey: [CELATONE_QUERY_KEYS.CONTRACTS, endpoint, limit, offset],
+    retry: 1,
+    ...options,
+  });
 };
 
 export const useMigrationHistoriesByContractAddress = (
@@ -69,27 +71,25 @@ export const useMigrationHistoriesByContractAddress = (
 ) => {
   const endpoint = useBaseApiRoute("contracts");
 
-  return useQuery<MigrationHistoriesResponse>(
-    [
-      CELATONE_QUERY_KEYS.CONTRACT_MIGRATION_HISTORIES_BY_CONTRACT_ADDRESS,
-      endpoint,
-      contractAddress,
-      limit,
-      offset,
-    ],
-    async () =>
+  return useQuery<MigrationHistoriesResponse>({
+    placeholderData: keepPreviousData,
+    queryFn: async () =>
       getMigrationHistoriesByContractAddress(
         endpoint,
         contractAddress,
         limit,
         offset
       ),
-    {
-      keepPreviousData: true,
-      retry: 1,
-      ...options,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.CONTRACT_MIGRATION_HISTORIES_BY_CONTRACT_ADDRESS,
+      endpoint,
+      contractAddress,
+      limit,
+      offset,
+    ],
+    retry: 1,
+    ...options,
+  });
 };
 
 export const useMigrationHistoriesByContractAddressRest = (
@@ -100,20 +100,18 @@ export const useMigrationHistoriesByContractAddressRest = (
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  return useQuery(
-    [
+  return useQuery({
+    enabled,
+    placeholderData: keepPreviousData,
+    queryFn: async () =>
+      getMigrationHistoriesByContractAddressRest(restEndpoint, contractAddress),
+    queryKey: [
       CELATONE_QUERY_KEYS.CONTRACT_MIGRATION_HISTORIES_BY_CONTRACT_ADDRESS_REST,
       restEndpoint,
       contractAddress,
     ],
-    async () =>
-      getMigrationHistoriesByContractAddressRest(restEndpoint, contractAddress),
-    {
-      enabled,
-      keepPreviousData: true,
-      retry: 1,
-    }
-  );
+    retry: 1,
+  });
 };
 
 export const useInstantiatedContractsByAddress = (
@@ -124,15 +122,9 @@ export const useInstantiatedContractsByAddress = (
 ): UseQueryResult<ContractsResponse> => {
   const endpoint = useBaseApiRoute("accounts");
 
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.INSTANTIATED_CONTRACTS_BY_ADDRESS,
-      endpoint,
-      address,
-      limit,
-      offset,
-    ],
-    async () => {
+  return useQuery({
+    enabled: Boolean(address) && enabled,
+    queryFn: async () => {
       if (!address)
         throw new Error(
           "address not found (getInstantiatedContractsByAddress)"
@@ -145,12 +137,16 @@ export const useInstantiatedContractsByAddress = (
         offset
       );
     },
-    {
-      enabled: Boolean(address) && enabled,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.INSTANTIATED_CONTRACTS_BY_ADDRESS,
+      endpoint,
+      address,
+      limit,
+      offset,
+    ],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useAllInstantiatedContractsByAddress = (
@@ -159,13 +155,9 @@ export const useAllInstantiatedContractsByAddress = (
 ): UseQueryResult<ContractsResponse> => {
   const endpoint = useBaseApiRoute("accounts");
 
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.ALL_INSTANTIATED_CONTRACTS_BY_ADDRESS,
-      endpoint,
-      address,
-    ],
-    async () => {
+  return useQuery({
+    enabled: Boolean(address) && enabled,
+    queryFn: async () => {
       if (!address)
         throw new Error(
           "address not found (getAllInstantiatedContractsByAddress)"
@@ -173,12 +165,15 @@ export const useAllInstantiatedContractsByAddress = (
 
       return getAllInstantiatedContractsByAddress(endpoint, address);
     },
-    {
-      enabled: Boolean(address) && enabled,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+
+    queryKey: [
+      CELATONE_QUERY_KEYS.ALL_INSTANTIATED_CONTRACTS_BY_ADDRESS,
+      endpoint,
+      address,
+    ],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useAdminContractsByAddress = (
@@ -188,22 +183,24 @@ export const useAdminContractsByAddress = (
 ): UseQueryResult<ContractsResponse> => {
   const endpoint = useBaseApiRoute("accounts");
 
-  return useQuery(
-    [
+  return useQuery({
+    queryFn: async () =>
+      getAdminContractsByAddress(endpoint, address, limit, offset),
+    queryKey: [
       CELATONE_QUERY_KEYS.ADMIN_CONTRACTS_BY_ADDRESS,
       endpoint,
       address,
       limit,
       offset,
     ],
-    async () => getAdminContractsByAddress(endpoint, address, limit, offset),
-    { refetchOnWindowFocus: false, retry: 1 }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useContractData = (
   contractAddress: BechAddr32,
-  options?: UseQueryOptions<ContractData>
+  options?: Partial<UseQueryOptions<ContractData>>
 ) => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("contracts");
@@ -213,33 +210,44 @@ export const useContractData = (
   const endpoint = isFullTier ? apiEndpoint : restEndpoint;
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
 
-  return useQuery<ContractData>(
-    [CELATONE_QUERY_KEYS.CONTRACT_DATA, endpoint, contractAddress, isGov],
-    async () =>
+  return useQuery<ContractData>({
+    queryFn: async () =>
       isFullTier
         ? getContractData(endpoint, contractAddress, isGov)
         : getContractRest(endpoint, contractAddress),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.CONTRACT_DATA,
+      endpoint,
+      contractAddress,
+      isGov,
+      isFullTier,
+    ],
+    refetchOnWindowFocus: false,
+    retry: 1,
+    ...options,
+  });
 };
 
 export const useContractTableCounts = (
   contractAddress: BechAddr32,
-  options?: UseQueryOptions<ContractTableCounts>
+  options: Partial<UseQueryOptions<ContractTableCounts>> = {}
 ) => {
   const endpoint = useBaseApiRoute("contracts");
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
 
-  return useQuery<ContractTableCounts>(
-    [
+  return useQuery<ContractTableCounts>({
+    queryFn: async () =>
+      getContractTableCounts(endpoint, contractAddress, isGov),
+    queryKey: [
       CELATONE_QUERY_KEYS.CONTRACT_TABLE_COUNTS,
       endpoint,
       contractAddress,
       isGov,
     ],
-    async () => getContractTableCounts(endpoint, contractAddress, isGov),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+    ...options,
+  });
 };
 
 export const useContractQueryMsgsRest = (contractAddress: BechAddr32) => {
@@ -247,35 +255,40 @@ export const useContractQueryMsgsRest = (contractAddress: BechAddr32) => {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.CONTRACT_QUERY_MSGS, restEndpoint, contractAddress],
-    async () => getContractQueryMsgsRest(restEndpoint, contractAddress),
-    {
-      cacheTime: 0,
-      enabled: !!contractAddress,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+  return useQuery({
+    enabled: !!contractAddress,
+    gcTime: 0,
+    queryFn: async () =>
+      getContractQueryMsgsRest(restEndpoint, contractAddress),
+    queryKey: [
+      CELATONE_QUERY_KEYS.CONTRACT_QUERY_MSGS,
+      restEndpoint,
+      contractAddress,
+    ],
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };
 
 export const useContractsByCodeId = (
   codeId: number,
   limit: number,
-  offset: number,
-  options: Pick<UseQueryOptions<ContractsResponse>, "onSuccess"> = {}
+  offset: number
 ) => {
   const endpoint = useBaseApiRoute("codes");
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID, endpoint, codeId, limit, offset],
-    async () => getContractsByCodeId(endpoint, codeId, limit, offset),
-    {
-      refetchOnWindowFocus: false,
-      retry: 1,
-      ...options,
-    }
-  );
+  return useQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID,
+      endpoint,
+      codeId,
+      limit,
+      offset,
+    ],
+    queryFn: async () => getContractsByCodeId(endpoint, codeId, limit, offset),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useContractsByCodeIdRest = (codeId: number) => {
@@ -283,40 +296,41 @@ export const useContractsByCodeIdRest = (codeId: number) => {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  return useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID_REST, restEndpoint, codeId],
-    ({ pageParam }) =>
+  return useInfiniteQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID_REST,
+      restEndpoint,
+      codeId,
+    ],
+    queryFn: ({ pageParam }: { pageParam?: string }) =>
       getContractsByCodeIdRest(restEndpoint, codeId, pageParam),
-    {
-      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
-      refetchOnWindowFocus: false,
-    }
-  );
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export const useContractQueryRest = (
   contractAddress: BechAddr32,
   msg: string,
-  options: UseQueryOptions<JsonDataType>
+  options: Partial<UseQueryOptions<JsonDataType>>
 ) => {
   const {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  return useQuery<JsonDataType>(
-    [
+  return useQuery<JsonDataType>({
+    queryKey: [
       CELATONE_QUERY_KEYS.CONTRACT_QUERY_REST,
       restEndpoint,
       contractAddress,
       msg,
     ],
-    () => getContractQueryRest(restEndpoint, contractAddress, msg),
-    {
-      refetchOnWindowFocus: false,
-      retry: 1,
-      ...options,
-    }
-  );
+    queryFn: () => getContractQueryRest(restEndpoint, contractAddress, msg),
+    refetchOnWindowFocus: false,
+    retry: 1,
+    ...options,
+  });
 };
 
 export const useInstantiatedContractsByAddressRest = (
@@ -327,21 +341,22 @@ export const useInstantiatedContractsByAddressRest = (
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.INSTANTIATED_CONTRACTS_BY_ADDRESS_REST,
       restEndpoint,
       address,
     ],
-    async () => {
+    queryFn: async () => {
       if (!address)
         throw new Error(
           "address not found (getInstantiatedContractsByAddressRest)"
         );
       return getInstantiatedContractsByAddressRest(restEndpoint, address);
     },
-    { enabled: Boolean(address) && enabled, refetchOnWindowFocus: false }
-  );
+    enabled: Boolean(address) && enabled,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export const useContractCw2InfoRest = (
@@ -352,21 +367,29 @@ export const useContractCw2InfoRest = (
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.CONTRACT_CW2_INFO_REST, restEndpoint, contractAddress],
-    async () => getContractCw2InfoRest(restEndpoint, contractAddress),
-    { enabled, refetchOnWindowFocus: false, retry: 1 }
-  );
+  return useQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.CONTRACT_CW2_INFO_REST,
+      restEndpoint,
+      contractAddress,
+    ],
+    queryFn: async () => getContractCw2InfoRest(restEndpoint, contractAddress),
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
-export const useAllAdminContractsByAddress = (
-  address: Option<BechAddr>
-): UseQueryResult<ContractsResponse> => {
+export const useAllAdminContractsByAddress = (address: Option<BechAddr>) => {
   const endpoint = useBaseApiRoute("accounts");
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.ALL_ADMIN_CONTRACTS_BY_ADDRESS, endpoint, address],
-    async () => {
+  return useQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.ALL_ADMIN_CONTRACTS_BY_ADDRESS,
+      endpoint,
+      address,
+    ],
+    queryFn: async () => {
       if (!address)
         throw new Error(
           "Admin address not found (useAllAdminContractsByAddress)"
@@ -374,20 +397,24 @@ export const useAllAdminContractsByAddress = (
 
       return getAllAdminContractsByAddress(endpoint, address);
     },
-    { enabled: !!address, refetchOnWindowFocus: false, retry: 1 }
-  );
+    enabled: !!address,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useAdminsByContractAddresses = (
   contractAddresses: BechAddr32[]
 ): UseQueryResult<Dict<BechAddr32, BechAddr>> => {
   const endpoint = useBaseApiRoute("contracts");
-  return useQuery(
-    [CELATONE_QUERY_KEYS.ADMINS_BY_CONTRACTS, endpoint, contractAddresses],
-    () => getAdminsByContractAddresses(endpoint, contractAddresses),
-    {
-      enabled: contractAddresses.length > 0,
-      keepPreviousData: true,
-    }
-  );
+  return useQuery({
+    enabled: contractAddresses.length > 0,
+    placeholderData: keepPreviousData,
+    queryFn: () => getAdminsByContractAddresses(endpoint, contractAddresses),
+    queryKey: [
+      CELATONE_QUERY_KEYS.ADMINS_BY_CONTRACTS,
+      endpoint,
+      contractAddresses,
+    ],
+  });
 };

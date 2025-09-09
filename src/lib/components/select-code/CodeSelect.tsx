@@ -5,6 +5,7 @@ import type { Option } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { UploadIcon } from "lib/components/icon";
+import { useQueryEvents } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeRest } from "lib/services/wasm/code";
@@ -32,9 +33,11 @@ export const CodeSelect = ({
 }: CodeSelectProps) => {
   const { getCodeLocalInfo } = useCodeStore();
   const name = codeId ? getCodeLocalInfo(codeId)?.name : undefined;
-  const { data } = useCodeRest(codeId, {
+  const codeRestQuery = useCodeRest(codeId);
+  useQueryEvents(codeRestQuery, {
     onSuccess: setCodeHash,
   });
+  const { data } = codeRestQuery;
 
   const { data: wasmDerivedVerifyInfos } = useDerivedWasmVerifyInfo(
     codeId,

@@ -22,3 +22,4 @@ export * from "./useSelectChain";
 export * from "./useSignAndBroadcast";
 export * from "./useSignAndBroadcastEvm";
 export * from "./useSimulateFee";
+export * from "./useWagmiConfig";

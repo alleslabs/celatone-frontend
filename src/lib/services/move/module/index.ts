@@ -64,16 +64,16 @@ export const useModuleByAddressRest = ({
   const queryFn = () =>
     getModuleByAddressRest(restEndpoint, address, moduleName);
 
-  return useQuery<IndexedModule>(
-    [
+  return useQuery<IndexedModule>({
+    ...options,
+    queryFn,
+    queryKey: [
       CELATONE_QUERY_KEYS.MODULE_BY_ADDRESS_REST,
       restEndpoint,
       address,
       moduleName,
     ],
-    queryFn,
-    options
-  );
+  });
 };
 
 export const useModulesByAddress = ({
@@ -92,21 +92,19 @@ export const useModulesByAddress = ({
   } = useCelatoneApp();
   const { enabled: isMoveEnabled } = useMoveConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.MODULES_BY_ADDRESS, restEndpoint, address],
-    async () => {
+  return useQuery({
+    queryKey: [CELATONE_QUERY_KEYS.MODULES_BY_ADDRESS, restEndpoint, address],
+    queryFn: async () => {
       if (!address)
         throw new Error("address is undefined (useModulesByAddress)");
       return getModulesByAddressRest(restEndpoint, address);
     },
-    {
-      enabled: isMoveEnabled && enabled,
-      onError,
-      onSuccess,
-      refetchOnWindowFocus: false,
-      retry: 0,
-    }
-  );
+    enabled: isMoveEnabled && enabled,
+    refetchOnWindowFocus: false,
+    retry: 0,
+    ...(onError && { onError }),
+    ...(onSuccess && { onSuccess }),
+  });
 };
 
 export const useFunctionView = ({
@@ -114,8 +112,6 @@ export const useFunctionView = ({
   fn,
   moduleAddress,
   moduleName,
-  onError,
-  onSuccess,
 }: {
   abiData: AbiFormData;
   fn: ExposedFunction;
@@ -129,8 +125,11 @@ export const useFunctionView = ({
   } = useCelatoneApp();
   const queryFn: QueryFunction<string> = () =>
     getFunctionViewJson(restEndpoint, moduleAddress, moduleName, fn, abiData);
-  return useQuery(
-    [
+  return useQuery({
+    enabled: false,
+    placeholderData: (previousData) => previousData,
+    queryFn,
+    queryKey: [
       CELATONE_QUERY_KEYS.FUNCTION_VIEW,
       restEndpoint,
       moduleAddress,
@@ -138,15 +137,8 @@ export const useFunctionView = ({
       fn.name,
       JSON.stringify(abiData),
     ] as readonly string[],
-    queryFn,
-    {
-      enabled: false,
-      keepPreviousData: true,
-      onError,
-      onSuccess,
-      retry: 0,
-    }
-  );
+    retry: 0,
+  });
 };
 
 export const useDecodeModule = ({
@@ -176,16 +168,16 @@ export const useDecodeModule = ({
     return { abi, currentPolicy, modulePath };
   };
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.MODULE_DECODE,
       restEndpoint,
       move.enabled,
       base64EncodedFile,
     ],
     queryFn,
-    options
-  );
+    ...options,
+  });
 };
 
 export const useDecodeScript = ({
@@ -213,25 +205,26 @@ export const useDecodeScript = ({
     };
   };
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.SCRIPT_DECODE, restEndpoint, base64EncodedFile],
+  return useQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.SCRIPT_DECODE,
+      restEndpoint,
+      base64EncodedFile,
+    ],
     queryFn,
-    options
-  );
+    ...options,
+  });
 };
 
-export const useModules = (
-  limit: number,
-  offset: number,
-  options: Pick<UseQueryOptions<ModulesResponse>, "onSuccess"> = {}
-) => {
+export const useModules = (limit: number, offset: number) => {
   const endpoint = useBaseApiRoute("modules");
 
-  return useQuery<ModulesResponse>(
-    [CELATONE_QUERY_KEYS.MODULES, endpoint, limit, offset],
-    async () => getModules(endpoint, limit, offset),
-    { ...options, refetchOnWindowFocus: false, retry: 1 }
-  );
+  return useQuery<ModulesResponse>({
+    queryKey: [CELATONE_QUERY_KEYS.MODULES, endpoint, limit, offset],
+    queryFn: async () => getModules(endpoint, limit, offset),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useModulePublishInfo = (
@@ -242,22 +235,20 @@ export const useModulePublishInfo = (
   const endpoint = useBaseApiRoute("modules");
   const govConfig = useGovConfig({ shouldRedirect: false });
 
-  return useQuery<ModulePublishInfo>(
-    [
+  return useQuery<ModulePublishInfo>({
+    queryKey: [
       CELATONE_QUERY_KEYS.MODULE_DATA,
       endpoint,
       vmAddress,
       moduleName,
       govConfig.enabled,
     ],
-    async () =>
+    queryFn: async () =>
       getModulePublishInfo(endpoint, vmAddress, moduleName, govConfig.enabled),
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useModuleTableCounts = (
@@ -268,22 +259,20 @@ export const useModuleTableCounts = (
   const endpoint = useBaseApiRoute("modules");
   const govConfig = useGovConfig({ shouldRedirect: false });
 
-  return useQuery<ModuleTableCountsResponse>(
-    [
+  return useQuery<ModuleTableCountsResponse>({
+    queryKey: [
       CELATONE_QUERY_KEYS.MODULE_TABLE_COUNTS,
       endpoint,
       vmAddress,
       moduleName,
       govConfig.enabled,
     ],
-    async () =>
+    queryFn: async () =>
       getModuleTableCounts(endpoint, vmAddress, moduleName, govConfig.enabled),
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useModuleTxs = (
@@ -295,8 +284,8 @@ export const useModuleTxs = (
   const endpoint = useBaseApiRoute("move");
   const isInitia = useInitia();
 
-  return useQuery<ModuleTxsResponse>(
-    [
+  return useQuery<ModuleTxsResponse>({
+    queryKey: [
       CELATONE_QUERY_KEYS.MODULE_TXS,
       endpoint,
       vmAddress,
@@ -305,23 +294,23 @@ export const useModuleTxs = (
       offset,
       isInitia,
     ],
-    async () =>
+    queryFn: async () =>
       getModuleTxs(endpoint, vmAddress, moduleName, limit, offset, isInitia),
-    { refetchOnWindowFocus: false, retry: 1 }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useModuleHistories = (
   vmAddress: HexAddr,
   moduleName: string,
   limit: number,
-  offset: number,
-  options: Pick<UseQueryOptions<ModuleHistoriesResponse>, "onSuccess"> = {}
+  offset: number
 ): UseQueryResult<ModuleHistoriesResponse> => {
   const endpoint = useBaseApiRoute("move");
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.MODULE_HISTORIES,
       endpoint,
       vmAddress,
@@ -329,26 +318,23 @@ export const useModuleHistories = (
       limit,
       offset,
     ],
-    async () =>
+    queryFn: async () =>
       getModuleHistories(endpoint, vmAddress, moduleName, limit, offset),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useModuleRelatedProposals = (
   vmAddress: HexAddr,
   moduleName: string,
   limit: number,
-  offset: number,
-  options: Pick<
-    UseQueryOptions<ModuleRelatedProposalsResponse>,
-    "onSuccess"
-  > = {}
+  offset: number
 ): UseQueryResult<ModuleRelatedProposalsResponse> => {
   const endpoint = useBaseApiRoute("move");
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.MODULE_PROPOSALS,
       endpoint,
       vmAddress,
@@ -356,8 +342,9 @@ export const useModuleRelatedProposals = (
       limit,
       offset,
     ],
-    async () =>
+    queryFn: async () =>
       getModuleRelatedProposals(endpoint, vmAddress, moduleName, limit, offset),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };

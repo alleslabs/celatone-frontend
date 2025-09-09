@@ -52,5 +52,6 @@ export const useExecuteCmds = (contractAddress: BechAddr32) => {
     },
     retry: false,
   });
+
   return { execCmds, isFetching };
 };

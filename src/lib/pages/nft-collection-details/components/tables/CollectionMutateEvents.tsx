@@ -4,6 +4,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { MutateEventsTable } from "lib/components/table";
+import { useQueryEvents } from "lib/hooks";
 import { useNftCollectionMutateEvents } from "lib/services/nft-collection";
 
 interface CollectionMutateEventsProps {
@@ -29,12 +30,15 @@ export const CollectionMutateEvents = ({
     },
   });
 
-  const { data: mutateEvents, isLoading } = useNftCollectionMutateEvents(
+  const nftCollectionMutateEventsQuery = useNftCollectionMutateEvents(
     collectionAddress,
     pageSize,
-    offset,
-    { onSuccess: ({ total }) => setTotalData(total) }
+    offset
   );
+  useQueryEvents(nftCollectionMutateEventsQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data: mutateEvents, isLoading } = nftCollectionMutateEventsQuery;
 
   return (
     <>

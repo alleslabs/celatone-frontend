@@ -3,7 +3,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { useDebounce } from "lib/hooks";
+import { useDebounce, useQueryEvents } from "lib/hooks";
 import { useNftCollections } from "lib/services/nft-collection";
 import router from "next/router";
 import { useEffect, useState } from "react";
@@ -29,14 +29,15 @@ export const CollectionsFull = () => {
       pageSize: 10,
     },
   });
-  const { data: collections, isLoading } = useNftCollections(
+  const nftCollectionsQuery = useNftCollections(
     pageSize,
     offset,
-    debouncedSearch,
-    {
-      onSuccess: (data) => setTotalData(data.total),
-    }
+    debouncedSearch
   );
+  useQueryEvents(nftCollectionsQuery, {
+    onSuccess: (data) => setTotalData(data.total),
+  });
+  const { data: collections, isLoading } = nftCollectionsQuery;
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_NFT_COLLECTIONS_LIST);
