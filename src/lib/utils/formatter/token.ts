@@ -14,11 +14,9 @@ export const formatDecimal =
   ({
     decimalPoints,
     delimiter,
-    hasTrailingZeros = true,
   }: {
     decimalPoints: number;
     delimiter: boolean;
-    hasTrailingZeros?: boolean;
   }) =>
   (n: BigSource, fallbackValue: string): string => {
     try {
@@ -31,7 +29,7 @@ export const formatDecimal =
           .split(".")[0]
       )
         .div(10 ** decimalPoints)
-        .toFixed(hasTrailingZeros ? decimalPoints : undefined);
+        .toFixed(decimalPoints);
 
       const [i, d] = num.split(".");
       const thousands = /\B(?=(\d{3})+(?!\d))/g;
@@ -71,15 +69,11 @@ export const toToken = (
 export const formatUTokenWithPrecision = ({
   amount,
   decimalPoints,
-  hasTrailingZeros,
-  isEvm,
   isSuffix = true,
   precision,
 }: {
   amount: U<Token<BigSource>>;
   decimalPoints?: number;
-  hasTrailingZeros?: boolean;
-  isEvm: boolean;
   isSuffix?: boolean;
   precision: number;
 }): string => {
@@ -98,10 +92,11 @@ export const formatUTokenWithPrecision = ({
     return `<${lowestThreshold.toFixed()}`;
   }
 
+  const dp = Math.min(decimalPoints ?? precision, 6);
+
   return formatDecimal({
-    decimalPoints: decimalPoints ?? precision,
+    decimalPoints: dp,
     delimiter: true,
-    hasTrailingZeros: isEvm ? false : hasTrailingZeros,
   })(token, INVALID);
 };
 

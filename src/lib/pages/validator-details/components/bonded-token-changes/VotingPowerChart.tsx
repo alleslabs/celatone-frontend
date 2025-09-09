@@ -4,7 +4,7 @@ import type { AssetInfos, Option, Token, U, ValidatorAddr } from "lib/types";
 
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { trackUseViewMore } from "lib/amplitude";
-import { useEvmConfig, useMobile } from "lib/app-provider";
+import { useMobile } from "lib/app-provider";
 import { LineChart } from "lib/components/chart/LineChart";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -35,7 +35,6 @@ export const VotingPowerChart = ({
 }: VotingPowerChartProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
-  const evm = useEvmConfig({ shouldRedirect: false });
 
   const { data: historicalPowers, isLoading } =
     useValidatorHistoricalPowers(validatorAddress);
@@ -76,7 +75,6 @@ export const VotingPowerChart = ({
     const formattedAmount = formatUTokenWithPrecision({
       amount: raw as U<Token<BigSource>>,
       decimalPoints: 2,
-      isEvm: evm.enabled,
       isSuffix: false,
       precision: assetInfo?.precision ?? 0,
     });
@@ -162,7 +160,6 @@ export const VotingPowerChart = ({
             formatUTokenWithPrecision({
               amount: value as U<Token<BigSource>>,
               decimalPoints: 2,
-              isEvm: evm.enabled,
               isSuffix: false,
               precision: assetInfo?.precision ?? 0,
             })

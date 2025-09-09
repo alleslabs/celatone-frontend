@@ -179,7 +179,6 @@ describe("formatUTokenWithPrecision", () => {
       expect(
         formatUTokenWithPrecision({
           amount: "" as U<Token>,
-          isEvm: false,
           isSuffix: false,
           precision: 6,
         })
@@ -188,7 +187,6 @@ describe("formatUTokenWithPrecision", () => {
         formatUTokenWithPrecision({
           amount: "" as U<Token>,
           decimalPoints: 1,
-          isEvm: false,
           isSuffix: true,
           precision: 6,
         })
@@ -198,7 +196,6 @@ describe("formatUTokenWithPrecision", () => {
       expect(
         formatUTokenWithPrecision({
           amount: NaN as U<Token<number>>,
-          isEvm: false,
           isSuffix: false,
           precision: 8,
         })
@@ -207,7 +204,6 @@ describe("formatUTokenWithPrecision", () => {
         formatUTokenWithPrecision({
           amount: NaN as U<Token<number>>,
           decimalPoints: 3,
-          isEvm: false,
           isSuffix: true,
           precision: 6,
         })
@@ -218,7 +214,6 @@ describe("formatUTokenWithPrecision", () => {
     expect(
       formatUTokenWithPrecision({
         amount: "0.1" as U<Token>,
-        isEvm: false,
         isSuffix: false,
         precision: 6,
       })
@@ -226,7 +221,6 @@ describe("formatUTokenWithPrecision", () => {
     expect(
       formatUTokenWithPrecision({
         amount: "0.1" as U<Token>,
-        isEvm: false,
         isSuffix: false,
         precision: 7,
       })
@@ -235,52 +229,16 @@ describe("formatUTokenWithPrecision", () => {
       formatUTokenWithPrecision({
         amount: "0.1" as U<Token>,
         decimalPoints: 2,
-        isEvm: false,
         isSuffix: false,
         precision: 6,
       })
     ).toEqual("<0.01");
   });
-  test("isEvm true", () => {
-    // Basic test with isEvm true, no suffix
-    expect(
-      formatUTokenWithPrecision({
-        amount: "1000000" as U<Token>,
-        isEvm: true,
-        isSuffix: false,
-        precision: 6,
-      })
-    ).toEqual("1");
 
-    // With hasTrailingZeros true, but isEvm disables trailing zeros
-    expect(
-      formatUTokenWithPrecision({
-        amount: "1000000" as U<Token>,
-        decimalPoints: 6,
-        hasTrailingZeros: true,
-        isEvm: true,
-        isSuffix: false,
-        precision: 6,
-      })
-    ).toEqual("1");
-
-    // With hasTrailingZeros false, isEvm true
-    expect(
-      formatUTokenWithPrecision({
-        amount: "1234560" as U<Token>,
-        decimalPoints: 6,
-        hasTrailingZeros: false,
-        isEvm: true,
-        isSuffix: false,
-        precision: 6,
-      })
-    ).toEqual("1.23456");
-  });
   test("no suffix", () => {
     expect(
       formatUTokenWithPrecision({
         amount: "12345678901234567890" as U<Token>,
-        isEvm: false,
         isSuffix: false,
         precision: 6,
       })
@@ -289,7 +247,6 @@ describe("formatUTokenWithPrecision", () => {
       formatUTokenWithPrecision({
         amount: "12345678901234567890" as U<Token>,
         decimalPoints: 2,
-        isEvm: false,
         isSuffix: false,
         precision: 6,
       })
@@ -298,7 +255,6 @@ describe("formatUTokenWithPrecision", () => {
       formatUTokenWithPrecision({
         amount: "12345678901234567890" as U<Token>,
         decimalPoints: 8,
-        isEvm: false,
         isSuffix: false,
         precision: 6,
       })
@@ -309,7 +265,6 @@ describe("formatUTokenWithPrecision", () => {
       expect(
         formatUTokenWithPrecision({
           amount: "12345678901234567890" as U<Token>,
-          isEvm: false,
           isSuffix: true,
           precision: 6,
         })
@@ -319,7 +274,6 @@ describe("formatUTokenWithPrecision", () => {
       expect(
         formatUTokenWithPrecision({
           amount: "12345678901234567" as U<Token>,
-          isEvm: true,
           isSuffix: true,
           precision: 6,
         })
@@ -329,7 +283,6 @@ describe("formatUTokenWithPrecision", () => {
       expect(
         formatUTokenWithPrecision({
           amount: 12345678901234 as U<Token<number>>,
-          isEvm: true,
           isSuffix: true,
           precision: 6,
         })
@@ -339,7 +292,6 @@ describe("formatUTokenWithPrecision", () => {
       expect(
         formatUTokenWithPrecision({
           amount: 1234567890 as U<Token<number>>,
-          isEvm: true,
           isSuffix: true,
           precision: 6,
         })
@@ -349,7 +301,6 @@ describe("formatUTokenWithPrecision", () => {
       expect(
         formatUTokenWithPrecision({
           amount: 123456789 as U<Token<number>>,
-          isEvm: true,
           isSuffix: true,
           precision: 6,
         })
@@ -358,7 +309,6 @@ describe("formatUTokenWithPrecision", () => {
         formatUTokenWithPrecision({
           amount: 123456789 as U<Token<number>>,
           decimalPoints: 3,
-          isEvm: true,
           isSuffix: true,
           precision: 6,
         })

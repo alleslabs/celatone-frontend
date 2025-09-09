@@ -11,7 +11,7 @@ import type {
 } from "lib/types";
 
 import { Grid, Text } from "@chakra-ui/react";
-import { useEvmConfig, useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { TableRow } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import {
@@ -41,7 +41,6 @@ export const ValidatorsTableRow = ({
   validator,
 }: ValidatorsTableRowProps) => {
   const navigate = useInternalNavigate();
-  const evm = useEvmConfig({ shouldRedirect: false });
 
   const onRowSelect = (validatorAddress: ValidatorAddr) =>
     navigate({
@@ -95,7 +94,6 @@ export const ValidatorsTableRow = ({
             {formatUTokenWithPrecision({
               amount: validator.votingPower as U<Token<Big>>,
               decimalPoints: 2,
-              isEvm: evm.enabled,
               isSuffix: false,
               precision: assetInfo?.precision ?? 0,
             })}

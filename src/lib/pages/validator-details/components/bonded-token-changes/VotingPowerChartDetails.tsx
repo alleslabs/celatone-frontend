@@ -3,7 +3,6 @@ import type { HistoricalPowersResponse } from "lib/services/types";
 import type { AssetInfo, Option, Token, U } from "lib/types";
 
 import { Flex, Heading, Text } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
 import { big } from "lib/types";
 import { formatUTokenWithPrecision, getTokenLabel } from "lib/utils";
 import { useMemo } from "react";
@@ -31,7 +30,6 @@ export const VotingPowerChartDetails = ({
   historicalPowers,
   singleStakingDenom,
 }: VotingPowerChartDetailsProps) => {
-  const evm = useEvmConfig({ shouldRedirect: false });
   const currency = singleStakingDenom
     ? `${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`
     : "";
@@ -44,7 +42,6 @@ export const VotingPowerChartDetails = ({
         amount: historicalPowers.items[historicalPowers.items.length - 1]
           .votingPower as U<Token<Big>>,
         decimalPoints: 2,
-        isEvm: evm.enabled,
         isSuffix: true,
         precision: assetInfo?.precision ?? 0,
       })
@@ -67,7 +64,6 @@ export const VotingPowerChartDetails = ({
     {
       amount: compareVotingPower.abs() as U<Token<Big>>,
       decimalPoints: 2,
-      isEvm: evm.enabled,
       isSuffix: true,
       precision: assetInfo?.precision ?? 0,
     }

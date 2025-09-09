@@ -99,7 +99,6 @@ export const EvmTransactionsTableRow = ({
             {formatUTokenWithPrecision({
               amount: token.amount,
               decimalPoints: token.precision ? 6 : 0,
-              isEvm: true,
               isSuffix: true,
               precision: token.precision ?? 0,
             })}

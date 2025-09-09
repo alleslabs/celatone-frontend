@@ -4,7 +4,7 @@ import type { VoteOption } from "lib/utils";
 
 import { Flex, Tag, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
-import { useEvmConfig, useGetAddressType, useMobile } from "lib/app-provider";
+import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { WasmVerifyBadgeById } from "lib/components/WasmVerifyBadge";
@@ -36,7 +36,6 @@ export const TxMsgExpand = ({
   onClick,
 }: TxMsgExpandProps) => {
   const isMobile = useMobile();
-  const evm = useEvmConfig({ shouldRedirect: false });
   const getAddressType = useGetAddressType();
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
@@ -68,7 +67,7 @@ export const TxMsgExpand = ({
         const assetText =
           (body.amount as Coin[]).length > 1
             ? "assets"
-            : formatTokenWithValue({ isEvm: evm.enabled, token: singleToken });
+            : formatTokenWithValue({ token: singleToken });
         msgLabel = "Send";
         content = (
           <Flex display="inline" gap={1}>
