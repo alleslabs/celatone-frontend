@@ -46,11 +46,11 @@ const getActiveLabelStyles = (size: "lg" | "md") => ({
 });
 
 const subtextStyles = {
-  "&.chakra-form__error-message": {
-    color: errorMain,
-  },
   _disabled: {
     color: "text.disabled",
+  },
+  "&.chakra-form__error-message": {
+    color: errorMain,
   },
   color: "text.dark",
   fontSize: "12px",

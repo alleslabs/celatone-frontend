@@ -14,7 +14,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
-import { useDebounce } from "lib/hooks";
+import { useDebounce, useQueryEvents } from "lib/hooks";
 import { useProposals } from "lib/services/proposal";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -50,21 +50,18 @@ export const ProposalsTableFull = () => {
     },
   });
 
-  const {
-    data: proposals,
-    error,
-    isLoading,
-  } = useProposals(
+  const proposalsQuery = useProposals(
     pageSize,
     offset,
     proposer,
     statuses,
     types,
-    debouncedSearch,
-    {
-      onSuccess: ({ total }) => setTotalData(total),
-    }
+    debouncedSearch
   );
+  useQueryEvents(proposalsQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data: proposals, error, isLoading } = proposalsQuery;
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_PROPOSAL_LIST);

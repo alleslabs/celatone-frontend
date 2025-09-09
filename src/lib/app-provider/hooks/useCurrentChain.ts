@@ -1,9 +1,8 @@
 import type { ChainContext as CosmosKitChainContext } from "@cosmos-kit/core";
-import type { ReactWalletWidget as InitiaWidget } from "@initia/react-wallet-widget/dist/types";
 import type { BechAddr20, Option } from "lib/types";
 
 import { useChain } from "@cosmos-kit/react";
-import { useWallet } from "@initia/react-wallet-widget/ssr";
+import { useInterwovenKit } from "@initia/interwovenkit-react";
 import { zBechAddr20 } from "lib/types";
 
 import { useCelatoneApp } from "../contexts";
@@ -22,7 +21,7 @@ interface CurrentChain {
         type: "cosmos-kit";
       }
     | {
-        context: InitiaWidget;
+        context: ReturnType<typeof useInterwovenKit>;
         type: "initia-widget";
       };
 }
@@ -33,20 +32,18 @@ export const useCurrentChain = (): CurrentChain => {
   } = useCelatoneApp();
   const isInitia = useInitia();
   const cosmosKit = useChain(registryChainName);
-  const initiaWidget = useWallet();
+  const interwovenKit = useInterwovenKit();
 
   if (isInitia) {
     return {
-      address: zBechAddr20
-        .optional()
-        .parse(initiaWidget.account?.address ?? undefined),
+      address: zBechAddr20.optional().parse(interwovenKit.address || undefined),
       bech32Prefix: "init",
       chainId,
       chainName: chain,
-      connect: async () => initiaWidget.onboard(),
-      view: (event) => initiaWidget.view(event),
+      connect: async () => interwovenKit.openConnect(),
+      view: () => interwovenKit.openWallet(),
       walletProvider: {
-        context: initiaWidget,
+        context: interwovenKit,
         type: "initia-widget",
       },
     };
