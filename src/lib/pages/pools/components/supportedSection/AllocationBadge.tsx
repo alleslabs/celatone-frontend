@@ -2,7 +2,6 @@ import type Big from "big.js";
 import type { Option, Ratio, Token, U, USD } from "lib/types";
 
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
 import { TokenImageRender } from "lib/components/token";
 import { big } from "lib/types";
 import {
@@ -35,14 +34,12 @@ export const AllocationBadge = ({
   symbol,
   value,
 }: AllocationBadgeProps) => {
-  const evm = useEvmConfig({ shouldRedirect: false });
   const formattedValue = formatRatio(
     divWithDefault(value ?? big(0), liquidity, 0) as Ratio<Big>
   );
   const formattedAmount = denom
     ? formatUTokenWithPrecision({
         amount,
-        isEvm: evm.enabled,
         precision: precision ?? 0,
       })
     : "-";

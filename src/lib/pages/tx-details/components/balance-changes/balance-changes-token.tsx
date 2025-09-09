@@ -2,7 +2,7 @@ import type { BigSource } from "big.js";
 import type { Coin, Token, U, USD } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { useEvmConfig, useMobile } from "lib/app-provider";
+import { useMobile } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { TokenImageRender } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
@@ -19,7 +19,6 @@ interface BalanceChangesTokenProps {
 }
 
 export const BalanceChangesToken = ({ coin }: BalanceChangesTokenProps) => {
-  const evm = useEvmConfig({ shouldRedirect: false });
   const isMobile = useMobile();
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
   const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
@@ -27,8 +26,6 @@ export const BalanceChangesToken = ({ coin }: BalanceChangesTokenProps) => {
   const tokenWithValue = formatUTokenWithPrecision({
     amount: token.amount.abs() as U<Token<Big>>,
     decimalPoints: undefined,
-    hasTrailingZeros: true,
-    isEvm: evm.enabled,
     isSuffix: false,
     precision: token.precision ?? 0,
   });

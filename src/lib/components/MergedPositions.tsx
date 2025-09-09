@@ -15,7 +15,6 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMoveDexPoolInfo } from "lib/services/move/dex";
 import {
@@ -49,7 +48,6 @@ const MergedPosition = ({
   };
   underlyingCoins: Option<TokenWithValue[]>;
 }) => {
-  const evm = useEvmConfig({ shouldRedirect: false });
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
   const token = coinToTokenWithValue(
     liquidityDenom,
@@ -81,8 +79,6 @@ const MergedPosition = ({
         <Text>
           {formatTokenWithValue({
             decimalPoints: undefined,
-            hasTrailingZeros: true,
-            isEvm: evm.enabled,
             token,
           })}
         </Text>

@@ -9,7 +9,7 @@ import type {
 } from "lib/types";
 
 import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
-import { useEvmConfig, useMobile, useTierConfig } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
 import { TokenImageRender } from "lib/components/token";
 import { ValueWithIcon } from "lib/components/ValueWithIcon";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
@@ -37,12 +37,10 @@ const VotingPowerDetail = ({
   label: string;
   ratio: Ratio<number>;
 }) => {
-  const evm = useEvmConfig({ shouldRedirect: false });
   const formattedPercent = formatPrettyPercent(ratio, 2, true);
   const formattedAmount = formatUTokenWithPrecision({
     amount,
     decimalPoints: 2,
-    isEvm: evm.enabled,
     isSuffix: true,
     precision: assetInfo?.precision ?? 0,
   });
@@ -101,7 +99,6 @@ export const VotingPowerOverview = ({
 }: VotingPowerOverviewProps) => {
   const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
-  const evm = useEvmConfig({ shouldRedirect: false });
   const assetInfo = getStakingAssetInfo(singleStakingDenom, assetInfos);
 
   const votingPowerPercent = formatPrettyPercent(
@@ -116,7 +113,6 @@ export const VotingPowerOverview = ({
   const votingPowerAmount = formatUTokenWithPrecision({
     amount: votingPower as U<Token<Big>>,
     decimalPoints: 2,
-    isEvm: evm.enabled,
     isSuffix: false,
     precision: assetInfo?.precision ?? 0,
   });

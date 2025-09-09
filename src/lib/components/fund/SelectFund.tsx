@@ -4,7 +4,7 @@ import type { AssetOption, Token, U, USD } from "lib/types";
 import type { Control, UseFormSetValue } from "react-hook-form";
 
 import { Button, Text } from "@chakra-ui/react";
-import { useCurrentChain, useEvmConfig } from "lib/app-provider";
+import { useCurrentChain } from "lib/app-provider";
 import { AssetInput, ControllerInput } from "lib/components/forms";
 import { useAssetInfosByType } from "lib/services/assetService";
 import { useBalances } from "lib/services/bank";
@@ -39,7 +39,6 @@ export const SelectFund = ({
   setValue,
 }: SelectFundProps) => {
   const { address } = useCurrentChain();
-  const evm = useEvmConfig({ shouldRedirect: false });
   const { data: balances } = useBalances(address, !!address);
   const { data: assetInfos } = useAssetInfosByType({
     assetType: "native",
@@ -68,7 +67,6 @@ export const SelectFund = ({
       const formatted = formatUTokenWithPrecision({
         amount: token.amount as U<Token<BigSource>>,
         decimalPoints: token.amount.toNumber() > 999 ? 6 : undefined,
-        isEvm: evm.enabled,
         isSuffix: true,
         precision: token.precision ?? 0,
       });
@@ -79,7 +77,7 @@ export const SelectFund = ({
 
       return { formatted, price, raw };
     },
-    [assetInfos, evm.enabled]
+    [assetInfos]
   );
 
   const assetOptions = useMemo(() => {

@@ -3,7 +3,6 @@ import type Big from "big.js";
 import type { PoolData, Ratio, TokenWithValue, USD } from "lib/types";
 
 import { Flex, Grid, Text } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { TableRow } from "lib/components/table";
 import { TokenImageRender } from "lib/components/token";
@@ -34,7 +33,6 @@ export const PoolAssetsTableRow = ({
   token,
   totalLiquidity,
 }: PoolAssetsTableRowProps) => {
-  const evm = useEvmConfig({ shouldRedirect: false });
   const allocation = token.value
     ? formatRatio(divWithDefault(token.value, totalLiquidity, 0) as Ratio<Big>)
     : undefined;
@@ -98,7 +96,6 @@ export const PoolAssetsTableRow = ({
           <Text color="text.main" fontWeight={700} variant="body2">
             {formatUTokenWithPrecision({
               amount: token.amount,
-              isEvm: evm.enabled,
               isSuffix: false,
               precision: token.precision ?? 0,
             })}

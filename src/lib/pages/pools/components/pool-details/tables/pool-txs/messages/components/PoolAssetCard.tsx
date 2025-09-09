@@ -1,7 +1,6 @@
 import type { AssetInfos, Option, TokenWithValue } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
@@ -32,7 +31,6 @@ export const PoolAssetCard = ({
   poolId,
   poolToken,
 }: PoolAssetCardProps) => {
-  const evm = useEvmConfig({ shouldRedirect: false });
   const { data: poolAssets, isLoading } = usePoolsLiquidityByPoolIds(
     [poolId],
     isOpened
@@ -56,7 +54,7 @@ export const PoolAssetCard = ({
         <Text>
           {assetText}{" "}
           <span style={{ fontWeight: 700 }}>
-            {formatTokenWithValue({ isEvm: evm.enabled, token: poolToken })}
+            {formatTokenWithValue({ token: poolToken })}
           </span>
         </Text>
       </Flex>

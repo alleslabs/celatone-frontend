@@ -2,7 +2,6 @@ import type { FlexProps } from "@chakra-ui/react";
 import type { TokenWithValue } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
 import {
   formatPrice,
   formatUTokenWithPrecision,
@@ -17,8 +16,6 @@ export const TokenComposition = ({
   token,
   ...flexProps
 }: TokenCompositionProps) => {
-  const evm = useEvmConfig({ shouldRedirect: false });
-
   return (
     <Flex direction="column" {...flexProps}>
       {token.isLPToken ? (
@@ -27,7 +24,6 @@ export const TokenComposition = ({
             <Text as="span" fontWeight={700} mr={1}>
               {formatUTokenWithPrecision({
                 amount: token.poolInfo.coinA.amount,
-                isEvm: evm.enabled,
                 precision: token.poolInfo.coinA.precision ?? 0,
               })}
             </Text>
@@ -43,7 +39,6 @@ export const TokenComposition = ({
             <Text as="span" fontWeight={700} mr={1}>
               {formatUTokenWithPrecision({
                 amount: token.poolInfo.coinB.amount,
-                isEvm: evm.enabled,
                 precision: token.poolInfo.coinB.precision ?? 0,
               })}
             </Text>
@@ -58,7 +53,6 @@ export const TokenComposition = ({
           <Text as="span" fontWeight={700} mr={1}>
             {formatUTokenWithPrecision({
               amount: token.amount,
-              isEvm: evm.enabled,
               precision: token.precision ?? 0,
             })}
           </Text>
