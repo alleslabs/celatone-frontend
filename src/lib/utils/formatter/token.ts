@@ -29,7 +29,7 @@ export const formatDecimal =
           .split(".")[0]
       )
         .div(10 ** decimalPoints)
-        .toFixed(decimalPoints);
+        .toString();
 
       const [i, d] = num.split(".");
       const thousands = /\B(?=(\d{3})+(?!\d))/g;
