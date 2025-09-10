@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1440](https://github.com/alleslabs/celatone-frontend/pull/1440) Fix decimal points trailing zeros issue
 - [#1438](https://github.com/alleslabs/celatone-frontend/pull/1438) Fix resend button component
 - [#1434](https://github.com/alleslabs/celatone-frontend/pull/1434) Fix balance change tab empty state
 - [#1423](https://github.com/alleslabs/celatone-frontend/pull/1423) Fix message body from L1, and L2
