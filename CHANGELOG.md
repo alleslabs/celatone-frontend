@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1438](https://github.com/alleslabs/celatone-frontend/pull/1438) Fix resend button component
 - [#1434](https://github.com/alleslabs/celatone-frontend/pull/1434) Fix balance change tab empty state
 - [#1423](https://github.com/alleslabs/celatone-frontend/pull/1423) Fix message body from L1, and L2
 - [#1414](https://github.com/alleslabs/celatone-frontend/pull/1414) Fix accordion txs table missing value
