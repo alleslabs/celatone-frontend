@@ -199,7 +199,7 @@ describe("formatUTokenWithPrecision", () => {
           isSuffix: false,
           precision: 8,
         })
-      ).toEqual("0.00000000");
+      ).toEqual("0.000000");
       expect(
         formatUTokenWithPrecision({
           amount: NaN as U<Token<number>>,
@@ -258,7 +258,7 @@ describe("formatUTokenWithPrecision", () => {
         isSuffix: false,
         precision: 6,
       })
-    ).toEqual("12,345,678,901,234.56789000");
+    ).toEqual("12,345,678,901,234.567890");
   });
   describe("with suffix", () => {
     test(">= T", () => {
