@@ -39,6 +39,7 @@ export const ResendButton = ({
   const fabricateFee = useFabricateFee();
   const resendTx = useResendTx();
   const { broadcast } = useTxBroadcast();
+  const [count, setCount] = useState(0);
 
   const [isProcessing, setIsProcessing] = useState(false);
   const composedMsgs = formatMsgs(messages);
@@ -61,7 +62,7 @@ export const ResendButton = ({
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: isProcessing,
-    extraQueryKey: [txHash, msgIndex],
+    extraQueryKey: [txHash, msgIndex, count],
     messages: composedMsgs,
     onError: () => setIsProcessing(false),
     onSuccess: proceed,
@@ -77,6 +78,7 @@ export const ResendButton = ({
       onClick={(e) => {
         e.stopPropagation();
         setIsProcessing(true);
+        setCount((c) => c + 1);
       }}
     >
       Resend
