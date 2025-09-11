@@ -364,7 +364,6 @@ export const ExplorerLink = ({
       ) : (
         <Tooltip
           hidden={isTooltipHidden(type, textFormat)}
-          isDisabled
           label={value}
           textAlign="center"
         >
