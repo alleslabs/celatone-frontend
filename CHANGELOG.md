@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1442](https://github.com/alleslabs/celatone-frontend/pull/1442) Support estimate resend transaction failed
 - [#1437](https://github.com/alleslabs/celatone-frontend/pull/1437) Update decimal rules
 - [#1432](https://github.com/alleslabs/celatone-frontend/pull/1432) Replace Initia Widget by InterwovenKit provider
 - [#1435](https://github.com/alleslabs/celatone-frontend/pull/1435) Merge Rollytics version back to develop

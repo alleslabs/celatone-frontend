@@ -323,6 +323,7 @@ export const ExplorerLink = ({
       borderStyle="dashed"
       borderWidth="1px"
       display="inline-flex"
+      gap={1}
       h={fixedHeight ? "24px" : "auto"}
       maxW={textLabel ? "100%" : "fit-content"}
       px={1}
@@ -344,12 +345,12 @@ export const ExplorerLink = ({
       onMouseLeave={() => setHoveredText(null)}
       {...componentProps}
     >
+      {leftIcon}
       <Tooltip
         hidden={isTooltipHidden(type, textFormat)}
         label={value}
         textAlign="center"
       >
-        {leftIcon}
         <LinkRender
           chainId={chainId}
           fallbackValue={copyValue ?? ""}
@@ -362,8 +363,8 @@ export const ExplorerLink = ({
           textVariant={textVariant}
           type={type}
         />
-        {rightIcon}
       </Tooltip>
+      {rightIcon}
       {!hideCopy && (
         <Copier
           amptrackSection={ampCopierSection}
