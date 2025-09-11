@@ -54,6 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1441](https://github.com/alleslabs/celatone-frontend/pull/1441) Fix MsgExecute when resending
+- [#1440](https://github.com/alleslabs/celatone-frontend/pull/1440) Fix decimal points trailing zeros issue
 - [#1439](https://github.com/alleslabs/celatone-frontend/pull/1439) Fix dex pool zod validation
 - [#1438](https://github.com/alleslabs/celatone-frontend/pull/1438) Fix resend button component
 - [#1434](https://github.com/alleslabs/celatone-frontend/pull/1434) Fix balance change tab empty state

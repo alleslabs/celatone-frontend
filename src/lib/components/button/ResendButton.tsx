@@ -13,6 +13,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
+import { MsgExecute } from "@initia/initia.js";
 import { AmpEvent, track } from "lib/amplitude";
 import { useFabricateFee, useResendTx } from "lib/app-provider";
 import { useTxBroadcast } from "lib/hooks";
@@ -32,6 +33,17 @@ const formatMsgs = (messages: Message[]) =>
   messages.reduce((acc: EncodeObject[], msg: Message) => {
     // TODO: revisit if detail is undefined
     const detail = msg.detail as Msg;
+    // TODO: workaround for msg move execute
+    if (msg.type === "/initia.move.v1.MsgExecute") {
+      const executeMsg = MsgExecute.fromData(
+        camelToSnake(detail) as unknown as MsgExecute.Data
+      );
+      acc.push({
+        typeUrl: msg.type,
+        value: executeMsg.toProto(),
+      });
+      return acc;
+    }
     acc.push({
       typeUrl: msg.type,
       value: !detail.msg
