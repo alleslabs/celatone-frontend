@@ -323,7 +323,7 @@ export const ExplorerLink = ({
       borderStyle="dashed"
       borderWidth="1px"
       display="inline-flex"
-      h={fixedHeight ? "24px" : "auto"}
+      h={fixedHeight && textFormat !== "normal" ? "24px" : "auto"}
       maxW={textLabel ? "100%" : "fit-content"}
       px={1}
       rounded={4}
@@ -342,14 +342,12 @@ export const ExplorerLink = ({
       w="fit-content"
       onMouseEnter={() => setHoveredText(value)}
       onMouseLeave={() => setHoveredText(null)}
+      onTouchEnd={() => setHoveredText(null)}
+      onTouchStart={() => setHoveredText(value)}
       {...componentProps}
     >
-      <Tooltip
-        hidden={isTooltipHidden(type, textFormat)}
-        label={value}
-        textAlign="center"
-      >
-        {leftIcon}
+      {leftIcon}
+      {isMobile ? (
         <LinkRender
           chainId={chainId}
           fallbackValue={copyValue ?? ""}
@@ -362,8 +360,28 @@ export const ExplorerLink = ({
           textVariant={textVariant}
           type={type}
         />
-        {rightIcon}
-      </Tooltip>
+      ) : (
+        <Tooltip
+          hidden={isTooltipHidden(type, textFormat)}
+          isDisabled
+          label={value}
+          textAlign="center"
+        >
+          <LinkRender
+            chainId={chainId}
+            fallbackValue={copyValue ?? ""}
+            hrefLink={link}
+            isEllipsis={textFormat === "ellipsis"}
+            isInternal={isUndefined(externalLink)}
+            openNewTab={openNewTab}
+            textFormat={textFormat}
+            textValue={textValue}
+            textVariant={textVariant}
+            type={type}
+          />
+        </Tooltip>
+      )}
+      {rightIcon}
       {!hideCopy && (
         <Copier
           amptrackSection={ampCopierSection}
