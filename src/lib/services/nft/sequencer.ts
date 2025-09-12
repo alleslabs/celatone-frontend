@@ -24,6 +24,7 @@ export const getNftsSequencerLoop = async (
         {
           params: {
             "pagination.key": paginationKey,
+            "pagination.reverse": false,
           },
         }
       )
@@ -51,6 +52,7 @@ export const getNftsSequencer = async (
       params: {
         "pagination.key": paginationKey,
         "pagination.limit": limit,
+        "pagination.reverse": false,
       },
     }
   );
@@ -72,7 +74,7 @@ export const getNftsByAccountSequencer = async (
         collection_addr: collectionAddress,
         "pagination.key": paginationKey,
         "pagination.limit": limit,
-        "pagination.reverse": true,
+        "pagination.reverse": false,
         token_id: tokenId ? encodeURIComponent(tokenId) : undefined,
       },
     }
