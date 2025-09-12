@@ -184,6 +184,7 @@ export const getNftCollectionsSequencer = async (
     params: {
       "pagination.key": paginationKey,
       "pagination.limit": limit,
+      "pagination.reverse": false,
     },
   });
   return parseWithError(zCollectionsResponseSequencer, data);
@@ -199,6 +200,7 @@ export const getNftCollecitonsByNameSequencer = async (
     {
       params: {
         "pagination.key": paginationKey,
+        "pagination.reverse": false,
       },
     }
   );
@@ -250,7 +252,7 @@ export const getNftCollectionsByAccountAddressSequencer = async (
         params: {
           "pagination.count_total": false,
           "pagination.limit": 1000,
-          "pagination.reverse": true,
+          "pagination.reverse": false,
         },
       }
     )
