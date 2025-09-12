@@ -20,7 +20,7 @@ export const CollectionSuppliesSequencer = ({
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useNftsSequencer(collectionAddress);
+  } = useNftsSequencer(collectionAddress, 10, true, ["supplies"]);
 
   return (
     <Box gap="40px" mt="32px">

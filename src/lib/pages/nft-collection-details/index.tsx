@@ -87,7 +87,7 @@ const CollectionDetailsBody = ({
   );
 
   const { data: nftsSequencer, isFetching: isNftsLoadingSequencer } =
-    useNftsSequencer(collectionAddressHex, 6);
+    useNftsSequencer(collectionAddressHex, 6, true, ["preview"]);
 
   const nfts = isFullTier ? nftsFull?.items : nftsSequencer;
   const isNftsLoading = isFullTier ? isNftsLoadingFull : isNftsLoadingSequencer;
