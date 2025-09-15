@@ -128,8 +128,8 @@ importers:
         specifier: 2.0.0-rc.7
         version: 2.0.0-rc.7(36de4drps2reniattg7ommgc2e)
       '@initia/react-app-shell':
-        specifier: 1.1.0
-        version: 1.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: 1.2.0
+        version: 1.2.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@initia/tx-decoder':
         specifier: 0.6.0
         version: 0.6.0(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
@@ -2513,8 +2513,8 @@ packages:
   '@initia/opinit.proto@0.0.11':
     resolution: {integrity: sha512-Op9GIlXiV1xhUIjVQ2TFE9a3X8iyFVNtJNHCM34gwLQHJktDNm2KCoW4eHh6pkn4//ECRVH7zuKgV8TdZWogCw==}
 
-  '@initia/react-app-shell@1.1.0':
-    resolution: {integrity: sha512-oc3PWZ42kFqoSuwN8LHhImUSZuPLyJdZcKEosXUK0327hs+a5Xnup/mSsLFQ3xitkXd+5BPZsnMmpouN1tacvg==}
+  '@initia/react-app-shell@1.2.0':
+    resolution: {integrity: sha512-bu0lGaANIeni0JgBgvl1j7JfcCoNLUJtg62bkYY4OWG8Dh1eoeIIOX0OvfwlhVO9aWmzWd2aMb4g9KTy0pgzfA==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
@@ -15092,7 +15092,7 @@ snapshots:
       long: 5.3.1
       protobufjs: 7.4.0
 
-  '@initia/react-app-shell@1.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@initia/react-app-shell@1.2.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)

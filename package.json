@@ -89,7 +89,7 @@
     "@initia/initia.js": "1.0.6",
     "@initia/initia.proto": "1.0.0",
     "@initia/interwovenkit-react": "2.0.0-rc.7",
-    "@initia/react-app-shell": "1.1.0",
+    "@initia/react-app-shell": "1.2.0",
     "@initia/tx-decoder": "0.6.0",
     "@initia/utils": "2.0.0-alpha.6",
     "@interchain-ui/react": "1.23.9",
