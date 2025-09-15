@@ -14,8 +14,7 @@ export const useGetFirstNftAsCollectionImage = (
   const { data: nftsSequencer } = useNftsSequencer(
     collectionAddressHex,
     6,
-    true,
-    ["image"]
+    true
   );
 
   const nfts = isFullTier ? nftsFull?.items : nftsSequencer;
