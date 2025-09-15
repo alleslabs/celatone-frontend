@@ -2,11 +2,12 @@ import type { Option } from "lib/types";
 import type { ChainProfile } from "lib/types/chainProfile";
 
 import axios from "axios";
-import { CHAIN, SCAN_API } from "env";
+import { CHAIN, ROUTER_API, SCAN_API } from "env";
 import { CHAIN_PROFILE_URL } from "lib/data";
-import { zChainConfig } from "lib/types";
+import { zChainConfig, zNonInitiaChainConfig } from "lib/types";
 import { zChainProfile } from "lib/types/chainProfile";
 import { isUrl, parseWithError } from "lib/utils";
+import { z } from "zod";
 
 export const getApiChainConfigs = (
   networkTypes: string[],
@@ -39,3 +40,26 @@ export const getChainProfile = () =>
       {}
     );
   });
+
+export const getNonInitiaChainConfig = async (chainIds: string[]) => {
+  const endpoint = `${ROUTER_API}/v2/info/chains`;
+  if (!isUrl(endpoint)) {
+    throw new Error(
+      `Endpoint is not a valid URL (getNonInitiaChainConfig): ${endpoint}`
+    );
+  }
+
+  const { data } = await axios.get(endpoint, {
+    params: {
+      chain_ids: chainIds.join(","),
+      include_evm: true,
+      include_initia_mainnet: true,
+      only_testnets: false,
+    },
+  });
+
+  return parseWithError(
+    z.object({ chains: zNonInitiaChainConfig.array() }),
+    data
+  );
+};

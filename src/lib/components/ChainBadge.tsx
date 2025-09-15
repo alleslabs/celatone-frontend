@@ -1,5 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { useChainConfigs } from "lib/app-provider";
+import { useNonInitiaChainConfig } from "lib/services/chain-config";
+import React from "react";
 
 import { TokenImageRender } from "./token";
 import { Tooltip } from "./Tooltip";
@@ -8,30 +10,15 @@ interface ChainBadgeProps {
   chainId: string | string[];
 }
 
-const ChainBadgeSingle = ({ chainId }: { chainId: string }) => {
-  const { chainConfigs } = useChainConfigs();
-  const chainInfo = chainConfigs[chainId];
+interface BadgeContentProps {
+  logo?: string;
+  name: string;
+  tooltip?: string;
+}
 
-  if (!chainInfo)
-    return (
-      <Flex
-        className="copier-wrapper"
-        align="center"
-        gap={1}
-        minWidth="max-content"
-      >
-        <TokenImageRender boxSize={4} logo={undefined} minW={4} />
-        <Text whiteSpace="nowrap">{chainId}</Text>
-      </Flex>
-    );
-
-  const logo =
-    chainInfo.logo_URIs?.svg ||
-    chainInfo.logo_URIs?.png ||
-    chainInfo.logo_URIs?.jpeg;
-
-  return (
-    <Tooltip label={`Chain ID: ${chainId}`}>
+const BadgeContent = React.memo(
+  ({ logo, name, tooltip }: BadgeContentProps) => {
+    const content = (
       <Flex
         className="copier-wrapper"
         align="center"
@@ -40,11 +27,47 @@ const ChainBadgeSingle = ({ chainId }: { chainId: string }) => {
       >
         <TokenImageRender boxSize={4} logo={logo} minW={4} />
         <Text fontWeight={400} variant="body2" whiteSpace="nowrap">
-          {chainInfo.prettyName}
+          {name}
         </Text>
       </Flex>
-    </Tooltip>
-  );
+    );
+
+    return tooltip ? <Tooltip label={tooltip}>{content}</Tooltip> : content;
+  }
+);
+
+const ChainBadgeSingle = ({ chainId }: { chainId: string }) => {
+  const { chainConfigs } = useChainConfigs();
+  const { data: nonInitiaChainConfigs } = useNonInitiaChainConfig([chainId]);
+  const chainInfo = chainConfigs[chainId];
+  const nonInitiaChainInfo = nonInitiaChainConfigs?.[chainId];
+
+  if (nonInitiaChainInfo) {
+    return (
+      <BadgeContent
+        logo={nonInitiaChainInfo.logo_uri}
+        name={nonInitiaChainInfo.chain_name || chainId}
+        tooltip={`Chain ID: ${chainId}`}
+      />
+    );
+  }
+
+  if (chainInfo) {
+    const logo =
+      chainInfo.logo_URIs?.svg ||
+      chainInfo.logo_URIs?.png ||
+      chainInfo.logo_URIs?.jpeg;
+
+    return (
+      <BadgeContent
+        logo={logo}
+        name={chainInfo.prettyName}
+        tooltip={`Chain ID: ${chainId}`}
+      />
+    );
+  }
+
+  return <BadgeContent name={chainId} />;
 };
 
 const ChainBadgeMultiple = ({ chainId }: { chainId: string[] }) => {
