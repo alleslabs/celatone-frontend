@@ -103,7 +103,7 @@ export const DecodeMessageDepositStableSwap = ({
             token: lpToken,
           })}
         </DecodeMessageRow>
-        <DecodeMessageRow title="Withdrawn assets">
+        <DecodeMessageRow title="Deposited assets">
           <CoinsComponent coins={coins} />
         </DecodeMessageRow>
         <DecodeMessageExecute log={log} msgBody={msgBody} />
