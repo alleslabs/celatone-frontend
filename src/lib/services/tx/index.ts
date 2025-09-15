@@ -78,11 +78,20 @@ import {
 } from "./sequencer";
 
 export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
   const { txDecoder } = useTxDecoderContext();
 
   return useQuery({
-    queryKey: [CELATONE_QUERY_KEYS.TX_DECODER, rawTxResponse],
-    queryFn: async () => txDecoder.decodeTransaction(rawTxResponse),
+    queryKey: [
+      CELATONE_QUERY_KEYS.TX_DECODER,
+      rawTxResponse,
+      evm.enabled,
+      evm.enabled && evm.jsonRpc,
+    ],
+    queryFn: async () =>
+      evm.enabled
+        ? txDecoder.decodeEvmTransaction(rawTxResponse)
+        : txDecoder.decodeTransaction(rawTxResponse),
     enabled: !!rawTxResponse,
   });
 };
@@ -99,6 +108,7 @@ export const useTxData = (
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("txs");
   const { txDecoder } = useTxDecoderContext();
+  const evm = useEvmConfig({ shouldRedirect: false });
 
   const endpoint = isFullTier ? apiEndpoint : restEndpoint;
 
@@ -118,7 +128,9 @@ export const useTxData = (
       );
 
       const logs = extractTxLogs(rawTxResponse);
-      const decodedTx = await txDecoder.decodeTransaction(rawTxResponse);
+      const decodedTx = await (evm.enabled
+        ? txDecoder.decodeEvmTransaction(rawTxResponse)
+        : txDecoder.decodeTransaction(rawTxResponse));
       return {
         ...txResponse,
         chainId: currentChainId,
@@ -128,13 +140,19 @@ export const useTxData = (
         signer,
       };
     },
-    [bech32Prefix, currentChainId, endpoint, isFullTier, txDecoder]
+    [bech32Prefix, currentChainId, endpoint, isFullTier, txDecoder, evm.enabled]
   );
 
   return useQuery({
     enabled: enabled && Boolean(txHash && isTxHash(txHash)),
     queryFn: async () => queryFn(txHash),
-    queryKey: [CELATONE_QUERY_KEYS.TX_DATA, endpoint, txHash, bech32Prefix],
+    queryKey: [
+      CELATONE_QUERY_KEYS.TX_DATA,
+      endpoint,
+      txHash,
+      bech32Prefix,
+      evm.enabled,
+    ],
     refetchOnWindowFocus: false,
     staleTime: Infinity,
   });

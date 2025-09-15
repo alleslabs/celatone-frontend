@@ -6,6 +6,7 @@ import { DecodeMessageClaimMinitSwap } from "./decode-message-claim-minitswap";
 import { DecodeMessageDelegate } from "./decode-message-delegate";
 import { DecodeMessageDepositLiquidity } from "./decode-message-deposit-liquidity";
 import { DecodeMessageDepositMinitSwap } from "./decode-message-deposit-minitswap";
+import { DecodeMessageDepositStableSwap } from "./decode-message-deposit-stableswap";
 import { DecodeMessageDepositStakeLiquidity } from "./decode-message-deposit-stake-liquidity";
 import { DecodeMessageDepositStakeLockLiquidity } from "./decode-message-deposit-stake-lock-liquidity";
 import { DecodeMessageExtendLiquidity } from "./decode-message-extend-liquidity";
@@ -131,6 +132,13 @@ export const DecodeMessage = ({
     case "op_finalize_withdraw":
       return (
         <DecodeMessageOpFinalizeWithdraw
+          decodedMessage={decodedMessage}
+          {...props}
+        />
+      );
+    case "provide_stableswap":
+      return (
+        <DecodeMessageDepositStableSwap
           decodedMessage={decodedMessage}
           {...props}
         />
