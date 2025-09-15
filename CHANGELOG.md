@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1448](https://github.com/alleslabs/celatone-frontend/pull/1448) Bump react app shell version to 1.2.0
 - [#1444](https://github.com/alleslabs/celatone-frontend/pull/1444) Sort NFTs and NFT collections by ASC order
 - [#1442](https://github.com/alleslabs/celatone-frontend/pull/1442) Support estimate resend transaction failed
 - [#1437](https://github.com/alleslabs/celatone-frontend/pull/1437) Update decimal rules
