@@ -130,8 +130,7 @@ export const useNfts = (
 export const useNftsSequencer = (
   collectionAddress: HexAddr32,
   limit = 10,
-  enabled = true,
-  extraQueryKey?: UseQueryOptions["queryKey"]
+  enabled = true
 ) => {
   const {
     chainConfig: { indexer: indexerEndpoint },
@@ -165,7 +164,6 @@ export const useNftsSequencer = (
       indexerEndpoint,
       formattedCollectionAddress,
       limit,
-      ...(extraQueryKey ? [...extraQueryKey] : []),
     ],
     queryFn: ({ pageParam }: { pageParam?: string }) => queryfn(pageParam),
     initialPageParam: undefined,

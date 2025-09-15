@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1450](https://github.com/alleslabs/celatone-frontend/pull/1450) Remove extra query key in useNftsSequencer
 - [#1446](https://github.com/alleslabs/celatone-frontend/pull/1446) Update background main color for Initia theme and default theme
 - [#1443](https://github.com/alleslabs/celatone-frontend/pull/1443) Update ExplorerLink component for mobile users
 - [#1405](https://github.com/alleslabs/celatone-frontend/pull/1405) Enhance Readme.md and add CODEOWNERS
