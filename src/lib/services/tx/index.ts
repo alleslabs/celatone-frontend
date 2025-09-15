@@ -82,7 +82,12 @@ export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
   const { txDecoder } = useTxDecoderContext();
 
   return useQuery({
-    queryKey: [CELATONE_QUERY_KEYS.TX_DECODER, rawTxResponse, evm.enabled],
+    queryKey: [
+      CELATONE_QUERY_KEYS.TX_DECODER,
+      rawTxResponse,
+      evm.enabled,
+      evm.enabled && evm.jsonRpc,
+    ],
     queryFn: async () =>
       evm.enabled
         ? txDecoder.decodeEvmTransaction(rawTxResponse)
