@@ -47,13 +47,6 @@ const getChainDisplayInfo = (
   const chainInfo = chainConfigs[chainId];
   const nonInitiaChainInfo = nonInitiaChainConfigs?.[chainId];
 
-  if (nonInitiaChainInfo) {
-    return {
-      logo: nonInitiaChainInfo.logo_uri,
-      name: nonInitiaChainInfo.chain_name || chainId,
-    };
-  }
-
   if (chainInfo) {
     return {
       logo:
@@ -61,6 +54,13 @@ const getChainDisplayInfo = (
         chainInfo.logo_URIs?.png ||
         chainInfo.logo_URIs?.jpeg,
       name: chainInfo.prettyName,
+    };
+  }
+
+  if (nonInitiaChainInfo) {
+    return {
+      logo: nonInitiaChainInfo.logo_uri,
+      name: nonInitiaChainInfo.pretty_name || chainId,
     };
   }
 
