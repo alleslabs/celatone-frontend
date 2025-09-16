@@ -5,7 +5,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { useDebounce } from "lib/hooks";
+import { useDebounce, useQueryEvents } from "lib/hooks";
 import { useNftCollectionActivities } from "lib/services/nft-collection";
 import { useState } from "react";
 
@@ -34,15 +34,16 @@ export const ActivitiesFull = ({ collectionAddress }: ActivitiesFullProps) => {
       pageSize: 10,
     },
   });
-  const { data: activities, isLoading } = useNftCollectionActivities(
+  const nftCollectionActivitiesQuery = useNftCollectionActivities(
     collectionAddress,
     pageSize,
     offset,
-    debouncedSearch,
-    {
-      onSuccess: ({ total }) => setTotalData(total),
-    }
+    debouncedSearch
   );
+  useQueryEvents(nftCollectionActivitiesQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data: activities, isLoading } = nftCollectionActivitiesQuery;
 
   return (
     <Stack mt="32px" spacing="32px">

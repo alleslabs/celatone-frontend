@@ -32,15 +32,13 @@ export const useInitiaUsernameByAddress = (
     return { username };
   };
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.INITIA_USERNAME_BY_ADDRESS, address],
+  return useQuery({
+    enabled: enabled && isInitia && !!address && isSomeValidAddress(address),
     queryFn,
-    {
-      enabled: enabled && isInitia && !!address && isSomeValidAddress(address),
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    queryKey: [CELATONE_QUERY_KEYS.INITIA_USERNAME_BY_ADDRESS, address],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useAddressByInitiaUsername = (
@@ -59,13 +57,11 @@ export const useAddressByInitiaUsername = (
     );
     return { address: address ? formatAddress(address).address : null };
   };
-  return useQuery(
-    [CELATONE_QUERY_KEYS.ADDRESS_BY_INITIA_USERNAME, username],
+  return useQuery({
+    enabled: enabled && username.length > 0 && isInitia,
     queryFn,
-    {
-      enabled: enabled && username.length > 0 && isInitia,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    queryKey: [CELATONE_QUERY_KEYS.ADDRESS_BY_INITIA_USERNAME, username],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };

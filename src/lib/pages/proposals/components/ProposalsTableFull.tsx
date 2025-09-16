@@ -14,7 +14,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
-import { useDebounce } from "lib/hooks";
+import { useDebounce, useQueryEvents } from "lib/hooks";
 import { useProposals } from "lib/services/proposal";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -41,6 +41,7 @@ export const ProposalsTableFull = () => {
     pagesQuantity,
     setCurrentPage,
     setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
       currentPage: 1,
@@ -49,11 +50,7 @@ export const ProposalsTableFull = () => {
     },
   });
 
-  const {
-    data: proposals,
-    error,
-    isLoading,
-  } = useProposals(
+  const proposalsQuery = useProposals(
     pageSize,
     offset,
     proposer,
@@ -61,6 +58,10 @@ export const ProposalsTableFull = () => {
     types,
     debouncedSearch
   );
+  useQueryEvents(proposalsQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data: proposals, error, isLoading } = proposalsQuery;
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_PROPOSAL_LIST);
@@ -190,7 +191,7 @@ export const ProposalsTableFull = () => {
           pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           totalData={proposals.total}
-          onPageChange={(nextPage) => setCurrentPage(nextPage)}
+          onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);

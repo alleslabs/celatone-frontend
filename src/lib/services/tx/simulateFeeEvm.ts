@@ -6,6 +6,7 @@ import { toBeHex } from "ethers";
 import { useCelatoneApp } from "lib/app-provider";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import { useCurrentChain } from "lib/app-provider/hooks";
+import { useQueryEvents } from "lib/hooks";
 import { bech32AddressToHex } from "lib/utils";
 
 import type { SimulatedFeeEvm } from "../types";
@@ -39,19 +40,14 @@ export const useSimulateFeeEvmQuery = ({
   } = useCelatoneApp();
   const { address, walletProvider } = useCurrentChain();
 
-  return useQuery({
+  const simulateFeeEvmQuery = useQuery({
     enabled: enabled && !!address,
-    onError,
-    onSuccess,
     queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useSimulateFeeEvmQuery)");
       if (!address)
         throw new Error("No address provided (useSimulateFeeEvmQuery)");
-      if (
-        walletProvider.type !== "initia-widget" ||
-        walletProvider.context.wallet?.type !== "evm"
-      )
+      if (walletProvider.type !== "initia-widget")
         throw new Error("Please reconnect to EVM wallet");
 
       return getSimulateFeeEvm(evm.jsonRpc, {
@@ -61,7 +57,6 @@ export const useSimulateFeeEvmQuery = ({
         value: value ? toBeHex(value) : null,
       });
     },
-    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_EVM,
       walletProvider.type,
@@ -75,4 +70,11 @@ export const useSimulateFeeEvmQuery = ({
     refetchOnWindowFocus: false,
     retry,
   });
+
+  useQueryEvents(simulateFeeEvmQuery, {
+    onError,
+    onSuccess,
+  });
+
+  return simulateFeeEvmQuery;
 };

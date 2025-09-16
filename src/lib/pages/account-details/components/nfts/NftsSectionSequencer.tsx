@@ -42,7 +42,7 @@ export const NftsSectionSequencer = ({
     selectedCollection,
     debouncedSearchByTokenId
   );
-  const { data: collections } =
+  const { data: collections, isLoading: isCollectionsLoading } =
     useNftCollectionsByAccountAddress(accountAddress);
 
   const collectionAddresses =
@@ -52,7 +52,7 @@ export const NftsSectionSequencer = ({
     collectionAddresses
   );
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isCollectionsLoading) return <Loading />;
   if (!collections) return <ErrorFetching dataName="collections" />;
   if (!collections.items.length)
     return (
@@ -117,7 +117,7 @@ export const NftsSectionSequencer = ({
                 imageVariant="empty"
                 message={
                   searchByTokenId
-                    ? "There are no NFTs matches your keyword."
+                    ? "There are no NFTs matching your keyword."
                     : "There are currently no NFTs held by this account."
                 }
                 withBorder

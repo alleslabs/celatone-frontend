@@ -10,6 +10,7 @@ import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { TableTitle } from "lib/components/table";
+import { useQueryEvents } from "lib/hooks";
 import { useValidatorDelegationRelatedTxs } from "lib/services/validator";
 
 import { DelegationRelatedTxsTable } from "../tables";
@@ -46,14 +47,15 @@ export const BondedTokenChanges = ({
     },
   });
 
-  const { data, isLoading } = useValidatorDelegationRelatedTxs(
+  const validatorDelegationRelatedTxsQuery = useValidatorDelegationRelatedTxs(
     validatorAddress,
     pageSize,
-    offset,
-    {
-      onSuccess: ({ total }) => setTotalData(total),
-    }
+    offset
   );
+  useQueryEvents(validatorDelegationRelatedTxsQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data, isLoading } = validatorDelegationRelatedTxsQuery;
 
   const tableHeaderId = "relatedTransactionTableHeader";
 

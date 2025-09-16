@@ -21,7 +21,6 @@ import type { BalanceInfos } from "../types";
 
 import { useAssetInfos } from "../assetService";
 import { useMovePoolInfos } from "../move/poolService";
-import { getBalances } from "./api";
 import { getBalancesRest } from "./rest";
 
 export const useBalances = (
@@ -35,16 +34,16 @@ export const useBalances = (
   const apiEndpoint = useBaseApiRoute("accounts");
   const endpoint = isSei ? apiEndpoint : restEndpoint;
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.BALANCES, endpoint, address, isSei],
-    async () => {
+  return useQuery({
+    enabled,
+    queryFn: async () => {
       if (!address) throw new Error("address is undefined (useBalances)");
-      return isSei
-        ? getBalances(endpoint, address)
-        : getBalancesRest(endpoint, address);
+      return getBalancesRest(endpoint, address);
     },
-    { enabled, refetchOnWindowFocus: false, retry: 1 }
-  );
+    queryKey: [CELATONE_QUERY_KEYS.BALANCES, endpoint, address, isSei],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useBalanceInfos = (address: BechAddr): BalanceInfos => {

@@ -1,21 +1,22 @@
-import type { Transaction } from "lib/types";
+import type { TransactionWithTxResponse } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
-import { ActionMessages } from "lib/components/action-msg/ActionMessages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { useTxDecoder } from "lib/services/tx";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 import { RelationChip } from "./RelationChip";
+import { TransactionsTableDecodeMessageColumn } from "./TransactionsTableDecodeMessageColumn";
 
 interface TransactionsTableMobileCardProps {
   showRelations: boolean;
   showSuccess: boolean;
   showTimestamp: boolean;
-  transaction: Transaction;
+  transaction: TransactionWithTxResponse;
 }
 export const TransactionsTableMobileCard = ({
   showRelations,
@@ -25,6 +26,9 @@ export const TransactionsTableMobileCard = ({
 }: TransactionsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
   const isTxHasNoData = transaction.height === 0;
+  const { rawTxResponse, txResponse } = transaction;
+  const { data: decodedTx, isFetching: isDecodedTxFetching } =
+    useTxDecoder(rawTxResponse);
 
   return (
     <MobileCardTemplate
@@ -60,7 +64,12 @@ export const TransactionsTableMobileCard = ({
             Unable to load data due to large transaction size
           </Text>
         ) : (
-          <ActionMessages transaction={transaction} />
+          <TransactionsTableDecodeMessageColumn
+            decodedTx={decodedTx}
+            isDecodedTxFetching={isDecodedTxFetching}
+            transaction={transaction}
+            txResponse={txResponse}
+          />
         )
       }
       topContent={

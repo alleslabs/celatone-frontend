@@ -9,7 +9,7 @@ import type {
 } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { useEvmConfig, useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import {
@@ -36,7 +36,6 @@ export const ValidatorsTableMobileCard = ({
   validator,
 }: ValidatorsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
-  const evm = useEvmConfig({ shouldRedirect: false });
   const isZeroUptime = !validator.uptime;
   const isMinCommissionRate = minCommissionRate === validator.commissionRate;
   return (
@@ -75,7 +74,6 @@ export const ValidatorsTableMobileCard = ({
               {formatUTokenWithPrecision({
                 amount: validator.votingPower as U<Token<Big>>,
                 decimalPoints: 2,
-                isEvm: evm.enabled,
                 isSuffix: false,
                 precision: assetInfo?.precision ?? 0,
               })}

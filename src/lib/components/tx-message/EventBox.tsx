@@ -48,8 +48,10 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
             ampCopierSection="tx_page_event_logs"
             fixedHeight={false}
             maxWidth="full"
+            queryParams={{}}
             showCopyOnHover
             textFormat="normal"
+            textLabel={undefined}
             type={key as LinkType}
             value={value}
           />
@@ -81,6 +83,26 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
           );
         else valueComponent = value;
         break;
+      case key === "module_addr":
+        valueComponent = <ExplorerLink type="contract_address" value={value} />;
+        break;
+      case key === "module_name": {
+        const findModuleAddress = event.attributes.find(
+          (attr) => attr.key === "module_addr"
+        );
+
+        if (findModuleAddress) {
+          valueComponent = (
+            <ExplorerLink
+              textLabel={value}
+              type="module_name"
+              value={`${findModuleAddress.value}/${value}`}
+            />
+          );
+        }
+
+        break;
+      }
       default:
         valueComponent = value;
         break;

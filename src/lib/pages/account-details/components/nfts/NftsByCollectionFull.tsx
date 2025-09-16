@@ -7,7 +7,7 @@ import { NftList } from "lib/components/nft";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { useDebounce } from "lib/hooks";
+import { useDebounce, useQueryEvents } from "lib/hooks";
 import { useNftsByAccountAddress } from "lib/services/nft";
 import { useEffect, useState } from "react";
 
@@ -39,16 +39,17 @@ export const NftsByCollectionFull = ({
       pageSize: 10,
     },
   });
-  const { data, isLoading } = useNftsByAccountAddress(
+  const nftsByAccountQuery = useNftsByAccountAddress(
     accountAddress,
     pageSize,
     offset,
     collectionAddress,
-    debouncedSearch,
-    {
-      onSuccess: ({ total }) => setTotalData(total),
-    }
+    debouncedSearch
   );
+  useQueryEvents(nftsByAccountQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data, isLoading } = nftsByAccountQuery;
 
   useEffect(() => {
     setPageSize(10);

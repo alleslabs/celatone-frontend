@@ -5,6 +5,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
+import { useQueryEvents } from "lib/hooks";
 import { useModuleHistories } from "lib/services/move/module";
 import { useEffect } from "react";
 
@@ -44,19 +45,16 @@ export const ModuleHistoryTable = ({
     total: historyCount,
   });
 
-  const {
-    data: moduleHistories,
-    error,
-    isLoading,
-  } = useModuleHistories(
+  const moduleHistoriesQuery = useModuleHistories(
     vmAddress,
     moduleName,
     onViewMore ? 5 : pageSize,
-    offset,
-    {
-      onSuccess: ({ total }) => setTotalData(total),
-    }
+    offset
   );
+  useQueryEvents(moduleHistoriesQuery, {
+    onSuccess: ({ total }) => setTotalData(total),
+  });
+  const { data: moduleHistories, error, isLoading } = moduleHistoriesQuery;
 
   useEffect(() => {
     if (!onViewMore) setPageSize(10);

@@ -1,13 +1,13 @@
 import type { Nft } from "lib/services/types";
 
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useEvmConfig, useMoveConfig } from "lib/app-provider";
-import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useNftGlyphImage, useNftMetadata } from "lib/services/nft";
 
 import { AppLink } from "../AppLink";
+import { NftImage } from "./NftImage";
 
 interface NftCardProps {
   nft: Nft;
@@ -40,12 +40,10 @@ export const NftCard = ({ nft, showCollection = false }: NftCardProps) => {
         onClick={() => track(AmpEvent.USE_NFT_CARD, { showCollection })}
       >
         <Box mb={2} paddingBottom="100%" position="relative" width="100%">
-          <Image
+          <NftImage
             background="gray.900"
             backgroundPosition="center"
             borderRadius="8px"
-            fallbackSrc={NFT_IMAGE_PLACEHOLDER}
-            fallbackStrategy="beforeLoadOrError"
             height="100%"
             left={0}
             objectFit="contain"

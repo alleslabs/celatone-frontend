@@ -46,22 +46,23 @@ export const useNftCollections = (
   limit: number,
   offset: number,
   search?: string,
-  options?: Pick<
-    UseQueryOptions<NftCollectionsResponse>,
-    "enabled" | "onSuccess"
-  >
+  options?: Partial<UseQueryOptions<NftCollectionsResponse>>
 ) => {
   const apiEndpoint = useBaseApiRoute("nft_collections");
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.NFT_COLLECTIONS, apiEndpoint, limit, offset, search],
-    () => getNftCollections(apiEndpoint, limit, offset, search),
-    {
-      refetchOnWindowFocus: false,
-      retry: 1,
-      ...options,
-    }
-  );
+  return useQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.NFT_COLLECTIONS,
+      apiEndpoint,
+      limit,
+      offset,
+      search,
+    ],
+    queryFn: () => getNftCollections(apiEndpoint, limit, offset, search),
+    refetchOnWindowFocus: false,
+    retry: 1,
+    ...options,
+  });
 };
 
 export const useNftCollectionsSequencer = (limit: number, search?: string) => {
@@ -72,14 +73,14 @@ export const useNftCollectionsSequencer = (limit: number, search?: string) => {
   const { isSomeValidAddress } = useValidateAddress();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteQuery(
-      [
+    useInfiniteQuery({
+      queryKey: [
         CELATONE_QUERY_KEYS.NFT_COLLECTIONS_SEQUENCER,
         indexerEndpoint,
         limit,
         search ?? "",
       ],
-      ({ pageParam }) => {
+      queryFn: ({ pageParam }: { pageParam?: string }) => {
         if (search) {
           if (isSomeValidAddress(search)) {
             const formattedAddress = formatAddresses(search);
@@ -98,12 +99,10 @@ export const useNftCollectionsSequencer = (limit: number, search?: string) => {
 
         return getNftCollectionsSequencer(indexerEndpoint, limit, pageParam);
       },
-      {
-        getNextPageParam: (lastPage) =>
-          lastPage.pagination.nextKey ?? undefined,
-        refetchOnWindowFocus: false,
-      }
-    );
+      initialPageParam: undefined,
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+    });
 
   return {
     data: data?.pages.flatMap((page) => page.collections),
@@ -126,15 +125,15 @@ export const useNftCollectionByCollectionAddress = (
   } = useCelatoneApp();
   const formatAddress = useNftAddressFormat();
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_BY_COLLECTION_ADDRESS,
       apiEndpoint,
       indexerEndpoint,
       tier,
       collectionAddress,
     ],
-    () => {
+    queryFn: () => {
       const formattedCollectionAddress = formatAddress(collectionAddress);
       return handleQueryByTier<Nullable<CollectionByCollectionAddressResponse>>(
         {
@@ -151,12 +150,11 @@ export const useNftCollectionByCollectionAddress = (
         }
       );
     },
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useNftCollectionInfosWasm = (collectionAddress: BechAddr32) => {
@@ -165,19 +163,18 @@ export const useNftCollectionInfosWasm = (collectionAddress: BechAddr32) => {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_INFOS_BY_COLLECTION_ADDRESS_WASM,
+      restEndpoint,
       collectionAddress,
     ],
-    () =>
+    queryFn: () =>
       getCollectionByCollectionAddressWasmRest(restEndpoint, collectionAddress),
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useNftCollectionCreator = (
@@ -191,8 +188,8 @@ export const useNftCollectionCreator = (
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
-  return useQuery<CollectionCreatorResponse>(
-    [
+  return useQuery<CollectionCreatorResponse>({
+    queryKey: [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_CREATOR,
       apiEndpoint,
       indexerEndpoint,
@@ -201,7 +198,7 @@ export const useNftCollectionCreator = (
       collectionAddressHex,
       collectionAddressBech,
     ],
-    async () =>
+    queryFn: async () =>
       handleQueryByTier<CollectionCreatorResponse>({
         queryFull: () =>
           getNftCollectionCreatorByCollectionAddress(
@@ -217,11 +214,9 @@ export const useNftCollectionCreator = (
         threshold: "sequencer",
         tier,
       }),
-    {
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useNftCollectionActivities = (
@@ -229,12 +224,12 @@ export const useNftCollectionActivities = (
   limit: number,
   offset: number,
   search = "",
-  options?: Pick<UseQueryOptions<ActivitiesResponse>, "enabled" | "onSuccess">
+  options?: Partial<UseQueryOptions<ActivitiesResponse>>
 ) => {
   const apiEndpoint = useBaseApiRoute("nft_collections");
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES,
       apiEndpoint,
       collectionAddress,
@@ -242,7 +237,7 @@ export const useNftCollectionActivities = (
       offset,
       search,
     ],
-    async () =>
+    queryFn: async () =>
       getNftCollectionActivitiesByCollectionAddress(
         apiEndpoint,
         collectionAddress,
@@ -250,12 +245,10 @@ export const useNftCollectionActivities = (
         offset,
         search
       ),
-    {
-      refetchOnWindowFocus: false,
-      retry: 1,
-      ...options,
-    }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+    ...options,
+  });
 };
 
 export const useNftCollectionActivitiesSequencer = (
@@ -266,23 +259,22 @@ export const useNftCollectionActivitiesSequencer = (
   } = useCelatoneApp();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteQuery(
-      [
+    useInfiniteQuery({
+      queryKey: [
         CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES_SEQUENCER,
         indexerEndpoint,
+        collectionAddress,
       ],
-      async ({ pageParam }) =>
+      queryFn: ({ pageParam }: { pageParam?: string }) =>
         getNftCollectionActivitiesSequencer(
           indexerEndpoint,
           pageParam,
           collectionAddress
         ),
-      {
-        getNextPageParam: (lastPage) =>
-          lastPage.pagination.nextKey ?? undefined,
-        refetchOnWindowFocus: false,
-      }
-    );
+      initialPageParam: undefined,
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+    });
 
   return {
     data: data?.pages.flatMap((page) => page.items),
@@ -297,34 +289,29 @@ export const useNftCollectionMutateEvents = (
   collectionAddress: HexAddr32,
   limit: number,
   offset: number,
-  options?: Pick<
-    UseQueryOptions<CollectionMutateEventsResponse>,
-    "enabled" | "onSuccess"
-  >
+  options?: Partial<UseQueryOptions<CollectionMutateEventsResponse>>
 ) => {
   const apiEndpoint = useBaseApiRoute("nft_collections");
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTS,
       apiEndpoint,
       collectionAddress,
       limit,
       offset,
     ],
-    async () =>
+    queryFn: async () =>
       getNftCollectionMutateEventsByCollectionAddress(
         apiEndpoint,
         collectionAddress,
         limit,
         offset
       ),
-    {
-      refetchOnWindowFocus: false,
-      retry: 1,
-      ...options,
-    }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+    ...options,
+  });
 };
 
 export const useNftCollectionsByAccountAddress = (accountAddress: Addr) => {
@@ -335,15 +322,15 @@ export const useNftCollectionsByAccountAddress = (accountAddress: Addr) => {
   const { tier } = useTierConfig();
   const formatAddress = useNftAddressFormat();
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.NFT_COLLECTIONS_BY_ACCOUNT,
       apiEndpoint,
       indexerEndpoint,
       tier,
       accountAddress,
     ],
-    async () => {
+    queryFn: async () => {
       const formattedAccountAddress = formatAddress(accountAddress);
       return handleQueryByTier({
         queryFull: () =>
@@ -360,9 +347,7 @@ export const useNftCollectionsByAccountAddress = (accountAddress: Addr) => {
         tier,
       });
     },
-    {
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };

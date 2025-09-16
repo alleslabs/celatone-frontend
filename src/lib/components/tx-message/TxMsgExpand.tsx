@@ -1,12 +1,10 @@
 import type { Coin } from "@cosmjs/stargate";
-import type { IconKeys } from "lib/components/icon";
 import type { BechAddr } from "lib/types";
 import type { VoteOption } from "lib/utils";
-import type { ReactNode } from "react";
 
 import { Flex, Tag, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
-import { useEvmConfig, useGetAddressType, useMobile } from "lib/app-provider";
+import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { WasmVerifyBadgeById } from "lib/components/WasmVerifyBadge";
@@ -20,6 +18,7 @@ import {
   getTxBadges,
   voteOption,
 } from "lib/utils";
+import { type ReactNode, useRef, useState } from "react";
 
 import type { TxMsgData } from ".";
 
@@ -29,14 +28,14 @@ interface TxMsgExpandProps extends TxMsgData {
 }
 
 export const TxMsgExpand = ({
+  compact,
   isExpand,
-  isSingleMsg,
   log,
   msgBody,
+  msgCount,
   onClick,
 }: TxMsgExpandProps) => {
   const isMobile = useMobile();
-  const evm = useEvmConfig({ shouldRedirect: false });
   const getAddressType = useGetAddressType();
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
@@ -44,12 +43,20 @@ export const TxMsgExpand = ({
   const { "@type": type, ...body } = msgBody;
   const { isEvm, isIbc, isOpinit } = getTxBadges(type, log);
 
-  let msgIcon: IconKeys = "file";
+  const [isHoverText, setIsHoverText] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const isHoverOverflowContent =
+    isHoverText && !isMobile && ref.current
+      ? ref.current.scrollWidth > ref.current.clientWidth
+      : false;
+
+  let msgLabel: string = "";
   let content: ReactNode;
   switch (type) {
     case "/cosmos.bank.v1beta1.MsgSend":
       {
-        const toAddress = body.to_address as BechAddr;
+        const toAddress = body.toAddress as BechAddr;
         const singleCoin = (body.amount as Coin[])[0];
         const singleToken = coinToTokenWithValue(
           singleCoin.denom,
@@ -60,15 +67,14 @@ export const TxMsgExpand = ({
         const assetText =
           (body.amount as Coin[]).length > 1
             ? "assets"
-            : formatTokenWithValue({ isEvm: evm.enabled, token: singleToken });
-        msgIcon = "send";
+            : formatTokenWithValue({ token: singleToken });
+        msgLabel = "Send";
         content = (
           <Flex display="inline" gap={1}>
-            Send {assetText} to{" "}
+            {assetText} to{" "}
             <ExplorerLink
               ampCopierSection="tx_page_message_header_send_address"
               showCopyOnHover
-              textVariant="body1"
               type={getAddressType(toAddress)}
               value={toAddress}
             />
@@ -78,17 +84,16 @@ export const TxMsgExpand = ({
       break;
     case "/cosmos.gov.v1.MsgSubmitProposal":
     case "/cosmos.gov.v1beta1.MsgSubmitProposal":
-      msgIcon = "submit-proposal";
+      msgLabel = "Submit proposal";
       content = (
         <Flex display="inline" gap={1}>
-          Submit proposal {(body.is_expedited as boolean) && " expedited "}
+          {(body.expedited as boolean) && " expedited "}
           {log && (
             <>
               ID{" "}
               <ExplorerLink
                 ampCopierSection="tx_page_message_header_proposal"
                 showCopyOnHover
-                textVariant="body1"
                 type="proposal_id"
                 value={
                   findAttr(log.events, "submit_proposal", "proposal_id") ?? ""
@@ -100,10 +105,10 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmos.gov.v1beta1.MsgVote":
-      msgIcon = "vote";
+      msgLabel = "Vote";
       content = (
-        <Flex display="inline" gap={1}>
-          Vote{" "}
+        <Flex align="center" gap={1}>
+          {" "}
           <span style={{ fontWeight: 700 }}>
             {voteOption[body.option as VoteOption]}
           </span>{" "}
@@ -111,45 +116,41 @@ export const TxMsgExpand = ({
           <ExplorerLink
             ampCopierSection="tx_page_message_header_proposal"
             showCopyOnHover
-            textVariant="body1"
             type="proposal_id"
-            value={body.proposal_id as string}
+            value={body.proposalId as string}
           />
         </Flex>
       );
       break;
     case "/cosmos.staking.v1beta1.MsgDelegate":
-      msgIcon = "delegate";
+      msgLabel = "Delegate";
       content = (
         <Flex display="inline" gap={1}>
-          Delegate by{" "}
+          by{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_delegator"
             showCopyOnHover
-            textVariant="body1"
-            type={getAddressType(body.delegator_address as string)}
-            value={body.delegator_address as string}
+            type={getAddressType(body.delegatorAddress as string)}
+            value={body.delegatorAddress as string}
           />{" "}
           to{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_validator"
             showCopyOnHover
-            textVariant="body1"
-            type={getAddressType(body.validator_address as string)}
-            value={body.validator_address as string}
+            type={getAddressType(body.validatorAddress as string)}
+            value={body.validatorAddress as string}
           />
         </Flex>
       );
       break;
     case "/cosmwasm.wasm.v1.MsgClearAdmin":
-      msgIcon = "admin-clear";
+      msgLabel = "Clear admin";
       content = (
         <Flex display="inline" gap={1}>
-          Clear admin on{" "}
+          on{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_contract"
             showCopyOnHover
-            textVariant="body1"
             type="contract_address"
             value={body.contract as string}
           />
@@ -157,10 +158,10 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgExecuteContract":
-      msgIcon = "execute";
+      msgLabel = "Execute";
       content = (
         <Flex display="inline" gap={1}>
-          Execute{" "}
+          {" "}
           <span style={{ fontWeight: 700 }}>
             {Object.keys(body.msg as Record<string, unknown>)[0]}
           </span>{" "}
@@ -168,7 +169,6 @@ export const TxMsgExpand = ({
           <ExplorerLink
             ampCopierSection="tx_page_message_header_contract"
             showCopyOnHover
-            textVariant="body1"
             type="contract_address"
             value={body.contract as string}
           />
@@ -176,15 +176,14 @@ export const TxMsgExpand = ({
       );
       break;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract":
-      msgIcon = "instantiate";
+      msgLabel = "Instantiate";
       content = (
         <Flex display="inline" gap={1}>
-          Instantiate{" "}
+          {" "}
           {log && (
             <ExplorerLink
               ampCopierSection="tx_page_message_header_contract"
               showCopyOnHover
-              textVariant="body1"
               type="contract_address"
               value={
                 findAttr(log.events, "instantiate", "_contract_address") ?? ""
@@ -194,25 +193,23 @@ export const TxMsgExpand = ({
           from{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_code"
-            rightIcon={<WasmVerifyBadgeById codeId={Number(body.code_id)} />}
+            rightIcon={<WasmVerifyBadgeById codeId={Number(body.codeId)} />}
             showCopyOnHover
-            textVariant="body1"
             type="code_id"
-            value={body.code_id as string}
+            value={body.codeId as string}
           />
         </Flex>
       );
       break;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
-      msgIcon = "instantiate";
+      msgLabel = "Instantiate2";
       content = (
         <Flex display="inline" gap={1}>
-          Instantiate2{" "}
+          {" "}
           {log && (
             <ExplorerLink
               ampCopierSection="tx_page_message_header_contract"
               showCopyOnHover
-              textVariant="body1"
               type="contract_address"
               value={
                 findAttr(log.events, "instantiate", "_contract_address") ?? ""
@@ -222,24 +219,22 @@ export const TxMsgExpand = ({
           from{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_code"
-            rightIcon={<WasmVerifyBadgeById codeId={Number(body.code_id)} />}
+            rightIcon={<WasmVerifyBadgeById codeId={Number(body.codeId)} />}
             showCopyOnHover
-            textVariant="body1"
             type="code_id"
-            value={body.code_id as string}
+            value={body.codeId as string}
           />
         </Flex>
       );
       break;
     case "/cosmwasm.wasm.v1.MsgMigrateContract":
-      msgIcon = "migrate";
+      msgLabel = "Migrate";
       content = (
         <Flex display="inline" gap={1}>
-          Migrate{" "}
+          {" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_contract"
             showCopyOnHover
-            textVariant="body1"
             type="contract_address"
             value={body.contract as string}
           />{" "}
@@ -247,9 +242,8 @@ export const TxMsgExpand = ({
           <ExplorerLink
             ampCopierSection="tx_page_message_header_code"
             showCopyOnHover
-            textVariant="body1"
             type="code_id"
-            value={body.code_id as string}
+            value={body.codeId as string}
           />
         </Flex>
       );
@@ -257,10 +251,10 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgStoreCode": {
       const codeId = findAttr(log?.events, "store_code", "code_id") ?? "";
 
-      msgIcon = "upload";
+      msgLabel = "Upload wasm";
       content = (
         <Flex display="inline" gap={1}>
-          Upload Wasm{" "}
+          {" "}
           {log && (
             <>
               {" "}
@@ -270,7 +264,6 @@ export const TxMsgExpand = ({
                 fontSize="24px"
                 rightIcon={<WasmVerifyBadgeById codeId={Number(codeId)} />}
                 showCopyOnHover
-                textVariant="body1"
                 type="code_id"
                 value={codeId}
               />
@@ -281,14 +274,13 @@ export const TxMsgExpand = ({
       break;
     }
     case "/cosmwasm.wasm.v1.MsgUpdateAdmin":
-      msgIcon = "admin-edit";
+      msgLabel = "Update admin";
       content = (
         <Flex display="inline" gap={1}>
-          Update admin on{" "}
+          on{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_contract"
             showCopyOnHover
-            textVariant="body1"
             type="contract_address"
             value={body.contract as string}
           />{" "}
@@ -296,103 +288,132 @@ export const TxMsgExpand = ({
           <ExplorerLink
             ampCopierSection="tx_page_message_header_admin"
             showCopyOnHover
-            textVariant="body1"
-            type={getAddressType(body.new_admin as string)}
-            value={body.new_admin as string}
+            type={getAddressType(body.newAdmin as string)}
+            value={body.newAdmin as string}
           />
         </Flex>
       );
       break;
+    case "/initia.move.v1.MsgExecute":
+    case "/initia.move.v1.MsgExecuteJSON":
+      msgLabel = `${body.moduleName}::${body.functionName}`;
+      break;
     default: {
-      content = extractMsgType(type);
+      msgLabel = extractMsgType(type);
       break;
     }
   }
 
   return (
     <Flex
-      _after={{
-        bg: "gray.700",
-        bottom: 0,
-        content: '""',
-        h: "1px",
-        left: "50%",
-        position: "absolute",
-        transform: "translateX(-50%)",
-        w: "99%",
-      }}
-      _hover={{ backgroundColor: "gray.800" }}
+      _after={
+        compact
+          ? {}
+          : {
+              bg: "gray.700",
+              bottom: 0,
+              content: '""',
+              h: "1px",
+              left: "50%",
+              position: "absolute",
+              transform: "translateX(-50%)",
+              w: "99%",
+            }
+      }
+      _hover={compact ? {} : { backgroundColor: "gray.800" }}
       align="center"
-      borderRadius="8px"
+      background={isHoverOverflowContent ? "gray.800" : "transparent"}
+      borderRadius={compact && !isHoverOverflowContent ? "0px" : "8px"}
       cursor="pointer"
       justify="space-between"
-      p="16px 8px"
-      position="relative"
-      transition="all 0.25s ease-in-out"
+      marginTop={isHoverOverflowContent ? "-30px" : "0px"}
+      overflow={compact && !isHoverOverflowContent ? "hidden" : "visible"}
+      p={compact ? (isHoverOverflowContent ? "12px" : "") : "16px 8px"}
+      position={isHoverOverflowContent ? "absolute" : "relative"}
+      transition={isHoverOverflowContent ? "" : "background 0.25s ease-in-out"}
+      width="auto"
+      zIndex={isHoverOverflowContent ? 1 : "auto"}
       onClick={() => {
         track(AmpEvent.USE_TX_MSG_EXPAND, {
           action: isExpand ? "collapse" : "expand",
           ibc: isIbc,
-          isSingleMsg,
+          isSingleMsg: msgCount === 1,
           msg: type,
         });
         onClick();
       }}
+      onMouseOut={() => setIsHoverText(false)}
+      onMouseOver={() => setIsHoverText(true)}
+      ref={ref}
     >
       <Flex
-        align={{ base: "start", md: "center" }}
-        fontSize="16px"
-        fontWeight={500}
+        align="center"
+        flexWrap={
+          compact && !isHoverOverflowContent && !isMobile ? "nowrap" : "wrap"
+        }
+        fontSize="14px"
         gap={2}
       >
-        <CustomIcon
-          boxSize={4}
-          color="primary.main"
-          m={0}
-          mt={{ base: 1, md: 0 }}
-          name={msgIcon}
-        />
-        <Text wordBreak="break-all">{content}</Text>
+        <Tag gap={0.5} minWidth="auto" py={0} variant="gray">
+          <Text variant="body2">{msgLabel}</Text>
+        </Tag>
+        {!compact || msgCount === 1 ? (
+          <>
+            {typeof content === "string" ? (
+              <Text wordBreak="break-all">{content}</Text>
+            ) : (
+              content
+            )}
+          </>
+        ) : (
+          <Tag gap={0.5} minWidth="auto" variant="gray">
+            <Text fontWeight={700} variant="body2">
+              {msgCount}
+            </Text>
+          </Tag>
+        )}
         {!isMobile && isIbc && (
-          <Tag minW="hug-content" mx={2} size="md" variant="secondary">
+          <Tag minW="hug-content" size="md" variant="secondary">
             IBC
           </Tag>
         )}
         {!isMobile && isOpinit && (
-          <Tag minW="hug-content" mx={2} size="md" variant="teal">
+          <Tag minW="hug-content" size="md" variant="teal">
             OPInit
           </Tag>
         )}
         {!isMobile && isEvm && (
-          <Tag minW="hug-content" mx={2} size="md" variant="primary-light">
+          <Tag minW="hug-content" size="md" variant="primary-light">
             EVM
           </Tag>
         )}
       </Flex>
       <Flex align="center">
         {isMobile && isIbc && (
-          <Tag minW="hug-content" mx={2} size="sm" variant="secondary">
+          <Tag minW="hug-content" size="sm" variant="secondary">
             IBC
           </Tag>
         )}
         {isMobile && isOpinit && (
-          <Tag minW="hug-content" mx={2} size="md" variant="teal">
+          <Tag minW="hug-content" size="md" variant="teal">
             OPInit
           </Tag>
         )}
         {isMobile && isEvm && (
-          <Tag minW="hug-content" mx={2} size="md" variant="primary-light">
+          <Tag minW="hug-content" size="md" variant="primary-light">
             EVM
           </Tag>
         )}
-        <CustomIcon
-          boxSize={4}
-          color="gray.600"
-          m={0}
-          name="chevron-down"
-          transform={isExpand ? "rotate(180deg)" : "rotate(0)"}
-          transition="all 0.25s ease-in-out"
-        />
+        {!compact && (
+          <CustomIcon
+            boxSize={4}
+            color="gray.600"
+            m={0}
+            name="chevron-down"
+            transform={isExpand ? "rotate(180deg)" : "rotate(0)"}
+            transition="all 0.25s ease-in-out"
+          />
+        )}
       </Flex>
     </Flex>
   );
