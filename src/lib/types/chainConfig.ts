@@ -246,5 +246,6 @@ export const zNonInitiaChainConfig = z.object({
   chain_id: z.string(),
   chain_name: z.string(),
   logo_uri: z.string(),
+  pretty_name: z.string(),
 });
 export type NonInitiaChainConfig = z.infer<typeof zNonInitiaChainConfig>;
