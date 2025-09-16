@@ -38,7 +38,10 @@ export const AllocationBadge = ({
     divWithDefault(value ?? big(0), liquidity, 0) as Ratio<Big>
   );
   const formattedAmount = denom
-    ? formatUTokenWithPrecision(amount, precision ?? 0)
+    ? formatUTokenWithPrecision({
+        amount,
+        precision: precision ?? 0,
+      })
     : "-";
   return (
     <Flex

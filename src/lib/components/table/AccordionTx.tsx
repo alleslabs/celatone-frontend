@@ -78,6 +78,7 @@ export const AccordionTx = ({
             log={undefined}
             metadata={metadata}
             msgBody={{
+              // TODO: Should flatten detail in both L1, and L2
               "@type": message.type,
               ...message.detail,
             }}

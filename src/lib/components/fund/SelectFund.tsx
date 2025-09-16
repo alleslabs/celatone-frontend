@@ -64,12 +64,12 @@ export const SelectFund = ({
         undefined
       );
 
-      const formatted = formatUTokenWithPrecision(
-        token.amount as U<Token<BigSource>>,
-        token.precision ?? 0,
-        true,
-        token.amount.toNumber() > 999 ? 6 : undefined
-      );
+      const formatted = formatUTokenWithPrecision({
+        amount: token.amount as U<Token<BigSource>>,
+        decimalPoints: token.amount.toNumber() > 999 ? 6 : undefined,
+        isSuffix: true,
+        precision: token.precision ?? 0,
+      });
 
       const raw = toToken(token.amount, token.precision ?? 0).toNumber();
 

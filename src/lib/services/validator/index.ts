@@ -1,4 +1,4 @@
-import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
+import type { UseQueryResult } from "@tanstack/react-query";
 import type {
   Nullable,
   Option,
@@ -9,7 +9,7 @@ import type {
 } from "lib/types";
 
 import { useToken } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -28,7 +28,6 @@ import type {
   ValidatorDelegationRelatedTxsResponse,
   ValidatorsResponse,
   ValidatorUptimeResponse,
-  ValidatorVotedProposalsResponse,
 } from "../types";
 
 import {
@@ -56,13 +55,15 @@ export const useValidators = (
   isActive: boolean,
   sortBy: string,
   isDesc: boolean,
-  search: Option<string>,
-  options?: Pick<UseQueryOptions<ValidatorsResponse>, "onSuccess">
+  search: Option<string>
 ) => {
   const endpoint = useBaseApiRoute("validators");
 
-  return useQuery<ValidatorsResponse>(
-    [
+  return useQuery<ValidatorsResponse>({
+    placeholderData: keepPreviousData,
+    queryFn: async () =>
+      getValidators(endpoint, limit, offset, isActive, sortBy, isDesc, search),
+    queryKey: [
       CELATONE_QUERY_KEYS.VALIDATORS,
       endpoint,
       limit,
@@ -72,15 +73,9 @@ export const useValidators = (
       isDesc,
       search,
     ],
-    async () =>
-      getValidators(endpoint, limit, offset, isActive, sortBy, isDesc, search),
-    {
-      keepPreviousData: true,
-      refetchOnWindowFocus: false,
-      retry: 1,
-      ...options,
-    }
-  );
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useValidatorsRest = (enabled = true) => {
@@ -89,9 +84,10 @@ export const useValidatorsRest = (enabled = true) => {
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
-  return useQuery<ValidatorData[]>(
-    [CELATONE_QUERY_KEYS.VALIDATORS_REST, restEndpoint],
-    async () => {
+  return useQuery<ValidatorData[]>({
+    enabled,
+    placeholderData: keepPreviousData,
+    queryFn: async () => {
       const res = await getValidatorsRest(restEndpoint);
       return res.map((val) => ({
         ...val,
@@ -101,13 +97,10 @@ export const useValidatorsRest = (enabled = true) => {
         ),
       }));
     },
-    {
-      enabled,
-      keepPreviousData: true,
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    queryKey: [CELATONE_QUERY_KEYS.VALIDATORS_REST, restEndpoint],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useValidatorData = (
@@ -116,14 +109,12 @@ export const useValidatorData = (
 ) => {
   const endpoint = useBaseApiRoute("validators");
 
-  return useQuery<ValidatorDataResponse>(
-    [CELATONE_QUERY_KEYS.VALIDATOR_DATA, endpoint, validatorAddress],
-    async () => getValidatorData(endpoint, validatorAddress),
-    {
-      enabled,
-      retry: 1,
-    }
-  );
+  return useQuery<ValidatorDataResponse>({
+    enabled,
+    queryFn: async () => getValidatorData(endpoint, validatorAddress),
+    queryKey: [CELATONE_QUERY_KEYS.VALIDATOR_DATA, endpoint, validatorAddress],
+    retry: 1,
+  });
 };
 
 export const useValidatorDataRest = (
@@ -135,9 +126,9 @@ export const useValidatorDataRest = (
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
-  return useQuery<ValidatorData>(
-    [CELATONE_QUERY_KEYS.VALIDATOR_DATA_REST, restEndpoint, validatorAddr],
-    async () => {
+  return useQuery<ValidatorData>({
+    enabled: enabled && Boolean(validatorAddr),
+    queryFn: async () => {
       const res = await getValidatorDataRest(restEndpoint, validatorAddr);
       return {
         ...res,
@@ -147,12 +138,15 @@ export const useValidatorDataRest = (
         ),
       };
     },
-    {
-      enabled: enabled && Boolean(validatorAddr),
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.VALIDATOR_DATA_REST,
+      restEndpoint,
+      validatorAddr,
+      bech32Prefix,
+    ],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useValidatorStakingProvisions = (enabled: boolean) => {
@@ -167,17 +161,20 @@ export const useValidatorStakingProvisions = (enabled: boolean) => {
     chainConfig: { chain },
   } = useCelatoneApp();
 
-  return useQuery<StakingProvisionsResponse>(
-    [CELATONE_QUERY_KEYS.VALIDATOR_STAKING_PROVISIONS, endpoint, chain],
-    async () =>
+  return useQuery<StakingProvisionsResponse>({
+    queryKey: [
+      CELATONE_QUERY_KEYS.VALIDATOR_STAKING_PROVISIONS,
+      endpoint,
+      chain,
+      isFullTier,
+    ],
+    queryFn: async () =>
       isFullTier
         ? getValidatorStakingProvisions(endpoint)
         : getValidatorStakingProvisionsRest(endpoint, chain),
-    {
-      enabled,
-      retry: 1,
-    }
-  );
+    enabled,
+    retry: 1,
+  });
 };
 
 export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
@@ -189,17 +186,18 @@ export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
   const queryFn = async () =>
     getValidatorDelegatorsRest(restEndpoint, validatorAddress, isInitia);
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.VALIDATOR_DELEGATORS,
       restEndpoint,
       validatorAddress,
       isInitia,
     ],
-    createQueryFnWithTimeout(queryFn, 10000),
+    queryFn: createQueryFnWithTimeout(queryFn, 10000),
     // TODO: Remove this once we have a way to get the delegators count in initia
-    { enabled: !isInitia, retry: false }
-  );
+    enabled: !isInitia,
+    retry: false,
+  });
 };
 
 export const useValidatorVotedProposalsAnswerCounts = (
@@ -207,16 +205,16 @@ export const useValidatorVotedProposalsAnswerCounts = (
 ) => {
   const endpoint = useBaseApiRoute("validators");
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.VALIDATOR_VOTED_PROPOSALS_ANSWER_COUNTS,
       endpoint,
       validatorAddress,
     ],
-    async () =>
+    queryFn: async () =>
       getValidatorVotedProposalsAnswerCounts(endpoint, validatorAddress),
-    { retry: 1 }
-  );
+    retry: 1,
+  });
 };
 
 export const useValidatorVotedProposals = (
@@ -224,16 +222,12 @@ export const useValidatorVotedProposals = (
   limit: number,
   offset: number,
   answer: ProposalVoteType,
-  search: string,
-  options: Pick<
-    UseQueryOptions<ValidatorVotedProposalsResponse>,
-    "onSuccess"
-  > = {}
+  search: string
 ) => {
   const endpoint = useBaseApiRoute("validators");
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.VALIDATOR_VOTED_PROPOSALS,
       endpoint,
       validatorAddress,
@@ -242,7 +236,7 @@ export const useValidatorVotedProposals = (
       answer,
       search,
     ],
-    async () =>
+    queryFn: async () =>
       getValidatorVotedProposals(
         endpoint,
         validatorAddress,
@@ -251,8 +245,8 @@ export const useValidatorVotedProposals = (
         answer,
         search
       ),
-    { retry: 1, ...options }
-  );
+    retry: 1,
+  });
 };
 
 export const useValidatorUptime = (
@@ -261,79 +255,79 @@ export const useValidatorUptime = (
 ) => {
   const endpoint = useBaseApiRoute("validators");
 
-  return useQuery<ValidatorUptimeResponse>(
-    [CELATONE_QUERY_KEYS.VALIDATOR_UPTIME, endpoint, validatorAddress, blocks],
-    async () => getValidatorUptime(endpoint, validatorAddress, blocks),
-    {
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+  return useQuery<ValidatorUptimeResponse>({
+    queryKey: [
+      CELATONE_QUERY_KEYS.VALIDATOR_UPTIME,
+      endpoint,
+      validatorAddress,
+      blocks,
+    ],
+    queryFn: async () => getValidatorUptime(endpoint, validatorAddress, blocks),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useValidatorProposedBlocks = (
   validatorAddress: ValidatorAddr,
   limit: number,
-  offset: number,
-  options: Pick<UseQueryOptions<BlocksResponse>, "onSuccess"> = {}
+  offset: number
 ) => {
   const endpoint = useBaseApiRoute("validators");
 
-  return useQuery<BlocksResponse>(
-    [
+  return useQuery<BlocksResponse>({
+    queryKey: [
       CELATONE_QUERY_KEYS.VALIDATOR_PROPOSED_BLOCKS,
       endpoint,
       validatorAddress,
       limit,
       offset,
     ],
-    async () =>
+    queryFn: async () =>
       getValidatorProposedBlocks(endpoint, validatorAddress, limit, offset),
-    { retry: 1, ...options }
-  );
+    retry: 1,
+  });
 };
 
 export const useValidatorHistoricalPowers = (validatorAddr: ValidatorAddr) => {
   const endpoint = useBaseApiRoute("validators");
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.VALIDATOR_HISTORICAL_POWERS, endpoint, validatorAddr],
-    async () => getHistoricalPowers(endpoint, validatorAddr),
-    {
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+  return useQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.VALIDATOR_HISTORICAL_POWERS,
+      endpoint,
+      validatorAddr,
+    ],
+    queryFn: async () => getHistoricalPowers(endpoint, validatorAddr),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useValidatorDelegationRelatedTxs = (
   validatorAddress: ValidatorAddr,
   limit: number,
-  offset: number,
-  options: Pick<
-    UseQueryOptions<ValidatorDelegationRelatedTxsResponse>,
-    "onSuccess"
-  > = {}
+  offset: number
 ) => {
   const endpoint = useBaseApiRoute("validators");
 
-  return useQuery<ValidatorDelegationRelatedTxsResponse>(
-    [
+  return useQuery<ValidatorDelegationRelatedTxsResponse>({
+    queryKey: [
       CELATONE_QUERY_KEYS.VALIDATOR_DELEGATION_RELATED_TXS,
       endpoint,
       validatorAddress,
       limit,
       offset,
     ],
-    async () =>
+    queryFn: async () =>
       getValidatorDelegationRelatedTxs(
         endpoint,
         validatorAddress,
         limit,
         offset
       ),
-    { retry: 1, ...options }
-  );
+    retry: 1,
+  });
 };
 
 export const useValidatorImage = (

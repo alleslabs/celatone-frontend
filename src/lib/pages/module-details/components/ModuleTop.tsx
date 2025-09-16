@@ -245,7 +245,6 @@ export const ModuleTop = ({ moduleData, moveVerifyStatus }: ModuleTopProps) => {
           </Text>
           <ExplorerLink
             ampCopierSection="module_top"
-            fixedHeight={false}
             maxWidth="fit-content"
             textFormat="normal"
             type="user_address"

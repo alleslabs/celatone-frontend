@@ -4,7 +4,7 @@ import { Flex, Stack, Text } from "@chakra-ui/react";
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useMetadata } from "lib/services/nft";
+import { useNftGlyphImage, useNftMetadata } from "lib/services/nft";
 import { zAddr, zHexAddr32 } from "lib/types";
 import { useState } from "react";
 
@@ -13,6 +13,7 @@ import type { TxMsgData } from "../tx-message";
 import { AppLink } from "../AppLink";
 import { NftImage } from "../nft/NftImage";
 import { DecodeMessageBody } from "./decode-message-body";
+import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
@@ -41,12 +42,14 @@ export const DecodeMessageObjectTransfer = ({
   } = decodedMessage;
   const formatAddresses = useFormatAddresses();
   const nftMetadata = metadata?.[object];
-  const { data: nft } = useMetadata({
+  const nftObject = {
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
     nftAddress: zHexAddr32.parse(formatAddresses(object).hex),
     tokenId: nftMetadata?.tokenId,
     uri: nftMetadata?.tokenUri,
-  });
+  };
+  const { data: nft } = useNftMetadata(nftObject);
+  const nftImage = useNftGlyphImage(nftObject);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -70,7 +73,7 @@ export const DecodeMessageObjectTransfer = ({
               <NftImage
                 borderRadius="4px"
                 height="20px"
-                src={nft.image}
+                src={nftImage}
                 width="20px"
               />
             </AppLink>
@@ -146,7 +149,7 @@ export const DecodeMessageObjectTransfer = ({
               <AppLink
                 href={`/nft-collections/${nftMetadata.collectionAddress}/nft/${object}`}
               >
-                <NftImage borderRadius="8px" height="150px" src={nft.image} />
+                <NftImage borderRadius="8px" height="150px" src={nftImage} />
               </AppLink>
               <ExplorerLink
                 showCopyOnHover
@@ -165,6 +168,7 @@ export const DecodeMessageObjectTransfer = ({
             />
           )}
         </DecodeMessageRow>
+        <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>
   );

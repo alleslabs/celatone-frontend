@@ -70,7 +70,7 @@ export const TransactionsTableMobileCard = ({
               <Spinner boxSize={4} />
             ) : (
               <>
-                {txResponse && decodedTx ? (
+                {txResponse && decodedTx && decodedTx.messages.length > 0 ? (
                   <DecodeMessage
                     compact
                     decodedMessage={decodedTx.messages[0].decodedMessage}
@@ -93,9 +93,17 @@ export const TransactionsTableMobileCard = ({
             {showSuccess && !isTxHasNoData && (
               <>
                 {transaction.success ? (
-                  <CustomIcon color="success.main" name="check" />
+                  <CustomIcon
+                    boxSize={3}
+                    color="success.main"
+                    name="check-circle-solid"
+                  />
                 ) : (
-                  <CustomIcon color="error.main" name="close" />
+                  <CustomIcon
+                    boxSize={3}
+                    color="error.main"
+                    name="close-circle-solid"
+                  />
                 )}
               </>
             )}

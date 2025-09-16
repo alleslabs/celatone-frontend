@@ -39,12 +39,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1444](https://github.com/alleslabs/celatone-frontend/pull/1444) Sort NFTs and NFT collections by ASC order
+- [#1449](https://github.com/alleslabs/celatone-frontend/pull/1449) Support deposit stable swap, decodeEvmTransaction
+- [#1442](https://github.com/alleslabs/celatone-frontend/pull/1442) Support estimate resend transaction failed
+- [#1437](https://github.com/alleslabs/celatone-frontend/pull/1437) Update decimal rules
+- [#1432](https://github.com/alleslabs/celatone-frontend/pull/1432) Replace Initia Widget by InterwovenKit provider
+- [#1435](https://github.com/alleslabs/celatone-frontend/pull/1435) Merge Rollytics version back to develop
+- [#1411](https://github.com/alleslabs/celatone-frontend/pull/1411) Introduce useNftAddressFormat to automatically switch based on VM, and do some refactoring
+- [#1402](https://github.com/alleslabs/celatone-frontend/pull/1402) Replace qrcode.react with qr-code-styling, update UI according to redesign
 - [#1352](https://github.com/alleslabs/celatone-frontend/pull/1352) Support link module in execution message tx details, and new tx decoder UI
 - [#1350](https://github.com/alleslabs/celatone-frontend/pull/1350) Support new APIs v2
 
 ### Improvements
 
+- [#1450](https://github.com/alleslabs/celatone-frontend/pull/1450) Remove extra query key in useNftsSequencer
+- [#1446](https://github.com/alleslabs/celatone-frontend/pull/1446) Update background main color for Initia theme and default theme
+- [#1443](https://github.com/alleslabs/celatone-frontend/pull/1443) Update ExplorerLink component for mobile users
+- [#1405](https://github.com/alleslabs/celatone-frontend/pull/1405) Enhance Readme.md and add CODEOWNERS
+
 ### Bug fixes
+
+- [#1447](https://github.com/alleslabs/celatone-frontend/pull/1447) Fix NFT collections fetching issue with limit and query key
+- [#1445](https://github.com/alleslabs/celatone-frontend/pull/1445) Fix NavDrawer not reopening after closing
+- [#1441](https://github.com/alleslabs/celatone-frontend/pull/1441) Fix MsgExecute when resending
+- [#1440](https://github.com/alleslabs/celatone-frontend/pull/1440) Fix decimal points trailing zeros issue
+- [#1439](https://github.com/alleslabs/celatone-frontend/pull/1439) Fix dex pool zod validation
+- [#1438](https://github.com/alleslabs/celatone-frontend/pull/1438) Fix resend button component
+- [#1434](https://github.com/alleslabs/celatone-frontend/pull/1434) Fix balance change tab empty state
+- [#1423](https://github.com/alleslabs/celatone-frontend/pull/1423) Fix message body from L1, and L2
+- [#1414](https://github.com/alleslabs/celatone-frontend/pull/1414) Fix accordion txs table missing value
+- [#1412](https://github.com/alleslabs/celatone-frontend/pull/1412) Fix explorer link component minor bugs
+- [#1373](https://github.com/alleslabs/celatone-frontend/pull/1373) Fix pagination in Nft page
 
 ## v1.14.0
 
@@ -59,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1415](https://github.com/alleslabs/celatone-frontend/pull/1415) Fix evm contracts simulate fee query keys
 - [#1369](https://github.com/alleslabs/celatone-frontend/pull/1369) Fix token card name spacing
 - [#1367](https://github.com/alleslabs/celatone-frontend/pull/1367) Fix network card search params replacement
 - [#1359](https://github.com/alleslabs/celatone-frontend/pull/1359) Remove unwanted 0 prefix for inactive validator

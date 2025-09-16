@@ -406,6 +406,7 @@ export const zAddNetworkManualChainConfigJson = ({
         gasAdjustment,
         maxGasLimit,
       },
+      indexer: rest,
       logo_URIs: {
         png: logoUri || undefined,
       },
@@ -467,6 +468,7 @@ export const zAddNetworkJsonChainConfigJson = zChainConfig
       pool: DEFAULT_POOL_CONFIG,
       publicProject: DEFAULT_PUBLIC_PROJECT_CONFIG,
     },
+    indexer: val.rest,
   }));
 
 export type AddNetworkJsonChainConfigJson = z.infer<
@@ -541,6 +543,7 @@ export const zAddNetworkLinkChainConfigJson = z
         gasAdjustment: DEFAULT_GAS.gasAdjustment,
         maxGasLimit: DEFAULT_GAS.maxGasLimit,
       },
+      indexer: restEndpoint,
       prettyName: capitalize(val.chainId),
       registry: {
         assets: [],

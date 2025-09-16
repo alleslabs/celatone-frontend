@@ -1,4 +1,4 @@
-import type { BechAddr32, HexAddr32 } from "lib/types";
+import type { HexAddr32 } from "lib/types";
 
 import { Box } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
@@ -7,18 +7,16 @@ import { NftList } from "lib/components/nft";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
-import { useDebounce } from "lib/hooks";
+import { useDebounce, useQueryEvents } from "lib/hooks";
 import { useNfts } from "lib/services/nft";
 import { useEffect, useState } from "react";
 
 interface CollectionSuppliesProps {
-  collectionAddressBech: BechAddr32;
   collectionAddressHex: HexAddr32;
   totalSupply: number;
 }
 
 export const CollectionSuppliesFull = ({
-  collectionAddressBech,
   collectionAddressHex,
   totalSupply,
 }: CollectionSuppliesProps) => {
@@ -41,16 +39,17 @@ export const CollectionSuppliesFull = ({
       pageSize: 10,
     },
   });
-  const { data: nfts, isLoading } = useNfts(
-    collectionAddressBech,
+
+  const nftsQuery = useNfts(
     collectionAddressHex,
     pageSize,
     offset,
-    debouncedSearch,
-    {
-      onSuccess: () => setTotalData(totalSupply),
-    }
+    debouncedSearch
   );
+  useQueryEvents(nftsQuery, {
+    onSuccess: () => setTotalData(totalSupply),
+  });
+  const { data: nfts, isLoading } = nftsQuery;
 
   useEffect(() => setCurrentPage(1), [debouncedSearch, setCurrentPage]);
 

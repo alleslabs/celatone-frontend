@@ -136,10 +136,10 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                         logo={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
                       />
                       <Text color="text.main" fontWeight="bold" variant="body2">
-                        {formatUTokenWithPrecision(
-                          asset.amount,
-                          asset.precision ?? 0
-                        )}
+                        {formatUTokenWithPrecision({
+                          amount: asset.amount,
+                          precision: asset.precision ?? 0,
+                        })}
                       </Text>
                       <Flex>
                         {getTokenLabel(asset.denom, asset.symbol, false)}

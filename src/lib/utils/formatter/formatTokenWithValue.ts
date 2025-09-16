@@ -3,38 +3,36 @@ import type { TokenWithValue } from "lib/types";
 import { formatUTokenWithPrecision } from "./token";
 import { getTokenLabel } from "./tokenType";
 
-export const formatTokenWithValue = (
-  token: TokenWithValue,
-  decimalPoints?: number,
-  hasTrailingZeros?: boolean
-) =>
-  `${formatUTokenWithPrecision(
-    token.amount,
-    token.precision ?? 0,
-    false,
+export const formatTokenWithValue = ({
+  decimalPoints,
+  token,
+}: {
+  decimalPoints?: number;
+  token: TokenWithValue;
+}) =>
+  `${formatUTokenWithPrecision({
+    amount: token.amount,
     decimalPoints,
-    hasTrailingZeros
-  )} ${getTokenLabel(token.denom, token.symbol)}`;
+    isSuffix: false,
+    precision: token.precision ?? 0,
+  })} ${getTokenLabel(token.denom, token.symbol)}`;
 
-export const formatTokenWithValueInGwei = (
-  token: TokenWithValue,
-  decimalPoints?: number,
-  hasTrailingZeros?: boolean
-) =>
-  `${formatUTokenWithPrecision(
-    token.amount,
-    9,
-    false,
-    decimalPoints,
-    hasTrailingZeros
-  )} Gwei`;
+export const formatTokenWithValueInGwei = (token: TokenWithValue) =>
+  `${formatUTokenWithPrecision({
+    amount: token.amount,
+    precision: 9,
+  })} Gwei`;
 
 export const formatTokenWithValueList = (tokens: TokenWithValue[]) => {
   if (tokens.length <= 2)
-    return tokens.map((token) => formatTokenWithValue(token, 2)).join(" and ");
+    return tokens
+      .map((token) => formatTokenWithValue({ decimalPoints: 2, token }))
+      .join(" and ");
 
   return `${tokens
     .slice(0, -1)
-    .map((token) => formatTokenWithValue(token, 2))
-    .join(", ")}, and ${formatTokenWithValue(tokens[tokens.length - 1], 2)}`;
+    .map((token) => formatTokenWithValue({ decimalPoints: 2, token }))
+    .join(
+      ", "
+    )}, and ${formatTokenWithValue({ decimalPoints: 2, token: tokens[tokens.length - 1] })}`;
 };

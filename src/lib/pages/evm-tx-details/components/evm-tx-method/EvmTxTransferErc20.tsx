@@ -50,7 +50,7 @@ export const EvmTxTransferErc20 = ({
             value={from}
           />{" "}
           <EvmMethodChip txInput={input} txTo={erc20Contract} width="110px" />{" "}
-          {formatTokenWithValue(amountToken)} to{" "}
+          {formatTokenWithValue({ token: amountToken })} to{" "}
           <ExplorerLink
             showCopyOnHover
             textVariant="body1"
@@ -65,7 +65,6 @@ export const EvmTxTransferErc20 = ({
         label="From"
         value={
           <ExplorerLink
-            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
             type="user_address"
@@ -77,7 +76,6 @@ export const EvmTxTransferErc20 = ({
         label="To"
         value={
           <ExplorerLink
-            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
             type="user_address"
@@ -94,7 +92,6 @@ export const EvmTxTransferErc20 = ({
                 <Spinner boxSize={4} />
               ) : (
                 <ExplorerLink
-                  fixedHeight={false}
                   leftIcon={
                     <CustomIcon
                       boxSize={3}

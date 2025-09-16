@@ -38,13 +38,13 @@ export const VotingPowerChartDetails = ({
     historicalPowers && historicalPowers.items.length > 0;
 
   const currentVotingPower = isHistoricalPowersContainsData
-    ? formatUTokenWithPrecision(
-        historicalPowers.items[historicalPowers.items.length - 1]
+    ? formatUTokenWithPrecision({
+        amount: historicalPowers.items[historicalPowers.items.length - 1]
           .votingPower as U<Token<Big>>,
-        assetInfo?.precision ?? 0,
-        true,
-        2
-      )
+        decimalPoints: 2,
+        isSuffix: true,
+        precision: assetInfo?.precision ?? 0,
+      })
     : "";
 
   // NOTE: compute 24 hrs voting power change
@@ -61,10 +61,12 @@ export const VotingPowerChartDetails = ({
   }, [historicalPowers.items, isHistoricalPowersContainsData]);
 
   const formattedVotingPower = `${formatArithmetic(compareVotingPower)}${formatUTokenWithPrecision(
-    compareVotingPower.abs() as U<Token<Big>>,
-    assetInfo?.precision ?? 0,
-    true,
-    2
+    {
+      amount: compareVotingPower.abs() as U<Token<Big>>,
+      decimalPoints: 2,
+      isSuffix: true,
+      precision: assetInfo?.precision ?? 0,
+    }
   )}`;
 
   return (

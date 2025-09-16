@@ -45,7 +45,7 @@ export const EvmTxTransfer = ({
             value={from}
           />{" "}
           <EvmMethodChip txInput={input} txTo={to} width="65px" />{" "}
-          {formatTokenWithValue(amount)} to{" "}
+          {formatTokenWithValue({ token: amount })} to{" "}
           {to ? (
             <ExplorerLink
               showCopyOnHover
@@ -66,7 +66,6 @@ export const EvmTxTransfer = ({
         label="From"
         value={
           <ExplorerLink
-            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
             type="user_address"
@@ -79,7 +78,6 @@ export const EvmTxTransfer = ({
         value={
           to ? (
             <ExplorerLink
-              fixedHeight={false}
               showCopyOnHover
               textFormat="normal"
               type="user_address"

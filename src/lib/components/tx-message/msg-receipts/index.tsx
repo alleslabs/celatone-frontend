@@ -1378,9 +1378,27 @@ export const generateReceipts = (
         },
       ];
     }
-    case "/initia.move.v1.MsgExecute": {
+    case "/initia.move.v1.MsgExecute":
+    case "/initia.move.v1.MsgExecuteJSON": {
       const details = extractTxDetails(type, body, log);
       return [
+        {
+          html: getCommonReceiptHtml({
+            linkType: "contract_address",
+            type: "explorer",
+            value: details.module_address,
+          }),
+          title: "Module address",
+        },
+        {
+          html: getCommonReceiptHtml({
+            linkType: "module_name",
+            textLabel: details.module_name,
+            type: "explorer",
+            value: `${details.module_address}/${details.module_name}`,
+          }),
+          title: "Module name",
+        },
         {
           html: getCommonReceiptHtml({
             linkType: "function_name",
@@ -1393,24 +1411,7 @@ export const generateReceipts = (
             type: "explorer",
             value: undefined,
           }),
-          title: "Function Name",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: "contract_address",
-            type: "explorer",
-            value: details.module_address,
-          }),
-          title: "Module Address",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: "module_name",
-            textLabel: details.module_name,
-            type: "explorer",
-            value: `${details.module_address}/${details.module_name}`,
-          }),
-          title: "Module Name",
+          title: "Function name",
         },
         {
           html: getCommonReceiptHtml({
@@ -1425,7 +1426,7 @@ export const generateReceipts = (
             type: "json",
             value: details.type_args,
           }),
-          title: "Type Args",
+          title: "Type args",
         },
         {
           html: getCommonReceiptHtml({

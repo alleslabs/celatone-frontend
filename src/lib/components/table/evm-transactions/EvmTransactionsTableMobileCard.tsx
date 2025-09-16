@@ -7,15 +7,10 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import {
   coinToTokenWithValue,
-  dateFromNow,
   formatEvmTxHash,
-  formatPrice,
-  formatUTC,
   formatUTokenWithPrecision,
   getEvmAmount,
-  getTokenLabel,
 } from "lib/utils";
-import { isUndefined } from "lodash";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
@@ -24,13 +19,11 @@ interface EvmTransactionsTableMobileCardProps {
   assetInfos: Option<AssetInfos>;
   evmDenom: Option<string>;
   evmTransaction: TxDataWithTimeStampJsonRpc;
-  showTimestamp: boolean;
 }
 export const EvmTransactionsTableMobileCard = ({
   assetInfos,
   evmDenom,
   evmTransaction,
-  showTimestamp,
 }: EvmTransactionsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
   const { amount, denom } = getEvmAmount(evmTransaction, evmDenom);
@@ -40,24 +33,18 @@ export const EvmTransactionsTableMobileCard = ({
     <MobileCardTemplate
       bottomContent={
         <Stack gap={3}>
+          {/* TODO: add decoded here */}
           <Grid gap={3} gridTemplateColumns="1fr 1fr">
             <Stack gap={0}>
               <MobileLabel label="Amount" variant="body3" />
               <Flex align="center" gap={2}>
                 <Text variant="body2">
-                  {formatUTokenWithPrecision(
-                    token.amount,
-                    token.precision ?? 0,
-                    true,
-                    token.precision ? 6 : 0
-                  )}{" "}
-                  {getTokenLabel(token.denom, token.symbol)}
+                  {formatUTokenWithPrecision({
+                    amount: token.amount,
+                    precision: token.precision ?? 0,
+                  })}{" "}
+                  GAS
                 </Text>
-                {!isUndefined(token.value) && (
-                  <Text color="text.dark" variant="body3">
-                    ({formatPrice(token.value)})
-                  </Text>
-                )}
               </Flex>
             </Stack>
             <Stack gap={0}>
@@ -69,19 +56,8 @@ export const EvmTransactionsTableMobileCard = ({
               />
             </Stack>
           </Grid>
-          {showTimestamp && (
-            <Flex direction="column">
-              <Text color="text.dark" variant="body2">
-                {formatUTC(evmTransaction.timestamp)}
-              </Text>
-              <Text color="text.disabled" variant="body3">
-                ({dateFromNow(evmTransaction.timestamp)})
-              </Text>
-            </Flex>
-          )}
         </Stack>
       }
-      middleContent={<Text>Add decode txs here...</Text>}
       topContent={
         <Flex alignItems="center" gap={1}>
           {evmTransaction.txReceipt.status ? (

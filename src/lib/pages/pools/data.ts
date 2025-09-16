@@ -11,6 +11,7 @@ import type {
   TokenWithValue,
 } from "lib/types";
 
+import { useQueryEvents } from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
 import { usePoolData, usePools } from "lib/services/pools";
 import { big } from "lib/types";
@@ -33,16 +34,19 @@ export const useDerivedPools = (
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
-  const { data, isLoading: isLoadingPoolList } = usePools(
+  const poolsQuery = usePools(
     limit,
     offset,
     isSupported,
     poolType,
     isSuperfluidOnly,
     search,
-    isDesc,
-    { onSuccess }
+    isDesc
   );
+  useQueryEvents(poolsQuery, {
+    onSuccess,
+  });
+  const { data, isLoading: isLoadingPoolList } = poolsQuery;
 
   return {
     isLoading: isLoadingAssetInfos || isLoadingPoolList,

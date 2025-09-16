@@ -68,7 +68,6 @@ export const EvmTxCallErc20Factory = ({
         label="Creator"
         value={
           <ExplorerLink
-            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
             type="user_address"
@@ -85,7 +84,6 @@ export const EvmTxCallErc20Factory = ({
                 <Spinner boxSize={4} />
               ) : (
                 <ExplorerLink
-                  fixedHeight={false}
                   leftIcon={
                     <CustomIcon
                       boxSize={3}
@@ -117,7 +115,6 @@ export const EvmTxCallErc20Factory = ({
                 <Spinner boxSize={4} />
               ) : (
                 <ExplorerLink
-                  fixedHeight={false}
                   leftIcon={
                     <CustomIcon
                       boxSize={3}

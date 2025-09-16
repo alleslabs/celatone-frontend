@@ -78,7 +78,6 @@ export const ValidatorTop = ({
             Account address:
           </Text>
           <ExplorerLink
-            fixedHeight={false}
             maxWidth="full"
             textFormat="normal"
             type="user_address"

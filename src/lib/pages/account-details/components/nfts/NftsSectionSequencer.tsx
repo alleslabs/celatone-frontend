@@ -2,20 +2,20 @@ import type { BechAddr, HexAddr32, Option } from "lib/types";
 
 import { Badge, Box, Flex, Heading, Stack } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
+import { LoadNext } from "lib/components/LoadNext";
+import { NftList } from "lib/components/nft";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import { useNftsByAccountByCollectionSequencer } from "lib/services/nft";
-import { zHexAddr32 } from "lib/types";
-import { groupBy } from "lodash";
+import { useDebounce } from "lib/hooks";
+import {
+  useNftsByAccountCountSequencerBatch,
+  useNftsByAccountSequencer,
+} from "lib/services/nft";
+import { useNftCollectionsByAccountAddress } from "lib/services/nft-collection";
 import { useState } from "react";
 
-import { FilterItem } from "./FilterItem";
-import { NftsByCollectionSequencer } from "./NftsByCollectionSequencer";
-
-interface SelectedCollection {
-  collectionAddress: HexAddr32;
-  nftsCount: number;
-}
+import { CollectionFilter, CollectionFilterDefault } from "./CollectionFilter";
 
 interface NftsSectionSequencerProps {
   accountAddress: BechAddr;
@@ -27,26 +27,40 @@ export const NftsSectionSequencer = ({
   totalData = 0,
 }: NftsSectionSequencerProps) => {
   const isMobile = useMobile();
-  const { data: accountNfts, isLoading } =
-    useNftsByAccountByCollectionSequencer(accountAddress, undefined, undefined);
+  const [selectedCollection, setSelectedCollection] = useState<HexAddr32>();
+  const [searchByTokenId, setSearchByTokenId] = useState("");
+  const debouncedSearchByTokenId = useDebounce(searchByTokenId);
 
-  const collections = groupBy(accountNfts?.items, "collectionAddress");
+  const {
+    data: accountNfts,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useNftsByAccountSequencer(
+    accountAddress,
+    selectedCollection,
+    debouncedSearchByTokenId
+  );
+  const { data: collections, isLoading: isCollectionsLoading } =
+    useNftCollectionsByAccountAddress(accountAddress);
 
-  const [selectedCollection, setSelectedCollection] =
-    useState<SelectedCollection>();
+  const collectionAddresses =
+    collections?.items.map((collection) => collection.collectionAddress) ?? [];
+  const nftCountsByCollection = useNftsByAccountCountSequencerBatch(
+    accountAddress,
+    collectionAddresses
+  );
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isCollectionsLoading) return <Loading />;
   if (!collections) return <ErrorFetching dataName="collections" />;
-  if (!Object.keys(collections).length)
+  if (!collections.items.length)
     return (
       <EmptyState
         imageVariant="empty"
         message="There are currently no NFTs held by this account."
       />
     );
-
-  const handleOnClick = (collection?: SelectedCollection) =>
-    setSelectedCollection(collection);
 
   return (
     <Box mt={{ base: 4, md: 8 }}>
@@ -55,43 +69,71 @@ export const NftsSectionSequencer = ({
         <Badge>{totalData}</Badge>
       </Flex>
       <Flex flexDir={isMobile ? "column" : "row"} gap="40px" mt="32px">
+        {/* Left Panel */}
         <Stack
           minW={64}
           spacing="8px"
           w={{ base: "100%", lg: "25%", md: "35%" }}
         >
-          <FilterItem
+          <CollectionFilterDefault
             collectionName="All collections"
             count={totalData}
             isActive={selectedCollection === undefined}
-            isDefault
-            onClick={() => handleOnClick(undefined)}
+            onClick={() => setSelectedCollection(undefined)}
           />
-          {Object.entries(collections).map(([collectionAddress, nfts]) => (
-            <FilterItem
-              key={collectionAddress}
-              collectionName={nfts[0].collectionName}
-              count={nfts.length}
-              isActive={
-                selectedCollection?.collectionAddress === collectionAddress
+          {collections.items.map((collection, index) => (
+            <CollectionFilter
+              key={collection.collectionAddress}
+              collectionAddress={collection.collectionAddress}
+              collectionName={collection.collectionName}
+              count={nftCountsByCollection[index].data}
+              isActive={selectedCollection === collection.collectionAddress}
+              uri={
+                accountNfts?.find(
+                  (nft) =>
+                    nft.collectionAddress === collection.collectionAddress
+                )?.uri
               }
-              uri={nfts[0].uri}
               onClick={() =>
-                handleOnClick({
-                  collectionAddress: zHexAddr32.parse(collectionAddress),
-                  nftsCount: nfts.length,
-                })
+                setSelectedCollection(collection.collectionAddress)
               }
             />
           ))}
         </Stack>
-        <NftsByCollectionSequencer
-          nfts={
-            selectedCollection?.collectionAddress
-              ? collections[selectedCollection.collectionAddress]
-              : Object.values(collections).flat()
-          }
-        />
+
+        {/* Right Panel */}
+        <Stack spacing="24px" w="full">
+          <InputWithIcon
+            amptrackSection="nft-account-detail-tokenid-search"
+            autoFocus={!isMobile}
+            placeholder="Search with token ID"
+            size={{ base: "md", md: "lg" }}
+            value={searchByTokenId}
+            onChange={(e) => setSearchByTokenId(e.target.value)}
+          />
+          <NftList
+            emptyState={
+              <EmptyState
+                imageVariant="empty"
+                message={
+                  searchByTokenId
+                    ? "There are no NFTs matching your keyword."
+                    : "There are currently no NFTs held by this account."
+                }
+                withBorder
+              />
+            }
+            nfts={accountNfts}
+            showCollection
+          />
+          {hasNextPage && (
+            <LoadNext
+              fetchNextPage={fetchNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              text="Load more 10 NFTs"
+            />
+          )}
+        </Stack>
       </Flex>
     </Box>
   );

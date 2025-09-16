@@ -38,12 +38,12 @@ const VotingPowerDetail = ({
   ratio: Ratio<number>;
 }) => {
   const formattedPercent = formatPrettyPercent(ratio, 2, true);
-  const formattedAmount = formatUTokenWithPrecision(
+  const formattedAmount = formatUTokenWithPrecision({
     amount,
-    assetInfo?.precision ?? 0,
-    true,
-    2
-  );
+    decimalPoints: 2,
+    isSuffix: true,
+    precision: assetInfo?.precision ?? 0,
+  });
   const formattedValue = assetInfo
     ? formatPrice(
         calculateAssetValue(
@@ -110,12 +110,12 @@ export const VotingPowerOverview = ({
     2,
     true
   );
-  const votingPowerAmount = formatUTokenWithPrecision(
-    votingPower as U<Token<Big>>,
-    assetInfo?.precision ?? 0,
-    false,
-    2
-  );
+  const votingPowerAmount = formatUTokenWithPrecision({
+    amount: votingPower as U<Token<Big>>,
+    decimalPoints: 2,
+    isSuffix: false,
+    precision: assetInfo?.precision ?? 0,
+  });
   const votingPowerValueFormatted = assetInfo
     ? formatPrice(
         calculateAssetValue(

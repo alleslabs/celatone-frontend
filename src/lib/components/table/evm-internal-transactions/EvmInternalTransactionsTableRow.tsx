@@ -146,12 +146,10 @@ export const EvmInternalTransactionTableRow = ({
                   {...styles}
                 >
                   <Text color="text.dark" variant="body2">
-                    {formatUTokenWithPrecision(
-                      token.amount,
-                      token.precision ?? 0,
-                      true,
-                      token.precision ? 6 : 0
-                    )}{" "}
+                    {formatUTokenWithPrecision({
+                      amount: token.amount,
+                      precision: token.precision ?? 0,
+                    })}{" "}
                     {getTokenLabel(token.denom, token.symbol)}
                   </Text>
                 </TableRow>

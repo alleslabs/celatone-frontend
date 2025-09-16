@@ -40,7 +40,7 @@ export const DelegationRelatedTxsTokenChange = ({
     movePoolInfos
   );
   const isPositiveAmount = token.amount.gte(0);
-  const formattedAmount = `${isPositiveAmount ? "+" : "-"}${formatUTokenWithPrecision(token.amount.abs() as U<Token<Big>>, token.precision ?? 0, false, 2)}`;
+  const formattedAmount = `${isPositiveAmount ? "+" : "-"}${formatUTokenWithPrecision({ amount: token.amount.abs() as U<Token<Big>>, decimalPoints: 2, isSuffix: false, precision: token.precision ?? 0 })}`;
 
   return (
     <Flex

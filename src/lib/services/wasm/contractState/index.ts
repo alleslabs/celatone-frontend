@@ -13,23 +13,22 @@ export const useContractStatesRest = (
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  return useInfiniteQuery(
-    [
+  return useInfiniteQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.CONTRACT_STATES_REST,
       restEndpoint,
       contractAddress,
       numStatesToLoad,
     ],
-    ({ pageParam }) =>
+    queryFn: ({ pageParam }: { pageParam?: string }) =>
       getContractStatesRest(
         restEndpoint,
         contractAddress,
         numStatesToLoad,
         pageParam
       ),
-    {
-      getNextPageParam: (lastPage) => lastPage.nextKey ?? undefined,
-      refetchOnWindowFocus: false,
-    }
-  );
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => lastPage.nextKey ?? undefined,
+    refetchOnWindowFocus: false,
+  });
 };

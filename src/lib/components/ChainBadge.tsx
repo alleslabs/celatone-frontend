@@ -84,5 +84,7 @@ export const ChainBadge = ({ chainId }: ChainBadgeProps) => {
   if (typeof chainId === "string")
     return <ChainBadgeSingle chainId={chainId} />;
 
+  if (chainId.length === 1) return <ChainBadgeSingle chainId={chainId[0]} />;
+
   return <ChainBadgeMultiple chainId={chainId} />;
 };
