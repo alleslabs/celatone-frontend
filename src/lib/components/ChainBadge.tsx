@@ -1,3 +1,6 @@
+import type { ChainConfig } from "@alleslabs/shared";
+import type { NonInitiaChainConfig } from "lib/types";
+
 import { Flex, Text } from "@chakra-ui/react";
 import { useChainConfigs } from "lib/app-provider";
 import { useNonInitiaChainConfig } from "lib/services/chain-config";
@@ -36,69 +39,72 @@ const BadgeContent = React.memo(
   }
 );
 
-const ChainBadgeSingle = ({ chainId }: { chainId: string }) => {
-  const { chainConfigs } = useChainConfigs();
-  const { data: nonInitiaChainConfigs } = useNonInitiaChainConfig([chainId]);
+const getChainDisplayInfo = (
+  chainId: string,
+  chainConfigs: Record<string, ChainConfig>,
+  nonInitiaChainConfigs?: Record<string, NonInitiaChainConfig>
+) => {
   const chainInfo = chainConfigs[chainId];
   const nonInitiaChainInfo = nonInitiaChainConfigs?.[chainId];
 
   if (nonInitiaChainInfo) {
-    return (
-      <BadgeContent
-        logo={nonInitiaChainInfo.logo_uri}
-        name={nonInitiaChainInfo.chain_name || chainId}
-        tooltip={`Chain ID: ${chainId}`}
-      />
-    );
+    return {
+      logo: nonInitiaChainInfo.logo_uri,
+      name: nonInitiaChainInfo.chain_name || chainId,
+    };
   }
 
   if (chainInfo) {
-    const logo =
-      chainInfo.logo_URIs?.svg ||
-      chainInfo.logo_URIs?.png ||
-      chainInfo.logo_URIs?.jpeg;
-
-    return (
-      <BadgeContent
-        logo={logo}
-        name={chainInfo.prettyName}
-        tooltip={`Chain ID: ${chainId}`}
-      />
-    );
+    return {
+      logo:
+        chainInfo.logo_URIs?.svg ||
+        chainInfo.logo_URIs?.png ||
+        chainInfo.logo_URIs?.jpeg,
+      name: chainInfo.prettyName,
+    };
   }
 
-  return <BadgeContent name={chainId} />;
+  return { logo: undefined, name: chainId };
 };
 
-const ChainBadgeMultiple = ({ chainId }: { chainId: string[] }) => {
+const ChainBadgeSingle = ({ chainId }: { chainId: string }) => {
   const { chainConfigs } = useChainConfigs();
-  const chainInfos = chainId.map((id) => chainConfigs[id]).filter(Boolean);
+  const { data: nonInitiaChainConfigs } = useNonInitiaChainConfig([chainId]);
+  const { logo, name } = getChainDisplayInfo(
+    chainId,
+    chainConfigs,
+    nonInitiaChainConfigs
+  );
+
+  return (
+    <BadgeContent logo={logo} name={name} tooltip={`Chain ID: ${chainId}`} />
+  );
+};
+
+const ChainBadgeMultiple = ({ chainIds }: { chainIds: string[] }) => {
+  const { chainConfigs } = useChainConfigs();
+  const { data: nonInitiaChainConfigs } = useNonInitiaChainConfig(chainIds);
 
   return (
     <Flex overflow="visible">
-      {chainInfos.length
-        ? chainInfos.map((chainInfo, index) => {
-            const logo =
-              chainInfo.logo_URIs?.svg ||
-              chainInfo.logo_URIs?.png ||
-              chainInfo.logo_URIs?.jpeg;
+      {chainIds.map((id, index) => {
+        const { logo } = getChainDisplayInfo(
+          id,
+          chainConfigs,
+          nonInitiaChainConfigs
+        );
 
-            return (
-              <Flex
-                key={chainInfo.chainId}
-                align="center"
-                marginInlineStart={index === 0 ? 0 : "-4px"}
-                zIndex={index}
-              >
-                <TokenImageRender boxSize={4} logo={logo} minW={4} />
-              </Flex>
-            );
-          })
-        : chainId.map((chain) => (
-            <Flex key={chain} align="center" marginInlineEnd="-4px">
-              <TokenImageRender boxSize={4} logo={undefined} minW={4} />
-            </Flex>
-          ))}
+        return (
+          <Flex
+            key={id}
+            align="center"
+            marginInlineStart={index === 0 ? 0 : "-4px"}
+            zIndex={index}
+          >
+            <TokenImageRender boxSize={4} logo={logo} minW={4} />
+          </Flex>
+        );
+      })}
     </Flex>
   );
 };
@@ -109,5 +115,5 @@ export const ChainBadge = ({ chainId }: ChainBadgeProps) => {
 
   if (chainId.length === 1) return <ChainBadgeSingle chainId={chainId[0]} />;
 
-  return <ChainBadgeMultiple chainId={chainId} />;
+  return <ChainBadgeMultiple chainIds={chainId} />;
 };

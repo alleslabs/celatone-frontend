@@ -1,7 +1,7 @@
 import type { NonInitiaChainConfig, Option } from "lib/types";
 
 import { useQuery } from "@tanstack/react-query";
-import { useInitia } from "lib/app-provider";
+import { useInitia, useIsMainnet } from "lib/app-provider";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 
 import {
@@ -37,10 +37,17 @@ export const useChainProfile = () => {
   });
 };
 
-export const useNonInitiaChainConfig = (chainIds: string[]) =>
-  useQuery({
-    queryFn: () => getNonInitiaChainConfig(chainIds),
-    queryKey: [CELATONE_QUERY_KEYS.NON_INITIA_CHAIN_CONFIG, chainIds],
+export const useNonInitiaChainConfig = (chainIds: string[]) => {
+  const isMainnet = useIsMainnet();
+  return useQuery({
+    enabled: chainIds.length > 0,
+    queryFn: () => getNonInitiaChainConfig(chainIds, isMainnet),
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: [
+      CELATONE_QUERY_KEYS.NON_INITIA_CHAIN_CONFIG,
+      isMainnet,
+      [...chainIds].sort(),
+    ],
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     retry: 1,
@@ -51,3 +58,4 @@ export const useNonInitiaChainConfig = (chainIds: string[]) =>
       ),
     staleTime: Infinity,
   });
+};

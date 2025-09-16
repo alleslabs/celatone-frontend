@@ -15,7 +15,7 @@ export const DUMMY_MNEMONIC = (() => {
 
 export const SCAN_API = process.env.NEXT_PUBLIC_SCAN_API;
 export const INITIA_API = process.env.NEXT_PUBLIC_INITIA_API;
-export const ROUTER_API = process.env.NEXT_PUBLIC_ROUTER_API;
+export const SKIP_API = process.env.NEXT_PUBLIC_SKIP_API;
 
 export const CELATONE_API = (() => {
   const url = process.env.NEXT_PUBLIC_CELATONE_API;

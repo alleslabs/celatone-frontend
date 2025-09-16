@@ -2,7 +2,7 @@ import type { Option } from "lib/types";
 import type { ChainProfile } from "lib/types/chainProfile";
 
 import axios from "axios";
-import { CHAIN, ROUTER_API, SCAN_API } from "env";
+import { CHAIN, SCAN_API, SKIP_API } from "env";
 import { CHAIN_PROFILE_URL } from "lib/data";
 import { zChainConfig, zNonInitiaChainConfig } from "lib/types";
 import { zChainProfile } from "lib/types/chainProfile";
@@ -41,8 +41,11 @@ export const getChainProfile = () =>
     );
   });
 
-export const getNonInitiaChainConfig = async (chainIds: string[]) => {
-  const endpoint = `${ROUTER_API}/v2/info/chains`;
+export const getNonInitiaChainConfig = async (
+  chainIds: string[],
+  isMainnet: boolean
+) => {
+  const endpoint = `${SKIP_API}/v2/info/chains`;
   if (!isUrl(endpoint)) {
     throw new Error(
       `Endpoint is not a valid URL (getNonInitiaChainConfig): ${endpoint}`
@@ -53,8 +56,7 @@ export const getNonInitiaChainConfig = async (chainIds: string[]) => {
     params: {
       chain_ids: chainIds.join(","),
       include_evm: true,
-      include_initia_mainnet: true,
-      only_testnets: false,
+      only_testnets: !isMainnet,
     },
   });
 

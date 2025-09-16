@@ -14,6 +14,7 @@ export * from "./useInitia";
 export * from "./useInternalNavigate";
 export * from "./useIsApiChain";
 export * from "./useIsConnected";
+export * from "./useIsMainnet";
 export * from "./useMediaQuery";
 export * from "./useNetworkChange";
 export * from "./usePlatform";
