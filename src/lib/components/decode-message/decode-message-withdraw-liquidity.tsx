@@ -80,7 +80,10 @@ export const DecodeMessageWithdrawLiquidity = ({
           <DexPoolLink liquidityDenom={data.liquidityDenom} />
         </DecodeMessageRow>
         <DecodeMessageRow title="LP amount">
-          {formatTokenWithValue(lpToken, undefined, true)}
+          {formatTokenWithValue({
+            decimalPoints: undefined,
+            token: lpToken,
+          })}
         </DecodeMessageRow>
         <DecodeMessageRow title="Withdrawn assets">
           <CoinsComponent coins={[coinA, coinB]} />

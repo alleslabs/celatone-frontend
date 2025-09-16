@@ -94,11 +94,11 @@ export const PoolAssetsTableRow = ({
       <TableRow justifyContent="flex-end">
         <Flex direction="column" textAlign="end">
           <Text color="text.main" fontWeight={700} variant="body2">
-            {formatUTokenWithPrecision(
-              token.amount,
-              token.precision ?? 0,
-              false
-            )}
+            {formatUTokenWithPrecision({
+              amount: token.amount,
+              isSuffix: false,
+              precision: token.precision ?? 0,
+            })}
           </Text>
           {isSupported && token.value && (
             <Text color="text.dark" variant="body3">

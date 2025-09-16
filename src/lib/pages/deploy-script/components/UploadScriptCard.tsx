@@ -4,6 +4,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import { ComponentLoader } from "lib/components/ComponentLoader";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
+import { useQueryEvents } from "lib/hooks";
 import { useDecodeScript } from "lib/services/move/module";
 import { useCallback, useState } from "react";
 
@@ -35,25 +36,28 @@ export const UploadScriptCard = ({
   }>(DEFAULT_TEMP_FILE);
   const [decodeError, setDecodeError] = useState("");
 
-  const { isFetching } = useDecodeScript({
+  const decodeScriptQuery = useDecodeScript({
     base64EncodedFile: tempFile.base64,
     options: {
       enabled: Boolean(tempFile.base64),
-      onError: () => {
-        setDecodeError(
-          "Failed to decode .mv file. Please make sure the file is a script."
-        );
-        setTempFile(DEFAULT_TEMP_FILE);
-      },
-      onSuccess: (data) => {
-        setFile(tempFile.file, tempFile.base64, data);
-        setTempFile(DEFAULT_TEMP_FILE);
-        setDecodeError("");
-      },
       refetchOnWindowFocus: false,
       retry: 0,
     },
   });
+  useQueryEvents(decodeScriptQuery, {
+    onError: () => {
+      setDecodeError(
+        "Failed to decode .mv file. Please make sure the file is a script."
+      );
+      setTempFile(DEFAULT_TEMP_FILE);
+    },
+    onSuccess: (data) => {
+      setFile(tempFile.file, tempFile.base64, data);
+      setTempFile(DEFAULT_TEMP_FILE);
+      setDecodeError("");
+    },
+  });
+  const { isFetching } = decodeScriptQuery;
 
   const handleFileDrop = useCallback(async (target: File) => {
     const reader = new FileReader();

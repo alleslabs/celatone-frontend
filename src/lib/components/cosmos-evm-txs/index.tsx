@@ -117,7 +117,6 @@ export const CosmosEvmTxs = ({
                 }
                 evmTransactions={evmTxs}
                 isLoading={isEvmTxsLoading}
-                showTimestamp
               />
             ) : (
               <TransactionsTable

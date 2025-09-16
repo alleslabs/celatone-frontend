@@ -5,12 +5,10 @@ import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "../tableComponents";
 
 interface EvmTransactionsTableHeaderProps {
-  showTimestamp: boolean;
   templateColumns: GridProps["templateColumns"];
 }
 
 export const EvmTransactionsTableHeader = ({
-  showTimestamp,
   templateColumns,
 }: EvmTransactionsTableHeaderProps) => (
   <Grid minW="min-content" templateColumns={templateColumns}>
@@ -18,6 +16,5 @@ export const EvmTransactionsTableHeader = ({
     <TableHeader>Action</TableHeader>
     <TableHeader>Sender</TableHeader>
     <TableHeader>Amount</TableHeader>
-    {showTimestamp && <TableHeader>Timestamp</TableHeader>}
   </Grid>
 );

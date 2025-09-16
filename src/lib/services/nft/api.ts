@@ -1,12 +1,11 @@
-import type { Addr, HexAddr, HexAddr32 } from "lib/types";
+import type { HexAddr, HexAddr32 } from "lib/types";
 
 import axios from "axios";
-import { GLYPH_API_URL } from "env";
 import { parseWithError } from "lib/utils";
 
 import {
-  zMetadata,
   zNft,
+  zNftMetadata,
   zNftMintInfoResponse,
   zNftMutateEventsResponse,
   zNftsByAccountAddressResponse,
@@ -67,12 +66,12 @@ export const getNftMintInfo = async (endpoint: string, nftAddress: HexAddr32) =>
     .get(`${endpoint}/nft/${encodeURI(nftAddress)}/mint-info`)
     .then(({ data }) => parseWithError(zNftMintInfoResponse, data));
 
-export const getMetadata = async (uri: string) => {
+export const getNftMetadata = async (uri: string) => {
   const baseUrl = getIpfsUrl(uri);
 
   const tryFetch = async (url: string) => {
     const { data } = await axios.get(url);
-    return parseWithError(zMetadata, data);
+    return parseWithError(zNftMetadata, data);
   };
 
   try {
@@ -85,26 +84,6 @@ export const getMetadata = async (uri: string) => {
     throw error;
   }
 };
-
-export const getGlyphImage = (
-  chainId: string,
-  collectionAddress: Addr,
-  objectAddress: string,
-  width?: string,
-  height?: string
-) =>
-  axios
-    .get<Blob>(
-      `${GLYPH_API_URL}/${chainId}/${collectionAddress}/${objectAddress}`,
-      {
-        params: {
-          height,
-          width,
-        },
-        responseType: "blob",
-      }
-    )
-    .then(({ data }) => data);
 
 export const getNftTxs = async (
   endpoint: string,

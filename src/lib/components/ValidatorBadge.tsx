@@ -39,7 +39,7 @@ export const ValidatorBadge = ({
   const isL1 = useInitiaL1({ shouldRedirect: false });
 
   return (
-    <Flex alignItems="center" gap={2} sx={sx} w="full">
+    <Flex alignItems="center" gap={1} sx={sx} w="full">
       <ValidatorImage boxSize={badgeSize} validator={validator} />
       {validator ? (
         <Flex direction="column" minW={0} w="full">

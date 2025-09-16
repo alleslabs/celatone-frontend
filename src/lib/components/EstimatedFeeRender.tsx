@@ -27,5 +27,5 @@ export const EstimatedFeeRender = ({
   if (!fee) return <>--</>;
 
   const feeToken = coinToTokenWithValue(fee.denom, fee.amount, assetInfos);
-  return <>{formatTokenWithValue(feeToken)}</>;
+  return <>{formatTokenWithValue({ token: feeToken })}</>;
 };

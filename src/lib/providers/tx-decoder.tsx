@@ -28,19 +28,25 @@ export const TxDecoderProvider = ({
   children: React.ReactNode;
 }) => {
   const {
-    chainConfig: { network_type, rest: restEndpoint },
+    chainConfig: {
+      features: { evm },
+      network_type,
+      rest: restEndpoint,
+    },
   } = useCelatoneApp();
 
   const txDecoder = useMemo(
     () =>
       new TxDecoder({
+        jsonRpcUrl: evm.enabled ? evm.jsonRpc : undefined,
         registryUrl:
           network_type === "mainnet"
             ? INITIA_REGISTRY_URL
             : INITIA_TESTNET_REGISTRY_URL,
         restUrl: restEndpoint,
       }),
-    [network_type, restEndpoint]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [network_type, restEndpoint, JSON.stringify(evm)]
   );
 
   return (

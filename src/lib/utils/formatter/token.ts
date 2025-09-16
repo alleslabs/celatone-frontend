@@ -14,11 +14,9 @@ export const formatDecimal =
   ({
     decimalPoints,
     delimiter,
-    hasTrailingZeros = true,
   }: {
     decimalPoints: number;
     delimiter: boolean;
-    hasTrailingZeros?: boolean;
   }) =>
   (n: BigSource, fallbackValue: string): string => {
     try {
@@ -31,7 +29,7 @@ export const formatDecimal =
           .split(".")[0]
       )
         .div(10 ** decimalPoints)
-        .toFixed(hasTrailingZeros ? decimalPoints : undefined);
+        .toString();
 
       const [i, d] = num.split(".");
       const thousands = /\B(?=(\d{3})+(?!\d))/g;
@@ -67,13 +65,18 @@ export const toToken = (
  * If token is more than or equal to 1 billion, should add suffix B and format to 2 decimal point
  *
  */
-export const formatUTokenWithPrecision = (
-  amount: U<Token<BigSource>>,
-  precision: number,
+
+export const formatUTokenWithPrecision = ({
+  amount,
+  decimalPoints,
   isSuffix = true,
-  decimalPoints?: number,
-  hasTrailingZeros?: boolean
-): string => {
+  precision,
+}: {
+  amount: U<Token<BigSource>>;
+  decimalPoints?: number;
+  isSuffix?: boolean;
+  precision: number;
+}): string => {
   const token = toToken(amount, precision);
 
   if (isSuffix) {
@@ -83,16 +86,20 @@ export const formatUTokenWithPrecision = (
     if (token.gte(K)) return `${d2Formatter(token, "0.00")}`;
   }
 
-  const lowestThreshold = big(10).pow(-(decimalPoints ?? precision));
+  const lowestThreshold = Math.max(
+    0.000001,
+    10 ** -(decimalPoints ?? precision)
+  );
 
   if (!token.eq(0) && token.lt(lowestThreshold)) {
-    return `<${lowestThreshold.toFixed()}`;
+    return `<${lowestThreshold.toString()}`;
   }
 
+  const dp = Math.min(decimalPoints ?? precision, 6);
+
   return formatDecimal({
-    decimalPoints: decimalPoints ?? precision,
+    decimalPoints: dp,
     delimiter: true,
-    hasTrailingZeros,
   })(token, INVALID);
 };
 

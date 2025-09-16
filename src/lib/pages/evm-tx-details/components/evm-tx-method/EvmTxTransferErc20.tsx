@@ -50,7 +50,7 @@ export const EvmTxTransferErc20 = ({
             value={from}
           />{" "}
           <EvmMethodChip txInput={input} txTo={erc20Contract} width="110px" />{" "}
-          {formatTokenWithValue(amountToken)} to{" "}
+          {formatTokenWithValue({ token: amountToken })} to{" "}
           <ExplorerLink
             showCopyOnHover
             textVariant="body1"

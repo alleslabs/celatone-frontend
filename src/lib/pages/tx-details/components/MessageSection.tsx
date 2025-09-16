@@ -10,7 +10,7 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
+import { useEvmConfig, useMoveConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { DecodeMessage } from "lib/components/decode-message";
 import { CustomIcon } from "lib/components/icon";
@@ -36,6 +36,7 @@ export const MessageSection = ({
 }: MessageSectionProps) => {
   const [tab, setTab] = useState(MessageSectionTab.Message);
   const evm = useEvmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
 
   const {
     decodedTx,
@@ -78,9 +79,11 @@ export const MessageSection = ({
           >
             {evm.enabled ? "Cosmos " : ""}Messages
           </CustomTab>
-          <CustomTab onClick={() => setTab(MessageSectionTab.BalanceChange)}>
-            Balance changes
-          </CustomTab>
+          {move.enabled && (
+            <CustomTab onClick={() => setTab(MessageSectionTab.BalanceChange)}>
+              Balance changes
+            </CustomTab>
+          )}
         </TabList>
         <TabPanels>
           <TabPanel px={0}>

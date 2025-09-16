@@ -54,7 +54,7 @@ export const PoolAssetCard = ({
         <Text>
           {assetText}{" "}
           <span style={{ fontWeight: 700 }}>
-            {formatTokenWithValue(poolToken)}
+            {formatTokenWithValue({ token: poolToken })}
           </span>
         </Text>
       </Flex>

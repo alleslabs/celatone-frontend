@@ -118,7 +118,12 @@ export const NavDrawer = () => {
       >
         <CustomIcon boxSize={6} name="menu" />
       </Button>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer
+        key={isOpen ? "open" : "closed"}
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+      >
         <DrawerOverlay />
         <DrawerContent w="90%">
           <DrawerHeader alignItems="center" px={4}>
@@ -158,7 +163,9 @@ export const NavDrawer = () => {
                     href={submenu.slug}
                     onClick={() => {
                       track(AmpEvent.USE_SIDEBAR);
-                      onClose();
+                      setTimeout(() => {
+                        onClose();
+                      }, 100);
                     }}
                   >
                     <Flex

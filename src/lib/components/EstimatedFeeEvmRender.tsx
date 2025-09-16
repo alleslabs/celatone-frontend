@@ -38,5 +38,12 @@ export const EstimatedFeeEvmRender = ({
     feeAmount.toFixed(),
     assetInfos
   );
-  return <>{formatTokenWithValue(feeToken, undefined, false)}</>;
+  return (
+    <>
+      {formatTokenWithValue({
+        decimalPoints: undefined,
+        token: feeToken,
+      })}
+    </>
+  );
 };

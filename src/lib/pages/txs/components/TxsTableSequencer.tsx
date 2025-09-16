@@ -29,7 +29,6 @@ export const TxsTableSequencer = ({ isViewMore }: TxsTableProps) => {
           emptyState={null}
           evmTransactions={evmTxsData}
           isLoading={isEvmTxsFetcing}
-          showTimestamp
         />
       ) : (
         <TransactionsTable

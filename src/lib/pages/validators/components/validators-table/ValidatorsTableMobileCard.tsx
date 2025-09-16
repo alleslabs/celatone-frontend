@@ -36,7 +36,6 @@ export const ValidatorsTableMobileCard = ({
   validator,
 }: ValidatorsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
-
   const isZeroUptime = !validator.uptime;
   const isMinCommissionRate = minCommissionRate === validator.commissionRate;
   return (
@@ -72,12 +71,12 @@ export const ValidatorsTableMobileCard = ({
             </Text>
             <Text color="text.dark" variant="body3">
               (
-              {formatUTokenWithPrecision(
-                validator.votingPower as U<Token<Big>>,
-                assetInfo?.precision ?? 0,
-                false,
-                2
-              )}
+              {formatUTokenWithPrecision({
+                amount: validator.votingPower as U<Token<Big>>,
+                decimalPoints: 2,
+                isSuffix: false,
+                precision: assetInfo?.precision ?? 0,
+              })}
               {assetInfo?.id
                 ? ` ${getTokenLabel(assetInfo.id, assetInfo.symbol)}`
                 : undefined}

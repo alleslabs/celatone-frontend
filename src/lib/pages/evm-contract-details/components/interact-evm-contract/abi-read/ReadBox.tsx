@@ -19,6 +19,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { CopyButton } from "lib/components/copy";
 import { EvmAbiForm } from "lib/components/evm-abi";
 import { CustomIcon } from "lib/components/icon";
+import { useQueryEvents } from "lib/hooks";
 import { useEthCall } from "lib/services/evm";
 import {
   dateFromNow,
@@ -81,9 +82,12 @@ export const ReadBox = ({
     () => encodeEvmFunctionData(abiSection, inputs),
     [abiSection, inputs]
   );
-  const { isFetching, refetch } = useEthCall(contractAddress, data ?? "", {
-    cacheTime: 0,
+  const ethCallQuery = useEthCall(contractAddress, data ?? "", {
     enabled: opened && !isUndefined(data) && !inputRequired,
+    gcTime: 0,
+    retry: false,
+  });
+  useQueryEvents(ethCallQuery, {
     onError: (err) => {
       setQueryError((err as Error).message);
       setTimestamp(undefined);
@@ -94,8 +98,8 @@ export const ReadBox = ({
       setRes(data);
       setTimestamp(getCurrentDate());
     },
-    retry: false,
   });
+  const { isFetching, refetch } = ethCallQuery;
 
   // ------------------------------------------//
   // ------------------CALLBACKS---------------//
