@@ -70,7 +70,9 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
                 <StyledIconButton
                   aria-label="button"
                   icon={<CustomIcon name="chevron-left" />}
+                  size={{ base: "xs", md: "md" }}
                   variant="ghost-gray"
+                  w={{ base: 6, md: 8 }}
                 />
               </AppLink>
             )}
@@ -78,7 +80,9 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
               <StyledIconButton
                 aria-label="button"
                 icon={<CustomIcon name="chevron-right" />}
+                size={{ base: "xs", md: "md" }}
                 variant="ghost-gray"
+                w={{ base: 6, md: 8 }}
               />
             </AppLink>
             <Button
