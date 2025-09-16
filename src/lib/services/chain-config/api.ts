@@ -45,12 +45,13 @@ export const getNonInitiaChainConfig = async (
   chainIds: string[],
   isMainnet: boolean
 ) => {
-  const endpoint = `${SKIP_API}/v2/info/chains`;
-  if (!isUrl(endpoint)) {
+  if (!SKIP_API) {
     throw new Error(
-      `Endpoint is not a valid URL (getNonInitiaChainConfig): ${endpoint}`
+      "SKIP_API is not configured. Please set NEXT_PUBLIC_SKIP_API environment variable."
     );
   }
+
+  const endpoint = `${SKIP_API}/v2/info/chains`;
 
   const { data } = await axios.get(endpoint, {
     params: {
