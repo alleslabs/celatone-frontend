@@ -21,6 +21,7 @@ import { TokenImageWithAmount } from "../token";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { ValidatorBadge } from "../ValidatorBadge";
 import { DecodeMessageBody } from "./decode-message-body";
+import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
@@ -72,7 +73,7 @@ export const DecodeMessageExtendLiquidity = ({
       >
         <TokenImageWithAmount token={lpToken} />
         <Text color="text.dark">for</Text>
-        <Text>{formatDayJSDuration(extendedPeriod)}</Text>
+        <Text whiteSpace="nowrap">{formatDayJSDuration(extendedPeriod)}</Text>
         <Text color="text.dark">via</Text>
         <ValidatorBadge
           badgeSize={4}
@@ -124,6 +125,7 @@ export const DecodeMessageExtendLiquidity = ({
             {formatUTC(newReleaseTimestamp)}
           </DecodeMessageRow>
         )}
+        <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>
   );

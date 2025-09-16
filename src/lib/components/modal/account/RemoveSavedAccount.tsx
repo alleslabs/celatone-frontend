@@ -59,8 +59,7 @@ export function RemoveSavedAccountModal({
 
   return (
     <ActionModal
-      icon="delete"
-      iconColor="error.light"
+      icon="bookmark"
       mainAction={() => {
         track(AmpEvent.ACCOUNT_REMOVE);
         handleRemove();

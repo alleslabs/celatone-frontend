@@ -76,7 +76,12 @@ const MergedPosition = ({
             </Flex>
           ))}
         </Flex>
-        <Text>{formatTokenWithValue(token, undefined, true)}</Text>
+        <Text>
+          {formatTokenWithValue({
+            decimalPoints: undefined,
+            token,
+          })}
+        </Text>
       </Flex>
       <Text color="text.dark">
         {formatUTC(parseUnixToDate(position.initialReleaseTimestamp))}

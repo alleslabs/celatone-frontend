@@ -3,7 +3,7 @@ import type { ExplorerLinkProps } from "lib/components/ExplorerLink";
 import type { Nullable, Validator } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { useCelatoneApp, useMobile } from "lib/app-provider";
+import { useCelatoneApp, useInitiaL1, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { isNull } from "lodash";
 
@@ -36,9 +36,10 @@ export const ValidatorBadge = ({
       extra: { isValidatorExternalLink },
     },
   } = useCelatoneApp();
+  const isL1 = useInitiaL1({ shouldRedirect: false });
 
   return (
-    <Flex alignItems="center" gap={2} sx={sx} w="full">
+    <Flex alignItems="center" gap={1} sx={sx} w="full">
       <ValidatorImage boxSize={badgeSize} validator={validator} />
       {validator ? (
         <Flex direction="column" minW={0} w="full">
@@ -51,6 +52,7 @@ export const ValidatorBadge = ({
                 : undefined
             }
             fixedHeight={fixedHeight}
+            hideCopy={!isL1}
             isReadOnly={isNull(isValidatorExternalLink)}
             showCopyOnHover
             textFormat={textFormat}

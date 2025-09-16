@@ -203,6 +203,7 @@ export const zChainConfig = z
     }),
     fees: zFeeConfig,
     gas: zGasConfig,
+    indexer: zHttpsUrl,
     logo_URIs: z
       .object({
         jpeg: z.string().optional(),
@@ -240,3 +241,10 @@ export const TierMap: Record<ChainConfig["tier"], number> = {
   mesa: 1,
   sequencer: 2,
 };
+
+export const zNonInitiaChainConfig = z.object({
+  chain_id: z.string(),
+  chain_name: z.string(),
+  logo_uri: z.string(),
+});
+export type NonInitiaChainConfig = z.infer<typeof zNonInitiaChainConfig>;

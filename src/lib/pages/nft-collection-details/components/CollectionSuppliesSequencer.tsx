@@ -1,4 +1,4 @@
-import type { BechAddr32 } from "lib/types";
+import type { HexAddr32 } from "lib/types";
 
 import { Box } from "@chakra-ui/react";
 import { LoadNext } from "lib/components/LoadNext";
@@ -7,7 +7,7 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useNftsSequencer } from "lib/services/nft";
 
 interface CollectionSuppliesSequencerProps {
-  collectionAddress: BechAddr32;
+  collectionAddress: HexAddr32;
 }
 
 export const CollectionSuppliesSequencer = ({
@@ -20,7 +20,7 @@ export const CollectionSuppliesSequencer = ({
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useNftsSequencer(collectionAddress);
+  } = useNftsSequencer(collectionAddress, 10, true);
 
   return (
     <Box gap="40px" mt="32px">

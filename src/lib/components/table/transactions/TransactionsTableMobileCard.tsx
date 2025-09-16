@@ -70,7 +70,7 @@ export const TransactionsTableMobileCard = ({
               <Spinner boxSize={4} />
             ) : (
               <>
-                {txResponse && decodedTx ? (
+                {txResponse && decodedTx && decodedTx.messages.length > 0 ? (
                   <DecodeMessage
                     compact
                     decodedMessage={decodedTx.messages[0].decodedMessage}

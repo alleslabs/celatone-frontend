@@ -28,7 +28,10 @@ const SingleBondRadioCardBody = ({
   return (
     <Flex alignItems="end" gap={1}>
       <Heading as="h6" variant={{ base: "h7", md: "h6" }}>
-        {formatUTokenWithPrecision(token.amount, token.precision ?? 0)}
+        {formatUTokenWithPrecision({
+          amount: token.amount,
+          precision: token.precision ?? 0,
+        })}
       </Heading>
       <Text textColor="text.main" variant="body2">
         {getTokenLabel(token.denom, token.symbol)}

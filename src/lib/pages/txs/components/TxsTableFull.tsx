@@ -2,6 +2,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
+import { useQueryEvents } from "lib/hooks";
 import { useTxs } from "lib/services/tx";
 
 import type { TxsTableProps } from "./type";
@@ -22,9 +23,11 @@ export const TxsTableFull = ({ isViewMore }: TxsTableProps) => {
       pageSize: isViewMore ? 5 : 10,
     },
   });
-  const { data, error, isLoading } = useTxs(pageSize, offset, {
+  const txsQuery = useTxs(pageSize, offset);
+  useQueryEvents(txsQuery, {
     onSuccess: ({ total }) => setTotalData(total),
   });
+  const { data, error, isLoading } = txsQuery;
 
   return (
     <>

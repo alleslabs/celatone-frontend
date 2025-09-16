@@ -11,7 +11,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js";
 import { useCelatoneApp } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";

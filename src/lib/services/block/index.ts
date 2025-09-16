@@ -1,4 +1,4 @@
-import type { UseQueryOptions } from "@tanstack/react-query";
+// import type { UseQueryOptions } from "@tanstack/react-query";
 import type { BlocksResponse } from "lib/services/types";
 import type {
   BlockData,
@@ -31,29 +31,29 @@ import {
 
 export const useBlocks = (
   limit: number,
-  offset: number,
-  options: Pick<UseQueryOptions<BlocksResponse>, "onSuccess"> = {}
+  offset: number
+  // options: Pick<UseQueryOptions<BlocksResponse>, "onSuccess"> = {}
 ) => {
   const endpoint = useBaseApiRoute("blocks");
-  return useQuery<BlocksResponse>(
-    [CELATONE_QUERY_KEYS.BLOCKS, endpoint, limit, offset],
-    async () => getBlocks(endpoint, limit, offset),
-    { ...options, refetchOnWindowFocus: false, retry: 1 }
-  );
+  return useQuery<BlocksResponse>({
+    queryFn: async () => getBlocks(endpoint, limit, offset),
+    queryKey: [CELATONE_QUERY_KEYS.BLOCKS, endpoint, limit, offset],
+    // ...options,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useBlockData = (height: number, enabled = true) => {
   const endpoint = useBaseApiRoute("blocks");
 
-  return useQuery<BlockData>(
-    [CELATONE_QUERY_KEYS.BLOCK_DATA, endpoint, height],
-    async () => getBlockData(endpoint, height),
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+  return useQuery<BlockData>({
+    enabled,
+    queryFn: async () => getBlockData(endpoint, height),
+    queryKey: [CELATONE_QUERY_KEYS.BLOCK_DATA, endpoint, height],
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };
 
 export const useBlockDataRest = (height: number, enabled = true) => {
@@ -66,9 +66,8 @@ export const useBlockDataRest = (height: number, enabled = true) => {
     block: BlockData;
     proposerConsensusAddress: ConsensusAddr;
     transactions: TransactionWithTxResponse[];
-  }>(
-    [CELATONE_QUERY_KEYS.BLOCK_DATA_REST, restEndpoint, height],
-    async () => {
+  }>({
+    queryFn: async () => {
       const { rawProposerConsensusAddress, transactions, ...rest } =
         await getBlockDataRest(restEndpoint, height);
       return {
@@ -88,12 +87,16 @@ export const useBlockDataRest = (height: number, enabled = true) => {
         })),
       };
     },
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.BLOCK_DATA_REST,
+      restEndpoint,
+      height,
+      bech32Prefix,
+    ],
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };
 
 export const useLatestBlockRest = () => {
@@ -101,33 +104,29 @@ export const useLatestBlockRest = () => {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.BLOCK_LATEST_HEIGHT_REST, restEndpoint],
-    async () => getLatestBlockRest(restEndpoint),
-    {
-      cacheTime: 0,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+  return useQuery({
+    gcTime: 0,
+    queryFn: async () => getLatestBlockRest(restEndpoint),
+    queryKey: [CELATONE_QUERY_KEYS.BLOCK_LATEST_HEIGHT_REST, restEndpoint],
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };
 
 export const useBlocksSequencer = (limit = 10) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteQuery(
-      [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, restEndpoint, limit],
-      async ({ pageParam }) =>
-        getBlocksSequencer(restEndpoint, pageParam, limit),
-      {
-        getNextPageParam: (lastPage) =>
-          lastPage.pagination.nextKey ?? undefined,
-        refetchOnWindowFocus: false,
-      }
-    );
+    useInfiniteQuery({
+      queryKey: [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, indexerEndpoint, limit],
+      queryFn: async ({ pageParam }: { pageParam?: string }) =>
+        getBlocksSequencer(indexerEndpoint, pageParam, limit),
+      initialPageParam: undefined,
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+    });
 
   return {
     data: data?.pages.flatMap((page) => page.blocks),
@@ -140,44 +139,43 @@ export const useBlocksSequencer = (limit = 10) => {
 
 export const useBlockTimeAverageSequencer = () => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.BLOCK_TIME_AVERAGE_SEQUENCER, restEndpoint],
-    async () => getBlockTimeAverageSequencer(restEndpoint),
-    {
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+  return useQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.BLOCK_TIME_AVERAGE_SEQUENCER,
+      indexerEndpoint,
+    ],
+    queryFn: async () => getBlockTimeAverageSequencer(indexerEndpoint),
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };
 
 export const useBlockDataSequencer = (height: number) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
 
-  return useQuery<BlockData>(
-    [CELATONE_QUERY_KEYS.BLOCK_DATA_SEQUENCER, restEndpoint, height],
-    async () => getBlockDataSequencer(restEndpoint, height),
-    {
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+  return useQuery<BlockData>({
+    queryKey: [
+      CELATONE_QUERY_KEYS.BLOCK_DATA_SEQUENCER,
+      indexerEndpoint,
+      height,
+    ],
+    queryFn: async () => getBlockDataSequencer(indexerEndpoint, height),
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };
 
 export const useBlockDataJsonRpc = (height: Option<number>, enabled = true) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.BLOCK_DATA_JSON_RPC,
-      evm.enabled && evm.jsonRpc,
-      height,
-    ],
-    async () => {
+  return useQuery({
+    enabled: enabled && evm.enabled && !!evm.jsonRpc && !!height,
+    queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useBlockDataJsonRpc)");
 
@@ -186,10 +184,12 @@ export const useBlockDataJsonRpc = (height: Option<number>, enabled = true) => {
 
       return getBlockDataJsonRpc(evm.jsonRpc, height);
     },
-    {
-      enabled: enabled && evm.enabled && !!evm.jsonRpc && !!height,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.BLOCK_DATA_JSON_RPC,
+      evm.enabled && evm.jsonRpc,
+      height,
+    ],
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
 };

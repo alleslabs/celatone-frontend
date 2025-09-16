@@ -39,7 +39,7 @@ export const DecodeMessageBody = ({
           "> div": {
             alignItems: "flex-start",
           },
-          "> div > *:first-child": {
+          "> div > p:first-of-type": {
             color: "text.dark",
             fontWeight: 500,
             minW: "180px",

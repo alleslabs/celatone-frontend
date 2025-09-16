@@ -81,14 +81,13 @@ const CollectionDetailsBody = ({
   } = useNftCollectionData(collectionAddressBech, collectionAddressHex);
 
   const { data: nftsFull, isFetching: isNftsLoadingFull } = useNfts(
-    collectionAddressBech,
     collectionAddressHex,
     6,
     0
   );
 
   const { data: nftsSequencer, isFetching: isNftsLoadingSequencer } =
-    useNftsSequencer(collectionAddressBech, 6);
+    useNftsSequencer(collectionAddressHex, 6, true);
 
   const nfts = isFullTier ? nftsFull?.items : nftsSequencer;
   const isNftsLoading = isFullTier ? isNftsLoadingFull : isNftsLoadingSequencer;
@@ -329,14 +328,13 @@ const CollectionDetailsBody = ({
             <TierSwitcher
               full={
                 <CollectionSuppliesFull
-                  collectionAddressBech={collectionAddressBech}
                   collectionAddressHex={collectionAddressHex}
                   totalSupply={currentSupply}
                 />
               }
               sequencer={
                 <CollectionSuppliesSequencer
-                  collectionAddress={collectionAddressBech}
+                  collectionAddress={collectionAddressHex}
                 />
               }
             />

@@ -13,6 +13,7 @@ import { ExplorerLink } from "../ExplorerLink";
 import { TokenImageWithAmount } from "../token";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { DecodeMessageBody } from "./decode-message-body";
+import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
@@ -76,6 +77,7 @@ export const DecodeMessageClaimMinitSwap = ({
         <DecodeMessageRow title="Amount">
           <CoinsComponent coins={[coinWithdrawn]} />
         </DecodeMessageRow>
+        <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>
   );

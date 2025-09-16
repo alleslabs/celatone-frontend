@@ -13,6 +13,7 @@ import { ExplorerLink } from "../ExplorerLink";
 import { TokenImageWithAmount } from "../token";
 import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
 import { DecodeMessageBody } from "./decode-message-body";
+import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
@@ -79,11 +80,15 @@ export const DecodeMessageWithdrawLiquidity = ({
           <DexPoolLink liquidityDenom={data.liquidityDenom} />
         </DecodeMessageRow>
         <DecodeMessageRow title="LP amount">
-          {formatTokenWithValue(lpToken, undefined, true)}
+          {formatTokenWithValue({
+            decimalPoints: undefined,
+            token: lpToken,
+          })}
         </DecodeMessageRow>
         <DecodeMessageRow title="Withdrawn assets">
           <CoinsComponent coins={[coinA, coinB]} />
         </DecodeMessageRow>
+        <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>
   );

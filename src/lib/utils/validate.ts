@@ -15,14 +15,8 @@ export const isPosDecimal = (input: string): boolean => {
 export const isId = (input: string): boolean =>
   input.length <= 7 && isPosDecimal(input);
 
-export const isUrl = (string: string): boolean => {
-  try {
-    z.string().url().parse(string);
-    return true;
-  } catch {
-    return false;
-  }
-};
+export const isUrl = (string: string): boolean =>
+  z.string().url().safeParse(string).success;
 
 export const isHex = (input: string): boolean => {
   if (input.trim() === "") return false;

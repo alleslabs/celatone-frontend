@@ -10,7 +10,7 @@ import {
   RemoveSavedAccountModal,
   SaveNewAccountModal,
 } from "lib/components/modal";
-import { AccountQrCodeModal } from "lib/components/modal/account";
+import { AccountQrCodeModal } from "lib/components/modal/account/AccountQrCode";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import { Tooltip } from "lib/components/Tooltip";
 import { TotalValue } from "lib/components/TotalValue";

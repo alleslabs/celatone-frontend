@@ -44,7 +44,7 @@ import { CodeSelectSection } from "lib/components/select-code";
 import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useTxBroadcast } from "lib/hooks";
+import { useQueryEvents, useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
 import { useSimulateFeeQuery } from "lib/services/tx";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
@@ -199,9 +199,12 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
     },
   });
 
-  const { refetch } = useCodeRest(Number(codeId), {
-    cacheTime: 0,
+  const codeRestQuery = useCodeRest(Number(codeId), {
     enabled: false,
+    gcTime: 0,
+    retry: false,
+  });
+  useQueryEvents(codeRestQuery, {
     onError: () => {
       setStatus({ message: "This code ID does not exist", state: "error" });
       setSimulateError("");
@@ -224,8 +227,8 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
         });
       }
     },
-    retry: false,
   });
+  const { refetch } = codeRestQuery;
 
   // ------------------------------------------//
   // ----------------CALLBACKS-----------------//

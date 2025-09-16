@@ -3,23 +3,27 @@ import type { Option } from "lib/types";
 import type { ReactNode } from "react";
 
 import { Flex, Text } from "@chakra-ui/react";
+import { transparentize } from "@chakra-ui/theme-tools";
 import { trackMintScan } from "lib/amplitude";
 import { type AddressReturnType, useChainConfigs } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { useWasmConfig } from "lib/app-provider/hooks/useConfig";
 import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
 import { useMobile } from "lib/app-provider/hooks/useMediaQuery";
+import { useHoverText } from "lib/providers/hover";
 import { truncate } from "lib/utils";
 import { isUndefined } from "lodash";
 
 import { AppLink } from "./AppLink";
 import { Copier } from "./copy";
+import { Tooltip } from "./Tooltip";
 
 export type LinkType =
   | "block_height"
   | "code_id"
   | "evm_contract_address"
   | "evm_tx_hash"
+  | "function_name"
   | "module_name"
   | "move_dex_pool_address"
   | "nft_collection"
@@ -29,7 +33,9 @@ export type LinkType =
   | "tx_hash"
   | AddressReturnType;
 
-export interface ExplorerLinkProps extends FlexProps {
+type TextFormat = "ellipsis" | "normal" | "truncate";
+
+type CommonExplorerLinkProps = FlexProps & {
   ampCopierSection?: string;
   chainId?: string;
   copyValue?: string;
@@ -37,15 +43,30 @@ export interface ExplorerLinkProps extends FlexProps {
   fixedHeight?: boolean;
   hideCopy?: boolean;
   isReadOnly?: boolean;
+  leftIcon?: ReactNode;
   openNewTab?: boolean;
+  queryParams?: Record<string, string>;
   rightIcon?: ReactNode;
   showCopyOnHover?: boolean;
-  textFormat?: "ellipsis" | "normal" | "truncate";
+  textFormat?: TextFormat;
   textLabel?: string;
   textVariant?: TextProps["variant"];
-  type: LinkType;
+};
+
+type FunctionNameExplorerLinkProps = CommonExplorerLinkProps & {
+  queryParams: Record<string, string>;
+  type: "function_name";
+  value: Option<string>;
+};
+
+type DefaultExplorerLinkProps = CommonExplorerLinkProps & {
+  type: Exclude<LinkType, "function_name">;
   value: string;
-}
+};
+
+export type ExplorerLinkProps =
+  | DefaultExplorerLinkProps
+  | FunctionNameExplorerLinkProps;
 
 export const getNavigationUrl = ({
   type,
@@ -53,7 +74,7 @@ export const getNavigationUrl = ({
   wasmEnabled = false,
 }: {
   type: ExplorerLinkProps["type"];
-  value: string;
+  value: Option<string>;
   wasmEnabled?: boolean;
 }) => {
   let url = "";
@@ -74,6 +95,9 @@ export const getNavigationUrl = ({
       break;
     case "evm_tx_hash":
       url = "/evm-txs";
+      break;
+    case "function_name":
+      url = "/interact";
       break;
     case "invalid_address":
       return "";
@@ -104,7 +128,16 @@ export const getNavigationUrl = ({
     default:
       break;
   }
-  return `${url}/${value}`;
+
+  if (value) {
+    const safe = value
+      .split("/")
+      .map((seg) => encodeURIComponent(seg))
+      .join("/");
+    return `${url}/${safe}`;
+  }
+
+  return url;
 };
 
 const getValueText = (
@@ -133,6 +166,22 @@ const getCopyLabel = (type: LinkType, value: string) => {
     .join(" ");
 };
 
+const isTooltipHidden = (type: LinkType, textFormat: TextFormat) => {
+  if (textFormat === "ellipsis" || textFormat === "normal") return true;
+
+  if (
+    type === "evm_contract_address" ||
+    type === "evm_tx_hash" ||
+    type === "tx_hash" ||
+    type === "user_address" ||
+    type === "contract_address" ||
+    type === "validator_address"
+  )
+    return false;
+
+  return true;
+};
+
 const LinkRender = ({
   chainId,
   fallbackValue,
@@ -140,6 +189,7 @@ const LinkRender = ({
   isEllipsis,
   isInternal,
   openNewTab,
+  textFormat,
   textValue,
   textVariant,
   type,
@@ -150,6 +200,7 @@ const LinkRender = ({
   isEllipsis: boolean;
   isInternal: boolean;
   openNewTab: Option<boolean>;
+  textFormat: TextFormat;
   textValue: string;
   textVariant: TextProps["variant"];
   type: string;
@@ -160,6 +211,7 @@ const LinkRender = ({
       className={isEllipsis ? "ellipsis" : undefined}
       color={textValue.length ? "primary.main" : "text.disabled"}
       fontFamily="mono"
+      isTruncated={textFormat === "truncate"}
       pointerEvents={hrefLink ? "auto" : "none"}
       variant={textVariant}
       wordBreak={{ base: "break-all", md: "inherit" }}
@@ -203,20 +255,23 @@ export const ExplorerLink = ({
   fixedHeight = true,
   hideCopy = false,
   isReadOnly = false,
+  leftIcon = null,
   openNewTab,
+  queryParams,
   rightIcon = null,
   showCopyOnHover = false,
   textFormat = "truncate",
   textLabel,
   textVariant = "body2",
   type,
-  value,
+  value = "",
   ...componentProps
 }: ExplorerLinkProps) => {
   const isMobile = useMobile();
   const { chainConfigs } = useChainConfigs();
   const { address } = useCurrentChain();
   const { enabled: wasmEnabled } = useWasmConfig({ shouldRedirect: false });
+  const { hoveredText, setHoveredText } = useHoverText();
 
   const [internalLink, textValue] = [
     getNavigationUrl({
@@ -228,9 +283,14 @@ export const ExplorerLink = ({
       getValueText(value === address, textFormat === "truncate", value),
   ];
 
-  const link = externalLink ?? internalLink;
+  const link = `${externalLink ?? internalLink}${
+    queryParams && Object.keys(queryParams).length > 0
+      ? `?${new URLSearchParams(queryParams).toString()}`
+      : ""
+  }`;
   const isNotInitiaChainId = chainId && !chainConfigs[chainId];
   const readOnly = isReadOnly || !link || isNotInitiaChainId;
+  const isHighlighted = hoveredText === value;
 
   // TODO: handle auto width
   return readOnly ? (
@@ -240,6 +300,7 @@ export const ExplorerLink = ({
       gap={1}
       {...componentProps}
     >
+      {leftIcon}
       <Text color="text.disabled" variant="body2">
         {textValue}
       </Text>
@@ -257,28 +318,69 @@ export const ExplorerLink = ({
   ) : (
     <Flex
       className="copier-wrapper"
-      _hover={{
-        textDecoration: "underline",
-        textDecorationColor: "primary.light",
-      }}
       align="center"
+      borderColor="transparent"
+      borderStyle="dashed"
+      borderWidth="1px"
       display="inline-flex"
       gap={1}
-      h={fixedHeight ? "24px" : "auto"}
-      transition="all 0.25s ease-in-out"
+      h={fixedHeight && textFormat !== "normal" ? "24px" : "auto"}
+      maxW={textLabel ? "100%" : "fit-content"}
+      px={1}
+      rounded={4}
+      sx={{
+        ...(isHighlighted && {
+          backgroundColor: transparentize("warning.dark", 0.3),
+          borderColor: "warning.dark",
+        }),
+        "&:hover": {
+          backgroundColor: transparentize("warning.dark", 0.3),
+          textDecoration: "underline",
+          textDecorationColor: "primary.light",
+        },
+      }}
+      transition="all 0.15s ease-in-out"
+      w="fit-content"
+      onMouseEnter={() => setHoveredText(value)}
+      onMouseLeave={() => setHoveredText(null)}
+      onTouchEnd={() => setHoveredText(null)}
+      onTouchStart={() => setHoveredText(value)}
       {...componentProps}
     >
-      <LinkRender
-        chainId={chainId}
-        fallbackValue={copyValue ?? ""}
-        hrefLink={link}
-        isEllipsis={textFormat === "ellipsis"}
-        isInternal={isUndefined(externalLink)}
-        openNewTab={openNewTab}
-        textValue={textValue}
-        textVariant={textVariant}
-        type={type}
-      />
+      {leftIcon}
+      {isMobile ? (
+        <LinkRender
+          chainId={chainId}
+          fallbackValue={copyValue ?? ""}
+          hrefLink={link}
+          isEllipsis={textFormat === "ellipsis"}
+          isInternal={isUndefined(externalLink)}
+          openNewTab={openNewTab}
+          textFormat={textFormat}
+          textValue={textValue}
+          textVariant={textVariant}
+          type={type}
+        />
+      ) : (
+        <Tooltip
+          hidden={isTooltipHidden(type, textFormat)}
+          label={value}
+          textAlign="center"
+        >
+          <LinkRender
+            chainId={chainId}
+            fallbackValue={copyValue ?? ""}
+            hrefLink={link}
+            isEllipsis={textFormat === "ellipsis"}
+            isInternal={isUndefined(externalLink)}
+            openNewTab={openNewTab}
+            textFormat={textFormat}
+            textValue={textValue}
+            textVariant={textVariant}
+            type={type}
+          />
+        </Tooltip>
+      )}
       {rightIcon}
       {!hideCopy && (
         <Copier

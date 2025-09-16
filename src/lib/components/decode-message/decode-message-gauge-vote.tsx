@@ -9,6 +9,7 @@ import type { TxMsgData } from "../tx-message";
 
 import { ChainBadge } from "../ChainBadge";
 import { DecodeMessageBody } from "./decode-message-body";
+import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
@@ -81,12 +82,7 @@ export const DecodeMessageGaugeVote = ({
               >
                 <ChainBadge chainId={rollup} />
                 <Flex align="center" gap={2}>
-                  <Text variant="body2">
-                    {formatDecimal({
-                      decimalPoints: 6,
-                      delimiter: true,
-                    })(amount, "0")}
-                  </Text>
+                  <Text variant="body2">{amount}</Text>
                   <Text color="text.dark" variant="body2">
                     voting power
                   </Text>
@@ -95,6 +91,7 @@ export const DecodeMessageGaugeVote = ({
             ))}
           </Flex>
         </DecodeMessageRow>
+        <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>
   );

@@ -30,7 +30,9 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
           />
         </LabelText>
         <LabelText label="Gas price">
-          {formatTokenWithValue(gasInfo.gasPrice, undefined, false)}
+          {formatTokenWithValue({
+            token: gasInfo.gasPrice,
+          })}
         </LabelText>
         <LabelText label="Usage by tx & gas limit">
           {`${formatInteger(gasInfo.gasUsed)}/${formatInteger(gasInfo.gasLimit)}`}
@@ -64,13 +66,19 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
           >
             <Flex direction="column" gap={6} m={4}>
               <LabelText label="Base fee">
-                {formatTokenWithValue(gasInfo.baseFee, undefined, false)}
+                {formatTokenWithValue({
+                  token: gasInfo.baseFee,
+                })}
               </LabelText>
               <LabelText label="Max priority">
-                {formatTokenWithValue(gasInfo.maxPriorityFee, undefined, false)}
+                {formatTokenWithValue({
+                  token: gasInfo.maxPriorityFee,
+                })}
               </LabelText>
               <LabelText label="Max possible gas fee">
-                {formatTokenWithValue(gasInfo.maxFee, undefined, false)}
+                {formatTokenWithValue({
+                  token: gasInfo.maxFee,
+                })}
               </LabelText>
             </Flex>
           </MotionBox>
