@@ -125,8 +125,8 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       '@initia/interwovenkit-react':
-        specifier: 2.0.0-rc.7
-        version: 2.0.0-rc.7(36de4drps2reniattg7ommgc2e)
+        specifier: 2.0.0
+        version: 2.0.0(leih36debiqmubbjyiospygs6a)
       '@initia/react-app-shell':
         specifier: 1.1.0
         version: 1.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -134,8 +134,8 @@ importers:
         specifier: 0.7.0
         version: 0.7.0(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
       '@initia/utils':
-        specifier: 2.0.0-alpha.6
-        version: 2.0.0-alpha.6(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(ky@1.8.0)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
+        specifier: 2.0.0
+        version: 2.0.0(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(ky@1.8.0)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       '@interchain-ui/react':
         specifier: 1.23.9
         version: 1.23.9(@types/react@19.1.0)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -2465,8 +2465,8 @@ packages:
   '@initia/initia.proto@1.0.0':
     resolution: {integrity: sha512-PpHO1bR+mE2KmqfNplhRCcoS5Hn7xiZqgGVE3obNVmzjsfXAO5vaA91KFx4GUupEBdOjXYDyQ/GAS4f+V3rFvA==}
 
-  '@initia/interwovenkit-react@2.0.0-rc.7':
-    resolution: {integrity: sha512-tKpxolshTsfUlzd+RaHCsBQ7rLQisFKYSiWgVw6DtGJujK+Gbhq3xe0gJ7/bLbqTlkv/FPT54IHy7h+SiDq6Gg==}
+  '@initia/interwovenkit-react@2.0.0':
+    resolution: {integrity: sha512-nrwDHQZI7mkz4c6EJYovjh57zpcxGIPohuhEtltlEDK18fYSUWXRzHNWukq/qJpqnT/+UZLdrt84k/wqWGe17Q==}
     peerDependencies:
       '@amplitude/analytics-browser': '>=2.0.0'
       '@base-ui-components/react': 1.0.0-beta.2
@@ -2479,7 +2479,7 @@ packages:
       '@cosmjs/tendermint-rpc': 0.36.0
       '@initia/amino-converter': '>=1.0.0'
       '@initia/icons-react': '>=1.0.0'
-      '@initia/utils': 2.0.0-alpha.6
+      '@initia/utils': 2.0.0
       '@lukemorales/query-key-factory': '>=1.0.0'
       '@mysten/bcs': '>=1.0.0'
       '@noble/hashes': '>=1.0.0'
@@ -2523,6 +2523,16 @@ packages:
     resolution: {integrity: sha512-+SxP4MgCgVhTJ75xMo+PGy5Mn84u6Rz2AQBgT+mRaqWJS/1jimSU1VeUOBGUfnuILNC3W5M2gXmCSmn6BeWIkg==}
     engines: {node: '>=22.0.0'}
 
+  '@initia/utils@2.0.0':
+    resolution: {integrity: sha512-JOLTHxt3OAVwqUFCPdBgwToYGj3ycHuR66xtn+lvuNfB6ers5CaOiH3U1DN3TJSXOxin9fcXcg4N3StAtc6deQ==}
+    peerDependencies:
+      '@cosmjs/encoding': 0.36.0
+      '@mysten/bcs': '>=1.0.0'
+      '@noble/hashes': '>=1.0.0'
+      bignumber.js: '>=9.0.0'
+      ky: '>=1.0.0'
+      viem: '>=2.0.0'
+
   '@initia/utils@2.0.0-alpha.3':
     resolution: {integrity: sha512-q0M8oaOez5hPHEYotQJXOvNK8L2z6NqnY8j9rsSrm8EMinIqKn0jQO7pXZqbpAWqzDZzfB7Hyf2t03lWM53VrA==}
     peerDependencies:
@@ -2531,16 +2541,6 @@ packages:
       '@noble/hashes': ^1
       bignumber.js: ^9
       viem: ^2
-
-  '@initia/utils@2.0.0-alpha.6':
-    resolution: {integrity: sha512-DnrBZDwBn8rgGv05Bl/5uprLzXrb7zBKfR4kZeEQDcW9uZtiUQDPNLXFvElm+seyXw13dOwN+Ebyc+xzD5aUhA==}
-    peerDependencies:
-      '@cosmjs/encoding': 0.36.0
-      '@mysten/bcs': '>=1.0.0'
-      '@noble/hashes': '>=1.0.0'
-      bignumber.js: '>=9.0.0'
-      ky: '>=1.0.0'
-      viem: '>=2.0.0'
 
   '@interchain-ui/react@1.23.9':
     resolution: {integrity: sha512-Y4hAZySumphxOlCGQ94u7+0vSwunPnYVt5CW1mHjIQ7PqYQ5kp4xX3gRnBckcieoRQJ7f2Zgjw7r+Fy72TCPcw==}
@@ -15049,7 +15049,7 @@ snapshots:
       long: 5.3.1
       protobufjs: 7.4.0
 
-  '@initia/interwovenkit-react@2.0.0-rc.7(36de4drps2reniattg7ommgc2e)':
+  '@initia/interwovenkit-react@2.0.0(leih36debiqmubbjyiospygs6a)':
     dependencies:
       '@amplitude/analytics-browser': 2.11.11
       '@base-ui-components/react': 1.0.0-beta.3(@types/react@19.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -15062,7 +15062,7 @@ snapshots:
       '@cosmjs/tendermint-rpc': 0.36.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@initia/amino-converter': 1.0.4(@cosmjs/cosmwasm-stargate@0.36.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@cosmjs/proto-signing@0.36.0)(@cosmjs/stargate@0.36.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@initia/icons-react': 1.0.0(react-native@0.80.1(@babel/core@7.26.0)(@types/react@19.1.0)(bufferutil@4.0.9)(react@19.1.0)(utf-8-validate@5.0.10))(react@19.1.0)
-      '@initia/utils': 2.0.0-alpha.6(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(ky@1.8.0)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
+      '@initia/utils': 2.0.0(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(ky@1.8.0)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       '@lukemorales/query-key-factory': 1.3.4(@tanstack/query-core@5.81.5)(@tanstack/react-query@5.81.5(react@19.1.0))
       '@mysten/bcs': 1.2.0
       '@noble/hashes': 1.8.0
@@ -15124,15 +15124,7 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@initia/utils@2.0.0-alpha.3(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.25.67))':
-    dependencies:
-      '@cosmjs/encoding': 0.36.0
-      '@mysten/bcs': 1.2.0
-      '@noble/hashes': 1.8.0
-      bignumber.js: 9.1.2
-      viem: 2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.25.67)
-
-  '@initia/utils@2.0.0-alpha.6(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(ky@1.8.0)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
+  '@initia/utils@2.0.0(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(ky@1.8.0)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
     dependencies:
       '@cosmjs/encoding': 0.36.0
       '@mysten/bcs': 1.2.0
@@ -15140,6 +15132,14 @@ snapshots:
       bignumber.js: 9.1.2
       ky: 1.8.0
       viem: 2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+
+  '@initia/utils@2.0.0-alpha.3(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.25.67))':
+    dependencies:
+      '@cosmjs/encoding': 0.36.0
+      '@mysten/bcs': 1.2.0
+      '@noble/hashes': 1.8.0
+      bignumber.js: 9.1.2
+      viem: 2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.25.67)
 
   '@interchain-ui/react@1.23.9(@types/react@19.1.0)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
