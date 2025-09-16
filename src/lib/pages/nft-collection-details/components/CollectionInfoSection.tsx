@@ -121,7 +121,6 @@ export const CollectionInfoSection = ({
             </Text>
             <ExplorerLink
               ampCopierSection="collection-information"
-              fixedHeight={false}
               maxWidth="full"
               showCopyOnHover
               textFormat="normal"

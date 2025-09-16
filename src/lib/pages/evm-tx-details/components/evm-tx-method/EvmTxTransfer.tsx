@@ -66,7 +66,6 @@ export const EvmTxTransfer = ({
         label="From"
         value={
           <ExplorerLink
-            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
             type="user_address"
@@ -79,7 +78,6 @@ export const EvmTxTransfer = ({
         value={
           to ? (
             <ExplorerLink
-              fixedHeight={false}
               showCopyOnHover
               textFormat="normal"
               type="user_address"

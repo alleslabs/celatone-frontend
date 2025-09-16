@@ -51,12 +51,7 @@ export const InformationFooter = () => {
   }, [chainProfile, isInitiaL1, prettyName]);
 
   return (
-    <Flex
-      alignItems={{ base: "center", md: "start" }}
-      direction="column"
-      mb={2}
-      mt={8}
-    >
+    <Flex direction="column" mb={2} mt={8}>
       <Flex align="center" gap={1} px={2} py={1}>
         <CustomIcon boxSize={3} color="gray.600" name="block" />
         {isLoading ? (

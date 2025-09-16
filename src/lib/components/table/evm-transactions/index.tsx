@@ -32,12 +32,7 @@ export const EvmTransactionsTable = ({
   if (isLoading || isEvmParamsLoading) return <Loading />;
   if (!evmTransactions?.length) return emptyState;
 
-  const columns: string[] = [
-    "200px",
-    "minmax(180px, 400px)",
-    "160px",
-    "minmax(180px, 1fr)",
-  ];
+  const columns: string[] = ["200px", "minmax(180px, 1fr)", "160px", "180px"];
   const templateColumns: string = columns.join(" ");
 
   return isMobile ? (

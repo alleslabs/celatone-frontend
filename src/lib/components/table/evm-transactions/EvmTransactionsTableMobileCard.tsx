@@ -10,7 +10,6 @@ import {
   formatEvmTxHash,
   formatUTokenWithPrecision,
   getEvmAmount,
-  getTokenLabel,
 } from "lib/utils";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
@@ -34,6 +33,7 @@ export const EvmTransactionsTableMobileCard = ({
     <MobileCardTemplate
       bottomContent={
         <Stack gap={3}>
+          {/* TODO: add decoded here */}
           <Grid gap={3} gridTemplateColumns="1fr 1fr">
             <Stack gap={0}>
               <MobileLabel label="Amount" variant="body3" />
@@ -43,74 +43,21 @@ export const EvmTransactionsTableMobileCard = ({
                     amount: token.amount,
                     precision: token.precision ?? 0,
                   })}{" "}
-                  {getTokenLabel(token.denom, token.symbol)}
+                  GAS
                 </Text>
               </Flex>
             </Stack>
             <Stack gap={0}>
               <MobileLabel label="Sender" variant="body3" />
-              <Flex direction="column" gap={1}>
-                <MobileLabel label="sender" variant="body2" />
-                <ExplorerLink
-                  showCopyOnHover
-                  type="user_address"
-                  value={evmTransaction.tx.from}
-                />
-              </Flex>
-              <Flex direction="column" gap={1}>
-                <MobileLabel label="To" variant="body2" />
-                {/* <EvmToCell toAddress={toAddress} /> */}
-              </Flex>
-              <Flex direction="column">
-                <MobileLabel label="Amount" variant="body2" />
-                <Flex align="center" gap={2}>
-                  <Text variant="body2">
-                    <Text as="span" fontWeight={700} mr={1}>
-                      {formatUTokenWithPrecision({
-                        amount: token.amount,
-                        decimalPoints: token.precision ? 6 : 0,
-                        isSuffix: true,
-                        precision: token.precision ?? 0,
-                      })}
-                    </Text>
-                    {getTokenLabel(token.denom, token.symbol)}
-                  </Text>
-                </Flex>
-              </Flex>
+              <ExplorerLink
+                showCopyOnHover
+                type="user_address"
+                value={evmTransaction.tx.from}
+              />
             </Stack>
           </Grid>
         </Stack>
       }
-      middleContent={<Text>Add decode txs here...</Text>}
-      // topContent={
-      //   <Flex align="center" gap={2} w="full">
-      //     <Flex direction="column" flex={3} gap={1}>
-      //       <MobileLabel label="Transaction hash" />
-      //       <Flex alignItems="center" gap={1}>
-      //         {evmTransaction.txReceipt.status ? (
-      //           <CustomIcon color="success.main" name="check" />
-      //         ) : (
-      //           <CustomIcon color="error.main" name="close" />
-      //         )}
-      //         <ExplorerLink
-      //           showCopyOnHover
-      //           type="user_address"
-      //           value={evmTransaction.tx.from}
-      //         />
-      //       </Flex>
-      //     </Flex>
-      //     {showTimestamp && (
-      //       <Flex direction="column">
-      //         <Text color="text.dark" variant="body2">
-      //           {formatUTC(evmTransaction.timestamp)}
-      //         </Text>
-      //         <Text color="text.disabled" variant="body3">
-      //           ({dateFromNow(evmTransaction.timestamp)})
-      //         </Text>
-      //       </Flex>
-      //     )}
-      //   </Flex>
-      // }
       topContent={
         <Flex alignItems="center" gap={1}>
           {evmTransaction.txReceipt.status ? (
