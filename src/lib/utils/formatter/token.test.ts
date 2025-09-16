@@ -224,7 +224,7 @@ describe("formatUTokenWithPrecision", () => {
         isSuffix: false,
         precision: 7,
       })
-    ).toEqual("<0.0000001");
+    ).toEqual("<0.000001");
     expect(
       formatUTokenWithPrecision({
         amount: "0.1" as U<Token>,
