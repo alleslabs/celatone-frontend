@@ -10,9 +10,9 @@ import {
 import { AmpEvent, track } from "lib/amplitude";
 import { useMobile, useMoveConfig, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
+import { CopyLink } from "lib/components/CopyLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { JsonLink } from "lib/components/JsonLink";
 import { Loading } from "lib/components/Loading";
 import { NftImage } from "lib/components/nft/NftImage";
 import PageContainer from "lib/components/PageContainer";
@@ -24,8 +24,9 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
-  useMetadata,
   useNftByTokenId,
+  useNftGlyphImage,
+  useNftMetadata,
   useNftMutateEvents,
   useNftTransactions,
 } from "lib/services/nft";
@@ -70,10 +71,7 @@ const NftDetailsBody = ({
   const collectionAddressHex = zHexAddr32.parse(formattedAddresses.hex);
 
   const { data: collection, isLoading: isCollectionLoading } =
-    useNftCollectionByCollectionAddress(
-      collectionAddressBech,
-      collectionAddressHex
-    );
+    useNftCollectionByCollectionAddress(collectionAddressHex);
 
   const { data: nft, isLoading: isNftLoading } = useNftByTokenId(
     collectionAddressHex,
@@ -94,7 +92,8 @@ const NftDetailsBody = ({
     enabled: isFullTier && !!nftAddress,
   });
 
-  const { data: metadata } = useMetadata(nft);
+  const { data: metadata } = useNftMetadata(nft);
+  const nftImage = useNftGlyphImage(nft);
 
   if (isCollectionLoading || isNftLoading) return <Loading />;
   if (!collection || !nft) return <InvalidNft />;
@@ -168,7 +167,7 @@ const NftDetailsBody = ({
                 borderRadius="8px"
                 fallbackSrc={NFT_IMAGE_PLACEHOLDER}
                 fallbackStrategy="beforeLoadOrError"
-                src={metadata?.image}
+                src={nftImage}
               />
             </div>
             {!isMobile && (
@@ -250,7 +249,7 @@ const NftDetailsBody = ({
                   </NftInfoItem>
                 )}
                 <NftInfoItem isCentered={false} label="Token URI">
-                  <JsonLink type="token_uri" uri={uri} />
+                  <CopyLink type="token_uri" value={uri} />
                 </NftInfoItem>
               </Flex>
             </Flex>

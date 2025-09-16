@@ -72,12 +72,12 @@ export const VotingPowerChart = ({
   const customizeTooltip = (tooltip: TooltipModel<"line">) => {
     const { dataIndex, raw } = tooltip.dataPoints[0];
 
-    const formattedAmount = formatUTokenWithPrecision(
-      raw as U<Token<BigSource>>,
-      assetInfo?.precision ?? 0,
-      false,
-      2
-    );
+    const formattedAmount = formatUTokenWithPrecision({
+      amount: raw as U<Token<BigSource>>,
+      decimalPoints: 2,
+      isSuffix: false,
+      precision: assetInfo?.precision ?? 0,
+    });
 
     const formattedDate = formatUTC(
       historicalPowers.items[dataIndex].hourRoundedTimestamp
@@ -157,12 +157,12 @@ export const VotingPowerChart = ({
         <LineChart
           customizeTooltip={customizeTooltip}
           customizeYAxisTicks={(value) =>
-            formatUTokenWithPrecision(
-              value as U<Token<BigSource>>,
-              assetInfo?.precision ?? 0,
-              false,
-              2
-            )
+            formatUTokenWithPrecision({
+              amount: value as U<Token<BigSource>>,
+              decimalPoints: 2,
+              isSuffix: false,
+              precision: assetInfo?.precision ?? 0,
+            })
           }
           dataset={dataset}
           labels={labels}

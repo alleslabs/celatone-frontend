@@ -68,7 +68,9 @@ export const useGovParamsDeprecated = (): {
             minDepositToken.denom,
             minDepositToken.symbol
           ),
-          formattedToken: formatTokenWithValue(minDepositToken),
+          formattedToken: formatTokenWithValue({
+            token: minDepositToken,
+          }),
           precision: minDepositToken.precision ?? 0,
         },
         minExpeditedDeposit: data.expeditedMinDeposit,

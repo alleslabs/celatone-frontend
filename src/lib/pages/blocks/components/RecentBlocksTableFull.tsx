@@ -2,6 +2,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { BlocksTable } from "lib/components/table/blocks";
+import { useQueryEvents } from "lib/hooks";
 import { useBlocks } from "lib/services/block";
 
 import type { RecentBlocksTableProps } from "./type";
@@ -24,9 +25,11 @@ export const RecentBlocksTableFull = ({
       pageSize: isViewMore ? 5 : 10,
     },
   });
-  const { data, isLoading } = useBlocks(pageSize, offset, {
+  const blocksQuery = useBlocks(pageSize, offset);
+  useQueryEvents(blocksQuery, {
     onSuccess: ({ total }) => setTotalData(total),
   });
+  const { data, isLoading } = blocksQuery;
 
   return (
     <>

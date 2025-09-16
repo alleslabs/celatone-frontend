@@ -23,13 +23,12 @@ export const BalanceChangesToken = ({ coin }: BalanceChangesTokenProps) => {
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
   const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
 
-  const tokenWithValue = formatUTokenWithPrecision(
-    token.amount.abs() as U<Token<Big>>,
-    token.precision ?? 0,
-    false,
-    undefined,
-    true
-  );
+  const tokenWithValue = formatUTokenWithPrecision({
+    amount: token.amount.abs() as U<Token<Big>>,
+    decimalPoints: undefined,
+    isSuffix: false,
+    precision: token.precision ?? 0,
+  });
 
   const isPositiveAmount = token.amount.gte(0);
   const formattedAmount = `${isPositiveAmount ? "+" : "-"}${tokenWithValue}`;

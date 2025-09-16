@@ -76,11 +76,11 @@ export const AssetCard = ({
 
         <Flex direction="column">
           <Text fontWeight="700" variant="body2">
-            {formatUTokenWithPrecision(
-              amount as U<Token>,
-              assetInfo?.precision ?? 0,
-              false
-            )}
+            {formatUTokenWithPrecision({
+              amount: amount as U<Token>,
+              isSuffix: false,
+              precision: assetInfo?.precision ?? 0,
+            })}
           </Text>
           {assetInfo && (
             <Text color="text.dark" variant="body3">

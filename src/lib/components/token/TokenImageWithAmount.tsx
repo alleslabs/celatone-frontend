@@ -20,7 +20,6 @@ interface TokenImageWithAmountProps {
 export const TokenImageWithAmount = ({
   boxSize = 4,
   fontWeight = 400,
-  hasTrailingZeros,
   showCopyOnHover = true,
   token,
   variant = "body2",
@@ -34,9 +33,9 @@ export const TokenImageWithAmount = ({
         fontWeight={fontWeight}
         ml={1}
         variant={variant}
-        whiteSpace="nowrap"
+        wordBreak="break-all"
       >
-        {formatTokenWithValue(token, undefined, hasTrailingZeros)}
+        {formatTokenWithValue({ token })}
       </Text>
       <Copier
         display={showCopyOnHover && !isMobile ? "none" : "inline"}

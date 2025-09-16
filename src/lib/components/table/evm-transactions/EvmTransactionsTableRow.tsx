@@ -1,19 +1,16 @@
 import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
 import type { AssetInfos, Option } from "lib/types";
 
-import { Flex, Grid, Text } from "@chakra-ui/react";
+import { Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import {
   coinToTokenWithValue,
-  dateFromNow,
   formatEvmTxHash,
-  formatUTC,
   formatUTokenWithPrecision,
   getEvmAmount,
-  getTokenLabel,
 } from "lib/utils";
 
 import { TableRow } from "../tableComponents";
@@ -22,7 +19,6 @@ interface EvmTransactionsTableRowProps {
   assetInfos: Option<AssetInfos>;
   evmDenom: Option<string>;
   evmTransaction: TxDataWithTimeStampJsonRpc;
-  showTimestamp: boolean;
   templateColumns: string;
 }
 
@@ -30,7 +26,6 @@ export const EvmTransactionsTableRow = ({
   assetInfos,
   evmDenom,
   evmTransaction,
-  showTimestamp,
   templateColumns,
 }: EvmTransactionsTableRowProps) => {
   const navigate = useInternalNavigate();
@@ -91,27 +86,13 @@ export const EvmTransactionsTableRow = ({
         justifyContent="center"
       >
         <Text color="text.dark" variant="body2">
-          {formatUTokenWithPrecision(
-            token.amount,
-            token.precision ?? 0,
-            true,
-            token.precision ? 6 : 0
-          )}{" "}
-          {getTokenLabel(token.denom, token.symbol)}
+          {formatUTokenWithPrecision({
+            amount: token.amount,
+            precision: token.precision ?? 0,
+          })}{" "}
+          GAS
         </Text>
       </TableRow>
-      {showTimestamp && (
-        <TableRow>
-          <Flex direction="column">
-            <Text color="text.dark" variant="body2">
-              {formatUTC(evmTransaction.timestamp)}
-            </Text>
-            <Text color="text.disabled" variant="body3">
-              ({dateFromNow(evmTransaction.timestamp)})
-            </Text>
-          </Flex>
-        </TableRow>
-      )}
     </Grid>
   );
 };

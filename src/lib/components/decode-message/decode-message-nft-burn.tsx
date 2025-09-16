@@ -8,6 +8,7 @@ import type { TxMsgData } from "../tx-message";
 import { ExplorerLink } from "../ExplorerLink";
 import { NftImage } from "../nft/NftImage";
 import { DecodeMessageBody } from "./decode-message-body";
+import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
@@ -72,6 +73,7 @@ export const DecodeMessageNftBurn = ({
         <DecodeMessageRow title="NFT">
           <NftImage borderRadius="8px" width="150px" />
         </DecodeMessageRow>
+        <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>
   );

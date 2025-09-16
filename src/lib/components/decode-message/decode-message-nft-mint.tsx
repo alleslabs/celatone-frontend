@@ -3,7 +3,7 @@ import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 import { Flex, Stack, Text } from "@chakra-ui/react";
 import { useGetAddressType } from "lib/app-provider";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useMetadata } from "lib/services/nft";
+import { useNftGlyphImage, useNftMetadata } from "lib/services/nft";
 import { zAddr, zHexAddr32 } from "lib/types";
 import { useState } from "react";
 
@@ -13,6 +13,7 @@ import { AppLink } from "../AppLink";
 import { ExplorerLink } from "../ExplorerLink";
 import { NftImage } from "../nft/NftImage";
 import { DecodeMessageBody } from "./decode-message-body";
+import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
@@ -41,12 +42,14 @@ export const DecodeMessageNftMint = ({
   const getAddressType = useGetAddressType();
   const formatAddresses = useFormatAddresses();
   const nftMetadata = metadata?.[tokenAddress];
-  const { data: nft } = useMetadata({
+  const nftObject = {
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
     nftAddress: zHexAddr32.parse(formatAddresses(tokenAddress).hex),
     tokenId: nftMetadata?.tokenId,
     uri: nftMetadata?.tokenUri,
-  });
+  };
+  const { data: nft } = useNftMetadata(nftObject);
+  const nftImage = useNftGlyphImage(nftObject);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -70,7 +73,7 @@ export const DecodeMessageNftMint = ({
               <NftImage
                 borderRadius="4px"
                 height="20px"
-                src={nft.image}
+                src={nftImage}
                 width="20px"
               />
             </AppLink>
@@ -112,8 +115,9 @@ export const DecodeMessageNftMint = ({
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
+            textLabel={collection.name}
             type="nft_collection"
-            value={collection.name}
+            value={collectionAddress}
             wordBreak="break-word"
           />
         </DecodeMessageRow>
@@ -123,7 +127,7 @@ export const DecodeMessageNftMint = ({
               <AppLink
                 href={`/nft-collections/${collectionAddress}/nft/${tokenAddress}`}
               >
-                <NftImage borderRadius="8px" src={nft.image} width="150px" />
+                <NftImage borderRadius="8px" src={nftImage} width="150px" />
               </AppLink>
               <ExplorerLink
                 showCopyOnHover
@@ -142,6 +146,7 @@ export const DecodeMessageNftMint = ({
             />
           )}
         </DecodeMessageRow>
+        <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>
   );

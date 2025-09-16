@@ -22,18 +22,16 @@ export const useDelegationRewardsByAddressRest = (
   } = useCelatoneApp();
   const gov = useGovConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.DELEGATION_REWARDS_BY_ADDRESS_REST,
       restEndpoint,
       address,
     ],
-    () => getDelegationRewardsByAddressRest(restEndpoint, address),
-    {
-      enabled: enabled && gov.enabled,
-      refetchOnWindowFocus: false,
-    }
-  );
+    queryFn: () => getDelegationRewardsByAddressRest(restEndpoint, address),
+    enabled: enabled && gov.enabled,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export const useCommissionsByValidatorAddressRest = (
@@ -45,19 +43,17 @@ export const useCommissionsByValidatorAddressRest = (
   } = useCelatoneApp();
   const gov = useGovConfig({ shouldRedirect: false });
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.COMMISSIONS_BY_VALIDATOR_ADDRESS_REST,
       restEndpoint,
       valAddr,
     ],
-    () => {
+    queryFn: () => {
       if (isUndefined(valAddr)) return { commission: [] };
       return getCommissionsByValidatorAddressRest(restEndpoint, valAddr);
     },
-    {
-      enabled: enabled && gov.enabled,
-      refetchOnWindowFocus: false,
-    }
-  );
+    enabled: enabled && gov.enabled,
+    refetchOnWindowFocus: false,
+  });
 };

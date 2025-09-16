@@ -99,7 +99,10 @@ export const UnsupportedToken = ({
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Text fontWeight="900" variant="body2">
-          {formatUTokenWithPrecision(token.amount, token.precision ?? 0, false)}
+          {formatUTokenWithPrecision({
+            amount: token.amount,
+            precision: token.precision ?? 0,
+          })}
         </Text>
         {!isMobile && (
           <Text

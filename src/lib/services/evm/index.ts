@@ -27,25 +27,29 @@ import {
 export const useEvmParams = () => {
   const {
     chainConfig: {
+      chainId,
       features: { evm },
       rest: restEndpoint,
     },
   } = useCelatoneApp();
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.EVM_PARAMS_REST, restEndpoint],
-    async () => {
+  return useQuery({
+    enabled: evm.enabled,
+    queryFn: async () => {
       if (!evm.enabled) throw new Error("EVM is not enabled (useEvmParams)");
-      return getEvmParams(restEndpoint);
+      const { params } = await getEvmParams(restEndpoint);
+      return {
+        chainId,
+        params,
+      };
     },
-    {
-      enabled: evm.enabled,
-      refetchOnWindowFocus: false,
-      retry: false,
-      retryOnMount: false,
-      staleTime: Infinity,
-    }
-  );
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: [CELATONE_QUERY_KEYS.EVM_PARAMS_REST, restEndpoint, chainId],
+    refetchOnWindowFocus: false,
+    retry: false,
+    retryOnMount: false,
+    staleTime: Infinity,
+  });
 };
 
 export const useEvmCodesByAddress = (address: HexAddr20, enabled = true) => {
@@ -53,71 +57,70 @@ export const useEvmCodesByAddress = (address: HexAddr20, enabled = true) => {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.EVM_CODES_BY_ADDRESS_REST, restEndpoint, address],
-    async () => getEvmCodesByAddress(restEndpoint, address),
-    {
-      enabled: enabled && address && isHexWalletAddress(address),
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+  return useQuery({
+    enabled: enabled && address && isHexWalletAddress(address),
+    queryFn: async () => getEvmCodesByAddress(restEndpoint, address),
+    queryKey: [
+      CELATONE_QUERY_KEYS.EVM_CODES_BY_ADDRESS_REST,
+      restEndpoint,
+      address,
+    ],
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useEvmContractInfoSequencer = (address: HexAddr20) => {
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.EVM_CONTRACT_INFO_SEQUENCER,
-      restEndpoint,
+      indexerEndpoint,
       bech32Prefix,
       address,
     ],
-    async () =>
-      getEvmContractInfoSequencer(restEndpoint, bech32Prefix, address),
-    {
-      enabled: address && isHexWalletAddress(address),
-      refetchOnWindowFocus: false,
-      retry: 1,
-    }
-  );
+    queryFn: async () =>
+      getEvmContractInfoSequencer(indexerEndpoint, bech32Prefix, address),
+    enabled: address && isHexWalletAddress(address),
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
 };
 
 export const useEthCall = (
   to: HexAddr20,
   data: string,
-  options: UseQueryOptions<string>
+  options: Partial<UseQueryOptions<string>>
 ) => {
   const { address } = useCurrentChain();
-  const hexAddr = address
+  const from = address
     ? zHexAddr20.parse(bech32AddressToHex(address))
     : undefined;
   const evm = useEvmConfig({ shouldRedirect: false });
+  const { enabled: optEnabled, ...restOptions } = options;
 
-  return useQuery<string>(
-    [
+  return useQuery<string>({
+    enabled: (optEnabled ?? true) && evm.enabled && !!evm.jsonRpc,
+    queryFn: async () => {
+      if (!evm.enabled) throw new Error("EVM is not enabled (useEthCall)");
+      return getEthCall(evm.jsonRpc, from ?? null, to, data);
+    },
+    queryKey: [
       CELATONE_QUERY_KEYS.EVM_ETH_CALL,
-      evm.enabled && evm.jsonRpc,
-      hexAddr,
+      evm.enabled && !!evm.jsonRpc,
+      from,
       to,
       data,
     ],
-    async () => {
-      if (!evm.enabled) throw new Error("EVM is not enabled (useEthCall)");
-      return getEthCall(evm.jsonRpc, hexAddr ?? null, to, data);
-    },
-    {
-      enabled: evm.enabled && !!evm.jsonRpc,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      retry: false,
-      ...options,
-    }
-  );
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    retry: false,
+    ...restOptions,
+  });
 };
 
 export const useGetEvmProxyTarget = (
@@ -129,25 +132,24 @@ export const useGetEvmProxyTarget = (
       features: { evm },
     },
   } = useCelatoneApp();
-  return useQuery<Nullable<ProxyResult>>(
-    [
-      CELATONE_QUERY_KEYS.EVM_PROXY_TARGET,
-      evm.enabled && evm.jsonRpc,
-      proxyAddress,
-    ],
-    async () => {
+  return useQuery<Nullable<ProxyResult>>({
+    queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useGetEvmProxyTarget)");
       return getEvmProxyTarget(evm.jsonRpc, proxyAddress);
     },
-    {
-      enabled: evm.enabled && !!evm.jsonRpc,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      retry: false,
-      ...options,
-    }
-  );
+    queryKey: [
+      CELATONE_QUERY_KEYS.EVM_PROXY_TARGET,
+      evm.enabled && evm.jsonRpc,
+      proxyAddress,
+    ],
+
+    enabled: evm.enabled && !!evm.jsonRpc,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    retry: false,
+    ...options,
+  });
 };
 
 export const useDebugTraceTransaction = (height: number, txHash: string) => {
@@ -157,19 +159,20 @@ export const useDebugTraceTransaction = (height: number, txHash: string) => {
     },
   } = useCelatoneApp();
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.EVM_DEBUG_TRACE_TRANSACTION,
       evm.enabled && evm.jsonRpc,
       txHash,
+      height,
     ],
-    async () => {
+    queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useDebugTraceTransaction)");
       const internalTxs = await getDebugTraceBlockByNumber(evm.jsonRpc, height);
       return internalTxs.filter((tx) => tx.txHash === txHash);
-    }
-  );
+    },
+  });
 };
 
 export const useDebugTraceBlockByNumber = (height: number) => {
@@ -179,16 +182,16 @@ export const useDebugTraceBlockByNumber = (height: number) => {
     },
   } = useCelatoneApp();
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.EVM_DEBUG_TRACE_BLOCK_BY_NUMBER,
       evm.enabled && evm.jsonRpc,
       height,
     ],
-    async () => {
+    queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useDebugTraceBlockByNumber)");
       return getDebugTraceBlockByNumber(evm.jsonRpc, height);
-    }
-  );
+    },
+  });
 };

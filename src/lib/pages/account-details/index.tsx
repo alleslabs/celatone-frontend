@@ -30,7 +30,7 @@ import { useModulesByAddress } from "lib/services/move/module";
 import { useResourcesByAddressRest } from "lib/services/move/resource";
 import {
   useNftsByAccountAddress,
-  useNftsByAccountByCollectionSequencer,
+  useNftsByAccountCountSequencer,
 } from "lib/services/nft";
 import { useInitiaUsernameByAddress } from "lib/services/username";
 import { truncate } from "lib/utils";
@@ -124,14 +124,13 @@ const AccountDetailsBody = ({
       enabled: isFullTier && nft.enabled,
     });
 
-  const { data: accountNfts } = useNftsByAccountByCollectionSequencer(
+  const { data: nftsSequencerCount } = useNftsByAccountCountSequencer(
     accountAddress,
-    undefined,
     undefined,
     isSequencerTier
   );
 
-  const totalNfts = nfts?.total ?? accountNfts?.total;
+  const totalNfts = nfts?.total ?? nftsSequencerCount;
 
   const hasTotalBonded =
     !isTotalBondedLoading &&

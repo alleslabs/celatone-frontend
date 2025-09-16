@@ -1,4 +1,4 @@
-import type { HexAddr, HexAddr32 } from "lib/types";
+import type { Addr, HexAddr32 } from "lib/types";
 
 import axios from "axios";
 import { parseWithError } from "lib/utils";
@@ -81,7 +81,7 @@ export const getNftCollectionMutateEventsByCollectionAddress = (
 
 export const getNftCollectionsByAccountAddress = (
   endpoint: string,
-  accountAddress: HexAddr
+  accountAddress: Addr
 ) =>
   axios
     .get(`${endpoint}/account/${encodeURI(accountAddress)}`)
