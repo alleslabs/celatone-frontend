@@ -125,8 +125,8 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       '@initia/interwovenkit-react':
-        specifier: 2.0.0-rc.7
-        version: 2.0.0-rc.7(36de4drps2reniattg7ommgc2e)
+        specifier: 2.0.0
+        version: 2.0.0(36de4drps2reniattg7ommgc2e)
       '@initia/react-app-shell':
         specifier: 1.1.0
         version: 1.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -2465,8 +2465,8 @@ packages:
   '@initia/initia.proto@1.0.0':
     resolution: {integrity: sha512-PpHO1bR+mE2KmqfNplhRCcoS5Hn7xiZqgGVE3obNVmzjsfXAO5vaA91KFx4GUupEBdOjXYDyQ/GAS4f+V3rFvA==}
 
-  '@initia/interwovenkit-react@2.0.0-rc.7':
-    resolution: {integrity: sha512-tKpxolshTsfUlzd+RaHCsBQ7rLQisFKYSiWgVw6DtGJujK+Gbhq3xe0gJ7/bLbqTlkv/FPT54IHy7h+SiDq6Gg==}
+  '@initia/interwovenkit-react@2.0.0':
+    resolution: {integrity: sha512-nrwDHQZI7mkz4c6EJYovjh57zpcxGIPohuhEtltlEDK18fYSUWXRzHNWukq/qJpqnT/+UZLdrt84k/wqWGe17Q==}
     peerDependencies:
       '@amplitude/analytics-browser': '>=2.0.0'
       '@base-ui-components/react': 1.0.0-beta.2
@@ -2479,7 +2479,7 @@ packages:
       '@cosmjs/tendermint-rpc': 0.36.0
       '@initia/amino-converter': '>=1.0.0'
       '@initia/icons-react': '>=1.0.0'
-      '@initia/utils': 2.0.0-alpha.6
+      '@initia/utils': 2.0.0
       '@lukemorales/query-key-factory': '>=1.0.0'
       '@mysten/bcs': '>=1.0.0'
       '@noble/hashes': '>=1.0.0'
@@ -15049,7 +15049,7 @@ snapshots:
       long: 5.3.1
       protobufjs: 7.4.0
 
-  '@initia/interwovenkit-react@2.0.0-rc.7(36de4drps2reniattg7ommgc2e)':
+  '@initia/interwovenkit-react@2.0.0(36de4drps2reniattg7ommgc2e)':
     dependencies:
       '@amplitude/analytics-browser': 2.11.11
       '@base-ui-components/react': 1.0.0-beta.3(@types/react@19.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
