@@ -3,8 +3,10 @@ import type { Option } from "lib/types";
 import {
   useBaseApiRoute,
   useCelatoneApp,
+  useInitiaL1,
   useTierConfig,
 } from "lib/app-provider";
+import { getArchivalEndpoint } from "lib/services/utils";
 import { openNewTab } from "lib/utils";
 import { useCallback } from "react";
 
@@ -34,11 +36,15 @@ export const useOpenTxTab = (type: "rest" | "tx-page") => {
     currentChainId,
   } = useCelatoneApp();
   const txsApiRoute = useBaseApiRoute("txs");
+  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
+  const archivalRest = getArchivalEndpoint(rest, null) ?? rest;
 
   let baseUrl: string;
   if (type === "rest") {
     baseUrl =
-      network_type === "local" ? `${rest}/cosmos/tx/v1beta1/txs` : txsApiRoute;
+      network_type === "local" || !isInitiaL1
+        ? `${archivalRest}/cosmos/tx/v1beta1/txs`
+        : txsApiRoute;
   } else baseUrl = `/${currentChainId}/txs`;
 
   return useCallback(
