@@ -1,5 +1,5 @@
 import type { TxData, TxDataJsonRpc } from "lib/services/types";
-import type { Option } from "lib/types";
+import type { HexAddr20, Option } from "lib/types";
 
 import {
   Alert,
@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { CustomTab } from "lib/components/CustomTab";
 import { DividerWithArrow } from "lib/components/DividerWithArrow";
+import { EvmInputData } from "lib/components/EvmInputData";
 import { CustomIcon } from "lib/components/icon";
 import { EvmInternalTransactionsTable } from "lib/components/table/evm-internal-transactions";
 import { useDebugTraceTransaction } from "lib/services/evm";
@@ -20,7 +21,6 @@ import { useEvmVerifyInfos } from "lib/services/verification/evm";
 import plur from "plur";
 
 import { EvmEventBox } from "./evm-event-box";
-import { EvmInputData } from "./EvmInputData";
 import { EvmTxMsgDetailsBody } from "./EvmTxMsgDetailsBody";
 
 interface EvmTxMsgDetailsProps {
@@ -35,7 +35,10 @@ export const EvmTxMsgDetails = ({
   evmTxData,
 }: EvmTxMsgDetailsProps) => {
   const { data } = useEvmVerifyInfos(
-    evmTxData.txReceipt.logs.map((log) => log.address)
+    [
+      ...evmTxData.txReceipt.logs.map((log) => log.address),
+      evmTxData.tx.to,
+    ].filter((addr): addr is HexAddr20 => addr !== null)
   );
   const { data: internalTxs } = useDebugTraceTransaction(
     evmTxData.txReceipt.blockNumber.toNumber(),
@@ -77,7 +80,12 @@ export const EvmTxMsgDetails = ({
               </Alert>
             )}
             <EvmTxMsgDetailsBody evmDenom={evmDenom} evmTxData={evmTxData} />
-            <EvmInputData txInput={evmTxData.tx.input} txTo={evmTxData.tx.to} />
+            <EvmInputData
+              evmVerifyInfo={
+                data?.[evmTxData.tx.to?.toLowerCase() ?? ""] ?? null
+              }
+              txInput={evmTxData.tx.input}
+            />
             {!!evmTxData.txReceipt.logs.length && (
               <>
                 <DividerWithArrow />
