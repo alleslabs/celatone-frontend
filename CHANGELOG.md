@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1456](https://github.com/alleslabs/celatone-frontend/pull/1456) Upgrade Tx Decoder to 0.7.1
 - [#1453](https://github.com/alleslabs/celatone-frontend/pull/1453) Upgrade InterwovenKit to 2.0.0
 - [#1450](https://github.com/alleslabs/celatone-frontend/pull/1450) Remove extra query key in useNftsSequencer
 - [#1446](https://github.com/alleslabs/celatone-frontend/pull/1446) Update background main color for Initia theme and default theme
