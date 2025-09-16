@@ -207,7 +207,7 @@ export const useNftByTokenId = (
 
   // Nft address is available for Move VM only
   const nftAddress = moveConfig.enabled
-    ? (formatAddresses(tokenId).hex as HexAddr32)
+    ? zHexAddr32.parse(formatAddresses(tokenId).hex)
     : undefined;
 
   return useQuery({

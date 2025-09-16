@@ -130,9 +130,6 @@ importers:
       '@initia/react-app-shell':
         specifier: 1.1.0
         version: 1.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@initia/react-wallet-widget':
-        specifier: 1.6.13
-        version: 1.6.13(@cosmjs/proto-signing@0.36.0)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/utils@2.0.0(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(ky@1.8.0)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)))(@initia/wallet-widget@1.9.8(@msgpack/msgpack@3.1.2)(@mysten/bcs@1.2.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bufferutil@4.0.9)(change-case@5.4.4)(google-protobuf@3.21.4)(starknet@6.11.0)(svelte@4.2.19)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))(@keplr-wallet/types@0.12.272(starknet@6.11.0))(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(react@19.1.0)(rxjs@7.8.1)
       '@initia/tx-decoder':
         specifier: 0.7.0
         version: 0.7.0(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
@@ -1243,9 +1240,6 @@ packages:
   '@bitcoinerlab/secp256k1@1.2.0':
     resolution: {integrity: sha512-jeujZSzb3JOZfmJYI0ph1PVpCRV5oaexCgy+RvCXV8XlY+XFB/2n3WOcvBsKLsOw78KYgnQrQWb2HrKE4be88Q==}
 
-  '@bufbuild/protobuf@2.8.0':
-    resolution: {integrity: sha512-r1/0w5C9dkbcdjyxY8ZHsC5AOWg4Pnzhm2zu7LO4UHSounp2tMm6Y+oioV9zlGbLveE7YaWRDUk48WLxRDgoqg==}
-
   '@chain-registry/client@1.53.46':
     resolution: {integrity: sha512-EoFx+QUspS/xI6KxpxIInUcv9TIplARjKg8ae8ZvPtbhvveuzIvx72Ln7b0GKaoZnq6v/g1sYZ0vGuJVRvOZnA==}
 
@@ -1911,9 +1905,6 @@ packages:
   '@cosmjs/tendermint-rpc@0.36.0':
     resolution: {integrity: sha512-dTh4L1RR22JszFbZqM3i0ITPTHhrs5mUqyyeP7lEebgtLrKgzCAqsWPnqfsC6ALFhMzbeApWebG2YR9W2W68zg==}
 
-  '@cosmjs/utils@0.33.1':
-    resolution: {integrity: sha512-UnLHDY6KMmC+UXf3Ufyh+onE19xzEXjT4VZ504Acmk4PXxqyvG4cCPprlKUFnGUX7f0z8Or9MAOHXBx41uHBcg==}
-
   '@cosmjs/utils@0.36.0':
     resolution: {integrity: sha512-QXyHnxDHdkj+qZZDk+CSOeEXpkPRBvMPKQ7EiEO7wuJQpMIlF3F4CSuEBuYPQOPRDP6qsKS+rj47pXoE2Kr4dw==}
 
@@ -2237,83 +2228,23 @@ packages:
     resolution: {integrity: sha512-zQ0IqbdX8FZ9aw11vP+dZkKDkS+kgIvQPHnSAXzP9pLu+Rfu3D3XEeLbicvoXJTYnhZiPmsZUxgdzXwNKxRPbA==}
     engines: {node: '>=14'}
 
-  '@ethersproject/abi@5.8.0':
-    resolution: {integrity: sha512-b9YS/43ObplgyV6SlyQsG53/vkSal0MNA1fskSC4mbnCMi8R+NkcH8K9FPYNESf6jUefBUniE4SOKms0E/KK1Q==}
-
-  '@ethersproject/abstract-provider@5.8.0':
-    resolution: {integrity: sha512-wC9SFcmh4UK0oKuLJQItoQdzS/qZ51EJegK6EmAWlh+OptpQ/npECOR3QqECd8iGHC0RJb4WKbVdSfif4ammrg==}
-
-  '@ethersproject/abstract-signer@5.8.0':
-    resolution: {integrity: sha512-N0XhZTswXcmIZQdYtUnd79VJzvEwXQw6PK0dTl9VoYrEBxxCPXqS0Eod7q5TNKRxe1/5WUMuR0u0nqTF/avdCA==}
-
   '@ethersproject/address@5.7.0':
     resolution: {integrity: sha512-9wYhYt7aghVGo758POM5nqcOMaE168Q6aRLJZwUmiqSrAungkG74gSSeKEIR7ukixesdRZGPgVqme6vmxs1fkA==}
-
-  '@ethersproject/address@5.8.0':
-    resolution: {integrity: sha512-GhH/abcC46LJwshoN+uBNoKVFPxUuZm6dA257z0vZkKmU1+t8xTn8oK7B9qrj8W2rFRMch4gbJl6PmVxjxBEBA==}
-
-  '@ethersproject/base64@5.8.0':
-    resolution: {integrity: sha512-lN0oIwfkYj9LbPx4xEkie6rAMJtySbpOAFXSDVQaBnAzYfB4X2Qr+FXJGxMoc3Bxp2Sm8OwvzMrywxyw0gLjIQ==}
 
   '@ethersproject/bignumber@5.7.0':
     resolution: {integrity: sha512-n1CAdIHRWjSucQO3MC1zPSVgV/6dy/fjL9pMrPP9peL+QxEg9wOsVqwD4+818B6LUEtaXzVHQiuivzRoxPxUGw==}
 
-  '@ethersproject/bignumber@5.8.0':
-    resolution: {integrity: sha512-ZyaT24bHaSeJon2tGPKIiHszWjD/54Sz8t57Toch475lCLljC6MgPmxk7Gtzz+ddNN5LuHea9qhAe0x3D+uYPA==}
-
   '@ethersproject/bytes@5.7.0':
     resolution: {integrity: sha512-nsbxwgFXWh9NyYWo+U8atvmMsSdKJprTcICAkvbBffT75qDocbuggBU0SJiVK2MuTrp0q+xvLkTnGMPK1+uA9A==}
-
-  '@ethersproject/bytes@5.8.0':
-    resolution: {integrity: sha512-vTkeohgJVCPVHu5c25XWaWQOZ4v+DkGoC42/TS2ond+PARCxTJvgTFUNDZovyQ/uAQ4EcpqqowKydcdmRKjg7A==}
-
-  '@ethersproject/constants@5.8.0':
-    resolution: {integrity: sha512-wigX4lrf5Vu+axVTIvNsuL6YrV4O5AXl5ubcURKMEME5TnWBouUh0CDTWxZ2GpnRn1kcCgE7l8O5+VbV9QTTcg==}
-
-  '@ethersproject/hash@5.8.0':
-    resolution: {integrity: sha512-ac/lBcTbEWW/VGJij0CNSw/wPcw9bSRgCB0AIBz8CvED/jfvDoV9hsIIiWfvWmFEi8RcXtlNwp2jv6ozWOsooA==}
 
   '@ethersproject/keccak256@5.7.0':
     resolution: {integrity: sha512-2UcPboeL/iW+pSg6vZ6ydF8tCnv3Iu/8tUmLLzWWGzxWKFFqOBQFLo6uLUv6BDrLgCDfN28RJ/wtByx+jZ4KBg==}
 
-  '@ethersproject/keccak256@5.8.0':
-    resolution: {integrity: sha512-A1pkKLZSz8pDaQ1ftutZoaN46I6+jvuqugx5KYNeQOPqq+JZ0Txm7dlWesCHB5cndJSu5vP2VKptKf7cksERng==}
-
   '@ethersproject/logger@5.7.0':
     resolution: {integrity: sha512-0odtFdXu/XHtjQXJYA3u9G0G8btm0ND5Cu8M7i5vhEcE8/HmF4Lbdqanwyv4uQTr2tx6b7fQRmgLrsnpQlmnig==}
 
-  '@ethersproject/logger@5.8.0':
-    resolution: {integrity: sha512-Qe6knGmY+zPPWTC+wQrpitodgBfH7XoceCGL5bJVejmH+yCS3R8jJm8iiWuvWbG76RUmyEG53oqv6GMVWqunjA==}
-
-  '@ethersproject/networks@5.8.0':
-    resolution: {integrity: sha512-egPJh3aPVAzbHwq8DD7Po53J4OUSsA1MjQp8Vf/OZPav5rlmWUaFLiq8cvQiGK0Z5K6LYzm29+VA/p4RL1FzNg==}
-
-  '@ethersproject/properties@5.8.0':
-    resolution: {integrity: sha512-PYuiEoQ+FMaZZNGrStmN7+lWjlsoufGIHdww7454FIaGdbe/p5rnaCXTr5MtBYl3NkeoVhHZuyzChPeGeKIpQw==}
-
   '@ethersproject/rlp@5.7.0':
     resolution: {integrity: sha512-rBxzX2vK8mVF7b0Tol44t5Tb8gomOHkj5guL+HhzQ1yBh/ydjGnpw6at+X6Iw0Kp3OzzzkcKp8N9r0W4kYSs9w==}
-
-  '@ethersproject/rlp@5.8.0':
-    resolution: {integrity: sha512-LqZgAznqDbiEunaUvykH2JAoXTT9NV0Atqk8rQN9nx9SEgThA/WMx5DnW8a9FOufo//6FZOCHZ+XiClzgbqV9Q==}
-
-  '@ethersproject/sha2@5.8.0':
-    resolution: {integrity: sha512-dDOUrXr9wF/YFltgTBYS0tKslPEKr6AekjqDW2dbn1L1xmjGR+9GiKu4ajxovnrDbwxAKdHjW8jNcwfz8PAz4A==}
-
-  '@ethersproject/signing-key@5.8.0':
-    resolution: {integrity: sha512-LrPW2ZxoigFi6U6aVkFN/fa9Yx/+4AtIUe4/HACTvKJdhm0eeb107EVCIQcrLZkxaSIgc/eCrX8Q1GtbH+9n3w==}
-
-  '@ethersproject/solidity@5.8.0':
-    resolution: {integrity: sha512-4CxFeCgmIWamOHwYN9d+QWGxye9qQLilpgTU0XhYs1OahkclF+ewO+3V1U0mvpiuQxm5EHHmv8f7ClVII8EHsA==}
-
-  '@ethersproject/strings@5.8.0':
-    resolution: {integrity: sha512-qWEAk0MAvl0LszjdfnZ2uC8xbR2wdv4cDabyHiBh3Cldq/T8dPH3V4BbBsAYJUeonwD+8afVXld274Ls+Y1xXg==}
-
-  '@ethersproject/transactions@5.8.0':
-    resolution: {integrity: sha512-UglxSDjByHG0TuU17bDfCemZ3AnKO2vYrL5/2n2oXvKzvb7Cz+W9gOWXKARjp2URVwcWlQlPOEQyAviKwT4AHg==}
-
-  '@ethersproject/web@5.8.0':
-    resolution: {integrity: sha512-j7+Ksi/9KfGviws6Qtf9Q7KCqRhpwrYKQPs+JBA/rKVFF/yaWLHJEH3zfVP2plVu+eys0d2DlFmhoQJayFewcw==}
 
   '@fal-works/esbuild-plugin-global-externals@2.1.2':
     resolution: {integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==}
@@ -2524,18 +2455,6 @@ packages:
     peerDependencies:
       react: '>= 16'
 
-  '@initia/icons-svelte@1.0.0':
-    resolution: {integrity: sha512-Safs6ty2o5LwXrUrafe2RZB3tuub5M2XO8C7LjkRB2LSN3QdF3K2dT+QU9GrEc4k7yT10McEPs+pE/VywOixPw==}
-    peerDependencies:
-      svelte: '>=3 <5'
-
-  '@initia/initia-registry-types@1.0.10':
-    resolution: {integrity: sha512-NfD2RGCpuis9fzrG47ATRv975Vcsj5iw+/3NCIscFeKMz2Mda/UF8Ls7MR0DUUwjVXRcU1XvOKIk7UvzG+1XzQ==}
-
-  '@initia/initia.js@1.0.16':
-    resolution: {integrity: sha512-APMbRwZlfiPI5dEKPoKXKfqM8utWxPImKOR4mPJlrkIP6X3WPQb/NhUmpX+8jo/Mzdo8PeGV+tqw+rXJsYkMeA==}
-    engines: {node: '>=20'}
-
   '@initia/initia.js@1.0.6':
     resolution: {integrity: sha512-1zJg8yL686n1aJzr7z38xZjonisqyUlMWuMlNYNZPk4d6a8+a3jeir9TvBw+lcqWMs3//vBi6iBvbIza0JSrvA==}
     engines: {node: '>=20'}
@@ -2545,9 +2464,6 @@ packages:
 
   '@initia/initia.proto@1.0.0':
     resolution: {integrity: sha512-PpHO1bR+mE2KmqfNplhRCcoS5Hn7xiZqgGVE3obNVmzjsfXAO5vaA91KFx4GUupEBdOjXYDyQ/GAS4f+V3rFvA==}
-
-  '@initia/initia.proto@1.0.3':
-    resolution: {integrity: sha512-A6p8EgjE32ALnPgikmNBkFfmwhxvZSGAIuNF49PnFo4m8eqggN3vrvypW/hELZeCCoP46hwacK8cfYwXh2Mfyw==}
 
   '@initia/interwovenkit-react@2.0.0':
     resolution: {integrity: sha512-nrwDHQZI7mkz4c6EJYovjh57zpcxGIPohuhEtltlEDK18fYSUWXRzHNWukq/qJpqnT/+UZLdrt84k/wqWGe17Q==}
@@ -2597,58 +2513,15 @@ packages:
   '@initia/opinit.proto@0.0.11':
     resolution: {integrity: sha512-Op9GIlXiV1xhUIjVQ2TFE9a3X8iyFVNtJNHCM34gwLQHJktDNm2KCoW4eHh6pkn4//ECRVH7zuKgV8TdZWogCw==}
 
-  '@initia/opinit.proto@1.0.2':
-    resolution: {integrity: sha512-iKnM52NT4J3unzj2IytCbBiwZX9iSfvUnZNJTdl77VDqzHtTuACXO+rM6LWIBgQRz+RyOsCBN/d3r2xZ42GFfg==}
-
   '@initia/react-app-shell@1.1.0':
     resolution: {integrity: sha512-oc3PWZ42kFqoSuwN8LHhImUSZuPLyJdZcKEosXUK0327hs+a5Xnup/mSsLFQ3xitkXd+5BPZsnMmpouN1tacvg==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@initia/react-wallet-widget@1.6.13':
-    resolution: {integrity: sha512-QGCs1c8k2qEP58canzaSPgh/dqcarTQzg+ZeYLBragc3Q3AlojX18fMYATPaaG4n4c7/WAnkft3SYFRlvSKHUw==}
-    peerDependencies:
-      '@cosmjs/proto-signing': 0.36.0
-      '@initia/initia.js': ^1.0.8
-      '@initia/utils': ^1.6.13
-      '@initia/wallet-widget': ^1.6.13
-      '@keplr-wallet/types': ^0.12.211
-      cosmjs-types: ^0.9.0
-      ethers: ^6.13.5
-      react: ^19.1.0
-      rxjs: ^7.8.2
-
   '@initia/tx-decoder@0.7.0':
     resolution: {integrity: sha512-+SxP4MgCgVhTJ75xMo+PGy5Mn84u6Rz2AQBgT+mRaqWJS/1jimSU1VeUOBGUfnuILNC3W5M2gXmCSmn6BeWIkg==}
     engines: {node: '>=22.0.0'}
-
-  '@initia/utils@1.9.8':
-    resolution: {integrity: sha512-kI1mUnO52V8A/MN4rFDdUUVZt6OyL/TKknclGJhaittoOtcWjYexpJYfsoZTVaL5D2zW/9HdXND+EeS1C5rtqw==}
-    peerDependencies:
-      '@cosmjs/amino': 0.36.0
-      '@cosmjs/encoding': 0.36.0
-      '@cosmjs/proto-signing': 0.36.0
-      '@cosmjs/stargate': 0.36.0
-      '@initia/initia-registry-types': ^1.0.1
-      '@initia/initia.js': ^1.0.8
-      '@initia/initia.proto': ^1.0.0
-      '@initia/opinit.proto': ^1.0.0
-      '@keplr-wallet/types': ^0.12.211
-      '@msgpack/msgpack': ^3.1.1
-      '@mysten/bcs': ^1.5.0
-      '@noble/hashes': ^1.7.1
-      '@types/ramda': ^0.30.2
-      bech32: ^2.0.0
-      bignumber.js: ^9.1.2
-      change-case: ^5.4.4
-      cosmjs-types: ^0.9.0
-      ethers: ^6.13.5
-      ky: ^1.8.0
-      long: ^5.3.1
-      ramda: ^0.30.1
-      rxjs: ^7.8.2
-      zod: ^3.24.2
 
   '@initia/utils@2.0.0':
     resolution: {integrity: sha512-JOLTHxt3OAVwqUFCPdBgwToYGj3ycHuR66xtn+lvuNfB6ers5CaOiH3U1DN3TJSXOxin9fcXcg4N3StAtc6deQ==}
@@ -2668,9 +2541,6 @@ packages:
       '@noble/hashes': ^1
       bignumber.js: ^9
       viem: ^2
-
-  '@initia/wallet-widget@1.9.8':
-    resolution: {integrity: sha512-9XgVmvEXiumvCBPkB0rsnUc6Uw8A3mD+DK0xxv73ez9z18k4lq4QiGNqqfTGfuSuCFZV5tEhaueBvMIJU3J61w==}
 
   '@interchain-ui/react@1.23.9':
     resolution: {integrity: sha512-Y4hAZySumphxOlCGQ94u7+0vSwunPnYVt5CW1mHjIQ7PqYQ5kp4xX3gRnBckcieoRQJ7f2Zgjw7r+Fy72TCPcw==}
@@ -2832,11 +2702,6 @@ packages:
     peerDependencies:
       starknet: ^6
 
-  '@keplr-wallet/types@0.12.272':
-    resolution: {integrity: sha512-q5J/vxtikhD0KHxrFpAcC0ATzrFQSRqjmhcGZEbRtB413piytIqqEBUtyjTYEy1jMOVaZRIDDt6cOez9O5zG5Q==}
-    peerDependencies:
-      starknet: ^7
-
   '@keplr-wallet/types@0.12.28':
     resolution: {integrity: sha512-EcM9d46hYDm3AO4lf4GUbTSLRySONtTmhKb7p88q56OQOgJN3MMjRacEo2p9jX9gpPe7gRIjMUalhAfUiFpZoQ==}
 
@@ -2846,44 +2711,11 @@ packages:
   '@kurkle/color@0.3.4':
     resolution: {integrity: sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==}
 
-  '@layerzerolabs/lz-v2-utilities@3.0.132':
-    resolution: {integrity: sha512-UVJC9y1+8IMcoLsWZqg1xhptNVK36esEvmdMEvIyfL747UzJU6GR/r5IfSC+lrRkmmTWJ05lA7e2SbDWzc6KUQ==}
-
-  '@ledgerhq/cryptoassets-evm-signatures@13.6.1':
-    resolution: {integrity: sha512-fHDjwDiDFz6tO6peubLiq6vok93knQR4fmBpwl3LQiDEwtYZgXWnWGOSJc218hdnc72GVI5Unz7sntjxSgFZPg==}
-
   '@ledgerhq/devices@8.4.4':
     resolution: {integrity: sha512-sz/ryhe/R687RHtevIE9RlKaV8kkKykUV4k29e7GAVwzHX1gqG+O75cu1NCJUHLbp3eABV5FdvZejqRUlLis9A==}
 
-  '@ledgerhq/devices@8.5.0':
-    resolution: {integrity: sha512-zDB6Pdk6NYYbYis8cWoLLkL9k/IvjhC3hkuuz2lhpJ2AxIs3/PDMUKoyK4DpjPtRyKk1W1lwsnpc6J1i87r4/Q==}
-
-  '@ledgerhq/devices@8.5.1':
-    resolution: {integrity: sha512-oW75YQQiP2muHveXTuwSAze6CBxJ7jOYILhFiJbsVzmgLPVqtdw4s0bJJlOBft4Aup67yNAjboFCIU7kTYQBFg==}
-
-  '@ledgerhq/domain-service@1.2.42':
-    resolution: {integrity: sha512-vTiajJYdhLmG9txS2bG0e+QKOm/leDF0iYoFB1j4mLj7JhM4W6GAljPestUymFHR7nHdrgH3C+0ZHBcyXRQ3WQ==}
-
   '@ledgerhq/errors@6.19.1':
     resolution: {integrity: sha512-75yK7Nnit/Gp7gdrJAz0ipp31CCgncRp+evWt6QawQEtQKYEDfGo10QywgrrBBixeRxwnMy1DP6g2oCWRf1bjw==}
-
-  '@ledgerhq/errors@6.25.0':
-    resolution: {integrity: sha512-9cU0dgUyq3Adb1bHAjJnbwl+r+4WBjuPq0k+/DbBNpuYHwcz2xKtRIjLimUJyACjHti3iWwRt1sFcbQDDdI08w==}
-
-  '@ledgerhq/evm-tools@1.7.5':
-    resolution: {integrity: sha512-DmN1L0oxEb5yWI9Ey8aS/xKzHksoTpYrDzgCwpf9/41XBWu6U5pPdBxDPmmRMPW5KIFx+1gy6UDzc5ni+QrqyQ==}
-
-  '@ledgerhq/hw-app-eth@6.45.17':
-    resolution: {integrity: sha512-h3+6ZOEgMTimyxwCaVcT+Zm+7sY0Reac4HUwCdnUvNGf5Ktk1cBzNDI8Xw6ixcOy1XQbHK115RysnXTaVimMPA==}
-
-  '@ledgerhq/hw-transport-mocker@6.29.10':
-    resolution: {integrity: sha512-7jirehH02hdiMGVxtmZTO6vzFG156pYVW8+MJ4FXsvT12lgX5VRp6BLNOveMuxQGiRXhXIDo7StSkNlX3wHB+Q==}
-
-  '@ledgerhq/hw-transport-node-hid-noevents@6.30.11':
-    resolution: {integrity: sha512-UDHO/D6rcYpM7qVCBC/ltElS488Jv8dsAzG4abwTFF+X7sPK9kZvdXqA3X9voHspp/IDZOceCcmUJVf59vVsUw==}
-
-  '@ledgerhq/hw-transport-node-hid@6.29.11':
-    resolution: {integrity: sha512-mhP2TEm+8sZuP0AF7TUje6aOr46NgpIFrRS9RifMvfqAN6xzIBOU5OnE0mQIapNbu2AMs0jkYcDvGpTd/NSf4g==}
 
   '@ledgerhq/hw-transport-webhid@6.30.0':
     resolution: {integrity: sha512-HoTzjmYwO7+TVwK+GNbglRepUoDywBL6vjhKnhGqJSUPqAqJJyEXcnKnFDBMN7Phqm55O+YHDYfpcHGBNg5XlQ==}
@@ -2891,26 +2723,11 @@ packages:
   '@ledgerhq/hw-transport-webusb@6.29.4':
     resolution: {integrity: sha512-HoGF1LlBT9HEGBQy2XeCHrFdv/FEOZU0+J+yfKcgAQIAiASr2MLvdzwoJbUS8h6Gn+vc+/BjzBSO3JNn7Loqbg==}
 
-  '@ledgerhq/hw-transport@6.31.10':
-    resolution: {integrity: sha512-ruNtkTPMO3rFCaSM+oPTOXXerzxWFZF43pAHVAHhsjiQGhLWzLSkMc7qBEpWIpZPubKRAbWSXR2zXBIJPNy8oQ==}
-
   '@ledgerhq/hw-transport@6.31.4':
     resolution: {integrity: sha512-6c1ir/cXWJm5dCWdq55NPgCJ3UuKuuxRvf//Xs36Bq9BwkV2YaRQhZITAkads83l07NAdR16hkTWqqpwFMaI6A==}
 
-  '@ledgerhq/hw-transport@6.31.9':
-    resolution: {integrity: sha512-HqB2Whl2qbrzyvs9gC/GmLhIy8RO4CWzjqHS4k0bPWDZRqKa8m6H32vjrbXGO//pUL1Mlu87UwvxvLyuICdjwg==}
-
-  '@ledgerhq/live-env@2.15.0':
-    resolution: {integrity: sha512-gO/xjxT0HtSJJtwfG/CVpsSosoN4tdVUpVl+fU6ohlrvwjVL/hX5J6lWlWUw5DM2dLEihNcr/+yQ4YCjWSoYjg==}
-
   '@ledgerhq/logs@6.12.0':
     resolution: {integrity: sha512-ExDoj1QV5eC6TEbMdLUMMk9cfvNKhhv5gXol4SmULRVCx/3iyCPhJ74nsb3S0Vb+/f+XujBEj3vQn5+cwS0fNA==}
-
-  '@ledgerhq/logs@6.13.0':
-    resolution: {integrity: sha512-4+qRW2Pc8V+btL0QEmdB2X+uyx0kOWMWE1/LWsq5sZy3Q5tpi4eItJS6mB0XL3wGW59RQ+8bchNQQ1OW/va8Og==}
-
-  '@ledgerhq/types-live@6.83.0':
-    resolution: {integrity: sha512-2yqtx25vCFsuUQM8k8w+7lA5WixtorOfisSKbsomk8mDHeImTwwCFQkykkE6FxIsbHaJ/G1kPNvQ6IXH6ztskA==}
 
   '@lit-labs/ssr-dom-shim@1.3.0':
     resolution: {integrity: sha512-nQIWonJ6eFAvUUrSlwyHDm/aE8PBDu5kRpL0vHMg6K8fK3Diq1xdPjTnsJSwxABhaZ+5eBi1btQB5ShUTKo4nQ==}
@@ -3010,10 +2827,6 @@ packages:
       monaco-editor: '>= 0.25.0 < 1'
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-
-  '@msgpack/msgpack@3.1.2':
-    resolution: {integrity: sha512-JEW4DEtBzfe8HvUYecLU9e6+XJnKDlUAIve8FvPzF3Kzs6Xo/KuZkZJsDH0wJXl/qEZbeeE7edxDNY3kMs39hQ==}
-    engines: {node: '>= 18'}
 
   '@mysten/bcs@1.2.0':
     resolution: {integrity: sha512-LuKonrGdGW7dq/EM6U2L9/as7dFwnhZnsnINzB/vu08Xfrj0qzWwpLOiXagAa5yZOPLK7anRZydMonczFkUPzA==}
@@ -5435,11 +5248,6 @@ packages:
     peerDependencies:
       react: ^18 || ^19
 
-  '@tanstack/svelte-query@5.87.4':
-    resolution: {integrity: sha512-HIo3Rr/2M8q7mOJqOIWb0tQHwLkKJ12SjDji4E2+YyMGHtzGvg+7wLqQqUqFvaitloLeYkXI0skP05Z95ciLMQ==}
-    peerDependencies:
-      svelte: ^3.54.0 || ^4.0.0 || ^5.0.0
-
   '@testing-library/dom@9.3.4':
     resolution: {integrity: sha512-FlS4ZWlp97iiNWig0Muq8p+3rVDjRiYE+YKGbAqXOu9nwJFFOdL00kFpz42M+4huzYi86vAK1sOOfyOG45muIQ==}
     engines: {node: '>=14'}
@@ -5649,9 +5457,6 @@ packages:
   '@types/qs@6.9.17':
     resolution: {integrity: sha512-rX4/bPcfmvxHDv0XjfJELTTr+iB+tn032nPILqHm5wbthUUUuVtNGGqzhya9XUxjTP8Fpr0qYgSZZKxGY++svQ==}
 
-  '@types/ramda@0.30.2':
-    resolution: {integrity: sha512-PyzHvjCalm2BRYjAU6nIB3TprYwMNOUY/7P/N8bSzp9W/yM2YrtGtAnnVtaCNSeOZ8DzKyFDvaqQs7LnWwwmBA==}
-
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
 
@@ -5697,9 +5502,6 @@ packages:
 
   '@types/uuid@9.0.8':
     resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
-
-  '@types/w3c-web-usb@1.0.12':
-    resolution: {integrity: sha512-GD9XFhJZFtCbspsB3t1vD3SgkWVInIMoL1g1CcE0p3DD7abgLrQ2Ws22RS38CXPUCQXgyKjUAGKdy5d0CLT5jw==}
 
   '@types/yargs-parser@21.0.3':
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
@@ -6064,12 +5866,6 @@ packages:
   '@zag-js/focus-visible@0.16.0':
     resolution: {integrity: sha512-a7U/HSopvQbrDU4GLerpqiMcHKEkQkNPeDZJWz38cw/6Upunh41GjHetq5TB84hxyCaDzJ6q2nEdNoBQfC0FKA==}
 
-  '@zondax/ledger-cosmos-js@4.0.1':
-    resolution: {integrity: sha512-U7c5VrkaE9bHgBUOmbq+TLOy/CH3Q571hZT8fzwmRPNRzr1njaOEBohyZI/6G2cNjnSPlq/9rejRjgKeaKxPfQ==}
-
-  '@zondax/ledger-js@1.3.1':
-    resolution: {integrity: sha512-sDBwsunK2nSzkqJ5xi6QTiVVpAxSy+X1BVcMfKioBsInjktki2SezT7K8Hw6kSlYd3yfOJlw8cs+hqVtxpAGtg==}
-
   JSONStream@1.3.5:
     resolution: {integrity: sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==}
     hasBin: true
@@ -6368,9 +6164,6 @@ packages:
   axios@1.10.0:
     resolution: {integrity: sha512-/1xYAC4MP/HEG+3duIhFr4ZQXR4sQXOIe+o6sdqzeykGLx6Upp/1p8MHqhINOvGeP7xyNHe7tsiJByc4SSVUxw==}
 
-  axios@1.11.0:
-    resolution: {integrity: sha512-1Lx3WLFQWm3ooKDYZD1eXmoGO9fxYQjrycfHFC8P0sCfQVXyROp0p9PFWBehewBOdCwHc+f/b8I0fMto5eSfwA==}
-
   axios@1.7.9:
     resolution: {integrity: sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==}
 
@@ -6466,9 +6259,6 @@ packages:
 
   base-x@3.0.10:
     resolution: {integrity: sha512-7d0s06rR9rYaIWHkpfLIFICM/tkSVdoPC9qYAQRpxn9DdKNWNsKC0uk++akckyLq16Tx2WIinnZ6WRriAt6njQ==}
-
-  base-x@4.0.1:
-    resolution: {integrity: sha512-uAZ8x6r6S3aUM9rbHGVOIsR15U/ZSc82b3ymnCPsT45Gk1DDvhDPdIgB5MrhirZWt+5K0EEPQH985kNqZgNPFw==}
 
   base-x@5.0.0:
     resolution: {integrity: sha512-sMW3VGSX1QWVFA6l8U62MLKz29rRfpTlYdCqLdpLo1/Yd4zZwSbnUaDfciIAowAqvq7YFnWq9hrhdg1KYgc1lQ==}
@@ -6599,9 +6389,6 @@ packages:
 
   bs58@4.0.1:
     resolution: {integrity: sha512-Ok3Wdf5vOIlBrgCvTq96gBkJw+JUEzdBgyaza5HLtPm7yTHkjRy8+JzNyHF7BHa0bNWOQIp3m5YF0nnFcOIKLw==}
-
-  bs58@5.0.0:
-    resolution: {integrity: sha512-r+ihvQJvahgYT50JD05dyJNKlmmSlMoOGwn1lCcEzanPglg7TxYjioQUYehQ9mAR/+hOSd2jRc/Z2y5UxBymvQ==}
 
   bs58@6.0.0:
     resolution: {integrity: sha512-PD0wEnEYg6ijszw/u8s+iI3H17cTymlrwkKhDhPZq+Sokl3AU4htyBFTjAeNAlCCmg0f53g6ih3jATyCKftTfw==}
@@ -7532,9 +7319,6 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  eip55@2.1.1:
-    resolution: {integrity: sha512-WcagVAmNu2Ww2cDUfzuWVntYwFxbvZ5MvIyLZpMjTTkjD6sCvkGOiS86jTppzu9/gWsc8isLHAeMBWK02OnZmA==}
-
   ejs@3.1.10:
     resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==}
     engines: {node: '>=0.10.0'}
@@ -8107,10 +7891,6 @@ packages:
 
   form-data@4.0.1:
     resolution: {integrity: sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==}
-    engines: {node: '>= 6'}
-
-  form-data@4.0.4:
-    resolution: {integrity: sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==}
     engines: {node: '>= 6'}
 
   forwarded@0.2.0:
@@ -9862,11 +9642,6 @@ packages:
   nan@2.22.0:
     resolution: {integrity: sha512-nbajikzWTMwsW+eSsNm3QwlOs7het9gGJU5dDZzRTQGk03vyBOauxgI4VakDzE0PtsGTmXPsXTbbjVhRwR5mpw==}
 
-  nanoid@3.3.11:
-    resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
-    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
-    hasBin: true
-
   nanoid@3.3.8:
     resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -9951,9 +9726,6 @@ packages:
   node-addon-api@2.0.2:
     resolution: {integrity: sha512-Ntyt4AIXyaLIuMHF6IOoTakB3K+RWxwtsHNRxllEoA6vPwP9o4866g6YWDLUdnucilZhmkxiHwHr11gAENw+QA==}
 
-  node-addon-api@3.2.1:
-    resolution: {integrity: sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==}
-
   node-addon-api@5.1.0:
     resolution: {integrity: sha512-eh0GgfEkpnoWDq+VY8OyvYhFEzBk6jIYbRKdIlyTiAXIVJ8PyBaKb0rp7oDtoddbdoHWhq8wwr+XZ81F1rpNdA==}
 
@@ -9982,11 +9754,6 @@ packages:
 
   node-gzip@1.1.2:
     resolution: {integrity: sha512-ZB6zWpfZHGtxZnPMrJSKHVPrRjURoUzaDbLFj3VO70mpLTW5np96vXyHwft4Id0o+PYIzgDkBUjIzaNHhQ8srw==}
-
-  node-hid@2.1.2:
-    resolution: {integrity: sha512-qhCyQqrPpP93F/6Wc/xUR7L8mAJW0Z6R7HMQV8jCHHksAxNDe/4z4Un/H9CpLOT+5K39OPyt9tIQlavxWES3lg==}
-    engines: {node: '>=10'}
-    hasBin: true
 
   node-int64@0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
@@ -10411,12 +10178,6 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
 
-  postcss-nested@7.0.2:
-    resolution: {integrity: sha512-5osppouFc0VR9/VYzYxO03VaDa3e8F23Kfd6/9qcZTUI8P58GIYlArOET2Wq0ywSl2o2PjELhYOFI4W7l5QHKw==}
-    engines: {node: '>=18.0'}
-    peerDependencies:
-      postcss: ^8.2.14
-
   postcss-selector-parser@7.0.0:
     resolution: {integrity: sha512-9RbEr1Y7FFfptd/1eEdntyjMwLeghW1bHX9GWjXo19vx4ytPQhANltvVxDggzJl7mnWM+dX28kb6cyS/4iQjlQ==}
     engines: {node: '>=4'}
@@ -10430,10 +10191,6 @@ packages:
 
   postcss@8.4.49:
     resolution: {integrity: sha512-OCVPnIObs4N29kxTjzLfUryOkvZEq+pf8jTF0lg8E7uETuWHA+v7j3c/xJmiqpX450191LlmZfUKkXxkTry7nA==}
-    engines: {node: ^10 || ^12 || >=14}
-
-  postcss@8.5.6:
-    resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
     engines: {node: ^10 || ^12 || >=14}
 
   preact@10.26.9:
@@ -10624,9 +10381,6 @@ packages:
   ramda@0.29.0:
     resolution: {integrity: sha512-BBea6L67bYLtdbOqfp8f58fPMqEwx0doL+pAi8TZyp2YWz8R9G8z9x75CZI8W+ftqhFHCpEX2cRnUUXK130iKA==}
 
-  ramda@0.30.1:
-    resolution: {integrity: sha512-tEF5I22zJnuclswcZMc8bDIrwRHRzf+NqVEmqg50ShAZMP7MWeR/RGDthfM/p+BlqvF2fXAzpn8i+SJcYD3alw==}
-
   ramda@0.31.3:
     resolution: {integrity: sha512-xKADKRNnqmDdX59PPKLm3gGmk1ZgNnj3k7DryqWwkamp4TJ6B36DdpyKEQ0EoEYmH2R62bV4Q+S0ym2z8N2f3Q==}
 
@@ -10688,11 +10442,6 @@ packages:
   react-docgen@7.1.0:
     resolution: {integrity: sha512-APPU8HB2uZnpl6Vt/+0AFoVYgSRtfiP6FLrZgPPTDmqSb2R4qZRbgd0A3VzIFxDt5e+Fozjx79WjLWnF69DK8g==}
     engines: {node: '>=16.14.0'}
-
-  react-dom@18.3.1:
-    resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
-    peerDependencies:
-      react: ^18.3.1
 
   react-dom@19.1.0:
     resolution: {integrity: sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==}
@@ -10876,10 +10625,6 @@ packages:
     peerDependencies:
       react: '>=16.6.0'
       react-dom: '>=16.6.0'
-
-  react@18.3.1:
-    resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
-    engines: {node: '>=0.10.0'}
 
   react@19.1.0:
     resolution: {integrity: sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==}
@@ -11109,9 +10854,6 @@ packages:
   rxjs@7.8.1:
     resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
 
-  rxjs@7.8.2:
-    resolution: {integrity: sha512-dhKf903U/PQZY6boNNtAGdWbG85WAbjT/1xYoZIC7FAY0yWapOBQVsVrDl58W86//e1VpMNBtRV4MaXfdMySFA==}
-
   safe-array-concat@1.1.3:
     resolution: {integrity: sha512-AURm5f0jYEOydBj7VQlVvDrjeFgthDdEF5H1dP+6mNpoXOMo1quQqJ4wvJDyRZ9+pO3kGWoOdmV08cSv2aJV6Q==}
     engines: {node: '>=0.4'}
@@ -11155,9 +10897,6 @@ packages:
         optional: true
       sass-embedded:
         optional: true
-
-  scheduler@0.23.2:
-    resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
 
   scheduler@0.26.0:
     resolution: {integrity: sha512-NlHwttCI/l5gCPR3D1nNXtWABUmBwvZpEQiD4IXSbIDq8BzLIK/7Ir5gTFSGZDUu37K5cMNp0hFtzO38sC7gWA==}
@@ -11816,9 +11555,6 @@ packages:
       typescript:
         optional: true
 
-  ts-toolbelt@9.6.0:
-    resolution: {integrity: sha512-nsZd8ZeNUzukXPlJmTBwUAuABDe/9qtVDelJeT/qW0ow3ZS3BsQJtNkan1802aM9Uf68/Y8ljw86Hu0h5IUW3w==}
-
   tsconfig-paths-webpack-plugin@4.2.0:
     resolution: {integrity: sha512-zbem3rfRS8BgeNK50Zz5SIQgXzLafiHjOwUAvk/38/o1jHn/V5QAgVUcz884or7WYcPaH3N2CIfUc2u0ul7UcA==}
     engines: {node: '>=10.13.0'}
@@ -11917,9 +11653,6 @@ packages:
 
   typeforce@1.18.0:
     resolution: {integrity: sha512-7uc1O8h1M1g0rArakJdf0uLRSSgFcYexrVoKo+bzJd32gd4gDy2L/Z+8/FjPnU9ydY3pEnVPtr9FyscYY60K1g==}
-
-  types-ramda@0.30.1:
-    resolution: {integrity: sha512-1HTsf5/QVRmLzcGfldPFvkVsAdi1db1BBKzi7iW3KBUlOICg/nKnFS+jGqDJS3YD8VsWbAh7JiHeBvbsw8RPxA==}
 
   typescript-eslint@8.29.0:
     resolution: {integrity: sha512-ep9rVd9B4kQsZ7ZnWCVxUE/xDLUUUsRzE0poAeNu+4CkFErLfuvPt/qtm2EpnSyfvsR0S6QzDFSrPCFBwf64fg==}
@@ -12111,10 +11844,6 @@ packages:
   url@0.11.4:
     resolution: {integrity: sha512-oCwdVC7mTuWiPyjLUz/COz5TLk6wgp0RCsN+wHZ2Ekneac9w8uuV0njcbbie2ME+Vs+d6duwmYuR3HgQXs1fOg==}
     engines: {node: '>= 0.4'}
-
-  usb@2.9.0:
-    resolution: {integrity: sha512-G0I/fPgfHUzWH8xo2KkDxTTFruUWfppgSFJ+bQxz/kVY2x15EQ/XDB7dqD1G432G4gBG4jYQuF3U7j/orSs5nw==}
-    engines: {node: '>=10.20.0 <11.x || >=12.17.0 <13.0 || >=14.0.0'}
 
   use-callback-ref@1.3.3:
     resolution: {integrity: sha512-jQL3lRnocaFtu3V00JToYz/4QkNWswxijDaCVNZRiRTO3HQDLsdu1ZtmIUvV4yPp+rvWm5j0y0TG/S61cuijTg==}
@@ -13542,8 +13271,6 @@ snapshots:
     dependencies:
       '@noble/curves': 1.8.1
 
-  '@bufbuild/protobuf@2.8.0': {}
-
   '@chain-registry/client@1.53.46':
     dependencies:
       '@chain-registry/types': 0.45.20
@@ -14602,8 +14329,6 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@cosmjs/utils@0.33.1': {}
-
   '@cosmjs/utils@0.36.0': {}
 
   '@cosmos-kit/compass-extension@2.13.3(@cosmjs/amino@0.36.0)(@cosmjs/proto-signing@0.36.0)(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
@@ -15070,36 +14795,6 @@ snapshots:
       ethereum-cryptography: 2.2.1
       micro-ftch: 0.3.1
 
-  '@ethersproject/abi@5.8.0':
-    dependencies:
-      '@ethersproject/address': 5.8.0
-      '@ethersproject/bignumber': 5.8.0
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/constants': 5.8.0
-      '@ethersproject/hash': 5.8.0
-      '@ethersproject/keccak256': 5.8.0
-      '@ethersproject/logger': 5.8.0
-      '@ethersproject/properties': 5.8.0
-      '@ethersproject/strings': 5.8.0
-
-  '@ethersproject/abstract-provider@5.8.0':
-    dependencies:
-      '@ethersproject/bignumber': 5.8.0
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/logger': 5.8.0
-      '@ethersproject/networks': 5.8.0
-      '@ethersproject/properties': 5.8.0
-      '@ethersproject/transactions': 5.8.0
-      '@ethersproject/web': 5.8.0
-
-  '@ethersproject/abstract-signer@5.8.0':
-    dependencies:
-      '@ethersproject/abstract-provider': 5.8.0
-      '@ethersproject/bignumber': 5.8.0
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/logger': 5.8.0
-      '@ethersproject/properties': 5.8.0
-
   '@ethersproject/address@5.7.0':
     dependencies:
       '@ethersproject/bignumber': 5.7.0
@@ -15108,135 +14803,27 @@ snapshots:
       '@ethersproject/logger': 5.7.0
       '@ethersproject/rlp': 5.7.0
 
-  '@ethersproject/address@5.8.0':
-    dependencies:
-      '@ethersproject/bignumber': 5.8.0
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/keccak256': 5.8.0
-      '@ethersproject/logger': 5.8.0
-      '@ethersproject/rlp': 5.8.0
-
-  '@ethersproject/base64@5.8.0':
-    dependencies:
-      '@ethersproject/bytes': 5.8.0
-
   '@ethersproject/bignumber@5.7.0':
     dependencies:
       '@ethersproject/bytes': 5.7.0
       '@ethersproject/logger': 5.7.0
       bn.js: 5.2.1
 
-  '@ethersproject/bignumber@5.8.0':
-    dependencies:
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/logger': 5.8.0
-      bn.js: 5.2.1
-
   '@ethersproject/bytes@5.7.0':
     dependencies:
       '@ethersproject/logger': 5.7.0
-
-  '@ethersproject/bytes@5.8.0':
-    dependencies:
-      '@ethersproject/logger': 5.8.0
-
-  '@ethersproject/constants@5.8.0':
-    dependencies:
-      '@ethersproject/bignumber': 5.8.0
-
-  '@ethersproject/hash@5.8.0':
-    dependencies:
-      '@ethersproject/abstract-signer': 5.8.0
-      '@ethersproject/address': 5.8.0
-      '@ethersproject/base64': 5.8.0
-      '@ethersproject/bignumber': 5.8.0
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/keccak256': 5.8.0
-      '@ethersproject/logger': 5.8.0
-      '@ethersproject/properties': 5.8.0
-      '@ethersproject/strings': 5.8.0
 
   '@ethersproject/keccak256@5.7.0':
     dependencies:
       '@ethersproject/bytes': 5.7.0
       js-sha3: 0.8.0
 
-  '@ethersproject/keccak256@5.8.0':
-    dependencies:
-      '@ethersproject/bytes': 5.8.0
-      js-sha3: 0.8.0
-
   '@ethersproject/logger@5.7.0': {}
-
-  '@ethersproject/logger@5.8.0': {}
-
-  '@ethersproject/networks@5.8.0':
-    dependencies:
-      '@ethersproject/logger': 5.8.0
-
-  '@ethersproject/properties@5.8.0':
-    dependencies:
-      '@ethersproject/logger': 5.8.0
 
   '@ethersproject/rlp@5.7.0':
     dependencies:
       '@ethersproject/bytes': 5.7.0
       '@ethersproject/logger': 5.7.0
-
-  '@ethersproject/rlp@5.8.0':
-    dependencies:
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/logger': 5.8.0
-
-  '@ethersproject/sha2@5.8.0':
-    dependencies:
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/logger': 5.8.0
-      hash.js: 1.1.7
-
-  '@ethersproject/signing-key@5.8.0':
-    dependencies:
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/logger': 5.8.0
-      '@ethersproject/properties': 5.8.0
-      bn.js: 5.2.1
-      elliptic: 6.6.1
-      hash.js: 1.1.7
-
-  '@ethersproject/solidity@5.8.0':
-    dependencies:
-      '@ethersproject/bignumber': 5.8.0
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/keccak256': 5.8.0
-      '@ethersproject/logger': 5.8.0
-      '@ethersproject/sha2': 5.8.0
-      '@ethersproject/strings': 5.8.0
-
-  '@ethersproject/strings@5.8.0':
-    dependencies:
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/constants': 5.8.0
-      '@ethersproject/logger': 5.8.0
-
-  '@ethersproject/transactions@5.8.0':
-    dependencies:
-      '@ethersproject/address': 5.8.0
-      '@ethersproject/bignumber': 5.8.0
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/constants': 5.8.0
-      '@ethersproject/keccak256': 5.8.0
-      '@ethersproject/logger': 5.8.0
-      '@ethersproject/properties': 5.8.0
-      '@ethersproject/rlp': 5.8.0
-      '@ethersproject/signing-key': 5.8.0
-
-  '@ethersproject/web@5.8.0':
-    dependencies:
-      '@ethersproject/base64': 5.8.0
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/logger': 5.8.0
-      '@ethersproject/properties': 5.8.0
-      '@ethersproject/strings': 5.8.0
 
   '@fal-works/esbuild-plugin-global-externals@2.1.2': {}
 
@@ -15425,44 +15012,6 @@ snapshots:
     transitivePeerDependencies:
       - react-native
 
-  '@initia/icons-svelte@1.0.0(svelte@4.2.19)':
-    dependencies:
-      svelte: 4.2.19
-
-  '@initia/initia-registry-types@1.0.10':
-    dependencies:
-      zod: 3.25.67
-
-  '@initia/initia.js@1.0.16(bufferutil@4.0.9)(google-protobuf@3.21.4)(typescript@5.3.3)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@bitcoinerlab/secp256k1': 1.2.0
-      '@initia/initia.proto': 1.0.3(google-protobuf@3.21.4)
-      '@initia/opinit.proto': 1.0.2(google-protobuf@3.21.4)
-      '@ledgerhq/hw-app-eth': 6.45.17
-      '@ledgerhq/hw-transport': 6.31.10
-      '@ledgerhq/hw-transport-node-hid': 6.29.11
-      '@ledgerhq/hw-transport-webhid': 6.30.0
-      '@ledgerhq/hw-transport-webusb': 6.29.4
-      '@mysten/bcs': 1.2.0
-      '@zondax/ledger-cosmos-js': 4.0.1
-      axios: 1.11.0
-      bech32: 2.0.0
-      bignumber.js: 9.1.2
-      bip32: 5.0.0-rc.0(typescript@5.3.3)
-      bip39: 3.1.0
-      jscrypto: 1.0.3
-      keccak256: 1.0.6
-      ripemd160: 2.0.2
-      secp256k1: 5.0.1
-      semver: 7.7.1
-      ws: 8.18.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - debug
-      - google-protobuf
-      - typescript
-      - utf-8-validate
-
   '@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@bitcoinerlab/secp256k1': 1.2.0
@@ -15502,14 +15051,6 @@ snapshots:
       google-protobuf: 3.21.4
       long: 5.3.1
       protobufjs: 7.4.0
-
-  '@initia/initia.proto@1.0.3(google-protobuf@3.21.4)':
-    dependencies:
-      '@bufbuild/protobuf': 2.8.0
-      '@improbable-eng/grpc-web': 0.15.0(google-protobuf@3.21.4)
-      browser-headers: 0.4.1
-    transitivePeerDependencies:
-      - google-protobuf
 
   '@initia/interwovenkit-react@2.0.0(4mierzbljd4w4qkoaoed2iz4m4)':
     dependencies:
@@ -15562,30 +15103,10 @@ snapshots:
       long: 5.3.1
       protobufjs: 7.4.0
 
-  '@initia/opinit.proto@1.0.2(google-protobuf@3.21.4)':
-    dependencies:
-      '@bufbuild/protobuf': 2.8.0
-      '@improbable-eng/grpc-web': 0.15.0(google-protobuf@3.21.4)
-      browser-headers: 0.4.1
-    transitivePeerDependencies:
-      - google-protobuf
-
   '@initia/react-app-shell@1.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
-
-  '@initia/react-wallet-widget@1.6.13(@cosmjs/proto-signing@0.36.0)(@initia/initia.js@1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/utils@2.0.0(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(ky@1.8.0)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)))(@initia/wallet-widget@1.9.8(@msgpack/msgpack@3.1.2)(@mysten/bcs@1.2.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bufferutil@4.0.9)(change-case@5.4.4)(google-protobuf@3.21.4)(starknet@6.11.0)(svelte@4.2.19)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))(@keplr-wallet/types@0.12.272(starknet@6.11.0))(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(react@19.1.0)(rxjs@7.8.1)':
-    dependencies:
-      '@cosmjs/proto-signing': 0.36.0
-      '@initia/initia.js': 1.0.6(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
-      '@initia/utils': 2.0.0(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(ky@1.8.0)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
-      '@initia/wallet-widget': 1.9.8(@msgpack/msgpack@3.1.2)(@mysten/bcs@1.2.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bufferutil@4.0.9)(change-case@5.4.4)(google-protobuf@3.21.4)(starknet@6.11.0)(svelte@4.2.19)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
-      '@keplr-wallet/types': 0.12.272(starknet@6.11.0)
-      cosmjs-types: 0.9.0
-      ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      react: 19.1.0
-      rxjs: 7.8.1
 
   '@initia/tx-decoder@0.7.0(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)':
     dependencies:
@@ -15606,32 +15127,6 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@initia/utils@1.9.8(@cosmjs/amino@0.36.0)(@cosmjs/encoding@0.36.0)(@cosmjs/proto-signing@0.36.0)(@cosmjs/stargate@0.36.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.10)(@initia/initia.js@1.0.16(bufferutil@4.0.9)(google-protobuf@3.21.4)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.2(google-protobuf@3.21.4))(@keplr-wallet/types@0.12.272(starknet@6.11.0))(@msgpack/msgpack@3.1.2)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.3.1)(ramda@0.30.1)(rxjs@7.8.2)(zod@3.24.2)':
-    dependencies:
-      '@cosmjs/amino': 0.36.0
-      '@cosmjs/encoding': 0.36.0
-      '@cosmjs/proto-signing': 0.36.0
-      '@cosmjs/stargate': 0.36.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@initia/initia-registry-types': 1.0.10
-      '@initia/initia.js': 1.0.16(bufferutil@4.0.9)(google-protobuf@3.21.4)(typescript@5.3.3)(utf-8-validate@5.0.10)
-      '@initia/initia.proto': 1.0.0
-      '@initia/opinit.proto': 1.0.2(google-protobuf@3.21.4)
-      '@keplr-wallet/types': 0.12.272(starknet@6.11.0)
-      '@msgpack/msgpack': 3.1.2
-      '@mysten/bcs': 1.2.0
-      '@noble/hashes': 1.8.0
-      '@types/ramda': 0.30.2
-      bech32: 2.0.0
-      bignumber.js: 9.1.2
-      change-case: 5.4.4
-      cosmjs-types: 0.9.0
-      ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      ky: 1.8.0
-      long: 5.3.1
-      ramda: 0.30.1
-      rxjs: 7.8.2
-      zod: 3.24.2
-
   '@initia/utils@2.0.0(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(ky@1.8.0)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
     dependencies:
       '@cosmjs/encoding': 0.36.0
@@ -15648,52 +15143,6 @@ snapshots:
       '@noble/hashes': 1.8.0
       bignumber.js: 9.1.2
       viem: 2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.25.67)
-
-  '@initia/wallet-widget@1.9.8(@msgpack/msgpack@3.1.2)(@mysten/bcs@1.2.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bufferutil@4.0.9)(change-case@5.4.4)(google-protobuf@3.21.4)(starknet@6.11.0)(svelte@4.2.19)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)':
-    dependencies:
-      '@cosmjs/amino': 0.36.0
-      '@cosmjs/crypto': 0.36.0
-      '@cosmjs/encoding': 0.36.0
-      '@cosmjs/proto-signing': 0.36.0
-      '@cosmjs/stargate': 0.36.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@cosmjs/tendermint-rpc': 0.36.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      '@cosmjs/utils': 0.33.1
-      '@initia/icons-svelte': 1.0.0(svelte@4.2.19)
-      '@initia/initia-registry-types': 1.0.10
-      '@initia/initia.js': 1.0.16(bufferutil@4.0.9)(google-protobuf@3.21.4)(typescript@5.3.3)(utf-8-validate@5.0.10)
-      '@initia/initia.proto': 1.0.0
-      '@initia/opinit.proto': 1.0.2(google-protobuf@3.21.4)
-      '@initia/utils': 1.9.8(@cosmjs/amino@0.36.0)(@cosmjs/encoding@0.36.0)(@cosmjs/proto-signing@0.36.0)(@cosmjs/stargate@0.36.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@1.0.10)(@initia/initia.js@1.0.16(bufferutil@4.0.9)(google-protobuf@3.21.4)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@1.0.0)(@initia/opinit.proto@1.0.2(google-protobuf@3.21.4))(@keplr-wallet/types@0.12.272(starknet@6.11.0))(@msgpack/msgpack@3.1.2)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.8.0)(long@5.3.1)(ramda@0.30.1)(rxjs@7.8.2)(zod@3.24.2)
-      '@keplr-wallet/types': 0.12.272(starknet@6.11.0)
-      '@layerzerolabs/lz-v2-utilities': 3.0.132
-      '@noble/hashes': 1.8.0
-      '@tanstack/svelte-query': 5.87.4(svelte@4.2.19)
-      bignumber.js: 9.1.2
-      cosmjs-types: 0.9.0
-      date-fns: 4.1.0
-      ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
-      ky: 1.8.0
-      long: 5.3.1
-      postcss: 8.5.6
-      postcss-nested: 7.0.2(postcss@8.5.6)
-      protobufjs: 7.4.0
-      ramda: 0.30.1
-      rxjs: 7.8.2
-      xss: 1.0.15
-    transitivePeerDependencies:
-      - '@msgpack/msgpack'
-      - '@mysten/bcs'
-      - '@types/ramda'
-      - bech32
-      - bufferutil
-      - change-case
-      - debug
-      - google-protobuf
-      - starknet
-      - svelte
-      - typescript
-      - utf-8-validate
-      - zod
 
   '@interchain-ui/react@1.23.9(@types/react@19.1.0)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
@@ -16019,11 +15468,6 @@ snapshots:
       long: 4.0.0
       starknet: 6.11.0
 
-  '@keplr-wallet/types@0.12.272(starknet@6.11.0)':
-    dependencies:
-      long: 4.0.0
-      starknet: 6.11.0
-
   '@keplr-wallet/types@0.12.28':
     dependencies:
       long: 4.0.0
@@ -16036,24 +15480,6 @@ snapshots:
 
   '@kurkle/color@0.3.4': {}
 
-  '@layerzerolabs/lz-v2-utilities@3.0.132':
-    dependencies:
-      '@ethersproject/abi': 5.8.0
-      '@ethersproject/address': 5.8.0
-      '@ethersproject/bignumber': 5.8.0
-      '@ethersproject/bytes': 5.8.0
-      '@ethersproject/keccak256': 5.8.0
-      '@ethersproject/solidity': 5.8.0
-      bs58: 5.0.0
-      tiny-invariant: 1.3.3
-
-  '@ledgerhq/cryptoassets-evm-signatures@13.6.1':
-    dependencies:
-      '@ledgerhq/live-env': 2.15.0
-      axios: 1.11.0
-    transitivePeerDependencies:
-      - debug
-
   '@ledgerhq/devices@8.4.4':
     dependencies:
       '@ledgerhq/errors': 6.19.1
@@ -16061,90 +15487,7 @@ snapshots:
       rxjs: 7.8.1
       semver: 7.6.3
 
-  '@ledgerhq/devices@8.5.0':
-    dependencies:
-      '@ledgerhq/errors': 6.25.0
-      '@ledgerhq/logs': 6.13.0
-      rxjs: 7.8.2
-      semver: 7.7.1
-
-  '@ledgerhq/devices@8.5.1':
-    dependencies:
-      '@ledgerhq/errors': 6.25.0
-      '@ledgerhq/logs': 6.13.0
-      rxjs: 7.8.2
-      semver: 7.7.1
-
-  '@ledgerhq/domain-service@1.2.42':
-    dependencies:
-      '@ledgerhq/errors': 6.25.0
-      '@ledgerhq/logs': 6.13.0
-      '@ledgerhq/types-live': 6.83.0
-      axios: 1.11.0
-      eip55: 2.1.1
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-    transitivePeerDependencies:
-      - debug
-
   '@ledgerhq/errors@6.19.1': {}
-
-  '@ledgerhq/errors@6.25.0': {}
-
-  '@ledgerhq/evm-tools@1.7.5':
-    dependencies:
-      '@ethersproject/constants': 5.8.0
-      '@ethersproject/hash': 5.8.0
-      '@ledgerhq/cryptoassets-evm-signatures': 13.6.1
-      '@ledgerhq/live-env': 2.15.0
-      axios: 1.11.0
-      crypto-js: 4.2.0
-    transitivePeerDependencies:
-      - debug
-
-  '@ledgerhq/hw-app-eth@6.45.17':
-    dependencies:
-      '@ethersproject/abi': 5.8.0
-      '@ethersproject/rlp': 5.8.0
-      '@ethersproject/transactions': 5.8.0
-      '@ledgerhq/cryptoassets-evm-signatures': 13.6.1
-      '@ledgerhq/domain-service': 1.2.42
-      '@ledgerhq/errors': 6.25.0
-      '@ledgerhq/evm-tools': 1.7.5
-      '@ledgerhq/hw-transport': 6.31.10
-      '@ledgerhq/hw-transport-mocker': 6.29.10
-      '@ledgerhq/logs': 6.13.0
-      '@ledgerhq/types-live': 6.83.0
-      axios: 1.11.0
-      bignumber.js: 9.1.2
-      semver: 7.7.1
-    transitivePeerDependencies:
-      - debug
-
-  '@ledgerhq/hw-transport-mocker@6.29.10':
-    dependencies:
-      '@ledgerhq/hw-transport': 6.31.10
-      '@ledgerhq/logs': 6.13.0
-      rxjs: 7.8.2
-
-  '@ledgerhq/hw-transport-node-hid-noevents@6.30.11':
-    dependencies:
-      '@ledgerhq/devices': 8.5.1
-      '@ledgerhq/errors': 6.25.0
-      '@ledgerhq/hw-transport': 6.31.10
-      '@ledgerhq/logs': 6.13.0
-      node-hid: 2.1.2
-
-  '@ledgerhq/hw-transport-node-hid@6.29.11':
-    dependencies:
-      '@ledgerhq/devices': 8.5.1
-      '@ledgerhq/errors': 6.25.0
-      '@ledgerhq/hw-transport': 6.31.10
-      '@ledgerhq/hw-transport-node-hid-noevents': 6.30.11
-      '@ledgerhq/logs': 6.13.0
-      lodash: 4.17.21
-      node-hid: 2.1.2
-      usb: 2.9.0
 
   '@ledgerhq/hw-transport-webhid@6.30.0':
     dependencies:
@@ -16160,13 +15503,6 @@ snapshots:
       '@ledgerhq/hw-transport': 6.31.4
       '@ledgerhq/logs': 6.12.0
 
-  '@ledgerhq/hw-transport@6.31.10':
-    dependencies:
-      '@ledgerhq/devices': 8.5.1
-      '@ledgerhq/errors': 6.25.0
-      '@ledgerhq/logs': 6.13.0
-      events: 3.3.0
-
   '@ledgerhq/hw-transport@6.31.4':
     dependencies:
       '@ledgerhq/devices': 8.4.4
@@ -16174,26 +15510,7 @@ snapshots:
       '@ledgerhq/logs': 6.12.0
       events: 3.3.0
 
-  '@ledgerhq/hw-transport@6.31.9':
-    dependencies:
-      '@ledgerhq/devices': 8.5.0
-      '@ledgerhq/errors': 6.25.0
-      '@ledgerhq/logs': 6.13.0
-      events: 3.3.0
-
-  '@ledgerhq/live-env@2.15.0':
-    dependencies:
-      rxjs: 7.8.2
-      utility-types: 3.11.0
-
   '@ledgerhq/logs@6.12.0': {}
-
-  '@ledgerhq/logs@6.13.0': {}
-
-  '@ledgerhq/types-live@6.83.0':
-    dependencies:
-      bignumber.js: 9.1.2
-      rxjs: 7.8.2
 
   '@lit-labs/ssr-dom-shim@1.3.0': {}
 
@@ -16379,8 +15696,6 @@ snapshots:
       monaco-editor: 0.44.0
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
-
-  '@msgpack/msgpack@3.1.2': {}
 
   '@mysten/bcs@1.2.0':
     dependencies:
@@ -20010,11 +19325,6 @@ snapshots:
       '@tanstack/query-core': 5.81.5
       react: 19.1.0
 
-  '@tanstack/svelte-query@5.87.4(svelte@4.2.19)':
-    dependencies:
-      '@tanstack/query-core': 5.87.4
-      svelte: 4.2.19
-
   '@testing-library/dom@9.3.4':
     dependencies:
       '@babel/code-frame': 7.26.2
@@ -20139,7 +19449,8 @@ snapshots:
 
   '@types/estree@1.0.6': {}
 
-  '@types/estree@1.0.7': {}
+  '@types/estree@1.0.7':
+    optional: true
 
   '@types/express-serve-static-core@4.19.6':
     dependencies:
@@ -20249,10 +19560,6 @@ snapshots:
 
   '@types/qs@6.9.17': {}
 
-  '@types/ramda@0.30.2':
-    dependencies:
-      types-ramda: 0.30.1
-
   '@types/range-parser@1.2.7': {}
 
   '@types/react-dom@19.1.1(@types/react@19.1.0)':
@@ -20295,8 +19602,6 @@ snapshots:
   '@types/unist@3.0.3': {}
 
   '@types/uuid@9.0.8': {}
-
-  '@types/w3c-web-usb@1.0.12': {}
 
   '@types/yargs-parser@21.0.3': {}
 
@@ -21227,19 +20532,6 @@ snapshots:
     dependencies:
       '@zag-js/dom-query': 0.16.0
 
-  '@zondax/ledger-cosmos-js@4.0.1':
-    dependencies:
-      '@ledgerhq/hw-transport': 6.31.4
-      '@noble/hashes': 1.8.0
-      '@scure/base': 1.2.6
-      '@zondax/ledger-js': 1.3.1
-      buffer: 6.0.3
-      ripemd160: 2.0.2
-
-  '@zondax/ledger-js@1.3.1':
-    dependencies:
-      '@ledgerhq/hw-transport': 6.31.9
-
   JSONStream@1.3.5:
     dependencies:
       jsonparse: 1.3.1
@@ -21302,7 +20594,8 @@ snapshots:
 
   acorn@8.14.0: {}
 
-  acorn@8.14.1: {}
+  acorn@8.14.1:
+    optional: true
 
   address@1.2.2: {}
 
@@ -21541,14 +20834,6 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  axios@1.11.0:
-    dependencies:
-      follow-redirects: 1.15.9
-      form-data: 4.0.4
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-
   axios@1.7.9:
     dependencies:
       follow-redirects: 1.15.9
@@ -21693,8 +20978,6 @@ snapshots:
   base-x@3.0.10:
     dependencies:
       safe-buffer: 5.2.1
-
-  base-x@4.0.1: {}
 
   base-x@5.0.0: {}
 
@@ -21867,10 +21150,6 @@ snapshots:
   bs58@4.0.1:
     dependencies:
       base-x: 3.0.10
-
-  bs58@5.0.0:
-    dependencies:
-      base-x: 4.0.1
 
   bs58@6.0.0:
     dependencies:
@@ -22174,6 +21453,7 @@ snapshots:
       acorn: 8.14.1
       estree-walker: 3.0.3
       periscopic: 3.1.0
+    optional: true
 
   collect-v8-coverage@1.0.2: {}
 
@@ -22542,6 +21822,7 @@ snapshots:
     dependencies:
       mdn-data: 2.0.30
       source-map-js: 1.2.1
+    optional: true
 
   css-what@6.1.0: {}
 
@@ -22882,10 +22163,6 @@ snapshots:
       '@noble/hashes': 1.8.0
 
   ee-first@1.1.1: {}
-
-  eip55@2.1.1:
-    dependencies:
-      keccak: 3.0.4
 
   ejs@3.1.10:
     dependencies:
@@ -23353,6 +22630,7 @@ snapshots:
   estree-walker@3.0.3:
     dependencies:
       '@types/estree': 1.0.7
+    optional: true
 
   esutils@2.0.3: {}
 
@@ -23743,14 +23021,6 @@ snapshots:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
-      mime-types: 2.1.35
-
-  form-data@4.0.4:
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      es-set-tostringtag: 2.1.0
-      hasown: 2.0.2
       mime-types: 2.1.35
 
   forwarded@0.2.0: {}
@@ -24429,6 +23699,7 @@ snapshots:
   is-reference@3.0.3:
     dependencies:
       '@types/estree': 1.0.7
+    optional: true
 
   is-regex@1.2.1:
     dependencies:
@@ -25130,7 +24401,8 @@ snapshots:
     dependencies:
       lie: 3.1.1
 
-  locate-character@3.0.0: {}
+  locate-character@3.0.0:
+    optional: true
 
   locate-path@3.0.0:
     dependencies:
@@ -25455,7 +24727,8 @@ snapshots:
 
   mdn-data@2.0.14: {}
 
-  mdn-data@2.0.30: {}
+  mdn-data@2.0.30:
+    optional: true
 
   media-query-parser@2.0.2:
     dependencies:
@@ -26004,8 +25277,6 @@ snapshots:
 
   nan@2.22.0: {}
 
-  nanoid@3.3.11: {}
-
   nanoid@3.3.8: {}
 
   nanoid@5.1.5: {}
@@ -26081,8 +25352,6 @@ snapshots:
 
   node-addon-api@2.0.2: {}
 
-  node-addon-api@3.2.1: {}
-
   node-addon-api@5.1.0: {}
 
   node-addon-api@6.1.0: {}
@@ -26100,12 +25369,6 @@ snapshots:
   node-gyp-build@4.8.4: {}
 
   node-gzip@1.1.2: {}
-
-  node-hid@2.1.2:
-    dependencies:
-      bindings: 1.5.0
-      node-addon-api: 3.2.1
-      prebuild-install: 7.1.2
 
   node-int64@0.4.0: {}
 
@@ -26513,6 +25776,7 @@ snapshots:
       '@types/estree': 1.0.7
       estree-walker: 3.0.3
       is-reference: 3.0.3
+    optional: true
 
   picocolors@1.1.1: {}
 
@@ -26624,11 +25888,6 @@ snapshots:
       icss-utils: 5.1.0(postcss@8.4.49)
       postcss: 8.4.49
 
-  postcss-nested@7.0.2(postcss@8.5.6):
-    dependencies:
-      postcss: 8.5.6
-      postcss-selector-parser: 7.0.0
-
   postcss-selector-parser@7.0.0:
     dependencies:
       cssesc: 3.0.0
@@ -26645,12 +25904,6 @@ snapshots:
   postcss@8.4.49:
     dependencies:
       nanoid: 3.3.8
-      picocolors: 1.1.1
-      source-map-js: 1.2.1
-
-  postcss@8.5.6:
-    dependencies:
-      nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
@@ -26931,8 +26184,6 @@ snapshots:
 
   ramda@0.29.0: {}
 
-  ramda@0.30.1: {}
-
   ramda@0.31.3: {}
 
   randombytes@2.1.0:
@@ -27055,12 +26306,6 @@ snapshots:
       strip-indent: 4.0.0
     transitivePeerDependencies:
       - supports-color
-
-  react-dom@18.3.1(react@18.3.1):
-    dependencies:
-      loose-envify: 1.4.0
-      react: 18.3.1
-      scheduler: 0.23.2
 
   react-dom@19.1.0(react@19.1.0):
     dependencies:
@@ -27334,10 +26579,6 @@ snapshots:
       prop-types: 15.8.1
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
-
-  react@18.3.1:
-    dependencies:
-      loose-envify: 1.4.0
 
   react@19.1.0: {}
 
@@ -27623,10 +26864,6 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  rxjs@7.8.2:
-    dependencies:
-      tslib: 2.8.1
-
   safe-array-concat@1.1.3:
     dependencies:
       call-bind: 1.0.8
@@ -27659,10 +26896,6 @@ snapshots:
       klona: 2.0.6
       neo-async: 2.6.2
       webpack: 5.97.1(@swc/core@1.10.6(@swc/helpers@0.5.15))(esbuild@0.18.20)
-
-  scheduler@0.23.2:
-    dependencies:
-      loose-envify: 1.4.0
 
   scheduler@0.26.0: {}
 
@@ -28190,6 +27423,7 @@ snapshots:
       locate-character: 3.0.0
       magic-string: 0.30.17
       periscopic: 3.1.0
+    optional: true
 
   swc-loader@0.2.6(@swc/core@1.10.6(@swc/helpers@0.5.15))(webpack@5.97.1(@swc/core@1.10.6(@swc/helpers@0.5.15))(esbuild@0.18.20)):
     dependencies:
@@ -28418,8 +27652,6 @@ snapshots:
     optionalDependencies:
       typescript: 5.3.3
 
-  ts-toolbelt@9.6.0: {}
-
   tsconfig-paths-webpack-plugin@4.2.0:
     dependencies:
       chalk: 4.1.2
@@ -28519,10 +27751,6 @@ snapshots:
   typedarray@0.0.6: {}
 
   typeforce@1.18.0: {}
-
-  types-ramda@0.30.1:
-    dependencies:
-      ts-toolbelt: 9.6.0
 
   typescript-eslint@8.29.0(eslint@9.23.0(jiti@2.4.2))(typescript@5.3.3):
     dependencies:
@@ -28675,12 +27903,6 @@ snapshots:
     dependencies:
       punycode: 1.4.1
       qs: 6.13.1
-
-  usb@2.9.0:
-    dependencies:
-      '@types/w3c-web-usb': 1.0.12
-      node-addon-api: 6.1.0
-      node-gyp-build: 4.8.4
 
   use-callback-ref@1.3.3(@types/react@19.1.0)(react@19.1.0):
     dependencies:
