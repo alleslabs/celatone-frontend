@@ -1,9 +1,7 @@
 import type { TransactionWithTxResponse } from "lib/types";
 
-import { Flex, Spinner, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
-import { ActionMessages } from "lib/components/action-msg/ActionMessages";
-import { DecodeMessage } from "lib/components/decode-message";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { useTxDecoder } from "lib/services/tx";
@@ -12,6 +10,7 @@ import { dateFromNow, formatUTC } from "lib/utils";
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 import { RelationChip } from "./RelationChip";
+import { TransactionsTableDecodeMessageColumn } from "./TransactionsTableDecodeMessageColumn";
 
 interface TransactionsTableMobileCardProps {
   showRelations: boolean;
@@ -65,26 +64,12 @@ export const TransactionsTableMobileCard = ({
             Unable to load data due to large transaction size
           </Text>
         ) : (
-          <>
-            {isDecodedTxFetching ? (
-              <Spinner boxSize={4} />
-            ) : (
-              <>
-                {txResponse && decodedTx && decodedTx.messages.length > 0 ? (
-                  <DecodeMessage
-                    compact
-                    decodedMessage={decodedTx.messages[0].decodedMessage}
-                    log={undefined}
-                    metadata={decodedTx.metadata}
-                    msgBody={txResponse.tx.body.messages[0]}
-                    msgCount={txResponse.tx.body.messages.length}
-                  />
-                ) : (
-                  <ActionMessages transaction={transaction} />
-                )}
-              </>
-            )}
-          </>
+          <TransactionsTableDecodeMessageColumn
+            decodedTx={decodedTx}
+            isDecodedTxFetching={isDecodedTxFetching}
+            transaction={transaction}
+            txResponse={txResponse}
+          />
         )
       }
       topContent={
