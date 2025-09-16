@@ -327,3 +327,9 @@ export const zEvmVerifyInfo = z
     ),
   }));
 export type EvmVerifyInfo = z.infer<typeof zEvmVerifyInfo>;
+
+export enum EvmEventBoxTabs {
+  Decoded = "decoded",
+  Formatted = "formatted",
+  Raw = "raw",
+}
