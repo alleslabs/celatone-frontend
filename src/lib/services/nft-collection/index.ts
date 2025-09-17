@@ -164,14 +164,14 @@ export const useNftCollectionInfosWasm = (collectionAddress: BechAddr32) => {
   } = useCelatoneApp();
 
   return useQuery({
-    enabled,
-    queryFn: () =>
-      getCollectionByCollectionAddressWasmRest(restEndpoint, collectionAddress),
     queryKey: [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_INFOS_BY_COLLECTION_ADDRESS_WASM,
       restEndpoint,
       collectionAddress,
     ],
+    queryFn: () =>
+      getCollectionByCollectionAddressWasmRest(restEndpoint, collectionAddress),
+    enabled,
     refetchOnWindowFocus: false,
     retry: 1,
   });
