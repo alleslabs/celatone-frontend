@@ -106,14 +106,18 @@ export const getNftCollectionCreatorByCollectionAddressSequencer = async (
     throw new Error("No collection transaction found");
 
   const tx = txByCollectionAddress.items[0];
+  const { item } = tx;
 
-  const sender = convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix);
+  const sender = convertAccountPubkeyToAccountAddress(
+    item.signerPubkey,
+    prefix
+  );
 
   return {
     creatorAddress: sender,
-    height: tx.height,
-    timestamp: tx.created,
-    txhash: tx.hash,
+    height: item.height,
+    timestamp: item.created,
+    txhash: item.hash,
   };
 };
 
@@ -132,7 +136,7 @@ export const getNftCollectionActivitiesSequencer = async (
   const collectionActivities: Activity[] = [];
 
   txsByCollectionAddress.items.forEach((tx) => {
-    const { created, events, hash } = tx;
+    const { created, events, hash } = tx.item;
 
     events?.reverse()?.forEach((event) => {
       if (
@@ -180,6 +184,7 @@ export const getNftCollectionsSequencer = async (
     params: {
       "pagination.key": paginationKey,
       "pagination.limit": limit,
+      "pagination.reverse": false,
     },
   });
   return parseWithError(zCollectionsResponseSequencer, data);
@@ -195,6 +200,7 @@ export const getNftCollecitonsByNameSequencer = async (
     {
       params: {
         "pagination.key": paginationKey,
+        "pagination.reverse": false,
       },
     }
   );
@@ -246,7 +252,7 @@ export const getNftCollectionsByAccountAddressSequencer = async (
         params: {
           "pagination.count_total": false,
           "pagination.limit": 1000,
-          "pagination.reverse": true,
+          "pagination.reverse": false,
         },
       }
     )

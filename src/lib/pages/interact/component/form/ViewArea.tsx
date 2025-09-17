@@ -1,9 +1,11 @@
+import type { AxiosError } from "axios";
 import type {
   AbiFormData,
   ExposedFunction,
   HexAddr,
   JsonDataType,
   Option,
+  RpcQueryError,
 } from "lib/types";
 
 import {
@@ -22,6 +24,7 @@ import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { AbiForm } from "lib/components/move-abi";
 import { DEFAULT_RPC_ERROR } from "lib/data";
+import { useQueryEvents } from "lib/hooks";
 import { useFunctionView } from "lib/services/move/module";
 import { getAbiInitialData, jsonPrettify } from "lib/utils";
 import dynamic from "next/dynamic";
@@ -53,18 +56,37 @@ export const ViewArea = ({
   const [res, setRes] = useState<JsonDataType>(undefined);
   const [error, setError] = useState<Option<string>>(undefined);
 
-  const {
-    isFetching: queryFetching,
-    isRefetching: queryRefetching,
-    refetch,
-  } = useFunctionView({
+  const functionViewQuery = useFunctionView({
     abiData,
     fn,
     moduleAddress,
     moduleName,
-    onError: (err) => setError(err.response?.data.message || DEFAULT_RPC_ERROR),
-    onSuccess: (data) => setRes(JSON.parse(data)),
   });
+  useQueryEvents(functionViewQuery, {
+    onError: (err) =>
+      setError(
+        (err as AxiosError<RpcQueryError>).response?.data.message ||
+          DEFAULT_RPC_ERROR
+      ),
+    onSuccess: (data) => {
+      try {
+        setRes(JSON.parse(data));
+        setError(undefined);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Invalid JSON response (ViewArea)");
+        }
+        setRes(undefined);
+      }
+    },
+  });
+  const {
+    isFetching: queryFetching,
+    isRefetching: queryRefetching,
+    refetch,
+  } = functionViewQuery;
 
   const handleQuery = () => {
     refetch();

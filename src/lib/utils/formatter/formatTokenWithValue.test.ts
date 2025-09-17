@@ -20,12 +20,10 @@ describe("formatTokenWithValue", () => {
       value: undefined,
     };
 
-    expect(formatTokenWithValue({ isEvm: false, token })).toBe(
+    expect(formatTokenWithValue({ token })).toBe("1,000,000 denom");
+    expect(formatTokenWithValue({ decimalPoints: 2, token })).toBe(
       "1,000,000 denom"
     );
-    expect(
-      formatTokenWithValue({ decimalPoints: 2, isEvm: false, token })
-    ).toBe("1,000,000.00 denom");
   });
 
   test("coin with precision", () => {
@@ -40,12 +38,8 @@ describe("formatTokenWithValue", () => {
       value: undefined,
     };
 
-    expect(formatTokenWithValue({ isEvm: false, token })).toBe(
-      "1.000000 denom"
-    );
-    expect(
-      formatTokenWithValue({ decimalPoints: 2, isEvm: false, token })
-    ).toBe("1.00 denom");
+    expect(formatTokenWithValue({ token })).toBe("1 denom");
+    expect(formatTokenWithValue({ decimalPoints: 2, token })).toBe("1 denom");
   });
 
   test("coin with symbol", () => {
@@ -60,12 +54,10 @@ describe("formatTokenWithValue", () => {
       value: undefined,
     };
 
-    expect(formatTokenWithValue({ isEvm: false, token })).toBe(
+    expect(formatTokenWithValue({ token })).toBe("1,000,000 CLTN");
+    expect(formatTokenWithValue({ decimalPoints: 2, token })).toBe(
       "1,000,000 CLTN"
     );
-    expect(
-      formatTokenWithValue({ decimalPoints: 2, isEvm: false, token })
-    ).toBe("1,000,000.00 CLTN");
   });
 
   test("coin with precision and symbol", () => {
@@ -80,10 +72,8 @@ describe("formatTokenWithValue", () => {
       value: undefined,
     };
 
-    expect(formatTokenWithValue({ isEvm: false, token })).toBe("1.000000 CLTN");
-    expect(
-      formatTokenWithValue({ decimalPoints: 2, isEvm: false, token })
-    ).toBe("1.00 CLTN");
+    expect(formatTokenWithValue({ token })).toBe("1 CLTN");
+    expect(formatTokenWithValue({ decimalPoints: 2, token })).toBe("1 CLTN");
   });
 });
 
@@ -122,24 +112,22 @@ describe("formatTokenWithValueList", () => {
   ];
 
   test("empty array", () => {
-    expect(formatTokenWithValueList([], false)).toBe("");
+    expect(formatTokenWithValueList([])).toBe("");
   });
 
   test("1 token", () => {
-    expect(formatTokenWithValueList(tokens.slice(0, 1), false)).toBe(
-      "1.00 CLTN1"
-    );
+    expect(formatTokenWithValueList(tokens.slice(0, 1))).toBe("1 CLTN1");
   });
 
   test("2 tokens", () => {
-    expect(formatTokenWithValueList(tokens.slice(0, 2), false)).toBe(
-      "1.00 CLTN1 and 2.00 CLTN2"
+    expect(formatTokenWithValueList(tokens.slice(0, 2))).toBe(
+      "1 CLTN1 and 2 CLTN2"
     );
   });
 
   test("more than 2 tokens", () => {
-    expect(formatTokenWithValueList(tokens, false)).toBe(
-      "1.00 CLTN1, 2.00 CLTN2, and 3.00 CLTN3"
+    expect(formatTokenWithValueList(tokens)).toBe(
+      "1 CLTN1, 2 CLTN2, and 3 CLTN3"
     );
   });
 });

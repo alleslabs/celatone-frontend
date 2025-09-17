@@ -2,7 +2,6 @@ import type { FlexProps } from "@chakra-ui/react";
 import type { TokenWithValue } from "lib/types";
 
 import { Badge, Box, Flex, Text } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
 import {
   formatPrice,
   formatUTokenWithPrecision,
@@ -25,8 +24,6 @@ export const TokenCard = ({
   token,
   ...cardProps
 }: TokenCardProps) => {
-  const evm = useEvmConfig({ shouldRedirect: false });
-
   return (
     <Tooltip
       disableClickCapture
@@ -41,6 +38,7 @@ export const TokenCard = ({
         gap={2}
         minH="101px"
         p={3}
+        w="100%"
         {...cardProps}
       >
         <Flex alignItems="center" gap={1}>
@@ -79,7 +77,6 @@ export const TokenCard = ({
           <Text fontWeight={700} variant="body2">
             {formatUTokenWithPrecision({
               amount: token.amount,
-              isEvm: evm.enabled,
               isSuffix: false,
               precision: token.precision ?? 0,
             })}

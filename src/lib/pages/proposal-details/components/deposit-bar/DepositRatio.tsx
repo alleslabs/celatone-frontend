@@ -1,7 +1,6 @@
 import type { TokenWithValue } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
 import { TokenImageRender } from "lib/components/token";
 import { formatUTokenWithPrecision, getTokenLabel } from "lib/utils";
 
@@ -18,8 +17,6 @@ export const DepositRatio = ({
   isDepositOrVoting,
   min,
 }: DepositRatioProps) => {
-  const evm = useEvmConfig({ shouldRedirect: false });
-
   return (
     <Flex align="center" gap={1} minW="fit-content">
       <Text variant={isCompact ? "body2" : "body1"}>
@@ -27,7 +24,6 @@ export const DepositRatio = ({
           {formatUTokenWithPrecision({
             amount: current.amount,
             decimalPoints: isCompact ? 2 : undefined,
-            isEvm: evm.enabled,
             isSuffix: false,
             precision: current.precision ?? 0,
           })}
@@ -46,7 +42,6 @@ export const DepositRatio = ({
             {formatUTokenWithPrecision({
               amount: min.amount,
               decimalPoints: isCompact ? 2 : undefined,
-              isEvm: evm.enabled,
               isSuffix: false,
               precision: min.precision ?? 0,
             })}

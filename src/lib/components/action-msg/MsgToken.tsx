@@ -1,7 +1,6 @@
 import type { TokenWithValue } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
 import { formatTokenWithValue, isSupportedToken } from "lib/utils";
 
 import { Copier } from "../copy";
@@ -18,12 +17,10 @@ export const MsgToken = ({
   fontWeight = 600,
   token,
 }: MsgTokenProps) => {
-  const evm = useEvmConfig({ shouldRedirect: false });
-
   return (
     <Flex align="center" gap={1} role="group">
       <Text fontWeight={fontWeight} variant="body2">
-        {formatTokenWithValue({ isEvm: evm.enabled, token })}
+        {formatTokenWithValue({ token })}
       </Text>
       <TooltipInfo
         label={`Token ID: ${token.denom}`}

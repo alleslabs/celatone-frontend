@@ -36,73 +36,73 @@ describe("formatDecimal", () => {
   });
 
   test("from string", () => {
-    expect(f("12345678", FALLBACK)).toEqual("12345678.0000");
-    expect(f("12345.678", FALLBACK)).toEqual("12345.6780");
+    expect(f("12345678", FALLBACK)).toEqual("12345678");
+    expect(f("12345.678", FALLBACK)).toEqual("12345.678");
 
-    expect(f("-12345678", FALLBACK)).toEqual("-12345678.0000");
-    expect(f("-12345.678", FALLBACK)).toEqual("-12345.6780");
+    expect(f("-12345678", FALLBACK)).toEqual("-12345678");
+    expect(f("-12345.678", FALLBACK)).toEqual("-12345.678");
 
-    expect(fDelim("00.000", FALLBACK)).toEqual("0.0000");
-    expect(fDelim("0.0000001", FALLBACK)).toEqual("0.0000");
-    expect(fDelim("0.123", FALLBACK)).toEqual("0.1230");
-    expect(fDelim("123", FALLBACK)).toEqual("123.0000");
-    expect(fDelim("01234", FALLBACK)).toEqual("1,234.0000");
-    expect(fDelim("12340", FALLBACK)).toEqual("12,340.0000");
-    expect(fDelim("12345678", FALLBACK)).toEqual("12,345,678.0000");
-    expect(fDelim("12345.678", FALLBACK)).toEqual("12,345.6780");
+    expect(fDelim("00.000", FALLBACK)).toEqual("0");
+    expect(fDelim("0.0000001", FALLBACK)).toEqual("0");
+    expect(fDelim("0.123", FALLBACK)).toEqual("0.123");
+    expect(fDelim("123", FALLBACK)).toEqual("123");
+    expect(fDelim("01234", FALLBACK)).toEqual("1,234");
+    expect(fDelim("12340", FALLBACK)).toEqual("12,340");
+    expect(fDelim("12345678", FALLBACK)).toEqual("12,345,678");
+    expect(fDelim("12345.678", FALLBACK)).toEqual("12,345.678");
     expect(fDelim("123.45678", FALLBACK)).toEqual("123.4567");
 
-    expect(fDelim("-0", FALLBACK)).toEqual("0.0000");
-    expect(fDelim("-0.0000001", FALLBACK)).toEqual("0.0000");
-    expect(fDelim("-0.123", FALLBACK)).toEqual("-0.1230");
-    expect(fDelim("-01.230", FALLBACK)).toEqual("-1.2300");
-    expect(fDelim("-123", FALLBACK)).toEqual("-123.0000");
-    expect(fDelim("-01234", FALLBACK)).toEqual("-1,234.0000");
-    expect(fDelim("-12340", FALLBACK)).toEqual("-12,340.0000");
-    expect(fDelim("-12345678", FALLBACK)).toEqual("-12,345,678.0000");
-    expect(fDelim("-12345.678", FALLBACK)).toEqual("-12,345.6780");
+    expect(fDelim("-0", FALLBACK)).toEqual("0");
+    expect(fDelim("-0.0000001", FALLBACK)).toEqual("0");
+    expect(fDelim("-0.123", FALLBACK)).toEqual("-0.123");
+    expect(fDelim("-01.230", FALLBACK)).toEqual("-1.23");
+    expect(fDelim("-123", FALLBACK)).toEqual("-123");
+    expect(fDelim("-01234", FALLBACK)).toEqual("-1,234");
+    expect(fDelim("-12340", FALLBACK)).toEqual("-12,340");
+    expect(fDelim("-12345678", FALLBACK)).toEqual("-12,345,678");
+    expect(fDelim("-12345.678", FALLBACK)).toEqual("-12,345.678");
     expect(fDelim("-123.45678", FALLBACK)).toEqual("-123.4567");
   });
 
   test("from number", () => {
-    expect(f(0xab, FALLBACK)).toEqual("171.0000");
-    expect(f(1e2, FALLBACK)).toEqual("100.0000");
-    expect(f(0b111, FALLBACK)).toEqual("7.0000");
+    expect(f(0xab, FALLBACK)).toEqual("171");
+    expect(f(1e2, FALLBACK)).toEqual("100");
+    expect(f(0b111, FALLBACK)).toEqual("7");
 
-    expect(f(12345678, FALLBACK)).toEqual("12345678.0000");
-    expect(f(12345.678, FALLBACK)).toEqual("12345.6780");
+    expect(f(12345678, FALLBACK)).toEqual("12345678");
+    expect(f(12345.678, FALLBACK)).toEqual("12345.678");
 
-    expect(f(-12345678, FALLBACK)).toEqual("-12345678.0000");
-    expect(f(-12345.678, FALLBACK)).toEqual("-12345.6780");
+    expect(f(-12345678, FALLBACK)).toEqual("-12345678");
+    expect(f(-12345.678, FALLBACK)).toEqual("-12345.678");
 
-    expect(fDelim(0, FALLBACK)).toEqual("0.0000");
-    expect(fDelim(0.123, FALLBACK)).toEqual("0.1230");
-    expect(fDelim(123, FALLBACK)).toEqual("123.0000");
-    expect(fDelim(12340, FALLBACK)).toEqual("12,340.0000");
-    expect(fDelim(12345678, FALLBACK)).toEqual("12,345,678.0000");
-    expect(fDelim(12345.678, FALLBACK)).toEqual("12,345.6780");
+    expect(fDelim(0, FALLBACK)).toEqual("0");
+    expect(fDelim(0.123, FALLBACK)).toEqual("0.123");
+    expect(fDelim(123, FALLBACK)).toEqual("123");
+    expect(fDelim(12340, FALLBACK)).toEqual("12,340");
+    expect(fDelim(12345678, FALLBACK)).toEqual("12,345,678");
+    expect(fDelim(12345.678, FALLBACK)).toEqual("12,345.678");
     expect(fDelim(123.45678, FALLBACK)).toEqual("123.4567");
 
-    expect(fDelim(-0, FALLBACK)).toEqual("0.0000");
-    expect(fDelim(-0.123, FALLBACK)).toEqual("-0.1230");
-    expect(fDelim(-123, FALLBACK)).toEqual("-123.0000");
-    expect(fDelim(-12340, FALLBACK)).toEqual("-12,340.0000");
-    expect(fDelim(-12345678, FALLBACK)).toEqual("-12,345,678.0000");
-    expect(fDelim(-12345.678, FALLBACK)).toEqual("-12,345.6780");
+    expect(fDelim(-0, FALLBACK)).toEqual("0");
+    expect(fDelim(-0.123, FALLBACK)).toEqual("-0.123");
+    expect(fDelim(-123, FALLBACK)).toEqual("-123");
+    expect(fDelim(-12340, FALLBACK)).toEqual("-12,340");
+    expect(fDelim(-12345678, FALLBACK)).toEqual("-12,345,678");
+    expect(fDelim(-12345.678, FALLBACK)).toEqual("-12,345.678");
     expect(fDelim(-123.45678, FALLBACK)).toEqual("-123.4567");
   });
 
   test("from big", () => {
-    expect(f(big(1234), FALLBACK)).toEqual("1234.0000");
-    expect(f(big(123456.789), FALLBACK)).toEqual("123456.7890");
+    expect(f(big(1234), FALLBACK)).toEqual("1234");
+    expect(f(big(123456.789), FALLBACK)).toEqual("123456.789");
 
-    expect(f(big(-123456789), FALLBACK)).toEqual("-123456789.0000");
-    expect(f(big(-123456.789), FALLBACK)).toEqual("-123456.7890");
+    expect(f(big(-123456789), FALLBACK)).toEqual("-123456789");
+    expect(f(big(-123456.789), FALLBACK)).toEqual("-123456.789");
 
-    expect(fDelim(big(123456.789), FALLBACK)).toEqual("123,456.7890");
+    expect(fDelim(big(123456.789), FALLBACK)).toEqual("123,456.789");
     expect(fDelim(big(123.456789), FALLBACK)).toEqual("123.4567");
 
-    expect(fDelim(big(-123456.789), FALLBACK)).toEqual("-123,456.7890");
+    expect(fDelim(big(-123456.789), FALLBACK)).toEqual("-123,456.789");
     expect(fDelim(big(-123.456789), FALLBACK)).toEqual("-123.4567");
   });
 });
@@ -125,9 +125,9 @@ describe("d2Formatter", () => {
     expect(d2Formatter("1234.5678", FALLBACK)).toEqual("1,234.56");
   });
   test("from number", () => {
-    expect(d2Formatter(1234.5, FALLBACK)).toEqual("1,234.50");
-    expect(d2Formatter(1234, FALLBACK)).toEqual("1,234.00");
-    expect(d2Formatter(-1234.5, FALLBACK)).toEqual("-1,234.50");
+    expect(d2Formatter(1234.5, FALLBACK)).toEqual("1,234.5");
+    expect(d2Formatter(1234, FALLBACK)).toEqual("1,234");
+    expect(d2Formatter(-1234.5, FALLBACK)).toEqual("-1,234.5");
   });
 });
 
@@ -137,9 +137,9 @@ describe("d6Formatter", () => {
     expect(d6Formatter("-0.123456789", FALLBACK)).toEqual("-0.123456");
   });
   test("from number", () => {
-    expect(d6Formatter(0.1234, FALLBACK)).toEqual("0.123400");
-    expect(d6Formatter(1234, FALLBACK)).toEqual("1,234.000000");
-    expect(d6Formatter(-0.1234, FALLBACK)).toEqual("-0.123400");
+    expect(d6Formatter(0.1234, FALLBACK)).toEqual("0.1234");
+    expect(d6Formatter(1234, FALLBACK)).toEqual("1,234");
+    expect(d6Formatter(-0.1234, FALLBACK)).toEqual("-0.1234");
   });
 });
 
@@ -179,46 +179,41 @@ describe("formatUTokenWithPrecision", () => {
       expect(
         formatUTokenWithPrecision({
           amount: "" as U<Token>,
-          isEvm: false,
           isSuffix: false,
           precision: 6,
         })
-      ).toEqual("0.000000");
+      ).toEqual("0");
       expect(
         formatUTokenWithPrecision({
           amount: "" as U<Token>,
           decimalPoints: 1,
-          isEvm: false,
           isSuffix: true,
           precision: 6,
         })
-      ).toEqual("0.0");
+      ).toEqual("0");
     });
     test("NaN", () => {
       expect(
         formatUTokenWithPrecision({
           amount: NaN as U<Token<number>>,
-          isEvm: false,
           isSuffix: false,
           precision: 8,
         })
-      ).toEqual("0.00000000");
+      ).toEqual("0");
       expect(
         formatUTokenWithPrecision({
           amount: NaN as U<Token<number>>,
           decimalPoints: 3,
-          isEvm: false,
           isSuffix: true,
           precision: 6,
         })
-      ).toEqual("0.000");
+      ).toEqual("0");
     });
   });
   test("too small", () => {
     expect(
       formatUTokenWithPrecision({
         amount: "0.1" as U<Token>,
-        isEvm: false,
         isSuffix: false,
         precision: 6,
       })
@@ -226,70 +221,32 @@ describe("formatUTokenWithPrecision", () => {
     expect(
       formatUTokenWithPrecision({
         amount: "0.1" as U<Token>,
-        isEvm: false,
         isSuffix: false,
         precision: 7,
       })
-    ).toEqual("<0.0000001");
+    ).toEqual("<0.000001");
     expect(
       formatUTokenWithPrecision({
         amount: "0.1" as U<Token>,
         decimalPoints: 2,
-        isEvm: false,
         isSuffix: false,
         precision: 6,
       })
     ).toEqual("<0.01");
   });
-  test("isEvm true", () => {
-    // Basic test with isEvm true, no suffix
-    expect(
-      formatUTokenWithPrecision({
-        amount: "1000000" as U<Token>,
-        isEvm: true,
-        isSuffix: false,
-        precision: 6,
-      })
-    ).toEqual("1");
 
-    // With hasTrailingZeros true, but isEvm disables trailing zeros
-    expect(
-      formatUTokenWithPrecision({
-        amount: "1000000" as U<Token>,
-        decimalPoints: 6,
-        hasTrailingZeros: true,
-        isEvm: true,
-        isSuffix: false,
-        precision: 6,
-      })
-    ).toEqual("1");
-
-    // With hasTrailingZeros false, isEvm true
-    expect(
-      formatUTokenWithPrecision({
-        amount: "1234560" as U<Token>,
-        decimalPoints: 6,
-        hasTrailingZeros: false,
-        isEvm: true,
-        isSuffix: false,
-        precision: 6,
-      })
-    ).toEqual("1.23456");
-  });
   test("no suffix", () => {
     expect(
       formatUTokenWithPrecision({
         amount: "12345678901234567890" as U<Token>,
-        isEvm: false,
         isSuffix: false,
         precision: 6,
       })
-    ).toEqual("12,345,678,901,234.567890");
+    ).toEqual("12,345,678,901,234.56789");
     expect(
       formatUTokenWithPrecision({
         amount: "12345678901234567890" as U<Token>,
         decimalPoints: 2,
-        isEvm: false,
         isSuffix: false,
         precision: 6,
       })
@@ -298,18 +255,16 @@ describe("formatUTokenWithPrecision", () => {
       formatUTokenWithPrecision({
         amount: "12345678901234567890" as U<Token>,
         decimalPoints: 8,
-        isEvm: false,
         isSuffix: false,
         precision: 6,
       })
-    ).toEqual("12,345,678,901,234.56789000");
+    ).toEqual("12,345,678,901,234.56789");
   });
   describe("with suffix", () => {
     test(">= T", () => {
       expect(
         formatUTokenWithPrecision({
           amount: "12345678901234567890" as U<Token>,
-          isEvm: false,
           isSuffix: true,
           precision: 6,
         })
@@ -319,7 +274,6 @@ describe("formatUTokenWithPrecision", () => {
       expect(
         formatUTokenWithPrecision({
           amount: "12345678901234567" as U<Token>,
-          isEvm: true,
           isSuffix: true,
           precision: 6,
         })
@@ -329,7 +283,6 @@ describe("formatUTokenWithPrecision", () => {
       expect(
         formatUTokenWithPrecision({
           amount: 12345678901234 as U<Token<number>>,
-          isEvm: true,
           isSuffix: true,
           precision: 6,
         })
@@ -339,7 +292,6 @@ describe("formatUTokenWithPrecision", () => {
       expect(
         formatUTokenWithPrecision({
           amount: 1234567890 as U<Token<number>>,
-          isEvm: true,
           isSuffix: true,
           precision: 6,
         })
@@ -349,7 +301,6 @@ describe("formatUTokenWithPrecision", () => {
       expect(
         formatUTokenWithPrecision({
           amount: 123456789 as U<Token<number>>,
-          isEvm: true,
           isSuffix: true,
           precision: 6,
         })
@@ -358,7 +309,6 @@ describe("formatUTokenWithPrecision", () => {
         formatUTokenWithPrecision({
           amount: 123456789 as U<Token<number>>,
           decimalPoints: 3,
-          isEvm: true,
           isSuffix: true,
           precision: 6,
         })
@@ -392,7 +342,7 @@ describe("formatPrice", () => {
       expect(formatPrice("1.234" as USD)).toEqual("$1.23");
     });
     test("from number", () => {
-      expect(formatPrice(1.0 as USD<number>)).toEqual("$1.00");
+      expect(formatPrice(1.0 as USD<number>)).toEqual("$1");
       expect(formatPrice(1.23 as USD<number>)).toEqual("$1.23");
     });
   });
@@ -407,12 +357,12 @@ describe("formatPrice", () => {
   describe("0.000001 <= x < 1", () => {
     test("from string", () => {
       expect(formatPrice("0.000001" as USD)).toEqual("$0.000001");
-      expect(formatPrice("0.123" as USD)).toEqual("$0.123000");
+      expect(formatPrice("0.123" as USD)).toEqual("$0.123");
       expect(formatPrice("0.123456789" as USD)).toEqual("$0.123456");
     });
     test("from number", () => {
       expect(formatPrice(0.000001 as USD<number>)).toEqual("$0.000001");
-      expect(formatPrice(0.123 as USD<number>)).toEqual("$0.123000");
+      expect(formatPrice(0.123 as USD<number>)).toEqual("$0.123");
       expect(formatPrice(0.123456789 as USD<number>)).toEqual("$0.123456");
     });
   });

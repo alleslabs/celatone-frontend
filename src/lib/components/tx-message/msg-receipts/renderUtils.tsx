@@ -21,6 +21,8 @@ type HtmlType = "explorer" | "json";
 interface CommonReceiptHtmlArgs<T extends HtmlType, V> {
   fallback?: string;
   linkType?: LinkType;
+  queryParams?: Record<string, string>;
+  textLabel?: string;
   type: T;
   value: Option<Nullable<V>>;
 }
@@ -29,6 +31,8 @@ interface CommonReceiptHtmlArgs<T extends HtmlType, V> {
 export const getCommonReceiptHtml = <T extends HtmlType>({
   fallback,
   linkType = "invalid_address",
+  queryParams,
+  textLabel,
   type,
   value,
 }: CommonReceiptHtmlArgs<T, T extends "json" ? object : string>) => {
@@ -45,7 +49,7 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
           {fallback}
         </Text>
       );
-    case !value:
+    case !value && linkType !== "function_name":
       return (
         <Text color="warning.dark" variant="body2">
           Data not found
@@ -67,8 +71,10 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
         <ExplorerLink
           ampCopierSection="tx_msg_receipts"
           maxWidth="full"
+          queryParams={queryParams ?? {}}
           showCopyOnHover
           textFormat="normal"
+          textLabel={textLabel}
           type={linkType}
           value={value as string}
           wordBreak="break-word"

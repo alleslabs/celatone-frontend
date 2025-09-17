@@ -1,7 +1,6 @@
 import type { Option, TokenWithValue } from "lib/types";
 
 import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
 import {
   formatPrice,
   formatUTokenWithPrecision,
@@ -18,8 +17,6 @@ const SingleBondRadioCardBody = ({
   isLoading,
   token,
 }: Omit<SingleBondRadioCardProps, "value">) => {
-  const evm = useEvmConfig({ shouldRedirect: false });
-
   if (isLoading) return <Spinner alignSelf="center" mt={2} size="xl" />;
   if (!token)
     return (
@@ -33,7 +30,6 @@ const SingleBondRadioCardBody = ({
       <Heading as="h6" variant={{ base: "h7", md: "h6" }}>
         {formatUTokenWithPrecision({
           amount: token.amount,
-          isEvm: evm.enabled,
           precision: token.precision ?? 0,
         })}
       </Heading>

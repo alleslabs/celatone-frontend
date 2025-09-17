@@ -62,7 +62,7 @@ export const WasmVerifySubmitModal = ({
 }: WasmVerifySubmitModalProps) => {
   const queryClient = useQueryClient();
   const { currentChainId } = useCelatoneApp();
-  const { error, isError, isLoading, isSuccess, mutate } =
+  const { error, isError, isPending, isSuccess, mutate } =
     useSubmitWasmVerify();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -109,7 +109,7 @@ export const WasmVerifySubmitModal = ({
             contractAddress={contractAddress}
             errorMsg={error?.response?.data.message}
             isError={isError}
-            isLoading={isLoading}
+            isLoading={isPending}
             isSuccess={isSuccess}
             relatedVerifiedCodes={relatedVerifiedCodes}
             wasmVerifyStatus={wasmVerifyStatus}

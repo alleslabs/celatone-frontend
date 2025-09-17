@@ -20,7 +20,7 @@ import {
 } from "lib/components/json-schema";
 import JsonInput from "lib/components/json/JsonInput";
 import { CodeSelectSection } from "lib/components/select-code";
-import { useTxBroadcast } from "lib/hooks";
+import { useQueryEvents, useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
 import { useSimulateFeeQuery } from "lib/services/tx";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
@@ -128,9 +128,12 @@ export const MigrateContract = ({
         : setEstimatedFee(undefined),
   });
 
-  const { refetch } = useCodeRest(Number(codeId), {
-    cacheTime: 0,
+  const codeRestQuery = useCodeRest(Number(codeId), {
     enabled: false,
+    gcTime: 0,
+    retry: false,
+  });
+  useQueryEvents(codeRestQuery, {
     onError: () => {
       setStatus({ message: "This code ID does not exist", state: "error" });
       setSimulateError("");
@@ -154,8 +157,8 @@ export const MigrateContract = ({
         setSimulateError("");
       }
     },
-    retry: false,
   });
+  const { refetch } = codeRestQuery;
 
   // ------------------------------------------//
   // ----------------CALLBACKS-----------------//

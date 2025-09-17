@@ -1,5 +1,5 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
-import type { Event } from "lib/services/types";
+import type { Event, RawTxResponse, TxResponse } from "lib/services/types";
 import type { BechAddr, Option, Pubkey } from "lib/types";
 
 import { z } from "zod";
@@ -43,6 +43,11 @@ export interface Transaction {
   sender: BechAddr;
   success: boolean;
 }
+
+export type TransactionWithTxResponse = Transaction & {
+  rawTxResponse: Option<RawTxResponse>;
+  txResponse: Option<TxResponse>;
+};
 
 export type TransactionWithSignerPubkey = Omit<Transaction, "sender"> & {
   signerPubkey: Pubkey;
@@ -92,7 +97,7 @@ export const zRemarkType = z.enum(["genesis", "governance", "transaction"]);
 export type RemarkType = z.infer<typeof zRemarkType>;
 
 export const zRemark = z.object({
-  type: zRemarkType.nullable(),
+  type: zRemarkType.nullish(),
   value: z.union([z.string(), z.number()]).optional(),
 });
 export type Remark = z.infer<typeof zRemark>;

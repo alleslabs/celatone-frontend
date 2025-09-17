@@ -87,7 +87,7 @@ export const EvmContractVerifyBody = ({
   const queryClient = useQueryClient();
   const { currentChainId } = useCelatoneApp();
   const { user: exampleBechAddress } = useExampleAddresses();
-  const { isError, isLoading, mutate } = useSubmitEvmVerify();
+  const { isError, isPending, mutate } = useSubmitEvmVerify();
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_EVM_CONTRACT_VERIFY);
@@ -396,7 +396,7 @@ export const EvmContractVerifyBody = ({
             <EvmContractVerifyModal
               control={control}
               isError={isError}
-              isLoading={isLoading}
+              isLoading={isPending}
               isOpen={isOpen}
               onClose={onClose}
             />

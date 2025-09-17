@@ -1,6 +1,5 @@
 import type { Coin, Option, ProposalParams, Token, U } from "lib/types";
 
-import { useEvmConfig } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import { useProposalParams } from "lib/services/proposal";
@@ -39,7 +38,6 @@ export const useGovParamsDeprecated = (): {
   data: Option<GovParams>;
   isLoading: boolean;
 } => {
-  const evm = useEvmConfig({ shouldRedirect: false });
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
 
@@ -71,7 +69,6 @@ export const useGovParamsDeprecated = (): {
             minDepositToken.symbol
           ),
           formattedToken: formatTokenWithValue({
-            isEvm: evm.enabled,
             token: minDepositToken,
           }),
           precision: minDepositToken.precision ?? 0,

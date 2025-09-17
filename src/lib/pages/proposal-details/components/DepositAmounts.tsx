@@ -1,7 +1,6 @@
 import type { ProposalDeposit } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
 import { TokenImageRender } from "lib/components/token";
 import { formatUTokenWithPrecision, getTokenLabel } from "lib/utils";
 
@@ -10,8 +9,6 @@ interface DepositAmountsProps {
 }
 
 export const DepositAmounts = ({ deposit }: DepositAmountsProps) => {
-  const evm = useEvmConfig({ shouldRedirect: false });
-
   return (
     <div>
       {deposit.amount.length === 0 ? (
@@ -26,7 +23,6 @@ export const DepositAmounts = ({ deposit }: DepositAmountsProps) => {
                 {formatUTokenWithPrecision({
                   amount: token.amount,
                   decimalPoints: 2,
-                  isEvm: evm.enabled,
                   isSuffix: true,
                   precision: token.precision ?? 0,
                 })}

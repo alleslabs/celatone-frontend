@@ -11,7 +11,11 @@ export const useGetFirstNftAsCollectionImage = (
   // Note: Use limit 6 for the sake of performance when user gets into the details page
   const { data: nftsFull } = useNfts(collectionAddressHex, 6, 0);
 
-  const { data: nftsSequencer } = useNftsSequencer(collectionAddressHex, 6);
+  const { data: nftsSequencer } = useNftsSequencer(
+    collectionAddressHex,
+    6,
+    true
+  );
 
   const nfts = isFullTier ? nftsFull?.items : nftsSequencer;
 
