@@ -2,7 +2,7 @@ import type { Option } from "lib/types";
 import type { ChainProfile } from "lib/types/chainProfile";
 
 import axios from "axios";
-import { CHAIN, SCAN_API, SKIP_API } from "env";
+import { CELATONE_API, CHAIN, SCAN_API, SKIP_API } from "env";
 import { CHAIN_PROFILE_URL } from "lib/data";
 import { zChainConfig, zNonInitiaChainConfig } from "lib/types";
 import { zChainProfile } from "lib/types/chainProfile";
@@ -14,7 +14,7 @@ export const getApiChainConfigs = (
   chain: Option<string>
 ) => {
   const endpoint =
-    CHAIN === "initia" ? `${SCAN_API}/v1/chains` : `${SCAN_API}/v1/configs`;
+    CHAIN === "initia" ? `${SCAN_API}/v1/chains` : `${CELATONE_API}/v1/configs`;
 
   if (!isUrl(String(endpoint))) {
     throw new Error(

@@ -1,4 +1,5 @@
 import { Flex, HStack } from "@chakra-ui/react";
+import { useIsMainnet } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMoveDexPoolInfo } from "lib/services/move/dex";
 import { coinToTokenWithValue, getTokenLabel } from "lib/utils";
@@ -13,6 +14,12 @@ interface DexPoolLinkProps {
 export const DexPoolLink = ({ liquidityDenom }: DexPoolLinkProps) => {
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
   const { data: moveDexPool } = useMoveDexPoolInfo(liquidityDenom);
+  const isMainnet = useIsMainnet();
+
+  const baseUrl = isMainnet
+    ? "https://app.initia.xyz"
+    : "https://app.testnet.initia.xyz";
+  const externalLink = `${baseUrl}/liquidity/${encodeURIComponent(liquidityDenom)}`;
 
   const lpToken = assetInfos?.[liquidityDenom];
 
@@ -41,7 +48,7 @@ export const DexPoolLink = ({ liquidityDenom }: DexPoolLinkProps) => {
       </Flex>
       <ExplorerLink
         copyValue={liquidityDenom}
-        externalLink={`https://app.initia.xyz/liquidity/${encodeURIComponent(liquidityDenom)}`}
+        externalLink={externalLink}
         hideCopy={true}
         type="move_dex_pool_address"
         value={lpToken?.name || liquidityDenom}
