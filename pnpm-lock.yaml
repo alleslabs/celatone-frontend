@@ -128,11 +128,11 @@ importers:
         specifier: 2.0.0
         version: 2.0.0(4mierzbljd4w4qkoaoed2iz4m4)
       '@initia/react-app-shell':
-        specifier: 1.1.0
-        version: 1.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: 1.3.0
+        version: 1.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@initia/tx-decoder':
-        specifier: 0.7.0
-        version: 0.7.0(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
+        specifier: 0.7.1
+        version: 0.7.1(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
       '@initia/utils':
         specifier: 2.0.0
         version: 2.0.0(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(ky@1.8.0)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
@@ -2513,14 +2513,14 @@ packages:
   '@initia/opinit.proto@0.0.11':
     resolution: {integrity: sha512-Op9GIlXiV1xhUIjVQ2TFE9a3X8iyFVNtJNHCM34gwLQHJktDNm2KCoW4eHh6pkn4//ECRVH7zuKgV8TdZWogCw==}
 
-  '@initia/react-app-shell@1.1.0':
-    resolution: {integrity: sha512-oc3PWZ42kFqoSuwN8LHhImUSZuPLyJdZcKEosXUK0327hs+a5Xnup/mSsLFQ3xitkXd+5BPZsnMmpouN1tacvg==}
+  '@initia/react-app-shell@1.3.0':
+    resolution: {integrity: sha512-cxf5geFP9c5i8pSeAqVp7bsYo7rT4vxH/2266T0+odzb7fHy8eP1G3zvFDosnxuMqlFwXFKmWzCG3iuRnYkixw==}
     peerDependencies:
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@initia/tx-decoder@0.7.0':
-    resolution: {integrity: sha512-+SxP4MgCgVhTJ75xMo+PGy5Mn84u6Rz2AQBgT+mRaqWJS/1jimSU1VeUOBGUfnuILNC3W5M2gXmCSmn6BeWIkg==}
+  '@initia/tx-decoder@0.7.1':
+    resolution: {integrity: sha512-nPafdy2oqA6L3wF/v+JF/pVBy+6GROapzuvOvdUlwJt0yu/ypZV6GV0LRUCcYivozc9uuGKNW+QhWitCt/LOGw==}
     engines: {node: '>=22.0.0'}
 
   '@initia/utils@2.0.0':
@@ -15103,12 +15103,12 @@ snapshots:
       long: 5.3.1
       protobufjs: 7.4.0
 
-  '@initia/react-app-shell@1.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@initia/react-app-shell@1.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  '@initia/tx-decoder@0.7.0(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)':
+  '@initia/tx-decoder@0.7.1(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@cosmjs/encoding': 0.36.0
       '@initia/utils': 2.0.0-alpha.3(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.25.67))
@@ -18003,7 +18003,7 @@ snapshots:
     dependencies:
       big.js: 6.2.2
       dayjs: 1.11.13
-      viem: 2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4)
+      viem: 2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -18014,7 +18014,7 @@ snapshots:
     dependencies:
       big.js: 6.2.2
       dayjs: 1.11.13
-      viem: 2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      viem: 2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -18027,7 +18027,7 @@ snapshots:
       '@reown/appkit-wallet': 1.7.8(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
       '@walletconnect/universal-provider': 2.21.0(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
       valtio: 1.13.2(@types/react@19.1.0)(react@19.1.0)
-      viem: 2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      viem: 2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -18173,7 +18173,7 @@ snapshots:
       '@walletconnect/logger': 2.1.2
       '@walletconnect/universal-provider': 2.21.0(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
       valtio: 1.13.2(@types/react@19.1.0)(react@19.1.0)
-      viem: 2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      viem: 2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -18226,7 +18226,7 @@ snapshots:
       '@walletconnect/universal-provider': 2.21.0(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
       bs58: 6.0.0
       valtio: 1.13.2(@types/react@19.1.0)(react@19.1.0)
-      viem: 2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      viem: 2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -18337,7 +18337,7 @@ snapshots:
   '@safe-global/safe-apps-sdk@9.1.0(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)':
     dependencies:
       '@safe-global/safe-gateway-typescript-sdk': 3.23.1
-      viem: 2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      viem: 2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -25581,7 +25581,7 @@ snapshots:
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0
-      abitype: 1.0.8(typescript@5.3.3)(zod@3.24.2)
+      abitype: 1.1.0(typescript@5.3.3)(zod@3.24.2)
       eventemitter3: 5.0.1
     optionalDependencies:
       typescript: 5.3.3
@@ -28050,7 +28050,24 @@ snapshots:
       - utf-8-validate
       - zod
 
-  viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4):
+  viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2):
+    dependencies:
+      '@noble/curves': 1.9.1
+      '@noble/hashes': 1.8.0
+      '@scure/bip32': 1.7.0
+      '@scure/bip39': 1.6.0
+      abitype: 1.1.0(typescript@5.3.3)(zod@3.24.2)
+      isows: 1.0.7(ws@8.18.3(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      ox: 0.9.3(typescript@5.3.3)(zod@3.24.2)
+      ws: 8.18.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
+    optionalDependencies:
+      typescript: 5.3.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+
+  viem@2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.22.4):
     dependencies:
       '@noble/curves': 1.9.1
       '@noble/hashes': 1.8.0
@@ -28067,7 +28084,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2):
+  viem@2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2):
     dependencies:
       '@noble/curves': 1.9.1
       '@noble/hashes': 1.8.0

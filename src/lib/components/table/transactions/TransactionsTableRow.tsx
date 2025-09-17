@@ -1,24 +1,15 @@
-import type { TransactionWithTxResponse } from "lib/types";
-
-import {
-  Box,
-  Flex,
-  Grid,
-  Spinner,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { ActionMessages } from "lib/components/action-msg/ActionMessages";
-import { DecodeMessage } from "lib/components/decode-message";
+import { Box, Flex, Grid, Text, useDisclosure } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { useTxDecoder } from "lib/services/tx";
+import { type TransactionWithTxResponse } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { AccordionTx } from "../AccordionTx";
 import { TableRow } from "../tableComponents";
 import { FurtherActionButton } from "./FurtherActionButton";
 import { RelationChip } from "./RelationChip";
+import { TransactionsTableDecodeMessageColumn } from "./TransactionsTableDecodeMessageColumn";
 
 interface TransactionsTableRowProps {
   showAction: boolean;
@@ -97,24 +88,12 @@ export const TransactionsTableRow = ({
           </TableRow>
         ) : (
           <TableRow maxW="100%">
-            {isDecodedTxFetching ? (
-              <Spinner boxSize={4} />
-            ) : (
-              <>
-                {txResponse && decodedTx && decodedTx.messages.length > 0 ? (
-                  <DecodeMessage
-                    compact
-                    decodedMessage={decodedTx.messages[0].decodedMessage}
-                    log={undefined}
-                    metadata={decodedTx.metadata}
-                    msgBody={txResponse.tx.body.messages[0]}
-                    msgCount={txResponse.tx.body.messages.length}
-                  />
-                ) : (
-                  <ActionMessages transaction={transaction} />
-                )}
-              </>
-            )}
+            <TransactionsTableDecodeMessageColumn
+              decodedTx={decodedTx}
+              isDecodedTxFetching={isDecodedTxFetching}
+              transaction={transaction}
+              txResponse={txResponse}
+            />
           </TableRow>
         )}
         {showRelations &&
