@@ -19,16 +19,14 @@ export const formatTokenWithValue = ({
 
 export const formatTokenWithValueInGwei = (
   token: TokenWithValue,
-  decimalPoints?: number,
-  hasTrailingZeros?: boolean
+  decimalPoints?: number
 ) =>
-  `${formatUTokenWithPrecision(
-    token.amount,
-    9,
-    false,
+  `${formatUTokenWithPrecision({
+    amount: token.amount,
     decimalPoints,
-    hasTrailingZeros
-  )} Gwei`;
+    isSuffix: false,
+    precision: 9,
+  })} Gwei`;
 
 export const formatTokenWithValueList = (tokens: TokenWithValue[]) => {
   if (tokens.length <= 2)

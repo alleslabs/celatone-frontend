@@ -37,6 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v1.15.0
+
 ### Features
 
 - [#1455](https://github.com/alleslabs/celatone-frontend/pull/1455) Update transactions table tx decoder column

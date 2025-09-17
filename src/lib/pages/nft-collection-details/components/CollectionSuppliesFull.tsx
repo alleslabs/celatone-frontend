@@ -44,10 +44,7 @@ export const CollectionSuppliesFull = ({
     collectionAddressHex,
     pageSize,
     offset,
-    debouncedSearch,
-    {
-      onSuccess: () => setTotalData(totalSupply),
-    }
+    debouncedSearch
   );
   useQueryEvents(nftsQuery, {
     onSuccess: () => setTotalData(totalSupply),

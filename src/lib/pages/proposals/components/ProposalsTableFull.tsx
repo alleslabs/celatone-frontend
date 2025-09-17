@@ -56,11 +56,9 @@ export const ProposalsTableFull = () => {
     proposer,
     statuses,
     types,
-    debouncedSearch,
-    {
-      onSuccess: ({ total }) => setTotalData(total),
-    }
+    debouncedSearch
   );
+
   useQueryEvents(proposalsQuery, {
     onSuccess: ({ total }) => setTotalData(total),
   });

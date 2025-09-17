@@ -159,19 +159,20 @@ export const useDebugTraceTransaction = (height: number, txHash: string) => {
     },
   } = useCelatoneApp();
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.EVM_DEBUG_TRACE_TRANSACTION,
       evm.enabled && evm.jsonRpc,
       txHash,
+      height,
     ],
-    async () => {
+    queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useDebugTraceTransaction)");
       const internalTxs = await getDebugTraceBlockByNumber(evm.jsonRpc, height);
       return internalTxs.filter((tx) => tx.txHash === txHash);
-    }
-  );
+    },
+  });
 };
 
 export const useDebugTraceBlockByNumber = (height: number) => {
@@ -181,16 +182,16 @@ export const useDebugTraceBlockByNumber = (height: number) => {
     },
   } = useCelatoneApp();
 
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.EVM_DEBUG_TRACE_BLOCK_BY_NUMBER,
       evm.enabled && evm.jsonRpc,
       height,
     ],
-    async () => {
+    queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useDebugTraceBlockByNumber)");
       return getDebugTraceBlockByNumber(evm.jsonRpc, height);
-    }
-  );
+    },
+  });
 };
