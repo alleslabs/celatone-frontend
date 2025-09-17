@@ -4,7 +4,7 @@ import { Flex, Text } from "@chakra-ui/react";
 
 interface DecodeMessageRowProps {
   children: ReactNode;
-  title: string;
+  title: ReactNode;
 }
 
 export const DecodeMessageRow = ({
@@ -18,9 +18,13 @@ export const DecodeMessageRow = ({
       gap={4}
       w="full"
     >
-      <Text mb={{ base: 1, md: 0 }} variant="body2" whiteSpace="nowrap">
-        {title}
-      </Text>
+      {typeof title === "string" ? (
+        <Text mb={{ base: 1, md: 0 }} variant="body2" whiteSpace="nowrap">
+          {title}
+        </Text>
+      ) : (
+        title
+      )}
       {children}
     </Flex>
   );
