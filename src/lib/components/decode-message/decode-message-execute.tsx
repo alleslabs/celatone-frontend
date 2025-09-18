@@ -39,9 +39,11 @@ export const DecodeMessageExecuteBody = ({
   const [value, setValue] = useState<string | undefined>(options[0].value);
   const details = extractTxDetails(type, body, log);
 
+  const parsedAddr = zAddr.safeParse(details.module_address);
   const { data } = useModuleByAddressRest({
-    address: zAddr.parse(details.module_address),
+    address: parsedAddr.success ? parsedAddr.data : undefined,
     moduleName: details.module_name,
+    options: { enabled: parsedAddr.success && !!details.module_name },
   });
 
   const fn = useMemo(
@@ -52,17 +54,25 @@ export const DecodeMessageExecuteBody = ({
     [data, details.function_name]
   );
 
+  const allParams = fn?.params ?? [];
   const params =
-    fn?.params[0] === "signer" || fn?.params[0] === "&signer"
-      ? fn.params.slice(1)
-      : fn?.params;
+    allParams[0] === "signer" || allParams[0] === "&signer"
+      ? allParams.slice(1)
+      : allParams;
 
+  const rawArgs = Array.isArray(details.args) ? details.args : [];
   const text =
-    value === "decoded" && params?.length
-      ? params?.map((param, index) =>
-          resolveBcsType(param).parse(fromBase64(details.args[index]))
-        )
-      : details.args;
+    value === "decoded" && params.length
+      ? params.map((param, index) => {
+          const arg = rawArgs[index];
+          if (!arg) return null;
+          try {
+            return resolveBcsType(param).parse(fromBase64(arg));
+          } catch {
+            return null;
+          }
+        })
+      : rawArgs;
 
   return (
     <>

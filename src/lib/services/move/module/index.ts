@@ -54,15 +54,17 @@ export const useModuleByAddressRest = ({
   moduleName,
   options = {},
 }: {
-  address: Addr;
+  address: Option<Addr>;
   moduleName: string;
   options?: Omit<UseQueryOptions<IndexedModule>, "queryKey">;
 }) => {
   const {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
-  const queryFn = () =>
-    getModuleByAddressRest(restEndpoint, address, moduleName);
+  const queryFn = () => {
+    if (!address) throw new Error("address is undefined (useModuleByAddress)");
+    return getModuleByAddressRest(restEndpoint, address, moduleName);
+  };
 
   return useQuery<IndexedModule>({
     ...options,
