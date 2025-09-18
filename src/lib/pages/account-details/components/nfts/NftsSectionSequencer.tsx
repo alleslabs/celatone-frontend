@@ -52,6 +52,8 @@ export const NftsSectionSequencer = ({
     collectionAddresses
   );
 
+  const hideCountBadge = accountNfts?.length && totalData === 0;
+
   if (isLoading || isCollectionsLoading) return <Loading />;
   if (!collections) return <ErrorFetching dataName="collections" />;
   if (!collections.items.length)
@@ -66,7 +68,7 @@ export const NftsSectionSequencer = ({
     <Box mt={{ base: 4, md: 8 }}>
       <Flex align="center" gap="8px">
         <Heading variant="h6">NFTs</Heading>
-        <Badge>{totalData}</Badge>
+        {!hideCountBadge && <Badge>{totalData}</Badge>}
       </Flex>
       <Flex flexDir={isMobile ? "column" : "row"} gap="40px" mt="32px">
         {/* Left Panel */}
@@ -77,7 +79,7 @@ export const NftsSectionSequencer = ({
         >
           <CollectionFilterDefault
             collectionName="All collections"
-            count={totalData}
+            count={hideCountBadge ? undefined : totalData}
             isActive={selectedCollection === undefined}
             onClick={() => setSelectedCollection(undefined)}
           />
@@ -86,7 +88,9 @@ export const NftsSectionSequencer = ({
               key={collection.collectionAddress}
               collectionAddress={collection.collectionAddress}
               collectionName={collection.collectionName}
-              count={nftCountsByCollection[index].data}
+              count={
+                hideCountBadge ? undefined : nftCountsByCollection[index].data
+              }
               isActive={selectedCollection === collection.collectionAddress}
               uri={
                 accountNfts?.find(
