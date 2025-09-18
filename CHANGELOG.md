@@ -67,6 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1460](https://github.com/alleslabs/celatone-frontend/pull/1460) Fix account details nfts tab not showing correct count
 - [#1447](https://github.com/alleslabs/celatone-frontend/pull/1447) Fix NFT collections fetching issue with limit and query key
 - [#1445](https://github.com/alleslabs/celatone-frontend/pull/1445) Fix NavDrawer not reopening after closing
 - [#1441](https://github.com/alleslabs/celatone-frontend/pull/1441) Fix MsgExecute when resending
