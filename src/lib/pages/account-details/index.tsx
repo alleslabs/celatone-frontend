@@ -166,6 +166,7 @@ const AccountDetailsBody = ({
   } = useInitiaUsernameByAddress(hexAddress, isInitia);
 
   const nftEnabled = nft.enabled && (isFullTier || isSequencerTier);
+  const nftCount = totalNfts === 0 && nfts?.total !== 0 ? undefined : totalNfts;
 
   const pageTitle = useMemo(() => {
     switch (true) {
@@ -245,7 +246,7 @@ const AccountDetailsBody = ({
             Delegations
           </CustomTab>
           <CustomTab
-            count={totalNfts === 0 && nfts?.total !== 0 ? undefined : totalNfts}
+            count={nftCount}
             hidden={!nftEnabled}
             isDisabled={nfts?.total === 0}
             isLoading={isNftsCountLoading}
@@ -379,7 +380,7 @@ const AccountDetailsBody = ({
               <NftsOverview
                 accountAddress={accountAddress}
                 hexAddress={hexAddress}
-                totalCount={totalNfts}
+                totalCount={nftCount}
                 onViewMore={handleTabChange(TabIndex.Nfts, totalNfts)}
               />
             )}

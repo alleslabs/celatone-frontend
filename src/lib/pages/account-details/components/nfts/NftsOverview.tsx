@@ -58,7 +58,11 @@ export const NftsOverview = ({
       {isMobile ? (
         <MobileTitle count={totalCount} title="NFTs" onViewMore={onViewMore} />
       ) : (
-        <AccountSectionWrapper title="NFTs" totalData={totalCount}>
+        <AccountSectionWrapper
+          showCount={!!totalCount}
+          title="NFTs"
+          totalData={totalCount}
+        >
           <Flex direction="column">
             <NftList
               emptyState={
