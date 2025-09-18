@@ -56,7 +56,12 @@ export const NftsOverview = ({
   return (
     <Box mb={{ base: 0, md: 8 }} mt={{ base: 4, md: 8 }}>
       {isMobile ? (
-        <MobileTitle count={totalCount} title="NFTs" onViewMore={onViewMore} />
+        <MobileTitle
+          count={totalCount}
+          showCount={!!totalCount}
+          title="NFTs"
+          onViewMore={onViewMore}
+        />
       ) : (
         <AccountSectionWrapper
           showCount={!!totalCount}
