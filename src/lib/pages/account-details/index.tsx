@@ -245,7 +245,7 @@ const AccountDetailsBody = ({
             Delegations
           </CustomTab>
           <CustomTab
-            count={totalNfts}
+            count={totalNfts === 0 && nfts?.total !== 0 ? undefined : totalNfts}
             hidden={!nftEnabled}
             isDisabled={nfts?.total === 0}
             isLoading={isNftsCountLoading}
