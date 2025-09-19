@@ -61,8 +61,11 @@ export const useModuleByAddressRest = ({
   const {
     chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
+  const enabled = options.enabled ?? !!address;
   const queryFn = () => {
-    if (!address) throw new Error("address is undefined (useModuleByAddress)");
+    if (!address) {
+      throw new Error("address is undefined (useModuleByAddressRest)");
+    }
     return getModuleByAddressRest(restEndpoint, address, moduleName);
   };
 
@@ -75,6 +78,7 @@ export const useModuleByAddressRest = ({
       address,
       moduleName,
     ],
+    enabled,
   });
 };
 
