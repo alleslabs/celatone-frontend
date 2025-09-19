@@ -8,7 +8,7 @@ import type { DetailExecute, Message, Option } from "lib/types";
  * @returns array of execute tags.
  *
  * @example
- * List of messages containing 4 execute message with amount eqaul to 2
+ * List of messages containing 4 execute message with amount equal to 2
  * Will return ["exec1", "exec2", "+2"]
  */
 export const getExecuteMsgTags = (
