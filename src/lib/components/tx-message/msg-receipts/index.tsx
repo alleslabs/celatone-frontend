@@ -1435,13 +1435,6 @@ export const generateReceipts = (
           }),
           title: "Args",
         },
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.args,
-          }),
-          title: "Args",
-        },
       ];
     }
     // osmosis/gamm

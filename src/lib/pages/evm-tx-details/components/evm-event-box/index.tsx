@@ -55,16 +55,19 @@ const EvmEventBoxName = ({
 };
 
 export const EvmEventBox = ({ evmVerifyInfo, log }: EvmEventBoxProps) => {
-  const [currentTab, setCurrentTab] = useState(EvmEventBoxTabs.Decoded);
+  const [currentTab, setCurrentTab] = useState(() =>
+    evmVerifyInfo?.isVerified
+      ? EvmEventBoxTabs.Decoded
+      : EvmEventBoxTabs.Formatted
+  );
   const parsedLog = parseEvmLog(evmVerifyInfo?.abi ?? [], log);
 
   useEffect(() => {
-    if (evmVerifyInfo?.isVerified) {
-      setCurrentTab(EvmEventBoxTabs.Decoded);
-    } else {
-      setCurrentTab(EvmEventBoxTabs.Formatted);
-    }
-  }, [evmVerifyInfo]);
+    const next = evmVerifyInfo?.isVerified
+      ? EvmEventBoxTabs.Decoded
+      : EvmEventBoxTabs.Formatted;
+    setCurrentTab((prev) => (prev === next ? prev : next));
+  }, [evmVerifyInfo?.isVerified]);
 
   return (
     <Stack
