@@ -11,10 +11,12 @@ import { type MessageResponse, type Option, zAddr } from "lib/types";
 import { extractTxDetails } from "lib/utils";
 import { useMemo, useState } from "react";
 
+import type { SelectInputOption } from "../forms";
+
 import { SelectInput } from "../forms";
 import { DecodeMessageRow } from "./decode-message-row";
 
-const options = [
+const options: SelectInputOption<string>[] = [
   {
     label: "Decoded",
     value: "decoded",
