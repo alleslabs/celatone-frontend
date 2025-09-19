@@ -35,7 +35,6 @@ export const TransactionsTable = ({
   const columns: string[] = [
     "32px",
     "190px",
-    ...(showSuccess ? ["48px"] : []),
     "minmax(380px, 1fr)",
     ...(showRelations ? ["90px"] : []),
     "max(180px)",
@@ -61,7 +60,6 @@ export const TransactionsTable = ({
       <TransactionsTableHeader
         showAction={showAction}
         showRelations={showRelations}
-        showSuccess={showSuccess}
         showTimestamp={showTimestamp}
         templateColumns={templateColumns}
       />

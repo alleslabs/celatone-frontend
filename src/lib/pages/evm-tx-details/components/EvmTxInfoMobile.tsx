@@ -57,7 +57,6 @@ export const EvmTxInfoMobile = ({
       <Flex gap={1}>
         <LabelText flex={1} label="Cosmos tx">
           <ExplorerLink
-            fixedHeight={false}
             showCopyOnHover
             type="tx_hash"
             value={cosmosTxData.txhash.toUpperCase()}

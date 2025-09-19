@@ -17,6 +17,17 @@ export const formatTokenWithValue = ({
     precision: token.precision ?? 0,
   })} ${getTokenLabel(token.denom, token.symbol)}`;
 
+export const formatTokenWithValueInGwei = (
+  token: TokenWithValue,
+  decimalPoints?: number
+) =>
+  `${formatUTokenWithPrecision({
+    amount: token.amount,
+    decimalPoints,
+    isSuffix: false,
+    precision: 9,
+  })} Gwei`;
+
 export const formatTokenWithValueList = (tokens: TokenWithValue[]) => {
   if (tokens.length <= 2)
     return tokens

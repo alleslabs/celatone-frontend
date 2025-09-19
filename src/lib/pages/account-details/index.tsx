@@ -504,7 +504,7 @@ const AccountDetailsBody = ({
               title="What is NFTs in the account?"
             />
           </TabPanel>
-          <TabPanel p={0}>
+          <TabPanel p={0} pt={8}>
             <TxsTable
               address={accountAddress}
               refetchCount={refetchCounts}

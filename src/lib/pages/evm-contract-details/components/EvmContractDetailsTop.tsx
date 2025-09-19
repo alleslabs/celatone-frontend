@@ -84,6 +84,7 @@ export const EvmContractDetailsTop = ({
             <Flex alignItems="center">
               <ExplorerLink
                 textFormat="normal"
+                textLabel={evmVerifyInfo?.contractName}
                 type="evm_contract_address"
                 value={proxyTargetAddress}
               />
