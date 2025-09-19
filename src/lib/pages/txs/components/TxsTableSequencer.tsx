@@ -7,7 +7,16 @@ import { useMemo } from "react";
 
 import type { TxsTableProps } from "./type";
 
-export const TxsTableSequencer = ({ isViewMore }: TxsTableProps) => {
+import { EvmCosmosTabs } from "./type";
+
+interface TxsTableSequencerProps extends TxsTableProps {
+  showEvmOrCosmos?: EvmCosmosTabs;
+}
+
+export const TxsTableSequencer = ({
+  isViewMore,
+  showEvmOrCosmos = EvmCosmosTabs.Evm,
+}: TxsTableSequencerProps) => {
   const evm = useEvmConfig({ shouldRedirect: false });
   const {
     data,
@@ -24,7 +33,7 @@ export const TxsTableSequencer = ({ isViewMore }: TxsTableProps) => {
 
   return (
     <>
-      {evm.enabled ? (
+      {evm.enabled && showEvmOrCosmos === EvmCosmosTabs.Evm ? (
         <EvmTransactionsTable
           emptyState={null}
           evmTransactions={evmTxsData}

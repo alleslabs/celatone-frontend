@@ -11,7 +11,8 @@ import { zHexAddr20 } from "lib/types";
 import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
-import { TableContainer } from "../tableComponents";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
+import { EvmInternalTransactionMobileCard } from "./EvmInternalTransactionMobileCard";
 import { EvmInternalTransactionsTableHeader } from "./EvmInternalTransactionsTableHeader";
 import { EvmInternalTransactionTableRow } from "./EvmInternalTransactionsTableRow";
 
@@ -89,7 +90,20 @@ export const EvmInternalTransactionsTable = ({
 
   if (isEvmParamsLoading || isEvmVerifyInfosLoading) return <Loading />;
 
-  return isMobile ? null : (
+  return isMobile ? (
+    <MobileTableContainer>
+      {flatInternalTxs.slice(0, visibleCount).map((result, index) => (
+        <EvmInternalTransactionMobileCard
+          key={`${result.txHash ?? "nested"}-${index}`}
+          assetInfos={assetInfos}
+          evmDenom={evmParams?.params.feeDenom}
+          evmVerifyInfos={evmVerifyInfos}
+          result={result.result}
+          txHash={result.txHash}
+        />
+      ))}
+    </MobileTableContainer>
+  ) : (
     <TableContainer>
       <EvmInternalTransactionsTableHeader
         showParentHash={showParentHash}

@@ -90,15 +90,13 @@ export const EvmTransactionsTableRow = ({
         flexDirection="column"
         justifyContent="center"
       >
-        <Text variant="body2">
-          <Text as="span" fontWeight={700} mr={1}>
-            {formatUTokenWithPrecision({
-              amount: token.amount,
-              decimalPoints: token.precision ? 6 : 0,
-              isSuffix: true,
-              precision: token.precision ?? 0,
-            })}
-          </Text>
+        <Text color="text.dark" variant="body2">
+          {formatUTokenWithPrecision({
+            amount: token.amount,
+            decimalPoints: token.precision ? 6 : 0,
+            isSuffix: true,
+            precision: token.precision ?? 0,
+          })}{" "}
           {getTokenLabel(token.denom, token.symbol)}
         </Text>
       </TableRow>

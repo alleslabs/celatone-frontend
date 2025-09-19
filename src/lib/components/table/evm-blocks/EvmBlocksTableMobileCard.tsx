@@ -24,6 +24,7 @@ export const EvmBlocksTableMobileCard = ({
               <Flex align="end" h={6}>
                 <Text
                   color={blockData.txCount === 0 ? "text.dark" : "text.main"}
+                  fontWeight={600}
                   variant="body2"
                 >
                   {blockData.txCount}
@@ -35,6 +36,7 @@ export const EvmBlocksTableMobileCard = ({
               <Flex align="end" h={6}>
                 <Text
                   color={blockData.txCount === 0 ? "text.dark" : "text.main"}
+                  fontWeight={600}
                   variant="body2"
                 >
                   {blockData.txCount}
