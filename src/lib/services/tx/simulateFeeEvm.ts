@@ -57,7 +57,6 @@ export const useSimulateFeeEvmQuery = ({
         value: value ? toBeHex(value) : null,
       });
     },
-
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_EVM,
       walletProvider.type,
