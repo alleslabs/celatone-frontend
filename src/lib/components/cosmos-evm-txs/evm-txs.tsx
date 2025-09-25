@@ -61,10 +61,15 @@ export const EvmTxs = ({
               typeof emptyMessage === "string" ? (
                 <EmptyState
                   imageVariant="empty"
-                  message={emptyMessage ?? "There are no EVM transactions."}
+                  message={emptyMessage || "There are no EVM transactions."}
                 />
               ) : (
-                emptyMessage
+                (emptyMessage ?? (
+                  <EmptyState
+                    imageVariant="empty"
+                    message="There are no EVM transactions."
+                  />
+                ))
               )
             }
             evmTransactions={data?.pages.flatMap((page) => page.txs) ?? []}

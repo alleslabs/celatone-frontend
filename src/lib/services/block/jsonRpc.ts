@@ -30,6 +30,8 @@ export const getBlockDataJsonRpcByBlockNumbers = async (
   endpoint: string,
   blockNumbers: string[]
 ) => {
+  if (blockNumbers.length === 0) return [];
+
   const requests: {
     method: string;
     params: JsonRpcParams[];

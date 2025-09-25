@@ -57,17 +57,17 @@ export const useEvmTxsByBlockHeightSequencer = (
         getBlockDataJsonRpc(jsonRpc, height),
       ]);
 
+      const blockTimestamp = blockDataJsonRpc.block.timestamp;
       const txsWithRpcData = {
         ...txs,
         txs: txs.txs.map((tx, index) => {
-          const timestamp = blockDataJsonRpc?.block.timestamp;
           const rpcTx = blockDataJsonRpc?.block.transactions[index];
 
           return {
             ...tx,
-            input: rpcTx.input,
-            timestamp,
-            value: rpcTx.value,
+            input: rpcTx?.input,
+            timestamp: blockTimestamp,
+            value: rpcTx?.value,
           };
         }),
       };
