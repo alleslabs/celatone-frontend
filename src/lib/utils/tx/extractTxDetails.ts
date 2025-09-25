@@ -9,7 +9,7 @@ import type { MsgReturnType } from "./types";
 
 import { findAttr } from "./findAttr";
 
-type MsgBodyWithoutType = Record<string, unknown>;
+export type MsgBodyWithoutType = Record<string, unknown>;
 
 const transformKeyToSnake = (obj: MsgBodyWithoutType): MsgBodyWithoutType => {
   return Object.entries(obj).reduce((acc, entry) => {

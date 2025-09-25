@@ -1,5 +1,9 @@
 import type { ReactNode } from "react";
 
+import type {
+  MsgExecuteJsonModuleDetails,
+  MsgExecuteModuleDetails,
+} from "../../utils/tx/types";
 import type { Nullable } from "../common";
 
 export enum TxStreamPhase {
@@ -13,11 +17,21 @@ export interface TxErrorRendering {
   errorId?: string;
 }
 
-export interface TxReceipt {
+export interface StandardTxReceipt {
   html?: ReactNode;
   title: string;
+  type: "standard";
   value?: Nullable<number | string>;
 }
+
+export interface ExecuteTxReceipt {
+  isExecuteArgs?: boolean;
+  title: string;
+  type: "executeArgs";
+  value: MsgExecuteJsonModuleDetails | MsgExecuteModuleDetails;
+}
+
+export type TxReceipt = ExecuteTxReceipt | StandardTxReceipt;
 
 export interface ReceiptInfo {
   description?: ReactNode;
