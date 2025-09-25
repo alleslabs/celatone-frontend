@@ -1,4 +1,4 @@
-import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
+import type { EvmTxsResponseSequencerWithRpcData } from "lib/services/types";
 import type { Option } from "lib/types";
 import type { ReactNode } from "react";
 
@@ -14,7 +14,7 @@ import { EvmTransactionsTableRow } from "./EvmTransactionsTableRow";
 
 interface EvmTransactionsTableProps {
   emptyState: ReactNode;
-  evmTransactions: Option<TxDataWithTimeStampJsonRpc[]>;
+  evmTransactions: Option<EvmTxsResponseSequencerWithRpcData["txs"]>;
   isLoading: boolean;
   showTimestamp?: boolean;
 }
@@ -36,9 +36,9 @@ export const EvmTransactionsTable = ({
 
   const columns: string[] = [
     "200px",
-    "minmax(180px, 400px)",
-    "160px",
     "minmax(180px, 1fr)",
+    "160px",
+    "180px",
     ...(showTimestamp ? ["minmax(247px, 1fr)"] : []),
   ];
   const templateColumns: string = columns.join(" ");
@@ -47,7 +47,7 @@ export const EvmTransactionsTable = ({
     <MobileTableContainer>
       {evmTransactions.map((evmTransaction) => (
         <EvmTransactionsTableMobileCard
-          key={evmTransaction.tx.hash}
+          key={evmTransaction.transactionHash}
           assetInfos={assetInfos}
           evmDenom={evmParams?.params.feeDenom}
           evmTransaction={evmTransaction}
@@ -63,7 +63,7 @@ export const EvmTransactionsTable = ({
       />
       {evmTransactions.map((evmTransaction) => (
         <EvmTransactionsTableRow
-          key={evmTransaction.tx.hash}
+          key={evmTransaction.transactionHash}
           assetInfos={assetInfos}
           evmDenom={evmParams?.params.feeDenom}
           evmTransaction={evmTransaction}

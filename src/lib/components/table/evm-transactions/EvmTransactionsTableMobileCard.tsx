@@ -1,4 +1,4 @@
-import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
+import type { EvmTxResponseSequencerWithRpcData } from "lib/services/types";
 import type { AssetInfos, Option } from "lib/types";
 
 import { Flex, Grid, GridItem, Stack, Text } from "@chakra-ui/react";
@@ -22,7 +22,7 @@ import { MobileLabel } from "../MobileLabel";
 interface EvmTransactionsTableMobileCardProps {
   assetInfos: Option<AssetInfos>;
   evmDenom: Option<string>;
-  evmTransaction: TxDataWithTimeStampJsonRpc;
+  evmTransaction: EvmTxResponseSequencerWithRpcData;
   showTimestamp: boolean;
 }
 export const EvmTransactionsTableMobileCard = ({
@@ -32,7 +32,12 @@ export const EvmTransactionsTableMobileCard = ({
   showTimestamp,
 }: EvmTransactionsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
-  const { amount, denom } = getEvmAmount(evmTransaction, evmDenom);
+  const { amount, denom } = getEvmAmount({
+    evmDenom,
+    input: evmTransaction.input,
+    to: evmTransaction.to,
+    value: evmTransaction.value,
+  });
 
   const token = coinToTokenWithValue(denom, amount, assetInfos);
   return (
@@ -62,7 +67,7 @@ export const EvmTransactionsTableMobileCard = ({
                 <ExplorerLink
                   showCopyOnHover
                   type="user_address"
-                  value={evmTransaction.tx.from}
+                  value={evmTransaction.from}
                 />
               </Flex>
             </GridItem>
@@ -81,13 +86,13 @@ export const EvmTransactionsTableMobileCard = ({
       }
       middleContent={
         <EvmMethodChip
-          txInput={evmTransaction.tx.input}
-          txTo={evmTransaction.tx.to}
+          txInput={evmTransaction.input}
+          txTo={evmTransaction.to}
         />
       }
       topContent={
         <Flex align="center" gap={0.5} w="full">
-          {evmTransaction.txReceipt.status ? (
+          {evmTransaction.status === "0x1" ? (
             <CustomIcon
               boxSize={3}
               color="success.main"
@@ -103,14 +108,14 @@ export const EvmTransactionsTableMobileCard = ({
           <ExplorerLink
             showCopyOnHover
             type="tx_hash"
-            value={formatEvmTxHash(evmTransaction.tx.hash)}
+            value={formatEvmTxHash(evmTransaction.transactionHash)}
           />
         </Flex>
       }
       onClick={() =>
         navigate({
           pathname: "/evm-txs/[txHash]",
-          query: { txHash: formatEvmTxHash(evmTransaction.tx.hash) },
+          query: { txHash: formatEvmTxHash(evmTransaction.transactionHash) },
         })
       }
     />

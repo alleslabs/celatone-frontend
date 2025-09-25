@@ -1,3 +1,4 @@
+import type Big from "big.js";
 import type { JsonFragment } from "ethers";
 import type { TxDataJsonRpc, TxReceiptJsonRpcLog } from "lib/services/types";
 import type {
@@ -77,21 +78,28 @@ export const getEvmToAddress = (
 export const convertToEvmDenom = (contractAddress: HexAddr20) =>
   toChecksumAddress(contractAddress).replace("0x", "evm/");
 
-export const getEvmAmount = (
-  evmTxData: TxDataJsonRpc,
-  evmDenom: Option<string>
-): Coin => {
-  const method = getEvmMethod(evmTxData.tx.input, evmTxData.tx.to);
+export const getEvmAmount = ({
+  evmDenom,
+  input,
+  to,
+  value,
+}: {
+  evmDenom: Option<string>;
+  input: string;
+  to: HexAddr20;
+  value: Big;
+}): Coin => {
+  const method = getEvmMethod(input, to);
 
   if (method === EvmMethodName.TransferErc20) {
     return {
-      amount: extractErc20TransferInput(evmTxData.tx.input).amount,
-      denom: evmTxData.tx.to ? convertToEvmDenom(evmTxData.tx.to) : "",
+      amount: extractErc20TransferInput(input).amount,
+      denom: to ? convertToEvmDenom(to) : "",
     };
   }
 
   return {
-    amount: evmTxData.tx.value.toString(),
+    amount: value.toString(),
     denom: evmDenom ?? "",
   };
 };

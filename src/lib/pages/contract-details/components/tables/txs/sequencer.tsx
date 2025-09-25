@@ -1,6 +1,6 @@
 import { CosmosEvmTxs } from "lib/components/cosmos-evm-txs";
-import { useCosmosEvmTxs, useTxsByAddressSequencer } from "lib/services/tx";
-import { useMemo } from "react";
+import { useEvmTxsByAccountAddressSequencer } from "lib/services/evm-txs";
+import { useTxsByAddressSequencer } from "lib/services/tx";
 
 import type { TxsTableProps } from "./types";
 
@@ -8,25 +8,30 @@ export const TxsTableSequencer = ({
   contractAddress,
   onViewMore,
 }: TxsTableProps) => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useTxsByAddressSequencer(contractAddress, undefined, onViewMore ? 5 : 10);
-
-  const txHashes = useMemo(() => data?.map((tx) => tx.hash) ?? [], [data]);
-  const { data: evmTxsData, isLoading: isEvmTxsLoading } =
-    useCosmosEvmTxs(txHashes);
+  const cosmosTxsData = useTxsByAddressSequencer(
+    contractAddress,
+    undefined,
+    onViewMore ? 5 : 10
+  );
+  const evmTxsData = useEvmTxsByAccountAddressSequencer(
+    contractAddress,
+    undefined,
+    onViewMore ? 5 : 10
+  );
 
   return (
     <CosmosEvmTxs
-      cosmosEmptyMessage="This contract does not have any transactions."
-      cosmosTxs={data}
-      evmEmptyMessage="There are no EVM transactions on this contract."
-      evmTxs={evmTxsData}
-      fetchNextPage={fetchNextPage}
-      hasNextPage={hasNextPage}
-      isCosmosTxsLoading={isLoading}
-      isEvmTxsLoading={isEvmTxsLoading}
-      isFetchingNextPage={isFetchingNextPage}
-      onViewMore={onViewMore}
+      cosmosData={{
+        data: cosmosTxsData,
+        emptyMessage: "This contract does not have any transactions.",
+        onViewMore,
+      }}
+      evmData={{
+        data: evmTxsData,
+        emptyMessage: "There are no EVM transactions on this contract.",
+        onViewMore,
+        showTimestamp: true,
+      }}
     />
   );
 };

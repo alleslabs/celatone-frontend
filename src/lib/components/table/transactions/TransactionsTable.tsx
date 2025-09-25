@@ -1,4 +1,5 @@
 import type { Option, TransactionWithTxResponse } from "lib/types";
+import type { ReactNode } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
@@ -9,7 +10,7 @@ import { TransactionsTableMobileCard } from "./TransactionsTableMobileCard";
 import { TransactionsTableRow } from "./TransactionsTableRow";
 
 interface TransactionsTableProps {
-  emptyState: JSX.Element;
+  emptyState: ReactNode;
   isLoading: boolean;
   showAction?: boolean;
   showRelations: boolean;

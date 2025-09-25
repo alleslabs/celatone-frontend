@@ -1,4 +1,4 @@
-import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
+import type { EvmTxResponseSequencerWithRpcData } from "lib/services/types";
 import type { AssetInfos, Option } from "lib/types";
 
 import { Flex, Grid, Text } from "@chakra-ui/react";
@@ -21,7 +21,7 @@ import { TableRow } from "../tableComponents";
 interface EvmTransactionsTableRowProps {
   assetInfos: Option<AssetInfos>;
   evmDenom: Option<string>;
-  evmTransaction: TxDataWithTimeStampJsonRpc;
+  evmTransaction: EvmTxResponseSequencerWithRpcData;
   showTimestamp: boolean;
   templateColumns: string;
 }
@@ -34,7 +34,12 @@ export const EvmTransactionsTableRow = ({
   templateColumns,
 }: EvmTransactionsTableRowProps) => {
   const navigate = useInternalNavigate();
-  const { amount, denom } = getEvmAmount(evmTransaction, evmDenom);
+  const { amount, denom } = getEvmAmount({
+    evmDenom,
+    input: evmTransaction.input,
+    to: evmTransaction.to,
+    value: evmTransaction.value,
+  });
 
   const onRowSelect = (txHash: string) =>
     navigate({
@@ -43,6 +48,7 @@ export const EvmTransactionsTableRow = ({
     });
 
   const token = coinToTokenWithValue(denom, amount, assetInfos);
+
   return (
     <Grid
       className="copier-wrapper"
@@ -50,10 +56,12 @@ export const EvmTransactionsTableRow = ({
       cursor="pointer"
       templateColumns={templateColumns}
       transition="all 0.25s ease-in-out"
-      onClick={() => onRowSelect(formatEvmTxHash(evmTransaction.tx.hash))}
+      onClick={() =>
+        onRowSelect(formatEvmTxHash(evmTransaction.transactionHash))
+      }
     >
       <TableRow gap={1} pr={1}>
-        {evmTransaction.txReceipt.status ? (
+        {evmTransaction.status === "0x1" ? (
           <CustomIcon
             boxSize={3}
             color="success.main"
@@ -69,20 +77,20 @@ export const EvmTransactionsTableRow = ({
         <ExplorerLink
           showCopyOnHover
           type="evm_tx_hash"
-          value={formatEvmTxHash(evmTransaction.tx.hash)}
+          value={formatEvmTxHash(evmTransaction.transactionHash)}
         />
       </TableRow>
       <TableRow>
         <EvmMethodChip
-          txInput={evmTransaction.tx.input}
-          txTo={evmTransaction.tx.to}
+          txInput={evmTransaction.input}
+          txTo={evmTransaction.to}
         />
       </TableRow>
       <TableRow>
         <ExplorerLink
           showCopyOnHover
           type="user_address"
-          value={evmTransaction.tx.from}
+          value={evmTransaction.from}
         />
       </TableRow>
       <TableRow
@@ -102,12 +110,10 @@ export const EvmTransactionsTableRow = ({
       </TableRow>
       {showTimestamp && (
         <TableRow>
-          <Flex direction="column">
-            <Text color="text.dark" variant="body2">
-              {formatUTC(evmTransaction.timestamp)}
-            </Text>
-            <Text color="text.disabled" variant="body3">
-              ({dateFromNow(evmTransaction.timestamp)})
+          <Flex direction="column" gap={1}>
+            <Text variant="body3">{formatUTC(evmTransaction.timestamp)}</Text>
+            <Text color="text.dark" variant="body3">
+              {`(${dateFromNow(evmTransaction.timestamp)})`}
             </Text>
           </Flex>
         </TableRow>
