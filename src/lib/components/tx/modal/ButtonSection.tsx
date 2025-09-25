@@ -125,7 +125,11 @@ export const ButtonSection = ({
         <Button
           variant="primary"
           onClick={() => {
-            const codeId = receipts.find((r) => r.title === "Code ID")?.value;
+            const codeIdReceipt = receipts.find((r) => r.title === "Code ID");
+            const codeId =
+              codeIdReceipt && codeIdReceipt.type === "standard"
+                ? codeIdReceipt.value
+                : undefined;
             navigate({
               pathname: "/migrate",
               query: { codeId, contract: router.query.contract },

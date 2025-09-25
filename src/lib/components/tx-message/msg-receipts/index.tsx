@@ -35,7 +35,7 @@ import {
 export const generateReceipts = (
   { log, msgBody }: Omit<TxMsgData, "assetInfos">,
   getAddressType: (address: string) => AddressReturnType
-): Option<false | TxReceipt | null>[] => {
+): Option<TxReceipt>[] => {
   const { "@type": type, ...body } = msgBody;
 
   switch (type) {
@@ -49,6 +49,7 @@ export const generateReceipts = (
             value: details.grantee,
           }),
           title: "Grantee",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -56,6 +57,7 @@ export const generateReceipts = (
             value: details.msgs,
           }),
           title: "Msgs",
+          type: "standard",
         },
       ];
     }
@@ -70,6 +72,7 @@ export const generateReceipts = (
             value: details.granter,
           }),
           title: "Granter",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -78,6 +81,7 @@ export const generateReceipts = (
             value: details.grantee,
           }),
           title: "Grantee",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -85,6 +89,7 @@ export const generateReceipts = (
             value: details.grant,
           }),
           title: "Grant",
+          type: "standard",
         },
       ];
     }
@@ -98,6 +103,7 @@ export const generateReceipts = (
             value: details.granter,
           }),
           title: "Granter",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -106,9 +112,11 @@ export const generateReceipts = (
             value: details.grantee,
           }),
           title: "Grantee",
+          type: "standard",
         },
         {
           title: "Msg type URL",
+          type: "standard",
           value: details.msg_type_url,
         },
       ];
@@ -122,6 +130,7 @@ export const generateReceipts = (
             value: details.inputs,
           }),
           title: "Inputs",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -129,6 +138,7 @@ export const generateReceipts = (
             value: details.outputs,
           }),
           title: "Outputs",
+          type: "standard",
         },
       ];
     }
@@ -143,6 +153,7 @@ export const generateReceipts = (
             value: details.from_address,
           }),
           title: "From address",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -151,10 +162,12 @@ export const generateReceipts = (
             value: details.to_address,
           }),
           title: "To address",
+          type: "standard",
         },
         {
           html: <CoinsComponent coins={details.amount} />,
           title: "Amount",
+          type: "standard",
         },
       ];
     }
@@ -169,12 +182,18 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Invariant module name",
+          type: "standard",
           value: details.invariant_module_name,
         },
-        { title: "Invariant route", value: details.invariant_route },
+        {
+          title: "Invariant route",
+          type: "standard",
+          value: details.invariant_route,
+        },
       ];
     }
     case "/cosmos.distribution.v1beta1.MsgFundCommunityPool": {
@@ -183,6 +202,7 @@ export const generateReceipts = (
         {
           html: <CoinsComponent coins={details.amount} />,
           title: "Amount",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -191,6 +211,7 @@ export const generateReceipts = (
             value: details.depositor,
           }),
           title: "Depositor",
+          type: "standard",
         },
       ];
     }
@@ -209,6 +230,7 @@ export const generateReceipts = (
             value: details.withdraw_address,
           }),
           title: "Withdraw address",
+          type: "standard",
         },
       ];
     }
@@ -237,6 +259,7 @@ export const generateReceipts = (
             value: details.submitter,
           }),
           title: "Submitter",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -244,6 +267,7 @@ export const generateReceipts = (
             value: details.evidence,
           }),
           title: "Evidence",
+          type: "standard",
         },
       ];
     }
@@ -258,6 +282,7 @@ export const generateReceipts = (
             value: details.granter,
           }),
           title: "Granter",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -266,6 +291,7 @@ export const generateReceipts = (
             value: details.grantee,
           }),
           title: "Grantee",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -273,6 +299,7 @@ export const generateReceipts = (
             value: details.allowance,
           }),
           title: "Allowance",
+          type: "standard",
         },
       ];
     }
@@ -286,6 +313,7 @@ export const generateReceipts = (
             value: details.granter,
           }),
           title: "Granter",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -294,6 +322,7 @@ export const generateReceipts = (
             value: details.grantee,
           }),
           title: "Grantee",
+          type: "standard",
         },
       ];
     }
@@ -308,10 +337,12 @@ export const generateReceipts = (
             value: details.depositor,
           }),
           title: "Depositor",
+          type: "standard",
         },
         {
           html: <CoinsComponent coins={details.amount} />,
           title: "Amount",
+          type: "standard",
         },
       ];
     }
@@ -322,6 +353,7 @@ export const generateReceipts = (
         {
           html: <CoinsComponent coins={details.initial_deposit} />,
           title: "Initial deposit",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -330,21 +362,25 @@ export const generateReceipts = (
             value: details.proposer,
           }),
           title: "Proposer",
+          type: "standard",
         },
         log && proposalIdReceipt(details.proposal_id),
         log && {
           title: "Proposal type",
+          type: "standard",
           value:
             details.proposal_type ?? extractMsgType(details.content["@type"]),
         },
         {
           title: "Is expedited",
+          type: "standard",
           value: String(details.is_expedited ?? false),
         },
-        { title: "Title", value: details.content.title },
+        { title: "Title", type: "standard", value: details.content.title },
         {
           html: getCommonReceiptHtml({ type: "json", value: details.content }),
           title: "Content",
+          type: "standard",
         },
       ];
     }
@@ -359,9 +395,11 @@ export const generateReceipts = (
             value: details.voter,
           }),
           title: "Voter",
+          type: "standard",
         },
         {
           title: "Option",
+          type: "standard",
           value: voteOption[details.option as VoteOption],
         },
       ];
@@ -377,6 +415,7 @@ export const generateReceipts = (
             value: details.voter,
           }),
           title: "Voter",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -384,6 +423,7 @@ export const generateReceipts = (
             value: details.options,
           }),
           title: "Options",
+          type: "standard",
         },
       ];
     }
@@ -406,6 +446,7 @@ export const generateReceipts = (
             value: details.validator_src_address,
           }),
           title: "Source validator address",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -414,10 +455,12 @@ export const generateReceipts = (
             value: details.validator_dst_address,
           }),
           title: "Destination validator address",
+          type: "standard",
         },
         {
           html: <CoinsComponent coins={[details.amount]} />,
           title: "Amount",
+          type: "standard",
         },
       ];
     }
@@ -431,6 +474,7 @@ export const generateReceipts = (
             value: details.description,
           }),
           title: "Description",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -438,9 +482,11 @@ export const generateReceipts = (
             value: details.commission,
           }),
           title: "Commission",
+          type: "standard",
         },
         {
           title: "Min self delegation",
+          type: "standard",
           value: details.min_self_delegation,
         },
         delegatorAddrReceipt(
@@ -454,10 +500,12 @@ export const generateReceipts = (
             value: details.pubkey,
           }),
           title: "Public key",
+          type: "standard",
         },
         {
           html: <CoinsComponent coins={[details.value]} />,
           title: "Value",
+          type: "standard",
         },
       ];
     }
@@ -473,6 +521,7 @@ export const generateReceipts = (
         {
           html: <CoinsComponent coins={[details.amount]} />,
           title: "Amount",
+          type: "standard",
         },
       ];
     }
@@ -485,14 +534,17 @@ export const generateReceipts = (
             value: details.description,
           }),
           title: "Description",
+          type: "standard",
         },
         validatorAddrReceipt(details.validator_address),
         {
           title: "Commission rate",
+          type: "standard",
           value: details.commission_rate,
         },
         {
           title: "Min self delegation",
+          type: "standard",
           value: details.min_self_delegation,
         },
       ];
@@ -507,6 +559,7 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -515,6 +568,7 @@ export const generateReceipts = (
             value: details.contract,
           }),
           title: "Contract",
+          type: "standard",
         },
       ];
     }
@@ -528,6 +582,7 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -536,6 +591,7 @@ export const generateReceipts = (
             value: details.contract,
           }),
           title: "Contract",
+          type: "standard",
         },
         attachFundsReceipt(details.funds),
         {
@@ -544,6 +600,7 @@ export const generateReceipts = (
             value: details.msg,
           }),
           title: "Execute message",
+          type: "standard",
         },
       ];
     }
@@ -557,6 +614,7 @@ export const generateReceipts = (
             value: details.contract_address,
           }),
           title: "Contract instance",
+          type: "standard",
         },
 
         {
@@ -566,6 +624,7 @@ export const generateReceipts = (
             value: details.code_id,
           }),
           title: "From code ID",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -574,6 +633,7 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Instantiated by",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -583,9 +643,11 @@ export const generateReceipts = (
             value: details.admin,
           }),
           title: "Contract admin",
+          type: "standard",
         },
         {
           title: "Label",
+          type: "standard",
           value: details.label,
         },
         attachFundsReceipt(details.funds),
@@ -595,6 +657,7 @@ export const generateReceipts = (
             value: details.msg,
           }),
           title: "Instantiate message",
+          type: "standard",
         },
       ];
     }
@@ -608,6 +671,7 @@ export const generateReceipts = (
             value: details.contract_address,
           }),
           title: "Contract instance",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -616,6 +680,7 @@ export const generateReceipts = (
             value: details.code_id,
           }),
           title: "From code ID",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -624,6 +689,7 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Instantiated by",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -633,9 +699,11 @@ export const generateReceipts = (
             value: details.admin,
           }),
           title: "Contract admin",
+          type: "standard",
         },
         {
           title: "Label",
+          type: "standard",
           value: details.label,
         },
         attachFundsReceipt(details.funds),
@@ -645,13 +713,16 @@ export const generateReceipts = (
             value: details.msg,
           }),
           title: "Instantiate message",
+          type: "standard",
         },
         {
           html: details.salt,
           title: "Salt",
+          type: "standard",
         },
         {
           title: "Fix msg",
+          type: "standard",
           value: String(details.fix_msg),
         },
       ];
@@ -666,6 +737,7 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -674,6 +746,7 @@ export const generateReceipts = (
             value: details.contract,
           }),
           title: "Contract",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -682,6 +755,7 @@ export const generateReceipts = (
             value: details.code_id,
           }),
           title: "Code ID",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -689,6 +763,7 @@ export const generateReceipts = (
             value: details.msg,
           }),
           title: "Msg",
+          type: "standard",
         },
       ];
     }
@@ -703,6 +778,7 @@ export const generateReceipts = (
             value: details.code_id,
           }),
           title: "Stored code ID",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -711,32 +787,36 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Uploader",
+          type: "standard",
         },
-        details.instantiate_permission && {
-          html: (
-            <Flex direction="column" gap={1}>
-              <PermissionChip
-                instantiatePermission={
-                  details.instantiate_permission.permission
-                }
-                permissionAddresses={
-                  details.instantiate_permission.address
-                    ? [details.instantiate_permission.address]
-                    : (details.instantiate_permission.addresses ?? [])
-                }
-              />
-              <ViewPermissionAddresses
-                amptrackSection="tx_msg_receipts"
-                permissionAddresses={
-                  details.instantiate_permission.address
-                    ? [details.instantiate_permission.address]
-                    : (details.instantiate_permission.addresses ?? [])
-                }
-              />
-            </Flex>
-          ),
-          title: "Instantiate permission",
-        },
+        details.instantiate_permission
+          ? {
+              html: (
+                <Flex direction="column" gap={1}>
+                  <PermissionChip
+                    instantiatePermission={
+                      details.instantiate_permission.permission
+                    }
+                    permissionAddresses={
+                      details.instantiate_permission.address
+                        ? [details.instantiate_permission.address]
+                        : (details.instantiate_permission.addresses ?? [])
+                    }
+                  />
+                  <ViewPermissionAddresses
+                    amptrackSection="tx_msg_receipts"
+                    permissionAddresses={
+                      details.instantiate_permission.address
+                        ? [details.instantiate_permission.address]
+                        : (details.instantiate_permission.addresses ?? [])
+                    }
+                  />
+                </Flex>
+              ),
+              title: "Instantiate permission",
+              type: "standard",
+            }
+          : undefined,
         {
           html: (
             <Flex align="flex-start" gap={3}>
@@ -756,6 +836,7 @@ export const generateReceipts = (
             </Flex>
           ),
           title: "Wasm byte code",
+          type: "standard",
         },
       ];
     }
@@ -769,6 +850,7 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -777,6 +859,7 @@ export const generateReceipts = (
             value: details.new_admin,
           }),
           title: "New admin",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -785,6 +868,7 @@ export const generateReceipts = (
             value: details.contract,
           }),
           title: "Contract",
+          type: "standard",
         },
       ];
     }
@@ -794,15 +878,18 @@ export const generateReceipts = (
       return [
         {
           title: "Source port",
+          type: "standard",
           value: details.source_port,
         },
         {
           title: "Source channel",
+          type: "standard",
           value: details.source_channel,
         },
         {
           html: <CoinsComponent coins={[details.token]} />,
           title: "Token",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -811,6 +898,7 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -819,20 +907,30 @@ export const generateReceipts = (
             value: details.receiver,
           }),
           title: "Receiver",
+          type: "standard",
         },
-        details.timeout_height && {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.timeout_height,
-          }),
-          title: "Timeout height",
-        },
-        !!details.timeout_timestamp && {
-          title: "Timeout timestamp",
-          value: formatUTC(parseNanosecondsToDate(details.timeout_timestamp)),
-        },
+        details.timeout_height
+          ? {
+              html: getCommonReceiptHtml({
+                type: "json",
+                value: details.timeout_height,
+              }),
+              title: "Timeout height",
+              type: "standard",
+            }
+          : undefined,
+        details.timeout_timestamp
+          ? {
+              title: "Timeout timestamp",
+              type: "standard",
+              value: formatUTC(
+                parseNanosecondsToDate(details.timeout_timestamp)
+              ),
+            }
+          : undefined,
         {
           title: "Memo",
+          type: "standard",
           value: details.memo,
         },
       ];
@@ -846,13 +944,16 @@ export const generateReceipts = (
             value: details.packet,
           }),
           title: "Packet",
+          type: "standard",
         },
         {
           title: "Acknowledgement",
+          type: "standard",
           value: details.acknowledgement,
         },
         {
           title: "Proof acked",
+          type: "standard",
           value: details.proof_acked,
         },
         proofHeightReceipt(details.proof_height),
@@ -863,6 +964,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -871,6 +973,7 @@ export const generateReceipts = (
       return [
         {
           title: "Port ID",
+          type: "standard",
           value: details.port_id,
         },
         channelIdReceipt(details.channel_id),
@@ -883,6 +986,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -891,6 +995,7 @@ export const generateReceipts = (
       return [
         {
           title: "Port ID",
+          type: "standard",
           value: details.port_id,
         },
         channelIdReceipt(details.channel_id),
@@ -901,6 +1006,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -909,19 +1015,23 @@ export const generateReceipts = (
       return [
         {
           title: "Port ID",
+          type: "standard",
           value: details.port_id,
         },
         channelIdReceipt(details.channel_id),
         {
           title: "Counterparty channel ID",
+          type: "standard",
           value: details.counterparty_channel_id,
         },
         {
           title: "Counterparty version",
+          type: "standard",
           value: details.counterparty_version,
         },
         {
           title: "Proof try",
+          type: "standard",
           value: details.proof_try,
         },
         proofHeightReceipt(details.proof_height),
@@ -932,6 +1042,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -940,11 +1051,13 @@ export const generateReceipts = (
       return [
         {
           title: "Port ID",
+          type: "standard",
           value: details.port_id,
         },
         channelIdReceipt(details.channel_id),
         {
           title: "Proof ack",
+          type: "standard",
           value: details.proof_ack,
         },
         proofHeightReceipt(details.proof_height),
@@ -955,6 +1068,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -963,6 +1077,7 @@ export const generateReceipts = (
       return [
         {
           title: "Port ID",
+          type: "standard",
           value: details.port_id,
         },
         {
@@ -971,6 +1086,7 @@ export const generateReceipts = (
             value: details.channel,
           }),
           title: "Channel",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -979,6 +1095,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -987,10 +1104,12 @@ export const generateReceipts = (
       return [
         {
           title: "Port ID",
+          type: "standard",
           value: details.port_id,
         },
         {
           title: "Previous channel ID",
+          type: "standard",
           value: details.previous_channel_id,
         },
         {
@@ -999,9 +1118,11 @@ export const generateReceipts = (
             value: details.channel,
           }),
           title: "Channel",
+          type: "standard",
         },
         {
           title: "Counterparty version",
+          type: "standard",
           value: details.counterparty_version,
         },
         proofInitReceipt(details.proof_init),
@@ -1013,6 +1134,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -1025,9 +1147,11 @@ export const generateReceipts = (
             value: details.packet,
           }),
           title: "Packet",
+          type: "standard",
         },
         {
           title: "Proof commitment",
+          type: "standard",
           value: details.proof_commitment,
         },
         proofHeightReceipt(details.proof_height),
@@ -1038,6 +1162,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -1050,14 +1175,17 @@ export const generateReceipts = (
             value: details.packet,
           }),
           title: "Packet",
+          type: "standard",
         },
         {
           title: "Proof unreceived",
+          type: "standard",
           value: details.proof_unreceived,
         },
         proofHeightReceipt(details.proof_height),
         {
           title: "Next sequence recv",
+          type: "standard",
           value: details.next_sequence_recv,
         },
         {
@@ -1067,6 +1195,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -1079,18 +1208,22 @@ export const generateReceipts = (
             value: details.packet,
           }),
           title: "Packet",
+          type: "standard",
         },
         {
           title: "Proof unreceived",
+          type: "standard",
           value: details.proof_unreceived,
         },
         {
           title: "Proof close",
+          type: "standard",
           value: details.proof_close,
         },
         proofHeightReceipt(details.proof_height),
         {
           title: "Next sequence recv",
+          type: "standard",
           value: details.next_sequence_recv,
         },
         {
@@ -1100,6 +1233,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -1114,6 +1248,7 @@ export const generateReceipts = (
             value: details.consensus_state,
           }),
           title: "Consensus state",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1122,6 +1257,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -1130,6 +1266,7 @@ export const generateReceipts = (
       return [
         {
           title: "Client ID",
+          type: "standard",
           value: details.client_id,
         },
         {
@@ -1138,6 +1275,7 @@ export const generateReceipts = (
             value: details.misbehaviour,
           }),
           title: "Misbehaviour",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1146,6 +1284,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -1154,6 +1293,7 @@ export const generateReceipts = (
       return [
         {
           title: "Client ID",
+          type: "standard",
           value: details.client_id,
         },
         // newer version
@@ -1163,6 +1303,7 @@ export const generateReceipts = (
             value: details.client_message,
           }),
           title: "Client message",
+          type: "standard",
         },
         // older version
         details.header && {
@@ -1171,6 +1312,7 @@ export const generateReceipts = (
             value: details.header,
           }),
           title: "Header",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1179,6 +1321,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -1187,6 +1330,7 @@ export const generateReceipts = (
       return [
         {
           title: "Client ID",
+          type: "standard",
           value: details.client_id,
         },
         clientStateReceipt(details.client_state),
@@ -1196,13 +1340,16 @@ export const generateReceipts = (
             value: details.consensus_state,
           }),
           title: "Consensus state",
+          type: "standard",
         },
         {
           title: "Proof upgrade client",
+          type: "standard",
           value: details.proof_upgrade_client,
         },
         {
           title: "Proof upgrade consensus state",
+          type: "standard",
           value: details.proof_upgrade_consensus_state,
         },
         {
@@ -1212,6 +1359,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -1220,10 +1368,12 @@ export const generateReceipts = (
       return [
         {
           title: "Connection ID",
+          type: "standard",
           value: details.connection_id,
         },
         {
           title: "Counterparty connection ID",
+          type: "standard",
           value: details.counterparty_connection_id,
         },
         {
@@ -1232,19 +1382,23 @@ export const generateReceipts = (
             value: details.version,
           }),
           title: "Version",
+          type: "standard",
         },
         clientStateReceipt(details.client_state),
         proofHeightReceipt(details.proof_height),
         {
           title: "Proof try",
+          type: "standard",
           value: details.proof_try,
         },
         {
           title: "Proof client",
+          type: "standard",
           value: details.proof_client,
         },
         {
           title: "Proof consensus",
+          type: "standard",
           value: details.proof_consensus,
         },
         {
@@ -1253,6 +1407,7 @@ export const generateReceipts = (
             value: details.consensus_height,
           }),
           title: "Consensus height",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1261,6 +1416,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -1269,10 +1425,12 @@ export const generateReceipts = (
       return [
         {
           title: "Connection ID",
+          type: "standard",
           value: details.connection_id,
         },
         {
           title: "Proof ack",
+          type: "standard",
           value: details.proof_ack,
         },
         proofHeightReceipt(details.proof_height),
@@ -1283,6 +1441,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -1291,6 +1450,7 @@ export const generateReceipts = (
       return [
         {
           title: "Client ID",
+          type: "standard",
           value: details.client_id,
         },
         {
@@ -1299,6 +1459,7 @@ export const generateReceipts = (
             value: details.counterparty,
           }),
           title: "Counterparty",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1306,9 +1467,11 @@ export const generateReceipts = (
             value: details.version,
           }),
           title: "Version",
+          type: "standard",
         },
         {
           title: "Delay period",
+          type: "standard",
           value: details.delay_period,
         },
         {
@@ -1318,6 +1481,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -1326,10 +1490,12 @@ export const generateReceipts = (
       return [
         {
           title: "Client ID",
+          type: "standard",
           value: details.client_id,
         },
         {
           title: "Previous connection ID",
+          type: "standard",
           value: details.previous_connection_id,
         },
         clientStateReceipt(details.client_state),
@@ -1339,9 +1505,11 @@ export const generateReceipts = (
             value: details.counterparty,
           }),
           title: "Counterparty",
+          type: "standard",
         },
         {
           title: "Delay period",
+          type: "standard",
           value: details.delay_period,
         },
         {
@@ -1350,15 +1518,18 @@ export const generateReceipts = (
             value: details.counterparty_versions,
           }),
           title: "Counterparty versions",
+          type: "standard",
         },
         proofHeightReceipt(details.proof_height),
         proofInitReceipt(details.proof_init),
         {
           title: "Proof client",
+          type: "standard",
           value: details.proof_client,
         },
         {
           title: "Proof consensus",
+          type: "standard",
           value: details.proof_consensus,
         },
         {
@@ -1367,6 +1538,7 @@ export const generateReceipts = (
             value: details.consensus_height,
           }),
           title: "Consensus height",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1375,6 +1547,7 @@ export const generateReceipts = (
             value: details.signer,
           }),
           title: "Signer",
+          type: "standard",
         },
       ];
     }
@@ -1389,6 +1562,7 @@ export const generateReceipts = (
             value: details.module_address,
           }),
           title: "Module address",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1398,6 +1572,7 @@ export const generateReceipts = (
             value: `${details.module_address}/${details.module_name}`,
           }),
           title: "Module name",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1412,6 +1587,7 @@ export const generateReceipts = (
             value: undefined,
           }),
           title: "Function name",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1420,6 +1596,7 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1427,13 +1604,13 @@ export const generateReceipts = (
             value: details.type_args,
           }),
           title: "Type args",
+          type: "standard",
         },
         {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.args,
-          }),
+          isExecuteArgs: true,
           title: "Args",
+          type: "executeArgs",
+          value: details,
         },
       ];
     }
@@ -1448,6 +1625,7 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1455,6 +1633,7 @@ export const generateReceipts = (
             value: details.pool_params,
           }),
           title: "Pool params",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1462,9 +1641,11 @@ export const generateReceipts = (
             value: details.pool_assets,
           }),
           title: "Pool assets",
+          type: "standard",
         },
         {
           title: "Future pool governor",
+          type: "standard",
           value: details.future_pool_governor,
         },
       ];
@@ -1479,6 +1660,7 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1486,10 +1668,12 @@ export const generateReceipts = (
             value: details.pool_params,
           }),
           title: "Pool params",
+          type: "standard",
         },
         {
           html: <CoinsComponent coins={details.initial_pool_liquidity} />,
           title: "Initial pool liquidity",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1497,13 +1681,16 @@ export const generateReceipts = (
             value: details.scaling_factors,
           }),
           title: "Scaling factors",
+          type: "standard",
         },
         {
           title: "Future pool governor",
+          type: "standard",
           value: details.future_pool_governor,
         },
         {
           title: "Scaling factor controller",
+          type: "standard",
           value: details.scaling_factor_controller,
         },
       ];
@@ -1518,9 +1705,11 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Pool ID",
+          type: "standard",
           value: details.pool_id,
         },
         {
@@ -1529,6 +1718,7 @@ export const generateReceipts = (
             value: details.scaling_factors,
           }),
           title: "Scaling factors",
+          type: "standard",
         },
       ];
     }
@@ -1542,18 +1732,22 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Pool ID",
+          type: "standard",
           value: details.pool_id,
         },
         {
           title: "Share in amount",
+          type: "standard",
           value: details.share_in_amount,
         },
         {
           html: <CoinsComponent coins={details.token_out_mins ?? []} />,
           title: "Token out mins",
+          type: "standard",
         },
       ];
     }
@@ -1567,17 +1761,21 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Pool ID",
+          type: "standard",
           value: details.pool_id,
         },
         {
           html: <CoinsComponent coins={[details.token_out]} />,
           title: "Token out",
+          type: "standard",
         },
         {
           title: "Share in max amount",
+          type: "standard",
           value: details.share_in_max_amount,
         },
       ];
@@ -1592,21 +1790,26 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Pool ID",
+          type: "standard",
           value: details.pool_id,
         },
         {
           title: "Token out denom",
+          type: "standard",
           value: details.token_out_denom,
         },
         {
           title: "Share in amount",
+          type: "standard",
           value: details.share_in_amount,
         },
         {
           title: "Token out min amount",
+          type: "standard",
           value: details.token_out_min_amount,
         },
       ];
@@ -1621,18 +1824,22 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Pool ID",
+          type: "standard",
           value: details.pool_id,
         },
         {
           title: "Share out amount",
+          type: "standard",
           value: details.share_out_amount,
         },
         {
           html: <CoinsComponent coins={details.token_in_maxs ?? []} />,
           title: "Token in maxs",
+          type: "standard",
         },
       ];
     }
@@ -1646,17 +1853,21 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Pool ID",
+          type: "standard",
           value: details.pool_id,
         },
         {
           html: <CoinsComponent coins={[details.token_in]} />,
           title: "Token in",
+          type: "standard",
         },
         {
           title: "Share out min amount",
+          type: "standard",
           value: details.share_out_min_amount,
         },
       ];
@@ -1671,21 +1882,26 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Pool ID",
+          type: "standard",
           value: details.pool_id,
         },
         {
           title: "Token in denom",
+          type: "standard",
           value: details.token_in_denom,
         },
         {
           title: "Share out amount",
+          type: "standard",
           value: details.share_out_amount,
         },
         {
           title: "Token in max amount",
+          type: "standard",
           value: details.token_in_max_amount,
         },
       ];
@@ -1701,6 +1917,7 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1708,13 +1925,16 @@ export const generateReceipts = (
             value: details.routes,
           }),
           title: "Routes",
+          type: "standard",
         },
         {
           html: <CoinsComponent coins={[details.token_in]} />,
           title: "Token in",
+          type: "standard",
         },
         {
           title: "Token out min amount",
+          type: "standard",
           value: details.token_out_min_amount,
         },
       ];
@@ -1730,6 +1950,7 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1737,14 +1958,17 @@ export const generateReceipts = (
             value: details.routes,
           }),
           title: "Routes",
+          type: "standard",
         },
         {
           title: "Token in max amount",
+          type: "standard",
           value: details.token_in_max_amount,
         },
         {
           html: <CoinsComponent coins={[details.token_out]} />,
           title: "Token out",
+          type: "standard",
         },
       ];
     }
@@ -1758,14 +1982,17 @@ export const generateReceipts = (
             value: details.owner,
           }),
           title: "Owner",
+          type: "standard",
         },
         {
           title: "Gauge ID",
+          type: "standard",
           value: details.gauge_id,
         },
         {
           html: <CoinsComponent coins={details.rewards} />,
           title: "Rewards",
+          type: "standard",
         },
       ];
     }
@@ -1775,6 +2002,7 @@ export const generateReceipts = (
       return [
         {
           title: "Is perpetual",
+          type: "standard",
           value: String(details.is_perpetual),
         },
         {
@@ -1784,6 +2012,7 @@ export const generateReceipts = (
             value: details.owner,
           }),
           title: "Owner",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1791,17 +2020,21 @@ export const generateReceipts = (
             value: details.distribute_to,
           }),
           title: "Distribute to",
+          type: "standard",
         },
         {
           html: <CoinsComponent coins={details.coins} />,
           title: "Coins",
+          type: "standard",
         },
         {
           title: "Start time",
+          type: "standard",
           value: formatUTC(parseDate(details.start_time)),
         },
         {
           title: "Num epochs paid over",
+          type: "standard",
           value: details.num_epochs_paid_over,
         },
       ];
@@ -1817,14 +2050,17 @@ export const generateReceipts = (
             value: details.owner,
           }),
           title: "Owner",
+          type: "standard",
         },
         {
           title: "ID",
+          type: "standard",
           value: details.ID,
         },
         details.coins && {
           html: <CoinsComponent coins={details.coins} />,
           title: "Coins",
+          type: "standard",
         },
       ];
     }
@@ -1838,6 +2074,7 @@ export const generateReceipts = (
             value: details.owner,
           }),
           title: "Owner",
+          type: "standard",
         },
       ];
     }
@@ -1852,13 +2089,16 @@ export const generateReceipts = (
             value: details.owner,
           }),
           title: "Owner",
+          type: "standard",
         },
         {
           title: "ID",
+          type: "standard",
           value: details.ID,
         },
         {
           title: "Duration",
+          type: "standard",
           value: details.duration,
         },
       ];
@@ -1874,14 +2114,17 @@ export const generateReceipts = (
             value: details.owner,
           }),
           title: "Owner",
+          type: "standard",
         },
         {
           title: "Duration",
+          type: "standard",
           value: details.duration,
         },
         {
           html: <CoinsComponent coins={details.coins} />,
           title: "Coin",
+          type: "standard",
         },
       ];
     }
@@ -1895,6 +2138,7 @@ export const generateReceipts = (
             value: details.admin,
           }),
           title: "Admin",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1902,6 +2146,7 @@ export const generateReceipts = (
             value: details.base_denoms,
           }),
           title: "Hot routes",
+          type: "standard",
         },
       ];
     }
@@ -1915,6 +2160,7 @@ export const generateReceipts = (
             value: details.admin,
           }),
           title: "Admin",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1923,6 +2169,7 @@ export const generateReceipts = (
             value: details.developer_account,
           }),
           title: "Developer account",
+          type: "standard",
         },
       ];
     }
@@ -1937,6 +2184,7 @@ export const generateReceipts = (
             value: details.admin,
           }),
           title: "Admin",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1944,6 +2192,7 @@ export const generateReceipts = (
             value: details.hot_routes,
           }),
           title: "Hot routes",
+          type: "standard",
         },
       ];
     }
@@ -1957,9 +2206,11 @@ export const generateReceipts = (
             value: details.admin,
           }),
           title: "Admin",
+          type: "standard",
         },
         {
           title: "Max pool points per block",
+          type: "standard",
           value: details.max_pool_points_per_block,
         },
       ];
@@ -1974,9 +2225,11 @@ export const generateReceipts = (
             value: details.admin,
           }),
           title: "Admin",
+          type: "standard",
         },
         {
           title: "Max pool points per tx",
+          type: "standard",
           value: details.max_pool_points_per_tx,
         },
       ];
@@ -1991,6 +2244,7 @@ export const generateReceipts = (
             value: details.admin,
           }),
           title: "Admin",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -1998,6 +2252,7 @@ export const generateReceipts = (
             value: details.pool_weights,
           }),
           title: "Pool weights",
+          type: "standard",
         },
       ];
     }
@@ -2011,10 +2266,12 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           html: <CoinsComponent coins={details.coins} />,
           title: "Coins",
+          type: "standard",
         },
         validatorAddrReceipt(details.val_addr),
       ];
@@ -2030,9 +2287,11 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Lock ID",
+          type: "standard",
           value: details.lock_id,
         },
         validatorAddrReceipt(details.val_addr),
@@ -2049,9 +2308,11 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Lock ID",
+          type: "standard",
           value: details.lock_id,
         },
       ];
@@ -2066,14 +2327,17 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Lock ID",
+          type: "standard",
           value: details.lock_id,
         },
         {
           html: <CoinsComponent coins={[details.coin]} />,
           title: "Coin",
+          type: "standard",
         },
       ];
     }
@@ -2087,9 +2351,11 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Pool ID",
+          type: "standard",
           value: details.pool_id,
         },
       ];
@@ -2105,10 +2371,12 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           html: <CoinsComponent coins={[details.amount]} />,
           title: "Amount",
+          type: "standard",
         },
       ];
     }
@@ -2122,9 +2390,11 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Denom",
+          type: "standard",
           value: details.denom,
         },
         {
@@ -2134,6 +2404,7 @@ export const generateReceipts = (
             value: details.new_admin,
           }),
           title: "New admin",
+          type: "standard",
         },
       ];
     }
@@ -2148,9 +2419,11 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           title: "Subdenom",
+          type: "standard",
           value: details.subdenom,
         },
       ];
@@ -2166,6 +2439,7 @@ export const generateReceipts = (
             value: details.sender,
           }),
           title: "Sender",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -2173,6 +2447,7 @@ export const generateReceipts = (
             value: details.metadata,
           }),
           title: "Metadata",
+          type: "standard",
         },
       ];
     }
@@ -2186,9 +2461,11 @@ export const generateReceipts = (
             value: details.delegator,
           }),
           title: "Delegator",
+          type: "standard",
         },
         {
           title: "Lock ID",
+          type: "standard",
           value: details.lockID,
         },
       ];
@@ -2205,10 +2482,12 @@ export const generateReceipts = (
             value: details.delegator,
           }),
           title: "Delegator",
+          type: "standard",
         },
         {
           html: <CoinsComponent coins={[details.coin]} />,
           title: "Coin",
+          type: "standard",
         },
       ];
     }
@@ -2223,6 +2502,7 @@ export const generateReceipts = (
             value: details.delegator,
           }),
           title: "Delegator",
+          type: "standard",
         },
         {
           html: getCommonReceiptHtml({
@@ -2230,6 +2510,7 @@ export const generateReceipts = (
             value: details.preferences,
           }),
           title: "Preferences",
+          type: "standard",
         },
       ];
     }
@@ -2243,6 +2524,7 @@ export const generateReceipts = (
             value: details.delegator,
           }),
           title: "Delegator",
+          type: "standard",
         },
       ];
     }

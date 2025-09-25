@@ -1,7 +1,11 @@
 import type { FlexProps, SystemStyleObject } from "@chakra-ui/react";
-import type { TxReceipt } from "lib/types";
+import type { ExecuteTxReceipt, StandardTxReceipt, TxReceipt } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
+import { useState } from "react";
+
+import { ArgsDisplayToggle } from "../ArgsDisplayToggle";
+import { MoveExecuteArgsReceipt } from "../MoveExecuteArgsReceipt";
 
 interface TxReceiptRenderProps extends FlexProps {
   keyPrefix?: string;
@@ -37,7 +41,7 @@ const variantStyle: Record<
     "> div": {
       alignItems: "flex-start",
     },
-    "> div > p:first-of-type": {
+    "> div > *.receipt-row-label": {
       color: "text.dark",
       fontWeight: 500,
       minW: "180px",
@@ -48,14 +52,48 @@ const variantStyle: Record<
   },
 };
 
-const ReceiptRow = ({ html, title, value }: TxReceipt) => (
+const ReceiptExecuteArgsRow = ({ title, value }: ExecuteTxReceipt) => {
+  const [displayMode, setDisplayMode] = useState<string | undefined>("decoded");
+  const details = value; // Now properly typed
+
+  return (
+    <Flex
+      direction={{ base: "column", md: "row" }}
+      fontSize="14px"
+      gap={4}
+      w="full"
+    >
+      <Flex className="receipt-row-label">
+        <ArgsDisplayToggle
+          title={title}
+          value={displayMode}
+          onChange={(value) => setDisplayMode(value)}
+        />
+      </Flex>
+      <MoveExecuteArgsReceipt
+        displayMode={displayMode}
+        functionName={details.function_name}
+        moduleAddress={details.module_address}
+        moduleName={details.module_name}
+        rawArgs={Array.isArray(details.args) ? details.args : []}
+      />
+    </Flex>
+  );
+};
+
+const ReceiptCommonRow = ({ html, title, value }: StandardTxReceipt) => (
   <Flex
     direction={{ base: "column", md: "row" }}
     fontSize="14px"
     gap={4}
     w="full"
   >
-    <Text mb={{ base: 1, md: 0 }} variant="body2" whiteSpace="nowrap">
+    <Text
+      className="receipt-row-label"
+      mb={{ base: 1, md: 0 }}
+      variant="body2"
+      whiteSpace="nowrap"
+    >
       {title}
     </Text>
     {html || (
@@ -69,6 +107,13 @@ const ReceiptRow = ({ html, title, value }: TxReceipt) => (
     )}
   </Flex>
 );
+
+const ReceiptRow = (receipt: TxReceipt) =>
+  receipt.type === "executeArgs" ? (
+    <ReceiptExecuteArgsRow {...receipt} />
+  ) : (
+    <ReceiptCommonRow {...receipt} />
+  );
 
 export const TxReceiptRender = ({
   gap = 2,
@@ -85,7 +130,7 @@ export const TxReceiptRender = ({
   >
     {receipts.map((receipt, idx) => (
       <ReceiptRow
-        key={keyPrefix + idx.toString() + receipt.title + receipt.value}
+        key={keyPrefix + idx.toString() + receipt.value}
         {...receipt}
       />
     ))}
