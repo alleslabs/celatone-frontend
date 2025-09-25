@@ -56,7 +56,9 @@ export const ArgFieldWidget = ({
     return (
       <SelectInput
         classNamePrefix="chakra-react-select"
-        menuPortalTarget={document.body}
+        menuPortalTarget={
+          typeof window !== "undefined" ? document.body : undefined
+        }
         options={boolOptions}
         placeholder=""
         size="md"

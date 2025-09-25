@@ -54,7 +54,7 @@ export const EvmVerifyRequestInfo = ({
             openNewTab
             showCopyOnHover
             textFormat={isMobile ? "truncate" : "normal"}
-            textLabel={evmVerifyInfo.contractName}
+            textLabel={evmVerifyInfo.contractName ?? undefined}
             type="evm_contract_address"
             value={contractAddress}
           />

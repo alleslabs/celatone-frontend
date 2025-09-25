@@ -33,7 +33,9 @@ export const ArgsDisplayToggle = ({
     <SelectInput
       classNamePrefix="chakra-react-select"
       isSearchable={false}
-      menuPortalTarget={document.body}
+      menuPortalTarget={
+        typeof window !== "undefined" ? document.body : undefined
+      }
       options={options}
       placeholder=""
       size="sm"

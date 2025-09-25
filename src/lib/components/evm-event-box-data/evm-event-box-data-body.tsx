@@ -32,15 +32,25 @@ export const EvmEventBoxDataBody = ({ text }: { text: string }) => {
   const [value, setValue] = useState<string | undefined>(options[0].value);
 
   const handleDecodeText = () => {
-    switch (value) {
-      case "address":
-        return "0x" + text.slice(-40);
-      case "number":
-        return parseInt(text, 16);
-      case "text":
-        return Buffer.from(text, "hex").toString("binary");
-      default:
-        return text;
+    try {
+      switch (value) {
+        case "address":
+          return `0x${text.slice(-40)}`;
+        case "number": {
+          const bi = BigInt(`0x${text}`);
+          return bi.toString(10);
+        }
+        case "text": {
+          const bytes = (text.match(/.{1,2}/g) ?? []).map((b) =>
+            parseInt(b, 16)
+          );
+          return new TextDecoder().decode(new Uint8Array(bytes));
+        }
+        default:
+          return text;
+      }
+    } catch {
+      return text;
     }
   };
 
@@ -56,7 +66,9 @@ export const EvmEventBoxDataBody = ({ text }: { text: string }) => {
       <Box minWidth="110px">
         <SelectInput
           classNamePrefix="chakra-react-select"
-          menuPortalTarget={document.body}
+          menuPortalTarget={
+            typeof window !== "undefined" ? document.body : undefined
+          }
           options={options}
           placeholder=""
           size="sm"

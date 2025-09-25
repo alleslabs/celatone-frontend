@@ -1,6 +1,6 @@
 import type { Block } from "lib/types";
 
-import { Flex, Grid, Stack, Text } from "@chakra-ui/react";
+import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
@@ -17,40 +17,26 @@ export const EvmBlocksTableMobileCard = ({
   return (
     <MobileCardTemplate
       bottomContent={
-        <Stack gap={3}>
-          <Grid gap={3} gridTemplateColumns="1fr 1fr">
-            <Flex direction="column" flex={1}>
-              <MobileLabel label="EVM Txs" />
-              <Flex align="end" h={6}>
-                <Text
-                  color={blockData.txCount === 0 ? "text.dark" : "text.main"}
-                  fontWeight={600}
-                  variant="body2"
-                >
-                  {blockData.txCount}
-                </Text>
-              </Flex>
+        <Grid gap={3} gridTemplateColumns="1fr 1fr">
+          <Flex direction="column" flex={1}>
+            <MobileLabel label="EVM Txs" />
+            <Flex align="end" h={6}>
+              <Text
+                color={blockData.txCount === 0 ? "text.dark" : "text.main"}
+                fontWeight={600}
+                variant="body2"
+              >
+                {blockData.txCount}
+              </Text>
             </Flex>
-            <Flex direction="column" flex={1}>
-              <MobileLabel label="Cosmos Txs" />
-              <Flex align="end" h={6}>
-                <Text
-                  color={blockData.txCount === 0 ? "text.dark" : "text.main"}
-                  fontWeight={600}
-                  variant="body2"
-                >
-                  {blockData.txCount}
-                </Text>
-              </Flex>
-            </Flex>
-          </Grid>
+          </Flex>
           <Flex direction="column" flex={{ base: 2, sm: 3 }} gap={0}>
             <Text variant="body3">{formatUTC(blockData.timestamp)}</Text>
             <Text color="text.dark" mt="3px" variant="body3">
               {`(${dateFromNow(blockData.timestamp)})`}
             </Text>
           </Flex>
-        </Stack>
+        </Grid>
       }
       middleContent={<ValidatorBadge validator={blockData.proposer} />}
       topContent={

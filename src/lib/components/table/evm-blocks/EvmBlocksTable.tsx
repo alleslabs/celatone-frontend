@@ -26,7 +26,7 @@ export const EvmBlocksTable = ({
   if (!blocks) return <ErrorFetching dataName="blocks" />;
   if (!blocks.length) return emptyState;
 
-  const templateColumns = "140px 160px minmax(300px,1fr) 120px 120px 280px";
+  const templateColumns = "140px 160px minmax(300px,1fr) 120px 280px";
 
   return isMobile ? (
     <MobileTableContainer>

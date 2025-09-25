@@ -18,7 +18,6 @@ export const EvmBlocksTableHeader = ({
     <TableHeader>Block hash</TableHeader>
     <TableHeader>Proposed by</TableHeader>
     <TableHeader textAlign="center">EVM Txs</TableHeader>
-    <TableHeader textAlign="center">Cosmos Txs</TableHeader>
     <TableHeader>Timestamp</TableHeader>
   </Grid>
 );

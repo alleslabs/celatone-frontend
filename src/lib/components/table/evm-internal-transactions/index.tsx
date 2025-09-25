@@ -78,7 +78,7 @@ export const EvmInternalTransactionsTable = ({
   }, [inView]);
 
   const templateColumns = [
-    showParentHash ? "180px" : "",
+    ...(showParentHash ? ["180px"] : []),
     "200px",
     "40px",
     "200px",
