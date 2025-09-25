@@ -130,7 +130,7 @@ export const TxReceiptRender = ({
   >
     {receipts.map((receipt, idx) => (
       <ReceiptRow
-        key={keyPrefix + idx.toString() + receipt.value}
+        key={keyPrefix + idx.toString() + receipt.title + receipt.value}
         {...receipt}
       />
     ))}

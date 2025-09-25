@@ -128,7 +128,7 @@ export const ButtonSection = ({
             const codeIdReceipt = receipts.find((r) => r.title === "Code ID");
             const codeId =
               codeIdReceipt && codeIdReceipt.type === "standard"
-                ? codeIdReceipt.value
+                ? codeIdReceipt.value?.toString()
                 : undefined;
             navigate({
               pathname: "/migrate",
