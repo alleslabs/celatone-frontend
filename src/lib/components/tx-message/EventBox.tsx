@@ -107,6 +107,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
 
     return {
       title: key,
+      type: "standard",
       ...(typeof valueComponent === "string"
         ? { value }
         : // Value is included to avoid receipt row key duplicate
