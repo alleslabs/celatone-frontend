@@ -174,24 +174,3 @@ export const useDebugTraceTransaction = (height: number, txHash: string) => {
     },
   });
 };
-
-export const useDebugTraceBlockByNumber = (height: number) => {
-  const {
-    chainConfig: {
-      features: { evm },
-    },
-  } = useCelatoneApp();
-
-  return useQuery({
-    queryKey: [
-      CELATONE_QUERY_KEYS.EVM_DEBUG_TRACE_BLOCK_BY_NUMBER,
-      evm.enabled && evm.jsonRpc,
-      height,
-    ],
-    queryFn: async () => {
-      if (!evm.enabled)
-        throw new Error("EVM is not enabled (useDebugTraceBlockByNumber)");
-      return getDebugTraceBlockByNumber(evm.jsonRpc, height);
-    },
-  });
-};

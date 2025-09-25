@@ -117,7 +117,7 @@ export const DecodeMessageNftMint = ({
             textFormat="normal"
             textLabel={collection.name}
             type="nft_collection"
-            value={collection.name}
+            value={collectionAddress}
             wordBreak="break-word"
           />
         </DecodeMessageRow>

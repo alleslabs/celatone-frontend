@@ -1,7 +1,7 @@
 import { zEvmCallFrame, zEvmDebugTraceResponse } from "lib/services/types";
 import { numberToHex, parseWithError } from "lib/utils";
 
-import { requestJsonRpc } from ".";
+import { requestJsonRpc } from "./base";
 
 export const getDebugTraceTransaction = (endpoint: string, txHash: string) =>
   requestJsonRpc(endpoint, "debug_traceTransaction", [

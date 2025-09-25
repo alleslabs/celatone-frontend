@@ -11,7 +11,7 @@ import {
 import { useCreatedContractsByEvmTxHash } from "lib/services/tx";
 import { useEvmVerifyInfos } from "lib/services/verification/evm";
 import plur from "plur";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 import { ExplorerLink } from "../ExplorerLink";
 import { CustomIcon } from "../icon";
@@ -30,26 +30,28 @@ const EvmToCellCreateContracts = ({
   const { data: evmVerifyInfos, isLoading: isEvmVerifyInfosLoading } =
     useEvmVerifyInfos(contracts);
 
-  return contracts.map((contract) =>
-    isEvmVerifyInfosLoading ? (
-      <Spinner boxSize={4} />
-    ) : (
-      <ExplorerLink
-        leftIcon={
-          <CustomIcon
-            boxSize={3}
-            color="primary.main"
-            name="contract-address"
-          />
-        }
-        marginLeft={-2}
-        showCopyOnHover
-        textLabel={evmVerifyInfos?.[contract.toLowerCase()]?.contractName}
-        type="evm_contract_address"
-        value={contract}
-      />
-    )
-  );
+  return contracts.map((contract) => (
+    <Fragment key={contract}>
+      {isEvmVerifyInfosLoading ? (
+        <Spinner boxSize={4} />
+      ) : (
+        <ExplorerLink
+          leftIcon={
+            <CustomIcon
+              boxSize={3}
+              color="primary.main"
+              name="contract-address"
+            />
+          }
+          marginLeft={-2}
+          showCopyOnHover
+          textLabel={evmVerifyInfos?.[contract.toLowerCase()]?.contractName}
+          type="evm_contract_address"
+          value={contract}
+        />
+      )}
+    </Fragment>
+  ));
 };
 
 export const EvmToCellCreate = ({
