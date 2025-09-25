@@ -1,13 +1,13 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import { useCurrentChain } from "lib/app-provider";
+import { useCurrentChain, useEvmConfig } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { LoadNext } from "lib/components/LoadNext";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import { TransactionsTableWithWallet } from "lib/components/table";
-import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useDebounce } from "lib/hooks";
+import { TransactionsTableWithWalletSequencer } from "lib/components/table";
+import { TypeSwitch } from "lib/components/TypeSwitch";
+import { CosmosEvmTxsTab, useDebounce } from "lib/hooks";
+import { useEvmTxsByAccountAddressSequencer } from "lib/services/evm-txs";
 import { useTxsByAddressSequencer } from "lib/services/tx";
 import { useEffect, useState } from "react";
 
@@ -41,19 +41,17 @@ const PastTxsSequencerTransactionsTableWithWalletEmptyState = ({
 };
 
 export const PastTxsSequencer = () => {
+  const evm = useEvmConfig({ shouldRedirect: false });
   const { address, chainId } = useCurrentChain();
-
+  const [currentTab, setCurrentTab] = useState(CosmosEvmTxsTab.Evm);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
-
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useTxsByAddressSequencer(address, debouncedSearch);
+  const cosmosTxsData = useTxsByAddressSequencer(address, debouncedSearch, 10);
+  const evmTxsData = useEvmTxsByAccountAddressSequencer(
+    address,
+    debouncedSearch,
+    10
+  );
 
   useEffect(() => {
     setSearch("");
@@ -72,7 +70,14 @@ export const PastTxsSequencer = () => {
         >
           Past transactions
         </Heading>
-        <UserDocsLink href="general/transactions/past-txs" isButton />
+        {evm.enabled && (
+          <TypeSwitch
+            currentTab={currentTab}
+            disabledScrollToTop
+            tabs={Object.values(CosmosEvmTxsTab)}
+            onTabChange={setCurrentTab}
+          />
+        )}
       </Flex>
       <Flex my={8}>
         <InputWithIcon
@@ -83,25 +88,27 @@ export const PastTxsSequencer = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
       </Flex>
-      <TransactionsTableWithWallet
-        emptyState={
-          <PastTxsSequencerTransactionsTableWithWalletEmptyState
-            error={error}
-            search={search}
-          />
-        }
-        isLoading={isLoading}
-        showActions={false}
-        showRelations
-        transactions={data}
+      <TransactionsTableWithWalletSequencer
+        cosmosData={{
+          data: cosmosTxsData,
+          emptyMessage: (
+            <PastTxsSequencerTransactionsTableWithWalletEmptyState
+              error={cosmosTxsData.error}
+              search={search}
+            />
+          ),
+        }}
+        currentTab={currentTab}
+        evmData={{
+          data: evmTxsData,
+          emptyMessage: (
+            <PastTxsSequencerTransactionsTableWithWalletEmptyState
+              error={evmTxsData.error}
+              search={search}
+            />
+          ),
+        }}
       />
-      {hasNextPage && (
-        <LoadNext
-          fetchNextPage={fetchNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          text="Load more 10 transactions"
-        />
-      )}
     </PageContainer>
   );
 };

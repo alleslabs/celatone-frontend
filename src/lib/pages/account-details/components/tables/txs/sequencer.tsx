@@ -1,27 +1,32 @@
-import type { BechAddr20 } from "lib/types";
-
 import { Box } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { CosmosEvmTxs } from "lib/components/cosmos-evm-txs";
 import { MobileTitle } from "lib/components/table";
-import { useCosmosEvmTxs, useTxsByAddressSequencer } from "lib/services/tx";
+import { useEvmTxsByAccountAddressSequencer } from "lib/services/evm-txs";
+import { useTxsByAddressSequencer } from "lib/services/tx";
+import { zBechAddr } from "lib/types";
 import { useMemo } from "react";
 
 import type { TxsTableProps } from "./types";
 
 export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
   const isMobile = useMobile();
-
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useTxsByAddressSequencer(
-      address as BechAddr20,
-      undefined,
-      onViewMore ? 5 : 10
-    );
-
-  const txHashes = useMemo(() => data?.map((tx) => tx.hash) ?? [], [data]);
-  const { data: evmTxsData, isLoading: isEvmTxsLoading } =
-    useCosmosEvmTxs(txHashes);
+  const addressValidation = useMemo(
+    () => zBechAddr.safeParse(address),
+    [address]
+  );
+  const cosmosTxsData = useTxsByAddressSequencer(
+    addressValidation.data,
+    undefined,
+    onViewMore ? 5 : 10,
+    addressValidation.success
+  );
+  const evmTxsData = useEvmTxsByAccountAddressSequencer(
+    addressValidation.data,
+    undefined,
+    onViewMore ? 5 : 10,
+    addressValidation.success
+  );
 
   const title = "Transactions";
   const isMobileOverview = isMobile && !!onViewMore;
@@ -40,16 +45,18 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
 
   return (
     <CosmosEvmTxs
-      cosmosEmptyMessage="There are no transactions on this account, or they have been pruned from the REST."
-      cosmosTxs={data}
-      evmEmptyMessage="There are no EVM transactions on this account."
-      evmTxs={evmTxsData}
-      fetchNextPage={fetchNextPage}
-      hasNextPage={hasNextPage}
-      isCosmosTxsLoading={isLoading}
-      isEvmTxsLoading={isEvmTxsLoading}
-      isFetchingNextPage={isFetchingNextPage}
-      onViewMore={onViewMore}
+      cosmosData={{
+        data: cosmosTxsData,
+        emptyMessage:
+          "There are no transactions on this account, or they have been pruned from the REST.",
+        onViewMore,
+      }}
+      evmData={{
+        data: evmTxsData,
+        emptyMessage: "There are no EVM transactions on this account.",
+        onViewMore,
+        showTimestamp: true,
+      }}
     />
   );
 };

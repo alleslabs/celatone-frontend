@@ -6,18 +6,18 @@ import { PageHeader } from "lib/components/PageHeader";
 import { CelatoneSeo } from "lib/components/Seo";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { TypeSwitch } from "lib/components/TypeSwitch";
+import { CosmosEvmTxsTab } from "lib/hooks";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { TxsTableFull } from "./components/TxsTableFull";
 import { TxsTableSequencer } from "./components/TxsTableSequencer";
-import { EvmCosmosTabs } from "./components/type";
 
 const Txs = () => {
   const router = useRouter();
   useTierConfig({ minTier: "sequencer" });
   const evm = useEvmConfig({ shouldRedirect: false });
-  const [currentTab, setCurrentTab] = useState(EvmCosmosTabs.Evm);
+  const [currentTab, setCurrentTab] = useState(CosmosEvmTxsTab.Evm);
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_TXS);
@@ -39,7 +39,7 @@ const Txs = () => {
           <TypeSwitch
             currentTab={currentTab}
             disabledScrollToTop
-            tabs={Object.values(EvmCosmosTabs)}
+            tabs={Object.values(CosmosEvmTxsTab)}
             onTabChange={setCurrentTab}
           />
         </Flex>
