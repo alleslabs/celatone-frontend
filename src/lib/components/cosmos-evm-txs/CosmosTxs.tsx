@@ -59,7 +59,12 @@ export const CosmosTxs = ({
                   }
                 />
               ) : (
-                emptyMessage
+                (emptyMessage ?? (
+                  <EmptyState
+                    imageVariant="empty"
+                    message="There are no transactions, or they have been pruned from the REST."
+                  />
+                ))
               )
             }
             isLoading={isLoading || (isFetching && !isFetchingNextPage)}
