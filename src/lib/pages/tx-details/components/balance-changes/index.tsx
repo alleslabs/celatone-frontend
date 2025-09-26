@@ -1,5 +1,6 @@
 import type {
   Metadata,
+  MoveBalanceChanges,
   BalanceChanges as TotalBalanceChanges,
 } from "@initia/tx-decoder";
 
@@ -13,15 +14,15 @@ import { BalanceChangesMobileCard } from "./balance-changes-mobile-card";
 import { BalanceChangesTableHeader } from "./balance-changes-table-header";
 import { BalanceChangesTableRow } from "./balance-changes-table-row";
 
-interface BalanceChangesProps {
+interface MoveBalanceChangesComponentProps {
   metadata?: Metadata;
-  totalBalanceChanges: TotalBalanceChanges;
+  moveBalanceChanges: MoveBalanceChanges;
 }
 
-export const BalanceChanges = ({
+export const MoveBalanceChangesComponent = ({
   metadata,
-  totalBalanceChanges,
-}: BalanceChangesProps) => {
+  moveBalanceChanges,
+}: MoveBalanceChangesComponentProps) => {
   const isMobile = useMobile();
   const templateColumns = "230px 1fr";
 
@@ -29,23 +30,23 @@ export const BalanceChanges = ({
     () =>
       Array.from(
         new Set([
-          ...Object.keys(totalBalanceChanges.ft),
-          ...Object.keys(totalBalanceChanges.object),
+          ...Object.keys(moveBalanceChanges.ft),
+          ...Object.keys(moveBalanceChanges.object),
         ])
       ),
-    [totalBalanceChanges.ft, totalBalanceChanges.object]
+    [moveBalanceChanges.ft, moveBalanceChanges.object]
   );
 
   const mapped = useMemo(
     () =>
       addresses
         .map((address) => {
-          const ftChange = totalBalanceChanges.ft[address];
+          const ftChange = moveBalanceChanges.ft[address];
           const ftChangeEntries = Object.entries(ftChange ?? {}).filter(
             ([, amount]) => amount !== "0"
           );
 
-          const objectChange = totalBalanceChanges.object[address];
+          const objectChange = moveBalanceChanges.object[address];
           const objectChangeEntries = Object.entries(objectChange ?? {}).filter(
             ([, amount]) => amount !== "0"
           );
@@ -60,7 +61,7 @@ export const BalanceChanges = ({
           };
         })
         .filter((item): item is NonNullable<typeof item> => Boolean(item)),
-    [addresses, totalBalanceChanges.ft, totalBalanceChanges.object]
+    [addresses, moveBalanceChanges.ft, moveBalanceChanges.object]
   );
 
   if (!mapped.length)
@@ -106,5 +107,25 @@ export const BalanceChanges = ({
         ))}
       </Stack>
     </TableContainer>
+  );
+};
+
+interface BalanceChangesProps {
+  metadata?: Metadata;
+  totalBalanceChanges: TotalBalanceChanges;
+}
+
+export const BalanceChanges = ({
+  metadata,
+  totalBalanceChanges,
+}: BalanceChangesProps) => {
+  // TODO
+  if (totalBalanceChanges.vm === "evm") return null;
+
+  return (
+    <MoveBalanceChangesComponent
+      metadata={metadata}
+      moveBalanceChanges={totalBalanceChanges}
+    />
   );
 };
