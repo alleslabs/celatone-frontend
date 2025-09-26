@@ -72,7 +72,7 @@ export const EvmTxs = ({
                 ))
               )
             }
-            evmTransactions={data?.pages.flatMap((page) => page.txs) ?? []}
+            evmTransactions={data?.pages?.flatMap((page) => page.txs) ?? []}
             isLoading={isLoading || (isFetching && !isFetchingNextPage)}
             showTimestamp={showTimestamp}
           />

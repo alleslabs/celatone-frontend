@@ -4,7 +4,9 @@ import { SelectInput } from "lib/components/forms";
 import { useState } from "react";
 
 export const EvmEventBoxDataBody = ({ text }: { text: string }) => {
-  const countZero = text.match(/^0+/)?.[0].length || 0;
+  const normalizedText = text.startsWith("0x") ? text.slice(2) : text;
+  const countZero = normalizedText.match(/^0+/)?.[0].length || 0;
+
   const isAddress = countZero >= 24;
   const options = [
     {
@@ -35,13 +37,16 @@ export const EvmEventBoxDataBody = ({ text }: { text: string }) => {
     try {
       switch (value) {
         case "address":
-          return `0x${text.slice(-40)}`;
+          return `0x${normalizedText.slice(-40)}`;
         case "number": {
-          const bi = BigInt(`0x${text}`);
+          if (!normalizedText) {
+            return "0";
+          }
+          const bi = BigInt(`0x${normalizedText}`);
           return bi.toString(10);
         }
         case "text": {
-          const bytes = (text.match(/.{1,2}/g) ?? []).map((b) =>
+          const bytes = (normalizedText.match(/.{1,2}/g) ?? []).map((b) =>
             parseInt(b, 16)
           );
           return new TextDecoder().decode(new Uint8Array(bytes));

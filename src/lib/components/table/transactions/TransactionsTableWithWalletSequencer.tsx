@@ -1,5 +1,5 @@
-import type { CosmosTxsProps } from "lib/components/cosmos-evm-txs/cosmos-txs";
-import type { EvmTxsProps } from "lib/components/cosmos-evm-txs/evm-txs";
+import type { CosmosTxsProps } from "lib/components/cosmos-evm-txs/CosmosTxs";
+import type { EvmTxsProps } from "lib/components/cosmos-evm-txs/EvmTxs";
 
 import { useCurrentChain, useEvmConfig } from "lib/app-provider";
 import { LoadNext } from "lib/components/LoadNext";

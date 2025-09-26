@@ -10,9 +10,9 @@ import {
   UINT_NUMBER_TYPES,
   UINT_STRING_TYPES,
 } from "../constants";
-import { JsonTextarea } from "./json-textarea";
+import { JsonTextarea } from "./JsonTextarea";
 import { type ArgFieldWidgetProps, boolOptions } from "./types";
-import { UintNumberInput } from "./uint-number-input";
+import { UintNumberInput } from "./UintNumberInput";
 
 const getInputPlaceholder = (
   type: string,

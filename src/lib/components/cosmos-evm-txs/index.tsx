@@ -2,12 +2,12 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { useEvmConfig } from "lib/app-provider";
 import { CosmosEvmTxsTab, useEvmTab } from "lib/hooks";
 
-import type { CosmosTxsProps } from "./cosmos-txs";
-import type { EvmTxsProps } from "./evm-txs";
+import type { CosmosTxsProps } from "./CosmosTxs";
+import type { EvmTxsProps } from "./EvmTxs";
 
 import { TypeSwitch } from "../TypeSwitch";
-import { CosmosTxs } from "./cosmos-txs";
-import { EvmTxs } from "./evm-txs";
+import { CosmosTxs } from "./CosmosTxs";
+import { EvmTxs } from "./EvmTxs";
 
 interface CosmosEvmTxsProps {
   cosmosData: CosmosTxsProps;

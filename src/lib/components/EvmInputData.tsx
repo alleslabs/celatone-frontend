@@ -2,7 +2,7 @@ import { Flex, Stack, Text } from "@chakra-ui/react";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { TypeSwitch } from "lib/components/TypeSwitch";
 import { EvmEventBoxTabs, type EvmVerifyInfo, type Nullable } from "lib/types";
-import { decodeEvmFunctionData } from "lib/utils";
+import { parseTransaction } from "lib/utils";
 import { useEffect, useState } from "react";
 
 import { EvmEventBoxDataBody } from "./evm-event-box-data";
@@ -22,7 +22,7 @@ export const EvmInputData = ({
   const [currentTab, setCurrentTab] = useState(EvmEventBoxTabs.Decoded);
   const methodId = txInput.slice(0, 10);
   const formattedData = txInput.slice(10).match(/.{1,64}/g) ?? [];
-  const data = decodeEvmFunctionData(evmVerifyInfo?.abi ?? [], txInput);
+  const data = parseTransaction(evmVerifyInfo?.abi ?? [], txInput);
   const is0x = txInput.trim() === "0x";
 
   useEffect(() => {

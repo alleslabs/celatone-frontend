@@ -7,7 +7,7 @@ import { TextReadOnly } from "lib/components/json/TextReadOnly";
 
 import { EvmEventBoxTabs } from "../../types";
 import { EvmBoxDecoded } from "../EvmBoxDecoded";
-import { EvmEventBoxDataBody } from "./evm-event-box-data-body";
+import { EvmEventBoxDataBody } from "./EvmEventBoxDataBody";
 
 interface EvmEventBoxDataProps
   extends Pick<TxReceiptJsonRpcLog, "data" | "topics"> {
