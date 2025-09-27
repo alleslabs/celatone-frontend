@@ -2,7 +2,6 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
-  useCurrentChain,
   useEvmConfig,
 } from "lib/app-provider";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
@@ -29,7 +28,6 @@ export const useEvmTxsByBlockHeightSequencer = (
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const evm = useEvmConfig({ shouldRedirect: false });
-  const { bech32Prefix } = useCurrentChain();
 
   const jsonRpc = evm.enabled ? evm.jsonRpc : "";
 
@@ -38,7 +36,6 @@ export const useEvmTxsByBlockHeightSequencer = (
       CELATONE_QUERY_KEYS.EVM_TXS_BY_BLOCK_HEIGHT_SEQUENCER,
       indexerEndpoint,
       height,
-      bech32Prefix,
       limit,
       evm.enabled,
       jsonRpc,
@@ -86,15 +83,12 @@ export const useEvmTxs = (limit: number = 10) => {
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const evm = useEvmConfig({ shouldRedirect: false });
-  const { bech32Prefix } = useCurrentChain();
-
   const jsonRpc = evm.enabled ? evm.jsonRpc : "";
 
   return useInfiniteQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.EVM_TXS_SEQUENCER,
       indexerEndpoint,
-      bech32Prefix,
       limit,
       evm.enabled,
       jsonRpc,
@@ -150,7 +144,6 @@ export const useEvmTxsByAccountAddressSequencer = (
   } = useCelatoneApp();
   const evm = useEvmConfig({ shouldRedirect: false });
   const formatAddresses = useFormatAddresses();
-  const { bech32Prefix } = useCurrentChain();
 
   const jsonRpc = evm.enabled ? evm.jsonRpc : "";
 
@@ -158,7 +151,6 @@ export const useEvmTxsByAccountAddressSequencer = (
     queryKey: [
       CELATONE_QUERY_KEYS.EVM_TXS_BY_ACCOUNT_ADDRESS_SEQUENCER,
       indexerEndpoint,
-      bech32Prefix,
       limit,
       evm.enabled,
       jsonRpc,
@@ -171,7 +163,7 @@ export const useEvmTxsByAccountAddressSequencer = (
           "EVM is not enabled (useEvmTxsByAccountAddressSequencer)"
         );
 
-      if (search && isTxHash(search.slice(2))) {
+      if (search && isTxHash(search)) {
         const foundTx = await getEvmTxsByTxHashSequencer(
           indexerEndpoint,
           search
@@ -216,7 +208,7 @@ export const useEvmTxsByAccountAddressSequencer = (
         };
       }
 
-      if (search && !isTxHash(search.slice(2)))
+      if (search && !isTxHash(search))
         throw new Error(
           "search is not a tx hash (useEvmTxsByAccountAddressSequencer)"
         );

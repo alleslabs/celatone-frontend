@@ -585,7 +585,6 @@ export const useTxsByAddressSequencer = (
       });
 
       return {
-        ...txs,
         items: txs.items.map((tx) => {
           const sender = convertAccountPubkeyToAccountAddress(
             tx.signerPubkey,
@@ -598,6 +597,7 @@ export const useTxsByAddressSequencer = (
             sender,
           };
         }),
+        pagination: txs.pagination,
       };
     },
     [address, bech32Prefix, indexerEndpoint, limit, search]
@@ -678,7 +678,6 @@ export const useTxsByBlockHeightSequencer = (
       );
 
       return {
-        ...txs,
         items: txs.txs.map<TransactionWithTxResponse>((tx) => ({
           ...tx.item,
           rawTxResponse: tx.rawTxResponse,
@@ -688,6 +687,7 @@ export const useTxsByBlockHeightSequencer = (
           ),
           txResponse: tx.txResponse,
         })),
+        pagination: txs.pagination,
       };
     },
     initialPageParam: undefined,
