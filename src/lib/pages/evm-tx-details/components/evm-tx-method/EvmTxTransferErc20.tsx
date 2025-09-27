@@ -1,11 +1,12 @@
 import type { TxDataJsonRpc } from "lib/services/types";
 import type { AssetInfos, Option } from "lib/types";
 
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Spinner, Text } from "@chakra-ui/react";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TokenCard, UnsupportedToken } from "lib/components/token";
+import { useEvmVerifyInfos } from "lib/services/verification/evm";
 import {
   coinToTokenWithValue,
   convertToEvmDenom,
@@ -27,7 +28,8 @@ export const EvmTxTransferErc20 = ({
   evmTxData,
 }: EvmTxTransferErc20Props) => {
   const { from, input, to: erc20Contract } = evmTxData.tx;
-
+  const { data: evmVerifyInfos, isLoading: isEvmVerifInfosLoading } =
+    useEvmVerifyInfos(erc20Contract ? [erc20Contract] : []);
   const { address, amount } = extractErc20TransferInput(input);
 
   const amountToken = coinToTokenWithValue(
@@ -63,7 +65,6 @@ export const EvmTxTransferErc20 = ({
         label="From"
         value={
           <ExplorerLink
-            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
             type="user_address"
@@ -75,7 +76,6 @@ export const EvmTxTransferErc20 = ({
         label="To"
         value={
           <ExplorerLink
-            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
             type="user_address"
@@ -87,20 +87,28 @@ export const EvmTxTransferErc20 = ({
         label="ERC20 Contract"
         value={
           erc20Contract ? (
-            <Flex align="center" gap={1}>
-              <CustomIcon
-                boxSize={3}
-                color="primary.main"
-                name="contract-address"
-              />
-              <ExplorerLink
-                fixedHeight={false}
-                showCopyOnHover
-                textFormat="normal"
-                type="evm_contract_address"
-                value={erc20Contract}
-              />
-            </Flex>
+            <>
+              {isEvmVerifInfosLoading ? (
+                <Spinner boxSize={4} />
+              ) : (
+                <ExplorerLink
+                  leftIcon={
+                    <CustomIcon
+                      boxSize={3}
+                      color="primary.main"
+                      name="contract-address"
+                    />
+                  }
+                  showCopyOnHover
+                  textFormat="normal"
+                  textLabel={
+                    evmVerifyInfos?.[erc20Contract.toLowerCase()]?.contractName
+                  }
+                  type="evm_contract_address"
+                  value={erc20Contract}
+                />
+              )}
+            </>
           ) : (
             <Text color="text.disabled" variant="body2">
               -

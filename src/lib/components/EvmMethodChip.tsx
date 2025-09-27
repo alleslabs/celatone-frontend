@@ -15,7 +15,7 @@ export const EvmMethodChip = ({
   txTo,
   width = "144px",
 }: EvmMethodChipProps) => (
-  <Tag height="17px" justifyContent="center" variant="gray" width={width}>
+  <Tag justifyContent="center" variant="gray" width={width}>
     {getEvmMethod(txInput, txTo)}
   </Tag>
 );

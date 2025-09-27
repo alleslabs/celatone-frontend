@@ -1,61 +1,77 @@
-import type { BechAddr20 } from "lib/types";
+import type {
+  InfiniteData,
+  UseInfiniteQueryResult,
+} from "@tanstack/react-query";
+import type { Pagination, TransactionWithTxResponse } from "lib/types";
+import type { ReactNode } from "react";
 
-import { Text } from "@chakra-ui/react";
-import { CustomIcon } from "lib/components/icon";
-import { LoadNext } from "lib/components/LoadNext";
-import { EmptyState, ErrorFetching } from "lib/components/state";
-import { TransactionsTable, ViewMore } from "lib/components/table";
-import { useTxsByAddressSequencer } from "lib/services/tx";
+import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { useEvmConfig } from "lib/app-provider";
 
-interface CosmosTxsProps {
-  address: BechAddr20;
+import { CustomTab } from "../CustomTab";
+import { LoadNext } from "../LoadNext";
+import { EmptyState } from "../state";
+import { TransactionsTable, ViewMore } from "../table";
+
+export interface CosmosTxsProps {
+  data: UseInfiniteQueryResult<
+    InfiniteData<{
+      items: TransactionWithTxResponse[];
+      pagination: Pagination;
+    }>
+  >;
+  emptyMessage?: ReactNode;
   onViewMore?: () => void;
-  type: "account" | "contract";
 }
 
-export const CosmosTxs = ({ address, onViewMore, type }: CosmosTxsProps) => {
-  const {
+export const CosmosTxs = ({
+  data: {
     data,
     fetchNextPage,
     hasNextPage,
-    isError,
+    isFetching,
     isFetchingNextPage,
     isLoading,
-  } = useTxsByAddressSequencer(address, undefined);
+  },
+  emptyMessage,
+  onViewMore,
+}: CosmosTxsProps) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+  const countTotal = data?.pages?.[0]?.pagination?.total ?? undefined;
 
   return (
-    <>
-      <TransactionsTable
-        emptyState={
-          data === undefined ? (
-            <ErrorFetching dataName="cosmos transactions" />
-          ) : (
-            <EmptyState
-              imageVariant="empty"
-              message={`There are no transactions on this ${type}.`}
-            />
-          )
-        }
-        isLoading={isLoading}
-        showRelations={false}
-        transactions={!onViewMore ? data : data?.slice(0, 5)}
-      />
-      {data && (
-        <>
-          {!onViewMore && (
-            <>
-              <Text color="text.dark" mt={2} variant="body2">
-                {data.length} Cosmos transactions found
-              </Text>
-              {isError && (
-                <Text color="warning.main" mt={2} variant="body2">
-                  <CustomIcon boxSize={3} ml={0} name="alert-triangle-solid" />{" "}
-                  There is an error during loading more transactions. Please try
-                  again later.
-                </Text>
-              )}
-            </>
-          )}
+    <Tabs>
+      {evm.enabled && (
+        <TabList>
+          <CustomTab count={countTotal}>Transactions</CustomTab>
+        </TabList>
+      )}
+      <TabPanels>
+        <TabPanel p={0} pt={{ base: 0, md: evm.enabled ? 6 : 0 }}>
+          <TransactionsTable
+            emptyState={
+              typeof emptyMessage === "string" ? (
+                <EmptyState
+                  imageVariant="empty"
+                  message={
+                    emptyMessage ??
+                    "There are no transactions, or they have been pruned from the REST."
+                  }
+                />
+              ) : (
+                (emptyMessage ?? (
+                  <EmptyState
+                    imageVariant="empty"
+                    message="There are no transactions, or they have been pruned from the REST."
+                  />
+                ))
+              )
+            }
+            isLoading={isLoading || (isFetching && !isFetchingNextPage)}
+            showRelations={false}
+            showTimestamp={false}
+            transactions={data?.pages.flatMap((page) => page.items) ?? []}
+          />
           {hasNextPage && (
             <>
               {onViewMore ? (
@@ -64,13 +80,13 @@ export const CosmosTxs = ({ address, onViewMore, type }: CosmosTxsProps) => {
                 <LoadNext
                   fetchNextPage={fetchNextPage}
                   isFetchingNextPage={isFetchingNextPage}
-                  text="Load more 10 transactions"
+                  text="Load more transactions"
                 />
               )}
             </>
           )}
-        </>
-      )}
-    </>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   );
 };

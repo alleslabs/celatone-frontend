@@ -13,7 +13,11 @@ import { bech32AddressToHex, isHexWalletAddress } from "lib/utils";
 
 import type { ProxyResult } from "./json-rpc/proxy/types";
 
-import { getEthCall, getEvmProxyTarget } from "./json-rpc";
+import {
+  getDebugTraceBlockByNumber,
+  getEthCall,
+  getEvmProxyTarget,
+} from "./json-rpc";
 import {
   getEvmCodesByAddress,
   getEvmContractInfoSequencer,
@@ -145,5 +149,28 @@ export const useGetEvmProxyTarget = (
     refetchOnWindowFocus: false,
     retry: false,
     ...options,
+  });
+};
+
+export const useDebugTraceTransaction = (height: number, txHash: string) => {
+  const {
+    chainConfig: {
+      features: { evm },
+    },
+  } = useCelatoneApp();
+
+  return useQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.EVM_DEBUG_TRACE_TRANSACTION,
+      evm.enabled && evm.jsonRpc,
+      txHash,
+      height,
+    ],
+    queryFn: async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useDebugTraceTransaction)");
+      const internalTxs = await getDebugTraceBlockByNumber(evm.jsonRpc, height);
+      return internalTxs.filter((tx) => tx.txHash === txHash);
+    },
   });
 };

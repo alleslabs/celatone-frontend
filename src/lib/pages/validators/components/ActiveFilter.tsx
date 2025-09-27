@@ -48,7 +48,9 @@ export const ActiveFilter = ({
         Show only
       </Text>
       <SelectInput
-        menuPortalTarget={document.body}
+        menuPortalTarget={
+          typeof window !== "undefined" ? document.body : undefined
+        }
         options={activeOptions}
         value={activeOptions.find(({ value }) => value === isActive)}
         onChange={(selectedOption) =>

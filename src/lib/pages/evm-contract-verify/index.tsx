@@ -277,7 +277,11 @@ export const EvmContractVerifyBody = ({
                     <SelectInput
                       isRequired
                       label="License type"
-                      menuPortalTarget={document.body}
+                      menuPortalTarget={
+                        typeof window !== "undefined"
+                          ? document.body
+                          : undefined
+                      }
                       options={licenseTypeOptions}
                       placeholder="Select license type"
                       value={licenseTypeOptions.find(
@@ -309,7 +313,11 @@ export const EvmContractVerifyBody = ({
                     <SelectInput
                       isRequired
                       label="Language"
-                      menuPortalTarget={document.body}
+                      menuPortalTarget={
+                        typeof window !== "undefined"
+                          ? document.body
+                          : undefined
+                      }
                       options={PROGRAMMING_LANGUAGE_OPTIONS}
                       placeholder="Select language"
                       value={PROGRAMMING_LANGUAGE_OPTIONS.find(
@@ -332,7 +340,11 @@ export const EvmContractVerifyBody = ({
                       isDisabled={!language}
                       isRequired
                       label="Compiler version"
-                      menuPortalTarget={document.body}
+                      menuPortalTarget={
+                        typeof window !== "undefined"
+                          ? document.body
+                          : undefined
+                      }
                       options={compilerVersionOptions}
                       placeholder="Select compiler version"
                       value={compilerVersionOptions.find(

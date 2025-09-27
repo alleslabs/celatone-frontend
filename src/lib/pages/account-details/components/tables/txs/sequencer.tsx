@@ -1,38 +1,31 @@
-import type { BechAddr20 } from "lib/types";
-
-import { Box, Flex } from "@chakra-ui/react";
-import { useEvmConfig, useMobile } from "lib/app-provider";
+import { Box } from "@chakra-ui/react";
+import { useMobile } from "lib/app-provider";
 import { CosmosEvmTxs } from "lib/components/cosmos-evm-txs";
-import { CosmosEvmTxsTab } from "lib/components/cosmos-evm-txs/types";
-import { LoadNext } from "lib/components/LoadNext";
-import { EmptyState, ErrorFetching } from "lib/components/state";
-import {
-  MobileTitle,
-  TableTitle,
-  TransactionsTable,
-  ViewMore,
-} from "lib/components/table";
+import { MobileTitle } from "lib/components/table";
+import { useEvmTxsByAccountAddressSequencer } from "lib/services/evm-txs";
 import { useTxsByAddressSequencer } from "lib/services/tx";
-import { useState } from "react";
+import { zBechAddr } from "lib/types";
+import { useMemo } from "react";
 
 import type { TxsTableProps } from "./types";
 
 export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
   const isMobile = useMobile();
-  const evm = useEvmConfig({ shouldRedirect: false });
-  const [tab, setTab] = useState(CosmosEvmTxsTab.Cosmos);
-
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useTxsByAddressSequencer(
-    address as BechAddr20,
+  const addressValidation = useMemo(
+    () => zBechAddr.safeParse(address),
+    [address]
+  );
+  const cosmosTxsData = useTxsByAddressSequencer(
+    addressValidation.data,
     undefined,
-    onViewMore ? 5 : 10
+    onViewMore ? 5 : 10,
+    addressValidation.success
+  );
+  const evmTxsData = useEvmTxsByAccountAddressSequencer(
+    addressValidation.data,
+    undefined,
+    onViewMore ? 5 : 10,
+    addressValidation.success
   );
 
   const title = "Transactions";
@@ -51,50 +44,19 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
     );
 
   return (
-    <Box mt={[4, 8]}>
-      {evm.enabled ? (
-        <CosmosEvmTxs
-          address={address as BechAddr20}
-          setTab={setTab}
-          tab={tab}
-          type="account"
-        />
-      ) : (
-        <Flex direction="column">
-          <TableTitle mb={0} showCount={false} title={title} />
-          {!isMobileOverview && (
-            <TransactionsTable
-              emptyState={
-                error ? (
-                  <ErrorFetching dataName="transactions" />
-                ) : (
-                  <EmptyState
-                    imageVariant="empty"
-                    message="There are no transactions on this account, or they have been pruned from the REST."
-                    withBorder
-                  />
-                )
-              }
-              isLoading={isLoading}
-              showRelations
-              transactions={data}
-            />
-          )}
-          {hasNextPage && (
-            <>
-              {onViewMore ? (
-                <ViewMore onClick={onViewMore} />
-              ) : (
-                <LoadNext
-                  fetchNextPage={fetchNextPage}
-                  isFetchingNextPage={isFetchingNextPage}
-                  text="Load more 10 transactions"
-                />
-              )}
-            </>
-          )}
-        </Flex>
-      )}
-    </Box>
+    <CosmosEvmTxs
+      cosmosData={{
+        data: cosmosTxsData,
+        emptyMessage:
+          "There are no transactions on this account, or they have been pruned from the REST.",
+        onViewMore,
+      }}
+      evmData={{
+        data: evmTxsData,
+        emptyMessage: "There are no EVM transactions on this account.",
+        onViewMore,
+        showTimestamp: true,
+      }}
+    />
   );
 };

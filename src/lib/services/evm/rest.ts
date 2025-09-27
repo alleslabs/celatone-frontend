@@ -35,19 +35,15 @@ export const getEvmContractInfoSequencer = async (
   if (!txs.items.length) throw new Error(`No transactions found`);
 
   const tx = txs.items[0];
-  const { item } = tx;
-  const sender = convertAccountPubkeyToAccountAddress(
-    item.signerPubkey,
-    prefix
-  );
+  const sender = convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix);
 
   const eventCreateIndex =
-    item.events?.findIndex(
+    tx.events?.findIndex(
       (event) =>
         event.type === "create" && event.attributes?.[0]?.key === "contract"
     ) ?? -1;
 
-  const msgCreates = item.messages.filter(
+  const msgCreates = tx.messages.filter(
     (msg) => msg.type === "/minievm.evm.v1.MsgCreate"
   );
   const code =
@@ -57,8 +53,8 @@ export const getEvmContractInfoSequencer = async (
 
   return {
     code,
-    created: item.created,
-    hash: item.hash,
+    created: tx.created,
+    hash: tx.hash,
     sender,
   };
 };

@@ -1,4 +1,5 @@
 import type { Option, TransactionWithTxResponse } from "lib/types";
+import type { ReactNode } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
@@ -9,7 +10,7 @@ import { TransactionsTableMobileCard } from "./TransactionsTableMobileCard";
 import { TransactionsTableRow } from "./TransactionsTableRow";
 
 interface TransactionsTableProps {
-  emptyState: JSX.Element;
+  emptyState: ReactNode;
   isLoading: boolean;
   showAction?: boolean;
   showRelations: boolean;
@@ -35,7 +36,6 @@ export const TransactionsTable = ({
   const columns: string[] = [
     "32px",
     "190px",
-    ...(showSuccess ? ["48px"] : []),
     "minmax(380px, 1fr)",
     ...(showRelations ? ["90px"] : []),
     "max(180px)",
@@ -61,7 +61,6 @@ export const TransactionsTable = ({
       <TransactionsTableHeader
         showAction={showAction}
         showRelations={showRelations}
-        showSuccess={showSuccess}
         showTimestamp={showTimestamp}
         templateColumns={templateColumns}
       />

@@ -68,7 +68,9 @@ export const OrderSelect = ({
       Sorted by
     </Text>
     <SelectInput<OrderOptionValue>
-      menuPortalTarget={document.body}
+      menuPortalTarget={
+        typeof window !== "undefined" ? document.body : undefined
+      }
       options={
         allowUptime
           ? ORDER_OPTIONS

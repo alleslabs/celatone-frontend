@@ -53,9 +53,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#1432](https://github.com/alleslabs/celatone-frontend/pull/1432) Replace Initia Widget by InterwovenKit provider
 - [#1435](https://github.com/alleslabs/celatone-frontend/pull/1435) Merge Rollytics version back to develop
 - [#1411](https://github.com/alleslabs/celatone-frontend/pull/1411) Introduce useNftAddressFormat to automatically switch based on VM, and do some refactoring
+- [#1402](https://github.com/alleslabs/celatone-frontend/pull/1402) Replace qrcode.react with qr-code-styling, update UI according to redesign
 - [#1352](https://github.com/alleslabs/celatone-frontend/pull/1352) Support link module in execution message tx details, and new tx decoder UI
 - [#1350](https://github.com/alleslabs/celatone-frontend/pull/1350) Support new APIs v2
-- [#1402](https://github.com/alleslabs/celatone-frontend/pull/1402) Replace qrcode.react with qr-code-styling, update UI according to redesign
 
 ### Improvements
 

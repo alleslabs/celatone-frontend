@@ -314,7 +314,11 @@ export const zTxsResponseSequencer = z
     txs: z.array(zTxsResponseItemFromRest),
   })
   .transform((val) => ({
-    items: val.txs,
+    items: val.txs.map((tx) => ({
+      ...tx.item,
+      rawTxResponse: tx.rawTxResponse,
+      txResponse: tx.txResponse,
+    })),
     pagination: val.pagination,
   }));
 
@@ -332,7 +336,13 @@ export const zTxsByHashResponseSequencer = z
     tx: zTxsResponseItemFromRest,
   })
   .transform((val) => ({
-    items: [val.tx],
+    items: [
+      {
+        ...val.tx.item,
+        rawTxResponse: val.tx.rawTxResponse,
+        txResponse: val.tx.txResponse,
+      },
+    ],
     pagination: {
       nextKey: null,
       total: val.tx ? 1 : 0,
@@ -427,6 +437,9 @@ export const zTxsResponseWithTxResponseItem =
     success: val.success,
     txResponse: val.tx_response,
   }));
+export type TxsResponseWithTxResponseItem = z.infer<
+  typeof zTxsResponseWithTxResponseItem
+>;
 
 export const zTxsResponseWithTxResponse = z.object({
   items: z.array(zTxsResponseWithTxResponseItem),
@@ -591,8 +604,9 @@ export const zTxJsonRpc = z
     to: to ? toChecksumAddress(to) : null,
     ...val,
   }));
+export type TxJsonRpc = z.infer<typeof zTxJsonRpc>;
 
-const zTxReceiptJsonRpcLog = z.object({
+export const zTxReceiptJsonRpcLog = z.object({
   address: zHexAddr20,
   blockHash: z.string(),
   blockNumber: zHexBig,
