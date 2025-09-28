@@ -5,6 +5,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { useCreatedContractsByEvmTxHash } from "lib/services/tx";
 import { useEvmVerifyInfos } from "lib/services/verification/evm";
+import { Fragment } from "react";
 
 import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
@@ -86,28 +87,30 @@ export const EvmTxCreateContract = ({
         value={
           contracts.length > 0 ? (
             <Flex direction="column" gap={2}>
-              {contracts.map((contract) =>
-                isEvmVerifyInfosLoading ? (
-                  <Spinner boxSize={4} />
-                ) : (
-                  <ExplorerLink
-                    leftIcon={
-                      <CustomIcon
-                        boxSize={3}
-                        color="primary.main"
-                        name="contract-address"
-                      />
-                    }
-                    showCopyOnHover
-                    textFormat="normal"
-                    textLabel={
-                      evmVerifyInfos?.[contract.toLowerCase()]?.contractName
-                    }
-                    type="evm_contract_address"
-                    value={contract}
-                  />
-                )
-              )}
+              {contracts.map((contract) => (
+                <Fragment key={contract}>
+                  {isEvmVerifyInfosLoading ? (
+                    <Spinner boxSize={4} />
+                  ) : (
+                    <ExplorerLink
+                      leftIcon={
+                        <CustomIcon
+                          boxSize={3}
+                          color="primary.main"
+                          name="contract-address"
+                        />
+                      }
+                      showCopyOnHover
+                      textFormat="normal"
+                      textLabel={
+                        evmVerifyInfos?.[contract.toLowerCase()]?.contractName
+                      }
+                      type="evm_contract_address"
+                      value={contract}
+                    />
+                  )}
+                </Fragment>
+              ))}
             </Flex>
           ) : (
             <Text color="text.disabled" variant="body2">
