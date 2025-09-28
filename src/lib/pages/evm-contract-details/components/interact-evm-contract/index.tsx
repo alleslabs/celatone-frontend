@@ -133,6 +133,7 @@ export const InteractEvmContract = ({
             <ExplorerLink
               showCopyOnHover
               textFormat={isMobile ? "truncate" : "normal"}
+              textLabel={proxyTargetEvmVerifyInfo.contractName}
               type="evm_contract_address"
               value={proxyTargetEvmVerifyInfo.address}
             />

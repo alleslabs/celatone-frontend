@@ -63,7 +63,9 @@ export const AssetInput = ({
           Option: AssetInputOption,
         }}
         formatOptionLabel={AssetInputFormatOptionLabel}
-        menuPortalTarget={document.body}
+        menuPortalTarget={
+          typeof window !== "undefined" ? document.body : undefined
+        }
         options={assetOptions}
         placeholder="Select asset"
         value={value}

@@ -1,9 +1,8 @@
-import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
+import type { EvmTxResponseSequencerWithRpcData } from "lib/services/types";
 import type { AssetInfos, Option } from "lib/types";
 
 import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
-import { EvmToCell } from "lib/components/evm-to-cell";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -14,7 +13,6 @@ import {
   formatUTC,
   formatUTokenWithPrecision,
   getEvmAmount,
-  getEvmToAddress,
   getTokenLabel,
 } from "lib/utils";
 
@@ -23,7 +21,7 @@ import { TableRow } from "../tableComponents";
 interface EvmTransactionsTableRowProps {
   assetInfos: Option<AssetInfos>;
   evmDenom: Option<string>;
-  evmTransaction: TxDataWithTimeStampJsonRpc;
+  evmTransaction: EvmTxResponseSequencerWithRpcData;
   showTimestamp: boolean;
   templateColumns: string;
 }
@@ -36,8 +34,12 @@ export const EvmTransactionsTableRow = ({
   templateColumns,
 }: EvmTransactionsTableRowProps) => {
   const navigate = useInternalNavigate();
-  const toAddress = getEvmToAddress(evmTransaction);
-  const { amount, denom } = getEvmAmount(evmTransaction, evmDenom);
+  const { amount, denom } = getEvmAmount({
+    evmDenom,
+    input: evmTransaction.input,
+    to: evmTransaction.to,
+    value: evmTransaction.value,
+  });
 
   const onRowSelect = (txHash: string) =>
     navigate({
@@ -46,6 +48,7 @@ export const EvmTransactionsTableRow = ({
     });
 
   const token = coinToTokenWithValue(denom, amount, assetInfos);
+
   return (
     <Grid
       className="copier-wrapper"
@@ -53,67 +56,64 @@ export const EvmTransactionsTableRow = ({
       cursor="pointer"
       templateColumns={templateColumns}
       transition="all 0.25s ease-in-out"
-      onClick={() => onRowSelect(formatEvmTxHash(evmTransaction.tx.hash))}
+      onClick={() =>
+        onRowSelect(formatEvmTxHash(evmTransaction.transactionHash))
+      }
     >
-      <TableRow />
-      <TableRow pr={1}>
+      <TableRow gap={1} pr={1}>
+        {evmTransaction.status === "0x1" ? (
+          <CustomIcon
+            boxSize={3}
+            color="success.main"
+            name="check-circle-solid"
+          />
+        ) : (
+          <CustomIcon
+            boxSize={3}
+            color="error.main"
+            name="close-circle-solid"
+          />
+        )}
         <ExplorerLink
           showCopyOnHover
           type="evm_tx_hash"
-          value={formatEvmTxHash(evmTransaction.tx.hash)}
+          value={formatEvmTxHash(evmTransaction.transactionHash)}
         />
       </TableRow>
       <TableRow>
-        {evmTransaction.txReceipt.status ? (
-          <CustomIcon color="success.main" name="check" />
-        ) : (
-          <CustomIcon color="error.main" name="close" />
-        )}
-      </TableRow>
-      <TableRow>
         <EvmMethodChip
-          txInput={evmTransaction.tx.input}
-          txTo={evmTransaction.tx.to}
+          txInput={evmTransaction.input}
+          txTo={evmTransaction.to}
         />
       </TableRow>
       <TableRow>
         <ExplorerLink
           showCopyOnHover
           type="user_address"
-          value={evmTransaction.tx.from}
+          value={evmTransaction.from}
         />
-      </TableRow>
-      <TableRow>
-        <CustomIcon boxSize={5} color="gray.600" name="arrow-right" />
-      </TableRow>
-      <TableRow>
-        <EvmToCell isCompact toAddress={toAddress} />
       </TableRow>
       <TableRow
         alignItems="start"
         flexDirection="column"
         justifyContent="center"
       >
-        <Text variant="body2">
-          <Text as="span" fontWeight={700} mr={1}>
-            {formatUTokenWithPrecision({
-              amount: token.amount,
-              decimalPoints: token.precision ? 6 : 0,
-              isSuffix: true,
-              precision: token.precision ?? 0,
-            })}
-          </Text>
+        <Text color="text.dark" variant="body2">
+          {formatUTokenWithPrecision({
+            amount: token.amount,
+            decimalPoints: token.precision ? 6 : 0,
+            isSuffix: true,
+            precision: token.precision ?? 0,
+          })}{" "}
           {getTokenLabel(token.denom, token.symbol)}
         </Text>
       </TableRow>
       {showTimestamp && (
         <TableRow>
-          <Flex direction="column">
-            <Text color="text.dark" variant="body2">
-              {formatUTC(evmTransaction.timestamp)}
-            </Text>
-            <Text color="text.disabled" variant="body3">
-              ({dateFromNow(evmTransaction.timestamp)})
+          <Flex direction="column" gap={1}>
+            <Text variant="body3">{formatUTC(evmTransaction.timestamp)}</Text>
+            <Text color="text.dark" variant="body3">
+              {`(${dateFromNow(evmTransaction.timestamp)})`}
             </Text>
           </Flex>
         </TableRow>

@@ -1,45 +1,37 @@
-import { LoadNext } from "lib/components/LoadNext";
-import { EmptyState, ErrorFetching } from "lib/components/state";
-import { TransactionsTable } from "lib/components/table";
+import { CosmosEvmTxs } from "lib/components/cosmos-evm-txs";
+import { useEvmTxsByAccountAddressSequencer } from "lib/services/evm-txs";
 import { useTxsByAddressSequencer } from "lib/services/tx";
 
 import type { TxsTableProps } from "./types";
 
-export const TxsTableSequencer = ({ contractAddress }: TxsTableProps) => {
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useTxsByAddressSequencer(contractAddress, undefined, 10);
+export const TxsTableSequencer = ({
+  contractAddress,
+  onViewMore,
+}: TxsTableProps) => {
+  const cosmosTxsData = useTxsByAddressSequencer(
+    contractAddress,
+    undefined,
+    onViewMore ? 5 : 10
+  );
+  const evmTxsData = useEvmTxsByAccountAddressSequencer(
+    contractAddress,
+    undefined,
+    onViewMore ? 5 : 10
+  );
 
   return (
-    <>
-      <TransactionsTable
-        emptyState={
-          error ? (
-            <ErrorFetching dataName="transactions" />
-          ) : (
-            <EmptyState
-              imageVariant="empty"
-              message="This contract does not have any transactions."
-              withBorder
-            />
-          )
-        }
-        isLoading={isLoading}
-        showRelations={false}
-        transactions={data}
-      />
-      {hasNextPage && (
-        <LoadNext
-          fetchNextPage={fetchNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          text="Load more 10 transactions"
-        />
-      )}
-    </>
+    <CosmosEvmTxs
+      cosmosData={{
+        data: cosmosTxsData,
+        emptyMessage: "This contract does not have any transactions.",
+        onViewMore,
+      }}
+      evmData={{
+        data: evmTxsData,
+        emptyMessage: "There are no EVM transactions on this contract.",
+        onViewMore,
+        showTimestamp: true,
+      }}
+    />
   );
 };

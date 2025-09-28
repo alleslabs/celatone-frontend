@@ -80,7 +80,9 @@ export const ModuleVerifyAdvancedOptions = ({
             <SelectInput
               label="Language version"
               labelBg="gray.900"
-              menuPortalTarget={document.body}
+              menuPortalTarget={
+                typeof window !== "undefined" ? document.body : undefined
+              }
               options={languageVersionOptions}
               placeholder="Select language version"
               value={languageVersionOptions.find(
@@ -94,7 +96,9 @@ export const ModuleVerifyAdvancedOptions = ({
             <SelectInput
               label="Compiler version"
               labelBg="gray.900"
-              menuPortalTarget={document.body}
+              menuPortalTarget={
+                typeof window !== "undefined" ? document.body : undefined
+              }
               options={compilerVersionOptions}
               placeholder="Select compiler version"
               value={compilerVersionOptions.find(
@@ -108,7 +112,9 @@ export const ModuleVerifyAdvancedOptions = ({
             <SelectInput
               label="Bytecode version"
               labelBg="gray.900"
-              menuPortalTarget={document.body}
+              menuPortalTarget={
+                typeof window !== "undefined" ? document.body : undefined
+              }
               options={bytecodeVersionOptions}
               placeholder="Select bytecode version"
               value={bytecodeVersionOptions.find(

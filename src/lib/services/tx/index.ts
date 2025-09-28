@@ -1,11 +1,16 @@
-import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
+import type {
+  InfiniteData,
+  UseInfiniteQueryResult,
+  UseQueryOptions,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import type {
   BechAddr,
   BechAddr20,
-  BechAddr32,
   HexAddr20,
   Nullable,
   Option,
+  Pagination,
   PoolTxFilter,
   TransactionWithTxResponse,
   TxFilters,
@@ -43,7 +48,6 @@ import type {
   BlockTxsResponse,
   RawTxResponse,
   TxData,
-  TxsResponseItemFromRest,
   TxsResponseWithTxResponse,
 } from "../types";
 
@@ -356,7 +360,7 @@ export const useTxsCountByAddress = (
 };
 
 export const useTxsByContractAddressRest = (
-  address: BechAddr32,
+  address: BechAddr,
   limit: number,
   offset: number
 ) => {
@@ -477,48 +481,30 @@ export const useTxsSequencer = (limit = 10) => {
 
   const queryfn = useCallback(
     async (pageParam: Option<string>) => {
-      return getTxsSequencer(indexerEndpoint, pageParam, limit);
+      const txs = await getTxsSequencer(indexerEndpoint, pageParam, limit);
+      return {
+        ...txs,
+        items: txs.items.map<TransactionWithTxResponse>((tx) => ({
+          ...tx,
+          rawTxResponse: tx.rawTxResponse,
+          sender: convertAccountPubkeyToAccountAddress(
+            tx.signerPubkey,
+            bech32Prefix
+          ),
+          txResponse: tx.txResponse,
+        })),
+      };
     },
-    [indexerEndpoint, limit]
+    [bech32Prefix, indexerEndpoint, limit]
   );
 
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useInfiniteQuery({
+  return useInfiniteQuery({
     queryKey: [CELATONE_QUERY_KEYS.TXS_SEQUENCER, indexerEndpoint, limit],
     queryFn: ({ pageParam }: { pageParam?: string }) => queryfn(pageParam),
     initialPageParam: undefined,
     getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
     refetchOnWindowFocus: false,
   });
-
-  return {
-    data: data?.pages.flatMap<TransactionWithTxResponse>((page) =>
-      page.items.map((item: TxsResponseItemFromRest) => {
-        const sender = convertAccountPubkeyToAccountAddress(
-          item.item.signerPubkey,
-          bech32Prefix
-        );
-
-        return {
-          ...item.item,
-          rawTxResponse: item.rawTxResponse,
-          sender,
-          txResponse: item.txResponse,
-        };
-      })
-    ),
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  };
 };
 
 export const useTxsCountSequencer = () => {
@@ -534,31 +520,17 @@ export const useTxsCountSequencer = () => {
   });
 };
 
-const mapTxsByAddressSequencerItems = (
-  prefix: string,
-  address: Option<BechAddr>,
-  items: Option<TxsResponseItemFromRest[]>
-) =>
-  items?.map((item: TxsResponseItemFromRest) => {
-    const sender = convertAccountPubkeyToAccountAddress(
-      item.item.signerPubkey,
-      prefix
-    );
-
-    return {
-      ...item.item,
-      isSigner: address === sender,
-      rawTxResponse: item.rawTxResponse,
-      sender,
-      txResponse: item.txResponse,
-    };
-  });
-
 export const useTxsByAddressSequencer = (
   address: Option<BechAddr>,
   search: Option<string>,
-  limit = 10
-) => {
+  limit = 10,
+  enabled = true
+): UseInfiniteQueryResult<
+  InfiniteData<{
+    items: TransactionWithTxResponse[];
+    pagination: Pagination;
+  }>
+> => {
   const {
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
@@ -566,61 +538,72 @@ export const useTxsByAddressSequencer = (
 
   const queryfn = useCallback(
     async (pageParam: Option<string>) => {
-      return (async () => {
-        if (search && isTxHash(search)) {
-          const txsByHash = await getTxsByHashSequencer(
-            indexerEndpoint,
-            search
-          );
+      if (search && isTxHash(search)) {
+        const txsByHash = await getTxsByHashSequencer(indexerEndpoint, search);
 
-          if (txsByHash.pagination.total === 0)
-            throw new Error("transaction not found (getTxsByHashSequencer)");
+        if (txsByHash.pagination.total === 0)
+          throw new Error("transaction not found (getTxsByHashSequencer)");
 
-          const tx = txsByHash.items[0];
+        const tx = txsByHash.items[0];
+        const sender = convertAccountPubkeyToAccountAddress(
+          tx.signerPubkey,
+          bech32Prefix
+        );
+
+        if (address === sender)
+          return {
+            ...txsByHash,
+            items: [
+              {
+                ...tx,
+                isSigner: true,
+                sender,
+              },
+            ],
+          };
+
+        const findAddressFromEvents = tx.events?.some((event) =>
+          event.attributes.some((attr) => attr.value === address)
+        );
+
+        if (findAddressFromEvents) return txsByHash;
+
+        throw new Error("transaction is not related (useTxsByAddressSequncer)");
+      }
+
+      if (search && !isTxHash(search))
+        throw new Error("search is not a tx hash (useTxsByAddressSequncer)");
+
+      if (!address)
+        throw new Error("address is undefined (useTxsByAddressSequncer)");
+
+      const txs = await getTxsByAccountAddressSequencer({
+        address,
+        endpoint: indexerEndpoint,
+        limit,
+        paginationKey: pageParam,
+      });
+
+      return {
+        items: txs.items.map((tx) => {
           const sender = convertAccountPubkeyToAccountAddress(
-            tx.item.signerPubkey,
+            tx.signerPubkey,
             bech32Prefix
           );
 
-          if (address === sender) return txsByHash;
-
-          const findAddressFromEvents = tx.item.events?.some((event) =>
-            event.attributes.some((attr) => attr.value === address)
-          );
-
-          if (findAddressFromEvents) return txsByHash;
-
-          throw new Error(
-            "transaction is not related (useTxsByAddressSequncer)"
-          );
-        }
-
-        if (search && !isTxHash(search))
-          throw new Error("search is not a tx hash (useTxsByAddressSequncer)");
-
-        if (!address)
-          throw new Error("address is undefined (useTxsByAddressSequncer)");
-
-        return getTxsByAccountAddressSequencer({
-          address,
-          endpoint: indexerEndpoint,
-          limit,
-          paginationKey: pageParam,
-        });
-      })();
+          return {
+            ...tx,
+            isSigner: address === sender,
+            sender,
+          };
+        }),
+        pagination: txs.pagination,
+      };
     },
-    [address, indexerEndpoint, bech32Prefix, search, limit]
+    [address, bech32Prefix, indexerEndpoint, limit, search]
   );
 
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isError,
-    isFetchingNextPage,
-    isLoading,
-  } = useInfiniteQuery({
+  return useInfiniteQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_SEQUENCER,
       indexerEndpoint,
@@ -633,25 +616,8 @@ export const useTxsByAddressSequencer = (
     getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
     refetchOnWindowFocus: false,
     retry: false,
+    enabled: enabled && !!address,
   });
-
-  return {
-    data: data?.pages.flatMap<TransactionWithTxResponse>(
-      (page) =>
-        mapTxsByAddressSequencerItems(bech32Prefix, address, page.items) ?? []
-    ),
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isError,
-    isFetchingNextPage,
-    isLoading,
-    latestFetchedData: mapTxsByAddressSequencerItems(
-      bech32Prefix,
-      address,
-      data?.pages[data.pages.length - 1].items
-    ),
-  };
 };
 
 export const useTxsByAddressPaginationSequencer = (
@@ -686,32 +652,46 @@ export const useTxsByAddressPaginationSequencer = (
   });
 };
 
-export const useTxsByBlockHeightSequencer = (height: number) => {
+export const useTxsByBlockHeightSequencer = (
+  height: number,
+  limit: number = 10
+) => {
   const {
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_SEQUENCER,
       indexerEndpoint,
       height,
       bech32Prefix,
+      limit,
     ],
-    queryFn: async () => {
-      const txs = await getTxsByBlockHeightSequencer(indexerEndpoint, height);
+    queryFn: async ({ pageParam }: { pageParam?: string }) => {
+      const txs = await getTxsByBlockHeightSequencer(
+        indexerEndpoint,
+        height,
+        limit,
+        pageParam
+      );
 
-      return txs.map<TransactionWithTxResponse>((tx) => ({
-        ...tx.item,
-        rawTxResponse: tx.rawTxResponse,
-        sender: convertAccountPubkeyToAccountAddress(
-          tx.item.signerPubkey,
-          bech32Prefix
-        ),
-        txResponse: tx.txResponse,
-      }));
+      return {
+        items: txs.txs.map<TransactionWithTxResponse>((tx) => ({
+          ...tx.item,
+          rawTxResponse: tx.rawTxResponse,
+          sender: convertAccountPubkeyToAccountAddress(
+            tx.item.signerPubkey,
+            bech32Prefix
+          ),
+          txResponse: tx.txResponse,
+        })),
+        pagination: txs.pagination,
+      };
     },
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
     refetchOnWindowFocus: false,
     retry: 1,
   });

@@ -33,6 +33,7 @@ export const EvmVerifyRequestInfo = ({
             openNewTab
             showCopyOnHover
             textFormat={isMobile ? "truncate" : "normal"}
+            textLabel={undefined}
             type="evm_contract_address"
             value={contractAddress}
           />
@@ -53,6 +54,7 @@ export const EvmVerifyRequestInfo = ({
             openNewTab
             showCopyOnHover
             textFormat={isMobile ? "truncate" : "normal"}
+            textLabel={evmVerifyInfo.contractName ?? undefined}
             type="evm_contract_address"
             value={contractAddress}
           />

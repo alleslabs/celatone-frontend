@@ -8,10 +8,10 @@ interface BlockTxsTableProps {
 
 export const BlockTxsTableSequencer = ({ height }: BlockTxsTableProps) => {
   const { data, isLoading } = useTxsByBlockHeightSequencer(height);
-
+  const countTotal = data?.pages[0].pagination.total ?? undefined;
   return (
     <>
-      <TableTitle count={data?.length} title="Transactions" />
+      <TableTitle count={countTotal} title="Transactions" />
       <TransactionsTable
         emptyState={
           <EmptyState
@@ -24,7 +24,7 @@ export const BlockTxsTableSequencer = ({ height }: BlockTxsTableProps) => {
         showRelations={false}
         showSuccess
         showTimestamp={false}
-        transactions={data}
+        transactions={data?.pages.flatMap((page) => page.items) || []}
       />
     </>
   );

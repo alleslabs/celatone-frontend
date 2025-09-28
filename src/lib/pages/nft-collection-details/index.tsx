@@ -207,7 +207,6 @@ const CollectionDetailsBody = ({
             >
               <ExplorerLink
                 ampCopierSection="collection-addresss-top"
-                fixedHeight={false}
                 maxWidth="full"
                 textFormat="normal"
                 type="contract_address"
