@@ -91,6 +91,7 @@ export const getTxsDataJsonRpc = (endpoint: string, evmTxHashes: string[]) => {
   });
 
   const fetch = async (endpoint: string) => {
+    if (!requests.length) return [];
     const results = await requestBatchJsonRpc(endpoint, requests);
 
     const parsedResults = [];
