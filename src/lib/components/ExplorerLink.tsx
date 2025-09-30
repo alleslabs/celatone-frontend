@@ -326,17 +326,39 @@ export const ExplorerLink = ({
       gap={1}
       h={fixedHeight && textFormat !== "normal" ? "24px" : "auto"}
       maxW={textLabel ? "100%" : "fit-content"}
-      px={1}
+      position="relative"
       rounded={4}
       sx={{
-        ...(isHighlighted && {
-          backgroundColor: transparentize("warning.dark", 0.3),
-          borderColor: "warning.dark",
-        }),
+        "&::before": {
+          backgroundColor: isHighlighted
+            ? transparentize("warning.dark", 0.3)
+            : "transparent",
+          border: isHighlighted ? "1px dashed" : "1px dashed transparent",
+          borderColor: isHighlighted ? "warning.dark" : "transparent",
+          borderRadius: "4px",
+          bottom: "-2px",
+          content: '""',
+          left: "-4px",
+          position: "absolute",
+          right: "-4px",
+          top: "-2px",
+          transition: "all 0.15s ease-in-out",
+          zIndex: 1,
+        },
+
         "&:hover": {
-          backgroundColor: transparentize("warning.dark", 0.3),
           textDecoration: "underline",
           textDecorationColor: "primary.light",
+        },
+
+        "&:hover::before": {
+          backgroundColor: transparentize("warning.dark", 0.3),
+          borderColor: "warning.dark",
+        },
+
+        "& > *": {
+          position: "relative",
+          zIndex: 2,
         },
       }}
       transition="all 0.15s ease-in-out"
