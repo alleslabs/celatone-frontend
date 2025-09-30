@@ -323,6 +323,7 @@ export const useNftGlyphImage = (
   height?: string
 ) => {
   const { currentChainId } = useCelatoneApp();
+  const formatAddress = useNftAddressFormat();
 
   if (!nft || !GLYPH_API_URL) return "";
 
@@ -330,10 +331,12 @@ export const useNftGlyphImage = (
   if (width) params.set("width", width);
   if (height) params.set("height", height);
 
+  const formatted = formatAddress(nft?.collectionAddress ?? "");
+
   const tokenId =
     nft.nftAddress && nft.nftAddress !== "0x" ? nft.nftAddress : nft.tokenId;
 
-  return `${GLYPH_API_URL}/${currentChainId}/${nft.collectionAddress}/${tokenId}${params.toString() ? `?${params}` : ""}`;
+  return `${GLYPH_API_URL}/${currentChainId}/${formatted}/${tokenId}${params.toString() ? `?${params}` : ""}`;
 };
 
 export const useNftMetadata = (nft: Option<Partial<Nft>>) =>
