@@ -37,10 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Improvements
-
-- [#1470](https://github.com/alleslabs/celatone-frontend/pull/1470) fix spelling issues
-
 ## v1.15.0
 
 ### Features
@@ -66,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#1474](https://github.com/alleslabs/celatone-frontend/pull/1474) Improve ExplorerLink component background highlight on hover
 - [#1471](https://github.com/alleslabs/celatone-frontend/pull/1471) Add load more on scroll instead of load all at once
+- [#1470](https://github.com/alleslabs/celatone-frontend/pull/1470) fix spelling issues
 - [#1467](https://github.com/alleslabs/celatone-frontend/pull/1467) Upgrade Tx Decoder to 0.7.2
 - [#1464](https://github.com/alleslabs/celatone-frontend/pull/1464) Upgrade InterwovenKit to 2.0.2
 - [#1456](https://github.com/alleslabs/celatone-frontend/pull/1456) Upgrade Tx Decoder to 0.7.1
