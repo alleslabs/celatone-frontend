@@ -88,12 +88,7 @@ const ReceiptCommonRow = ({ html, title, value }: StandardTxReceipt) => (
     gap={4}
     w="full"
   >
-    <Text
-      className="receipt-row-label"
-      mb={{ base: 1, md: 0 }}
-      variant="body2"
-      whiteSpace="nowrap"
-    >
+    <Text className="receipt-row-label" mb={{ base: 1, md: 0 }} variant="body2">
       {title}
     </Text>
     {html || (
