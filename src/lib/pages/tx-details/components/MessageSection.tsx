@@ -5,6 +5,7 @@ import {
   Alert,
   AlertDescription,
   Flex,
+  Spinner,
   TabList,
   TabPanel,
   TabPanels,
@@ -14,7 +15,8 @@ import { useEvmConfig, useMoveConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { DecodeMessage } from "lib/components/decode-message";
 import { CustomIcon } from "lib/components/icon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 import { TxMessage } from "../../../components/tx-message";
 import { BalanceChanges } from "./balance-changes";
@@ -45,6 +47,16 @@ export const MessageSection = ({
       body: { messages },
     },
   } = txData;
+
+  const [visibleCount, setVisibleCount] = useState(10);
+  const { inView, ref } = useInView({ threshold: 0 });
+
+  useEffect(() => {
+    if (inView && visibleCount < messages.length) {
+      setVisibleCount((prev) => Math.min(prev + 10, messages.length));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
 
   return (
     <Flex direction="column" flex={1} gap={4} w="full">
@@ -87,27 +99,36 @@ export const MessageSection = ({
         </TabList>
         <TabPanels>
           <TabPanel px={0}>
-            {messages.map((msg, idx) =>
-              decodedTx.messages[idx] ? (
-                <DecodeMessage
-                  key={JSON.stringify(msg) + idx.toString()}
-                  compact={false}
-                  decodedMessage={decodedTx.messages[idx].decodedMessage}
-                  log={logs[idx]}
-                  metadata={decodedTx.metadata}
-                  msgBody={msg}
-                  msgCount={messages.length}
-                />
-              ) : (
-                <TxMessage
-                  key={JSON.stringify(msg) + idx.toString()}
-                  compact={false}
-                  log={logs[idx]}
-                  msgBody={msg}
-                  msgCount={messages.length}
-                />
-              )
-            )}
+            <>
+              {messages
+                .slice(0, visibleCount)
+                .map((msg, idx) =>
+                  decodedTx.messages[idx] ? (
+                    <DecodeMessage
+                      key={JSON.stringify(msg) + idx.toString()}
+                      compact={false}
+                      decodedMessage={decodedTx.messages[idx].decodedMessage}
+                      log={logs[idx]}
+                      metadata={decodedTx.metadata}
+                      msgBody={msg}
+                      msgCount={messages.length}
+                    />
+                  ) : (
+                    <TxMessage
+                      key={JSON.stringify(msg) + idx.toString()}
+                      compact={false}
+                      log={logs[idx]}
+                      msgBody={msg}
+                      msgCount={messages.length}
+                    />
+                  )
+                )}
+              {visibleCount < messages.length && (
+                <Flex align="center" justify="center" mt={4} ref={ref}>
+                  <Spinner />
+                </Flex>
+              )}
+            </>
           </TabPanel>
           <TabPanel px={0}>
             <BalanceChanges
