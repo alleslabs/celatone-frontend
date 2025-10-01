@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1474](https://github.com/alleslabs/celatone-frontend/pull/1474) Improve ExplorerLink component background highlight on hover
 - [#1471](https://github.com/alleslabs/celatone-frontend/pull/1471) Add load more on scroll instead of load all at once
 - [#1467](https://github.com/alleslabs/celatone-frontend/pull/1467) Upgrade Tx Decoder to 0.7.2
 - [#1464](https://github.com/alleslabs/celatone-frontend/pull/1464) Upgrade InterwovenKit to 2.0.2
