@@ -60,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#1474](https://github.com/alleslabs/celatone-frontend/pull/1474) Improve ExplorerLink component background highlight on hover
+- [#1471](https://github.com/alleslabs/celatone-frontend/pull/1471) Add load more on scroll instead of load all at once
 - [#1467](https://github.com/alleslabs/celatone-frontend/pull/1467) Upgrade Tx Decoder to 0.7.2
 - [#1464](https://github.com/alleslabs/celatone-frontend/pull/1464) Upgrade InterwovenKit to 2.0.2
 - [#1456](https://github.com/alleslabs/celatone-frontend/pull/1456) Upgrade Tx Decoder to 0.7.1
@@ -71,6 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1473](https://github.com/alleslabs/celatone-frontend/pull/1473) Fix event logs title overflow wrap issue
 - [#1469](https://github.com/alleslabs/celatone-frontend/pull/1469) Fix JSON rpc batch request issue
 - [#1462](https://github.com/alleslabs/celatone-frontend/pull/1462) Fix account details nfts overview not showing correct count
 - [#1460](https://github.com/alleslabs/celatone-frontend/pull/1460) Fix account details nfts tab not showing correct count
