@@ -1,5 +1,5 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import { CustomerNetworkAlertInfo } from "lib/pages/custom-network/components";
+import { CustomNetworkAlertInfo } from "lib/pages/custom-network/components";
 
 interface CustomNetworkPageHeaderProps {
   hasAlert?: boolean;
@@ -21,6 +21,6 @@ export const CustomNetworkPageHeader = ({
         {title}
       </Heading>
     </Flex>
-    {hasAlert && <CustomerNetworkAlertInfo />}
+    {hasAlert && <CustomNetworkAlertInfo />}
   </>
 );

@@ -4,7 +4,7 @@ import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { CelatoneSeo } from "lib/components/Seo";
 
-import { CustomerNetworkAlertInfo } from "./components";
+import { CustomNetworkAlertInfo } from "./components";
 
 export const AddNetwork = () => {
   useAllowCustomNetworks({ shouldRedirect: true });
@@ -18,7 +18,7 @@ export const AddNetwork = () => {
           <Heading as="h4" variant="h4">
             Add custom rollup
           </Heading>
-          <CustomerNetworkAlertInfo />
+          <CustomNetworkAlertInfo />
         </Flex>
         <Flex direction="column" gap={4}>
           <ButtonCard

@@ -471,6 +471,7 @@ export const zAddNetworkLinkChainConfigJson = z
   .object({
     chainId: z.string().min(1, "Chain ID cannot be empty"),
     denom: z.string(),
+    indexer: zHttpsUrl,
     jsonRpc: zHttpsUrl.optional(),
     // MARK: Support backward lcd to rest
     lcd: zHttpsUrl.optional(),
@@ -535,7 +536,7 @@ export const zAddNetworkLinkChainConfigJson = z
         gasAdjustment: DEFAULT_GAS.gasAdjustment,
         maxGasLimit: DEFAULT_GAS.maxGasLimit,
       },
-      indexer: restEndpoint,
+      indexer: val.indexer,
       prettyName: capitalize(val.chainId),
       registry: {
         assets: [],
