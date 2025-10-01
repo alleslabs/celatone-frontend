@@ -37,6 +37,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Improvements
+
+- [#1470](https://github.com/alleslabs/celatone-frontend/pull/1470) fix spelling issues
+
 ## v1.15.0
 
 ### Features

@@ -606,7 +606,7 @@ export const useSingleActionMsgProps = (
   const getAddressTypeByLength = useGetAddressTypeByLength();
 
   // HACK: to prevent the error when message.detail is undefined
-  // TODO: revist and support custom message detail on lite tier later
+  // TODO: revisit and support custom message detail on lite tier later
   if (!isFullTier) return otherMessageSingleMsgProps(isSuccess, messages, type);
 
   switch (type) {
