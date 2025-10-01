@@ -19,7 +19,7 @@ import { NetworkMenuTop } from "./NetworkMenuTop";
 
 export const NetworkMenu = observer(() => {
   const isMobile = useMobile();
-  const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
+  const { isOpen, onClose, onToggle } = useDisclosure();
 
   const {
     cursor,
@@ -42,45 +42,48 @@ export const NetworkMenu = observer(() => {
         isMobile={isMobile}
         onClick={() => {
           track(AmpEvent.USE_SELECT_NETWORK);
-          onOpen();
+          onToggle();
         }}
       />
-      <Drawer
-        autoFocus={false}
-        isOpen={isOpen}
-        placement="right"
-        onClose={onClose}
-      >
-        <DrawerOverlay />
-        <DrawerContent
-          background="background.main"
-          gap={6}
-          h="100%"
-          minW="343px"
+      {isOpen && (
+        <Drawer
+          autoFocus={false}
+          isOpen={isOpen}
+          placement="right"
+          returnFocusOnClose={false}
+          onClose={onClose}
         >
-          <DrawerHeader pb={0} pt={6} px={4}>
-            <NetworkMenuTop
-              handleOnKeyDown={handleOnKeyDown}
-              keyword={keyword}
-              setKeyword={setKeyword}
-              onClose={onClose}
-            />
-          </DrawerHeader>
-          <DrawerCloseButton color="text.dark" />
-          <DrawerBody pb={6} pt={0} px={4}>
-            <NetworkMenuBody
-              cursor={cursor}
-              filteredDevnetChains={filteredDevnetChains}
-              filteredLocalChains={filteredLocalChains}
-              filteredMainnetChains={filteredMainnetChains}
-              filteredPinnedChains={filteredPinnedChains}
-              filteredTestnetChains={filteredTestnetChains}
-              setCursor={setCursor}
-              onClose={onClose}
-            />
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+          <DrawerOverlay />
+          <DrawerContent
+            background="background.main"
+            gap={6}
+            h="100%"
+            minW="343px"
+          >
+            <DrawerHeader pb={0} pt={6} px={4}>
+              <NetworkMenuTop
+                handleOnKeyDown={handleOnKeyDown}
+                keyword={keyword}
+                setKeyword={setKeyword}
+                onClose={onClose}
+              />
+            </DrawerHeader>
+            <DrawerCloseButton color="text.dark" />
+            <DrawerBody pb={6} pt={0} px={4}>
+              <NetworkMenuBody
+                cursor={cursor}
+                filteredDevnetChains={filteredDevnetChains}
+                filteredLocalChains={filteredLocalChains}
+                filteredMainnetChains={filteredMainnetChains}
+                filteredPinnedChains={filteredPinnedChains}
+                filteredTestnetChains={filteredTestnetChains}
+                setCursor={setCursor}
+                onClose={onClose}
+              />
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+      )}
     </>
   );
 });
