@@ -164,9 +164,6 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
             label="Rollytics API URL"
             name="indexer"
             placeholder="ex. https://api.rollytics.dev/"
-            rules={{
-              required: "",
-            }}
             variant="fixed-floating"
             w="full"
           />
