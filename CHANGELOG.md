@@ -42,7 +42,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1475](https://github.com/alleslabs/celatone-frontend/pull/1475) Add indexer rollytics support to custom rollups
-- [#1458](https://github.com/alleslabs/celatone-frontend/pull/1458) Add decoded tx in tx details execute section
 - [#1455](https://github.com/alleslabs/celatone-frontend/pull/1455) Update transactions table tx decoder column
 - [#1454](https://github.com/alleslabs/celatone-frontend/pull/1454) Update react-app-shell to v1.3.0
 - [#1452](https://github.com/alleslabs/celatone-frontend/pull/1452) Support non-initia chain config
@@ -60,9 +59,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1474](https://github.com/alleslabs/celatone-frontend/pull/1474) Improve ExplorerLink component background highlight on hover
-- [#1471](https://github.com/alleslabs/celatone-frontend/pull/1471) Add load more on scroll instead of load all at once
-- [#1470](https://github.com/alleslabs/celatone-frontend/pull/1470) fix spelling issues
 - [#1467](https://github.com/alleslabs/celatone-frontend/pull/1467) Upgrade Tx Decoder to 0.7.2
 - [#1464](https://github.com/alleslabs/celatone-frontend/pull/1464) Upgrade InterwovenKit to 2.0.2
 - [#1456](https://github.com/alleslabs/celatone-frontend/pull/1456) Upgrade Tx Decoder to 0.7.1
