@@ -74,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1478](https://github.com/alleslabs/celatone-frontend/pull/1478) Fix EVM event box decode issue
 - [#1477](https://github.com/alleslabs/celatone-frontend/pull/1477) Fix EVM minor bugs
 - [#1473](https://github.com/alleslabs/celatone-frontend/pull/1473) Fix event logs title overflow wrap issue
 - [#1469](https://github.com/alleslabs/celatone-frontend/pull/1469) Fix JSON rpc batch request issue
