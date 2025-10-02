@@ -41,7 +41,7 @@ export const EvmEventBoxTopics = ({
       ))
     ) : (
       <>
-        {isVerified ? (
+        {isVerified && topics.length > 0 ? (
           <EvmEventBoxTopicHex index={0} topic={topics[0]} />
         ) : (
           topics.map((topic, index) => (
