@@ -471,6 +471,7 @@ export const zAddNetworkLinkChainConfigJson = z
   .object({
     chainId: z.string().min(1, "Chain ID cannot be empty"),
     denom: z.string(),
+    indexer: zHttpsUrl.optional(),
     jsonRpc: zHttpsUrl.optional(),
     // MARK: Support backward lcd to rest
     lcd: zHttpsUrl.optional(),
@@ -498,7 +499,7 @@ export const zAddNetworkLinkChainConfigJson = z
   })
   .transform<ChainConfig>(async (val) => {
     // MARK: Support backward lcd to rest
-    const restEndpoint = val.rest ?? val.lcd ?? "";
+    const restEndpoint = val.rest || val.lcd || "";
 
     const bech32Prefix = await getAccountBech32Rest(restEndpoint)
       .then((res) => res.bech32Prefix)
@@ -535,7 +536,7 @@ export const zAddNetworkLinkChainConfigJson = z
         gasAdjustment: DEFAULT_GAS.gasAdjustment,
         maxGasLimit: DEFAULT_GAS.maxGasLimit,
       },
-      indexer: restEndpoint,
+      indexer: val.indexer || restEndpoint,
       prettyName: capitalize(val.chainId),
       registry: {
         assets: [],
