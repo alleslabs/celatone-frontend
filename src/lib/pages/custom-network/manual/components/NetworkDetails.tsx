@@ -1,11 +1,20 @@
 import type { Control, FieldErrors } from "react-hook-form";
 
-import { Flex, Grid, Radio, RadioGroup, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Grid,
+  GridItem,
+  Radio,
+  RadioGroup,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import {
   CustomNetworkPageHeader,
   CustomNetworkSubheader,
 } from "lib/components/custom-network";
 import { ControllerInput } from "lib/components/forms";
+import Link from "next/link";
 import { useController, useWatch } from "react-hook-form";
 
 import type { AddNetworkManualForm } from "../../types";
@@ -94,18 +103,36 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           subtitle="Enter the rollup’s general information and gather data touch points"
           title="Network details"
         />
-        <ControllerInput
-          control={control}
-          error={errors.prettyName?.message}
-          label="Rollup name"
-          name="prettyName"
-          placeholder="ex. Jennie"
-          rules={{
-            required: "",
-          }}
-          variant="fixed-floating"
-          w="full"
-        />
+        <Grid gap={4} gridTemplateColumns="repeat(2, 1fr)" w="full">
+          <GridItem>
+            <ControllerInput
+              control={control}
+              error={errors.prettyName?.message}
+              label="Rollup name"
+              name="prettyName"
+              placeholder="ex. Jennie"
+              rules={{
+                required: "",
+              }}
+              variant="fixed-floating"
+              w="full"
+            />
+          </GridItem>
+          <GridItem>
+            <ControllerInput
+              control={control}
+              error={errors.chainId?.message}
+              label="Rollup chain ID"
+              name="chainId"
+              placeholder="ex. jennie-init-1"
+              rules={{
+                required: "",
+              }}
+              variant="fixed-floating"
+              w="full"
+            />
+          </GridItem>
+        </Grid>
         <ControllerInput
           control={control}
           error={errors.rest?.message}
@@ -130,37 +157,34 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           variant="fixed-floating"
           w="full"
         />
-        <Flex gap={6}>
+        <Stack>
           <ControllerInput
             control={control}
-            error={errors.chainId?.message}
-            label="Rollup chain ID"
-            name="chainId"
-            placeholder="ex. jennie-init-1"
-            rules={{
-              required: "",
-            }}
+            error={errors.indexer?.message}
+            label="Rollytics API URL"
+            name="indexer"
+            placeholder="ex. https://api.rollytics.dev/"
             variant="fixed-floating"
             w="full"
           />
-          <ControllerInput
-            control={control}
-            error={errors.registryChainName?.message}
-            helperText={
-              errors.registryChainName?.message
-                ? ""
-                : "Lower case letter (a-z) or number (0-9)"
-            }
-            label="Registry chain name"
-            name="registryChainName"
-            placeholder="ex. jennieinit"
-            rules={{
-              required: "",
-            }}
-            variant="fixed-floating"
-            w="full"
-          />
-        </Flex>
+          <Text color="text.dark" variant="body3">
+            If a Rollytics API URL is provided, Scan will fetch indexed data
+            from Rollytics instead of the Cosmos node’s kvindexer.{" "}
+            <Text as="span" color="warning.main">
+              We recommend setting up Rollytics, as kvindexer will be deprecated
+              soon
+            </Text>
+            .{" "}
+            <Link
+              style={{ textDecoration: "underline" }}
+              href="https://github.com/initia-labs/rollytics"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Learn more about Rollytics
+            </Link>
+          </Text>
+        </Stack>
         <ControllerInput
           control={control}
           error={errors.logoUri?.message}
@@ -171,11 +195,6 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           variant="fixed-floating"
           w="full"
         />
-      </Flex>
-      <Flex mt={8}>
-        <Text color="text.dark" variant="body2">
-          You can edit these details later.
-        </Text>
       </Flex>
     </Flex>
   );

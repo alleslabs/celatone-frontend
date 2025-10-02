@@ -49,9 +49,9 @@ export const AddNetworkManual = () => {
       chainId: "",
       denom: DEFAULT_DENOM,
       gasConfig: "standard",
+      indexer: "",
       logoUri: "",
       prettyName: "",
-      registryChainName: "",
       rest: "",
       rpc: "",
       slip44: DEFAULT_SLIP44,
@@ -77,11 +77,11 @@ export const AddNetworkManual = () => {
     gasPrice,
     high_gas_price: highGasPrice,
     ibc_transfer: ibcTransfer,
+    indexer,
     logoUri,
     low_gas_price: lowGasPrice,
     maxGasLimit,
     prettyName,
-    registryChainName,
     rest,
     rpc,
     slip44,
@@ -110,9 +110,9 @@ export const AddNetworkManual = () => {
         isChainIdExist,
       }).safeParse({
         chainId,
+        indexer,
         logoUri,
         prettyName,
-        registryChainName,
         rest,
         rpc,
         vm,
@@ -181,7 +181,6 @@ export const AddNetworkManual = () => {
           variant: "outline-primary",
         }}
         cancelLabel={hasPrevious ? "Previous" : "Cancel"}
-        helperText="The added custom rollup on Initia Scan will be stored locally on your device."
         sx={{
           backgroundColor: "background.main",
           borderColor: "gray.700",
