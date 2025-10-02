@@ -22,12 +22,14 @@ const EvmEventBoxTopicHex = ({ index, topic }: EvmEventBoxTopicProps) => (
 );
 
 interface EvmEventBoxTopicsProps {
+  isVerified: boolean;
   parsedLog: Option<LogDescription>;
   tab: EvmEventBoxTabs;
   topics: string[];
 }
 
 export const EvmEventBoxTopics = ({
+  isVerified,
   parsedLog,
   tab,
   topics,
@@ -39,7 +41,13 @@ export const EvmEventBoxTopics = ({
       ))
     ) : (
       <>
-        <EvmEventBoxTopicHex index={0} topic={topics[0]} />
+        {isVerified ? (
+          <EvmEventBoxTopicHex index={0} topic={topics[0]} />
+        ) : (
+          topics.map((topic, index) => (
+            <EvmEventBoxTopicHex key={topic} index={index} topic={topic} />
+          ))
+        )}
         {topics.length > 1 && parsedLog && (
           <Stack
             bgColor="gray.800"

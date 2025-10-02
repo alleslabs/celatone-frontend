@@ -161,6 +161,7 @@ export const EvmEventBox = ({ evmVerifyInfo, log }: EvmEventBoxProps) => {
         minWidth="120px"
       >
         <EvmEventBoxTopics
+          isVerified={evmVerifyInfo?.isVerified ?? false}
           parsedLog={parsedLog}
           tab={currentTab}
           topics={log.topics}

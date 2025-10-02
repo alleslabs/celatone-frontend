@@ -19,7 +19,7 @@ export const EvmBlocksTableMobileCard = ({
       bottomContent={
         <Grid gap={3} gridTemplateColumns="1fr 1fr">
           <Flex direction="column" flex={1}>
-            <MobileLabel label="EVM Txs" />
+            <MobileLabel label="Txs" />
             <Flex align="end" h={6}>
               <Text
                 color={blockData.txCount === 0 ? "text.dark" : "text.main"}
