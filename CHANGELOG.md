@@ -74,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1477](https://github.com/alleslabs/celatone-frontend/pull/1477) Fix EVM minor bugs
 - [#1473](https://github.com/alleslabs/celatone-frontend/pull/1473) Fix event logs title overflow wrap issue
 - [#1469](https://github.com/alleslabs/celatone-frontend/pull/1469) Fix JSON rpc batch request issue
 - [#1462](https://github.com/alleslabs/celatone-frontend/pull/1462) Fix account details nfts overview not showing correct count

@@ -69,7 +69,7 @@ export const CosmosTxs = ({
             }
             isLoading={isLoading || (isFetching && !isFetchingNextPage)}
             showRelations={false}
-            showTimestamp={false}
+            showTimestamp
             transactions={data?.pages.flatMap((page) => page.items) ?? []}
           />
           {hasNextPage && (
