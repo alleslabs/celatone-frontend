@@ -203,7 +203,7 @@ export const zChainConfig = z
     }),
     fees: zFeeConfig,
     gas: zGasConfig,
-    indexer: z.string().default(""), // for non initia chains
+    indexer: zHttpsUrl.or(z.literal("")).optional(),
     logo_URIs: z
       .object({
         jpeg: z.string().optional(),
@@ -233,7 +233,11 @@ export const zChainConfig = z
       z.union([z.literal("keplr"), z.literal("compass"), z.literal("station")])
     ),
   })
-  .transform<ChainConfig>((val) => val);
+  .transform<ChainConfig>((val) => ({
+    ...val,
+    // TODO: remove this when kvindexer is deprecated
+    indexer: val.indexer ?? "",
+  }));
 
 export const TierMap: Record<ChainConfig["tier"], number> = {
   full: 3,

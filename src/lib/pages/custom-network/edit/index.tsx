@@ -65,6 +65,7 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
       features: pick(chainConfig.features, ["wasm", "move", "evm"]),
       fees: chainConfig.fees,
       gas: chainConfig.gas,
+      indexer: chainConfig.indexer,
       logo_URIs: chainConfig.logo_URIs,
       prettyName: chainConfig.prettyName,
       registry: chainConfig.registry,

@@ -68,8 +68,8 @@ const zNetworkDetails = zChainConfig
   .innerType()
   .pick({
     chainId: true,
+    indexer: true,
     prettyName: true,
-    registryChainName: true,
     rest: true,
     rpc: true,
   })
@@ -84,7 +84,7 @@ const networkDetailsFormValidator = (
   ctx: RefinementCtx,
   validateExistingChain: ValidateExistingChain
 ) => {
-  const { chainId, prettyName, registryChainName } = val;
+  const { chainId, prettyName } = val;
   const { isChainIdExist } = validateExistingChain;
 
   if (prettyName === "")
@@ -113,13 +113,6 @@ const networkDetailsFormValidator = (
       code: ZodIssueCode.custom,
       message: "This Chain ID is already added.",
       path: ["chainId"],
-    });
-
-  if (!/^[a-z0-9]+$/.test(registryChainName))
-    ctx.addIssue({
-      code: ZodIssueCode.custom,
-      message: "Lower case letter (a-z) or number (0-9)",
-      path: ["registryChainName"],
     });
 
   return true;
@@ -363,7 +356,6 @@ export const zAddNetworkManualChainConfigJson = ({
       low_gas_price,
       maxGasLimit,
       prettyName,
-      registryChainName,
       rest,
       rpc,
       slip44,
@@ -425,7 +417,7 @@ export const zAddNetworkManualChainConfigJson = ({
         bech32_prefix,
         slip44,
       },
-      registryChainName,
+      registryChainName: chainId,
       rest,
       rpc,
     })
@@ -445,7 +437,6 @@ export const zAddNetworkJsonChainConfigJson = zChainConfig
     logo_URIs: true,
     prettyName: true,
     registry: true,
-    registryChainName: true,
     rest: true,
     rpc: true,
   })
@@ -469,6 +460,7 @@ export const zAddNetworkJsonChainConfigJson = zChainConfig
       publicProject: DEFAULT_PUBLIC_PROJECT_CONFIG,
     },
     indexer: val.rest,
+    registryChainName: val.chainId,
   }));
 
 export type AddNetworkJsonChainConfigJson = z.infer<
@@ -479,6 +471,7 @@ export const zAddNetworkLinkChainConfigJson = z
   .object({
     chainId: z.string().min(1, "Chain ID cannot be empty"),
     denom: z.string(),
+    indexer: zHttpsUrl.optional(),
     jsonRpc: zHttpsUrl.optional(),
     // MARK: Support backward lcd to rest
     lcd: zHttpsUrl.optional(),
@@ -506,7 +499,7 @@ export const zAddNetworkLinkChainConfigJson = z
   })
   .transform<ChainConfig>(async (val) => {
     // MARK: Support backward lcd to rest
-    const restEndpoint = val.rest ?? val.lcd ?? "";
+    const restEndpoint = val.rest || val.lcd || "";
 
     const bech32Prefix = await getAccountBech32Rest(restEndpoint)
       .then((res) => res.bech32Prefix)
@@ -543,7 +536,7 @@ export const zAddNetworkLinkChainConfigJson = z
         gasAdjustment: DEFAULT_GAS.gasAdjustment,
         maxGasLimit: DEFAULT_GAS.maxGasLimit,
       },
-      indexer: restEndpoint,
+      indexer: val.indexer || restEndpoint,
       prettyName: capitalize(val.chainId),
       registry: {
         assets: [],

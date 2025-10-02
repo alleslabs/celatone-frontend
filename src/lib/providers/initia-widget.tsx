@@ -1,3 +1,4 @@
+import type { Chain } from "@chain-registry/types";
 import type { PropsWithChildren } from "react";
 
 import {
@@ -23,8 +24,9 @@ const WithInitiaWidget = ({ children }: PropsWithChildren) => {
     <InterwovenKitProvider
       customChain={
         chainConfig.network_type === "local"
-          ? {
+          ? ({
               apis: {
+                indexer: [{ address: chainConfig.indexer }],
                 "json-rpc": chainConfig.features.evm.enabled
                   ? [{ address: chainConfig.features.evm.jsonRpc }]
                   : undefined,
@@ -40,7 +42,8 @@ const WithInitiaWidget = ({ children }: PropsWithChildren) => {
               pretty_name: chainConfig.prettyName,
               slip44: chainConfig.registry?.slip44,
               staking: chainConfig.registry?.staking,
-            }
+              status: "live",
+            } as Chain)
           : undefined
       }
       {...configs}

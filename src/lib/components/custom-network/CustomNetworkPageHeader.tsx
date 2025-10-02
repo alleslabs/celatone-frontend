@@ -1,4 +1,5 @@
-import { Alert, AlertDescription, Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
+import { CustomNetworkAlertInfo } from "lib/pages/custom-network/components";
 
 interface CustomNetworkPageHeaderProps {
   hasAlert?: boolean;
@@ -20,15 +21,6 @@ export const CustomNetworkPageHeader = ({
         {title}
       </Heading>
     </Flex>
-    {hasAlert && (
-      <Alert my={4} p={3} variant="info">
-        <AlertDescription>
-          <Text color="text.dark" lineHeight="normal" textAlign="center">
-            Please note that the custom rollup you add on our website will only
-            be stored locally on your device.
-          </Text>
-        </AlertDescription>
-      </Alert>
-    )}
+    {hasAlert && <CustomNetworkAlertInfo />}
   </>
 );

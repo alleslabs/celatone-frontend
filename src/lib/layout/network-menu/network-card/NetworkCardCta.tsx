@@ -13,10 +13,11 @@ interface NetworkCardCtaProps {
   chainId: string;
   isDraggable?: boolean;
   isSelected: boolean;
+  onClose: () => void;
 }
 
 export const NetworkCardCta = observer(
-  ({ chainId, isDraggable, isSelected }: NetworkCardCtaProps) => {
+  ({ chainId, isDraggable, isSelected, onClose }: NetworkCardCtaProps) => {
     const navigate = useInternalNavigate();
     const { chainConfigs } = useChainConfigs();
     const { isLocalChainIdExist } = useLocalChainConfigStore();
@@ -33,6 +34,7 @@ export const NetworkCardCta = observer(
 
     const handleSave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
         e.stopPropagation();
         pinNetwork(chainId);
         toast({
@@ -44,6 +46,7 @@ export const NetworkCardCta = observer(
 
     const handleRemove = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
         e.stopPropagation();
         removeNetwork(chainId);
         toast({
@@ -95,7 +98,9 @@ export const NetworkCardCta = observer(
           <Flex
             {...pinIconStyles}
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
+              onClose();
               navigate({
                 pathname: "/custom-network/edit/[chainId]",
                 query: {

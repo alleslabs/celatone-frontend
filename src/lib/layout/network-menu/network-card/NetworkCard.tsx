@@ -4,7 +4,6 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { useCelatoneApp, useChainConfigs, useMobile } from "lib/app-provider";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 
 import { NetworkImage } from "../NetworkImage";
@@ -52,17 +51,11 @@ export const NetworkCard = observer(
     onClose,
     setCursor,
   }: NetworkCardProps) => {
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
     const { chainConfigs } = useChainConfigs();
     const isMobile = useMobile();
     const { currentChainId } = useCelatoneApp();
 
-    const href = useMemo(() => {
-      const path = pathname.replace(`/${currentChainId}`, `/${chainId}`);
-      const queryString = searchParams.toString();
-      return queryString ? `${path}?${queryString}` : path;
-    }, [pathname, currentChainId, chainId, searchParams]);
+    const href = useMemo(() => `/${chainId}`, [chainId]);
 
     const isSelected = chainId === currentChainId;
     return (
@@ -116,6 +109,7 @@ export const NetworkCard = observer(
             chainId={chainId}
             isDraggable={isDraggable}
             isSelected={isSelected}
+            onClose={onClose}
           />
         </Flex>
       </Link>
