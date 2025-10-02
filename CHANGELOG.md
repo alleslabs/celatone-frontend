@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1475](https://github.com/alleslabs/celatone-frontend/pull/1475) Add indexer rollytics support to custom rollups
 - [#1455](https://github.com/alleslabs/celatone-frontend/pull/1455) Update transactions table tx decoder column
 - [#1454](https://github.com/alleslabs/celatone-frontend/pull/1454) Update react-app-shell to v1.3.0
 - [#1452](https://github.com/alleslabs/celatone-frontend/pull/1452) Support non-initia chain config
