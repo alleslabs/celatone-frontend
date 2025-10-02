@@ -71,6 +71,7 @@ export const EvmEventBoxDataBody = ({ text }: { text: string }) => {
       <Box minWidth="110px">
         <SelectInput
           classNamePrefix="chakra-react-select"
+          isSearchable={false}
           menuPortalTarget={
             typeof window !== "undefined" ? document.body : undefined
           }

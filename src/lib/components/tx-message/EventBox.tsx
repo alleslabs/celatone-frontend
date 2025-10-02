@@ -100,6 +100,31 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
 
         break;
       }
+      case key === "function_name": {
+        const findModuleAddress = event.attributes.find(
+          (attr) => attr.key === "module_addr"
+        );
+        const findModuleName = event.attributes.find(
+          (attr) => attr.key === "module_name"
+        );
+
+        if (findModuleAddress && findModuleName) {
+          valueComponent = (
+            <ExplorerLink
+              queryParams={{
+                address: findModuleAddress.value,
+                functionName: value,
+                moduleName: findModuleName.value,
+              }}
+              textLabel={value}
+              type="function_name"
+              value={undefined}
+            />
+          );
+        }
+
+        break;
+      }
       default:
         valueComponent = value;
         break;
