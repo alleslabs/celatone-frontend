@@ -70,6 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1479](https://github.com/alleslabs/celatone-frontend/pull/1479) Fix token card not showing pool symbol pair
 - [#1472](https://github.com/alleslabs/celatone-frontend/pull/1472) Fix Glyph image not showing
 - [#1462](https://github.com/alleslabs/celatone-frontend/pull/1462) Fix account details nfts overview not showing correct count
 - [#1460](https://github.com/alleslabs/celatone-frontend/pull/1460) Fix account details nfts tab not showing correct count
