@@ -35,17 +35,14 @@ const Meta = () => {
       {/* Twitter */}
       <meta
         content={FALLBACK_THEME.branding.seo.x.cardType}
-        property="twitter:card"
+        name="twitter:card"
       />
-      <meta content={title} property="twitter:title" />
+      <meta content={title} name="twitter:title" />
       <meta
         content={FALLBACK_THEME.branding.seo.description}
-        property="twitter:description"
+        name="twitter:description"
       />
-      <meta
-        content={FALLBACK_THEME.branding.seo.image}
-        property="twitter:image"
-      />
+      <meta content={FALLBACK_THEME.branding.seo.image} name="twitter:image" />
       <meta
         content="1pxs24lWnpcBI8d_INsnTvixVDOSXFi5wqfn6f3jlSo"
         name="google-site-verification"
