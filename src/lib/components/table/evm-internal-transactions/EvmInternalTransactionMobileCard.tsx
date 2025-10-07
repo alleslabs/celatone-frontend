@@ -1,4 +1,7 @@
-import type { EvmCallFrame, EvmVerifyInfosResponse } from "lib/services/types";
+import type {
+  EvmInternalTxSequencer,
+  EvmVerifyInfosResponse,
+} from "lib/services/types";
 import type { AssetInfos, Nullable, Option } from "lib/types";
 
 import { Flex, Grid, Stack, Text } from "@chakra-ui/react";
@@ -20,7 +23,7 @@ interface EvmInternalTransactionMobileCardProps {
   assetInfos: Option<AssetInfos>;
   evmDenom: Option<string>;
   evmVerifyInfos: Option<Nullable<EvmVerifyInfosResponse>>;
-  result: EvmCallFrame;
+  result: EvmInternalTxSequencer;
   txHash: string;
 }
 

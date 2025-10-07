@@ -94,8 +94,8 @@ export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
     ],
     queryFn: async () =>
       evm.enabled
-        ? txDecoder.decodeEvmTransaction(rawTxResponse)
-        : txDecoder.decodeTransaction(rawTxResponse),
+        ? txDecoder.decodeCosmosEvmTransaction(rawTxResponse)
+        : txDecoder.decodeCosmosTransaction(rawTxResponse),
     enabled: !!rawTxResponse,
   });
 };
@@ -133,8 +133,8 @@ export const useTxData = (
 
       const logs = extractTxLogs(rawTxResponse);
       const decodedTx = await (evm.enabled
-        ? txDecoder.decodeEvmTransaction(rawTxResponse)
-        : txDecoder.decodeTransaction(rawTxResponse));
+        ? txDecoder.decodeCosmosEvmTransaction(rawTxResponse)
+        : txDecoder.decodeCosmosTransaction(rawTxResponse));
       return {
         ...txResponse,
         chainId: currentChainId,

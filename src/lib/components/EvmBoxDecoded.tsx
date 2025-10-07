@@ -34,7 +34,9 @@ const EvmBoxDecodedBody = ({
         </Text>
       );
     case "tuple":
-      return <TextReadOnly text={jsonPrettify(JSON.stringify(decode))} />;
+      return (
+        <TextReadOnly text={jsonPrettify(JSON.stringify(decode?.toString()))} />
+      );
     default:
       return (
         <Text fontFamily="mono" variant="body2">
