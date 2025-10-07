@@ -18,19 +18,19 @@ import { DecodeMessageExecute } from "./decode-message-execute";
 import { DecodeMessageHeader } from "./decode-message-header";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodedMessageRedelegateProps extends TxMsgData {
+interface DecodeMessageRedelegateProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
     action: "redelegate";
   };
 }
 
-export const DecodedMessageRedelegate = ({
+export const DecodeMessageRedelegate = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodedMessageRedelegateProps) => {
+}: DecodeMessageRedelegateProps) => {
   const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
