@@ -1,4 +1,5 @@
 import { CosmosEvmTxs } from "lib/components/cosmos-evm-txs";
+import { useEvmInternalTxsByAccountAddressSequencer } from "lib/services/evm-internal-txs";
 import { useEvmTxsByAccountAddressSequencer } from "lib/services/evm-txs";
 import { useTxsByAddressSequencer } from "lib/services/tx";
 
@@ -18,6 +19,10 @@ export const TxsTableSequencer = ({
     undefined,
     onViewMore ? 5 : 10
   );
+  const evmInternalTxsData = useEvmInternalTxsByAccountAddressSequencer(
+    contractAddress,
+    onViewMore ? 5 : 10
+  );
 
   return (
     <CosmosEvmTxs
@@ -27,8 +32,9 @@ export const TxsTableSequencer = ({
         onViewMore,
       }}
       evmData={{
-        data: evmTxsData,
         emptyMessage: "There are no EVM transactions on this contract.",
+        evmInternalTxsData,
+        evmTxsData,
         onViewMore,
         showTimestamp: true,
       }}

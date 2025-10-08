@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1480](https://github.com/alleslabs/celatone-frontend/pull/1480) Add EVM internal transactions from rollytics
 - [#1475](https://github.com/alleslabs/celatone-frontend/pull/1475) Add indexer rollytics support to custom rollups
 - [#1458](https://github.com/alleslabs/celatone-frontend/pull/1458) Add decoded tx in tx details execute section
 - [#1455](https://github.com/alleslabs/celatone-frontend/pull/1455) Update transactions table tx decoder column

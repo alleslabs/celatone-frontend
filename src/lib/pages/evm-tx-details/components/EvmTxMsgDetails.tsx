@@ -1,5 +1,4 @@
 import type { TxData, TxDataJsonRpc } from "lib/services/types";
-import type { HexAddr20, Option } from "lib/types";
 
 import {
   Alert,
@@ -15,10 +14,13 @@ import { CustomTab } from "lib/components/CustomTab";
 import { DividerWithArrow } from "lib/components/DividerWithArrow";
 import { EvmInputData } from "lib/components/EvmInputData";
 import { CustomIcon } from "lib/components/icon";
+import { EmptyState } from "lib/components/state";
 import { EvmInternalTransactionsTable } from "lib/components/table/evm-internal-transactions";
-import { useDebugTraceTransaction } from "lib/services/evm";
+import { useEvmInternalTxsByTxHashSequencer } from "lib/services/evm-internal-txs";
 import { useEvmVerifyInfos } from "lib/services/verification/evm";
+import { type HexAddr20, type Option, zHexAddr } from "lib/types";
 import plur from "plur";
+import { useMemo } from "react";
 
 import { EvmEventBox } from "./evm-event-box";
 import { EvmTxMsgDetailsBody } from "./EvmTxMsgDetailsBody";
@@ -40,10 +42,18 @@ export const EvmTxMsgDetails = ({
       evmTxData.tx.to,
     ].filter((addr): addr is HexAddr20 => addr !== null)
   );
-  const { data: internalTxs } = useDebugTraceTransaction(
-    evmTxData.txReceipt.blockNumber.toNumber(),
-    evmTxData.txReceipt.transactionHash
+  const addressValidation = useMemo(
+    () => zHexAddr.safeParse(evmTxData.txReceipt.transactionHash),
+    [evmTxData.txReceipt.transactionHash]
   );
+  const evmInternalTxsData = useEvmInternalTxsByTxHashSequencer(
+    addressValidation.data,
+    10,
+    addressValidation.success
+  );
+
+  const countTotalEvmInternalTxs =
+    evmInternalTxsData.data?.pages?.[0]?.pagination?.total ?? undefined;
 
   return (
     <Tabs isLazy lazyBehavior="keepMounted" w="full">
@@ -107,8 +117,21 @@ export const EvmTxMsgDetails = ({
         </TabPanel>
         <TabPanel>
           <EvmInternalTransactionsTable
-            internalTxs={internalTxs ?? []}
+            emptyState={
+              <EmptyState
+                imageVariant="empty"
+                message="There are no EVM transactions."
+              />
+            }
+            fetchNextPage={evmInternalTxsData.fetchNextPage}
+            internalTxs={
+              evmInternalTxsData.data?.pages?.flatMap(
+                (page) => page.internalTxs
+              ) ?? []
+            }
+            isFetchingNextPage={evmInternalTxsData.isFetchingNextPage}
             showParentHash={false}
+            totalCount={countTotalEvmInternalTxs ?? 0}
           />
         </TabPanel>
         <TabPanel>Balance changes</TabPanel>

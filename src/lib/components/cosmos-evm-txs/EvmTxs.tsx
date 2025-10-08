@@ -2,7 +2,10 @@ import type {
   InfiniteData,
   UseInfiniteQueryResult,
 } from "@tanstack/react-query";
-import type { EvmTxsResponseSequencerWithRpcData } from "lib/services/types";
+import type {
+  EvmInternalTxsResponseSequencer,
+  EvmTxsResponseSequencerWithRpcData,
+} from "lib/services/types";
 import type { ReactNode } from "react";
 
 import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
@@ -12,31 +15,32 @@ import { CustomTab } from "../CustomTab";
 import { LoadNext } from "../LoadNext";
 import { EmptyState } from "../state";
 import { EvmTransactionsTable, ViewMore } from "../table";
+import { EvmInternalTransactionsTable } from "../table/evm-internal-transactions";
 
 export interface EvmTxsProps {
-  data: UseInfiniteQueryResult<
+  emptyMessage?: ReactNode;
+  evmInternalTxsData?: UseInfiniteQueryResult<
+    InfiniteData<EvmInternalTxsResponseSequencer>
+  >;
+  evmTxsData: UseInfiniteQueryResult<
     InfiniteData<EvmTxsResponseSequencerWithRpcData>
   >;
-  emptyMessage?: ReactNode;
   onViewMore?: () => void;
   showTimestamp?: boolean;
 }
 
 export const EvmTxs = ({
-  data: {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    isLoading,
-  },
   emptyMessage,
+  evmInternalTxsData,
+  evmTxsData,
   onViewMore,
   showTimestamp = false,
 }: EvmTxsProps) => {
   const [tabIndex, setTabIndex] = useState(0);
-  const countTotal = data?.pages?.[0]?.pagination?.total ?? undefined;
+  const countTotalEvmTxs =
+    evmTxsData.data?.pages?.[0]?.pagination?.total ?? undefined;
+  const countTotalEvmInternalTxs =
+    evmInternalTxsData?.data?.pages?.[0]?.pagination?.total ?? undefined;
 
   return (
     <Tabs
@@ -51,8 +55,10 @@ export const EvmTxs = ({
         borderColor="gray.700"
         overflowX="scroll"
       >
-        <CustomTab count={countTotal}>Transactions</CustomTab>
-        <CustomTab>Internal txs</CustomTab>
+        <CustomTab count={countTotalEvmTxs}>Transactions</CustomTab>
+        {evmInternalTxsData && (
+          <CustomTab count={countTotalEvmInternalTxs}>Internal txs</CustomTab>
+        )}
       </TabList>
       <TabPanels>
         <TabPanel p={0} pt={{ base: 0, md: 6 }}>
@@ -72,27 +78,72 @@ export const EvmTxs = ({
                 ))
               )
             }
-            evmTransactions={data?.pages?.flatMap((page) => page.txs) ?? []}
-            isLoading={isLoading || (isFetching && !isFetchingNextPage)}
+            evmTransactions={
+              evmTxsData.data?.pages?.flatMap((page) => page.txs) ?? []
+            }
+            isLoading={
+              evmTxsData.isLoading ||
+              (evmTxsData.isFetching && !evmTxsData.isFetchingNextPage)
+            }
             showTimestamp={showTimestamp}
           />
-          {hasNextPage && (
+          {evmTxsData.hasNextPage && (
             <>
               {onViewMore ? (
                 <ViewMore onClick={onViewMore} />
               ) : (
                 <LoadNext
-                  fetchNextPage={fetchNextPage}
-                  isFetchingNextPage={isFetchingNextPage}
+                  fetchNextPage={evmTxsData.fetchNextPage}
+                  isFetchingNextPage={evmTxsData.isFetchingNextPage}
                   text="Load more transactions"
                 />
               )}
             </>
           )}
         </TabPanel>
-        <TabPanel p={0} pt={{ base: 0, md: 6 }}>
-          {/* <EvmInternalTransactionsTable internalTxs={internalTxs ?? []} /> */}
-        </TabPanel>
+        {evmInternalTxsData && (
+          <TabPanel p={0} pt={{ base: 0, md: 6 }}>
+            <EvmInternalTransactionsTable
+              disableInfiniteLoad={!!onViewMore}
+              emptyState={
+                typeof emptyMessage === "string" ? (
+                  <EmptyState
+                    imageVariant="empty"
+                    message={emptyMessage || "There are no EVM transactions."}
+                  />
+                ) : (
+                  (emptyMessage ?? (
+                    <EmptyState
+                      imageVariant="empty"
+                      message="There are no EVM transactions."
+                    />
+                  ))
+                )
+              }
+              fetchNextPage={evmInternalTxsData.fetchNextPage}
+              internalTxs={
+                evmInternalTxsData.data?.pages?.flatMap(
+                  (page) => page.internalTxs
+                ) ?? []
+              }
+              isFetchingNextPage={evmInternalTxsData.isFetchingNextPage}
+              totalCount={countTotalEvmInternalTxs ?? 0}
+            />
+            {evmInternalTxsData.hasNextPage && (
+              <>
+                {onViewMore ? (
+                  <ViewMore onClick={onViewMore} />
+                ) : (
+                  <LoadNext
+                    fetchNextPage={evmInternalTxsData.fetchNextPage}
+                    isFetchingNextPage={evmInternalTxsData.isFetchingNextPage}
+                    text="Load more transactions"
+                  />
+                )}
+              </>
+            )}
+          </TabPanel>
+        )}
       </TabPanels>
     </Tabs>
   );

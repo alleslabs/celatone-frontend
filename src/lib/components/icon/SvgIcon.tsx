@@ -782,6 +782,17 @@ export const ICONS = {
     ),
     viewBox: "0 0 18 18",
   },
+  "l-shape": {
+    svg: (
+      <path
+        d="M4.66602 4.66675V11.3334H11.3327"
+        stroke="#757C82"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    ),
+    viewBox: viewboxDefault,
+  },
   launch: {
     svg: (
       <path

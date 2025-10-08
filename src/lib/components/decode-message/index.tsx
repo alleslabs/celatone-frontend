@@ -89,8 +89,8 @@ export const DecodeMessage = ({
     case "ibc_ft_receive":
     case "ibc_ft_send":
       return <DecodeMessageIbcFt decodedMessage={decodedMessage} {...props} />;
-    case "ibc_nft_receive":
-    case "ibc_nft_send":
+    case "ibc_nft_receive_move":
+    case "ibc_nft_send_move":
       return (
         <DecodeMessageIbcNft
           decodedMessage={decodedMessage}
