@@ -54,14 +54,15 @@ export const CosmosTxs = ({
                 <EmptyState
                   imageVariant="empty"
                   message={
-                    emptyMessage ?? "There are no internal transactions."
+                    emptyMessage ??
+                    "There are no transactions, or they have been pruned from the REST."
                   }
                 />
               ) : (
                 (emptyMessage ?? (
                   <EmptyState
                     imageVariant="empty"
-                    message="There are no internal transactions."
+                    message="There are no transactions, or they have been pruned from the REST."
                   />
                 ))
               )
