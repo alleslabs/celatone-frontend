@@ -8,16 +8,16 @@ import { zAddr, zHexAddr32 } from "lib/types";
 import { formatUTC, parseNanosecondsToDate } from "lib/utils";
 import { useState } from "react";
 
-import type { TxMsgData } from "../tx-message";
+import type { TxMsgData } from "../../tx-message";
 
-import { AppLink } from "../AppLink";
-import { ChainBadge } from "../ChainBadge";
-import { ExplorerLink } from "../ExplorerLink";
-import JsonReadOnly from "../json/JsonReadOnly";
-import { NftImage } from "../nft/NftImage";
-import { DecodeMessageBody } from "./decode-message-body";
-import { DecodeMessageHeader } from "./decode-message-header";
-import { DecodeMessageRow } from "./decode-message-row";
+import { AppLink } from "../../AppLink";
+import { ChainBadge } from "../../ChainBadge";
+import { ExplorerLink } from "../../ExplorerLink";
+import JsonReadOnly from "../../json/JsonReadOnly";
+import { NftImage } from "../../nft/NftImage";
+import { DecodeMessageBody } from "../decode-message-body";
+import { DecodeMessageHeader } from "../decode-message-header";
+import { DecodeMessageRow } from "../decode-message-row";
 
 interface DecodeMessageIbcNftProps extends TxMsgData {
   decodedMessage: DecodedMessage & {

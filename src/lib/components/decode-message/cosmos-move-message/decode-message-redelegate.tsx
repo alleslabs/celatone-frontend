@@ -10,27 +10,27 @@ import { zValidatorAddr } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
 import { useState } from "react";
 
-import type { TxMsgData } from "../tx-message";
+import type { TxMsgData } from "../../tx-message";
 
-import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
-import { DecodeMessageBody } from "./decode-message-body";
-import { DecodeMessageExecute } from "./decode-message-execute";
-import { DecodeMessageHeader } from "./decode-message-header";
-import { DecodeMessageRow } from "./decode-message-row";
+import { CoinsComponent } from "../../tx-message/msg-receipts/CoinsComponent";
+import { DecodeMessageBody } from "../decode-message-body";
+import { DecodeMessageExecute } from "../decode-message-execute";
+import { DecodeMessageHeader } from "../decode-message-header";
+import { DecodeMessageRow } from "../decode-message-row";
 
-interface DecodeMessageWithdrawDelegatorRewardProps extends TxMsgData {
+interface DecodeMessageRedelegateProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "withdraw_delegator_reward";
+    action: "redelegate";
   };
 }
 
-export const DecodeMessageWithdrawDelegatorReward = ({
+export const DecodeMessageRedelegate = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageWithdrawDelegatorRewardProps) => {
+}: DecodeMessageRedelegateProps) => {
   const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
@@ -48,7 +48,7 @@ export const DecodeMessageWithdrawDelegatorReward = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Claim"
+        label="Redelegate"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
@@ -64,9 +64,24 @@ export const DecodeMessageWithdrawDelegatorReward = ({
           }}
           textFormat={!compact ? "normal" : "ellipsis"}
           validator={{
-            identity: data.validator?.description.identity,
-            moniker: data.validator?.description.moniker,
-            validatorAddress: zValidatorAddr.parse(data.validatorAddress),
+            identity: data.validatorSrc?.description.identity,
+            moniker: data.validatorSrc?.description.moniker,
+            validatorAddress: zValidatorAddr.parse(data.validatorSrcAddress),
+          }}
+        />
+        <Text color="text.dark">to</Text>
+        <ValidatorBadge
+          badgeSize={4}
+          fixedHeight={compact}
+          hasLabel={false}
+          sx={{
+            width: "fit-content",
+          }}
+          textFormat={!compact ? "normal" : "ellipsis"}
+          validator={{
+            identity: data.validatorDst?.description.identity,
+            moniker: data.validatorDst?.description.moniker,
+            validatorAddress: zValidatorAddr.parse(data.validatorDstAddress),
           }}
         />
         {!compact && (
@@ -99,9 +114,22 @@ export const DecodeMessageWithdrawDelegatorReward = ({
               width: "fit-content",
             }}
             validator={{
-              identity: data.validator?.description.identity,
-              moniker: data.validator?.description.moniker,
-              validatorAddress: zValidatorAddr.parse(data.validatorAddress),
+              identity: data.validatorSrc?.description.identity,
+              moniker: data.validatorSrc?.description.moniker,
+              validatorAddress: zValidatorAddr.parse(data.validatorSrcAddress),
+            }}
+          />
+        </DecodeMessageRow>
+        <DecodeMessageRow title="To validator">
+          <ValidatorBadge
+            badgeSize={4}
+            sx={{
+              width: "fit-content",
+            }}
+            validator={{
+              identity: data.validatorDst?.description.identity,
+              moniker: data.validatorDst?.description.moniker,
+              validatorAddress: zValidatorAddr.parse(data.validatorDstAddress),
             }}
           />
         </DecodeMessageRow>

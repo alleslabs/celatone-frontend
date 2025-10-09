@@ -1,5 +1,8 @@
 import type Big from "big.js";
-import type { TxData, TxDataJsonRpc } from "lib/services/types";
+import type {
+  TxData,
+  TxDataJsonRpcWithDecodedEthereumTx,
+} from "lib/services/types";
 import type { Option, Ratio, TokenWithValue } from "lib/types";
 
 import { useAssetInfos } from "lib/services/assetService";
@@ -29,7 +32,7 @@ export interface GasInfo {
 interface EvmTxDetailsData {
   cosmosTxData: Option<TxData>;
   evmDenom: Option<string>;
-  evmTxData: Option<TxDataJsonRpc>;
+  evmTxData: Option<TxDataJsonRpcWithDecodedEthereumTx>;
   evmTxValue: Option<TokenWithValue>;
   gasInfo: Option<GasInfo>;
   isLoading: boolean;
@@ -42,6 +45,7 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
   });
   const { data: evmTxData, isLoading: isLoadingEvmTxData } =
     useEvmTxDataJsonRpc(evmTxHash);
+
   const { data: cosmosTxHash } = useCosmosTxHashByEvmTxHash(evmTxHash);
   const { data: cosmosTxData, isLoading: isLoadingCosmosTxData } = useTxData(
     cosmosTxHash,

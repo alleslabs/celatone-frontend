@@ -2,7 +2,7 @@ import type { DecodedMessage, Metadata } from "@initia/tx-decoder";
 
 import { lazy, Suspense } from "react";
 
-import { TxMessage, type TxMsgData } from "../tx-message";
+import { TxMessage, type TxMsgData } from "../../tx-message";
 
 // Lazy load all decode message components for better code splitting
 const DecodeMessageClaimEsinit = lazy(() =>

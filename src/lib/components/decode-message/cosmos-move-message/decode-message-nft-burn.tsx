@@ -3,14 +3,14 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import type { TxMsgData } from "../tx-message";
+import type { TxMsgData } from "../../tx-message";
 
-import { ExplorerLink } from "../ExplorerLink";
-import { NftImage } from "../nft/NftImage";
-import { DecodeMessageBody } from "./decode-message-body";
-import { DecodeMessageExecute } from "./decode-message-execute";
-import { DecodeMessageHeader } from "./decode-message-header";
-import { DecodeMessageRow } from "./decode-message-row";
+import { ExplorerLink } from "../../ExplorerLink";
+import { NftImage } from "../../nft/NftImage";
+import { DecodeMessageBody } from "../decode-message-body";
+import { DecodeMessageExecute } from "../decode-message-execute";
+import { DecodeMessageHeader } from "../decode-message-header";
+import { DecodeMessageRow } from "../decode-message-row";
 
 interface DecodeMessageNftBurnProps extends TxMsgData {
   decodedMessage: DecodedMessage & {

@@ -4,40 +4,34 @@ import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
 import { useAssetInfos } from "lib/services/assetService";
 import { zValidatorAddr } from "lib/types";
-import {
-  coinToTokenWithValue,
-  formatDayJSDuration,
-  formatUTC,
-  parseSecondsToDuration,
-  parseUnixToDate,
-} from "lib/utils";
+import { coinToTokenWithValue } from "lib/utils";
 import { useState } from "react";
 
-import type { TxMsgData } from "../tx-message";
+import type { TxMsgData } from "../../tx-message";
 
-import { DexPoolLink } from "../DexPoolLink";
-import { ExplorerLink } from "../ExplorerLink";
-import { TokenImageWithAmount } from "../token";
-import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
-import { ValidatorBadge } from "../ValidatorBadge";
-import { DecodeMessageBody } from "./decode-message-body";
-import { DecodeMessageExecute } from "./decode-message-execute";
-import { DecodeMessageHeader } from "./decode-message-header";
-import { DecodeMessageRow } from "./decode-message-row";
+import { DexPoolLink } from "../../DexPoolLink";
+import { ExplorerLink } from "../../ExplorerLink";
+import { TokenImageWithAmount } from "../../token";
+import { CoinsComponent } from "../../tx-message/msg-receipts/CoinsComponent";
+import { ValidatorBadge } from "../../ValidatorBadge";
+import { DecodeMessageBody } from "../decode-message-body";
+import { DecodeMessageExecute } from "../decode-message-execute";
+import { DecodeMessageHeader } from "../decode-message-header";
+import { DecodeMessageRow } from "../decode-message-row";
 
-interface DecodeMessageDepositStakeLockLiquidityProps extends TxMsgData {
+interface DecodeMessageDepositStakeLiquidityProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "deposit_stake_lock_liquidity";
+    action: "deposit_stake_liquidity";
   };
 }
 
-export const DecodeMessageDepositStakeLockLiquidity = ({
+export const DecodeMessageDepositStakeLiquidity = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageDepositStakeLockLiquidityProps) => {
+}: DecodeMessageDepositStakeLiquidityProps) => {
   const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
@@ -47,8 +41,6 @@ export const DecodeMessageDepositStakeLockLiquidity = ({
   const coinA = new Coin(data.denomA, data.amountA);
   const tokenB = coinToTokenWithValue(data.denomB, data.amountB, assetInfos);
   const coinB = new Coin(data.denomB, data.amountB);
-
-  const releaseTimestamp = parseUnixToDate(data.releaseTimestamp);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -114,12 +106,6 @@ export const DecodeMessageDepositStakeLockLiquidity = ({
         </DecodeMessageRow>
         <DecodeMessageRow title="Assets">
           <CoinsComponent coins={[coinA, coinB]} />
-        </DecodeMessageRow>
-        <DecodeMessageRow title="Lock period">
-          {formatDayJSDuration(parseSecondsToDuration(data.lockTime))}
-        </DecodeMessageRow>
-        <DecodeMessageRow title="Release timestamp">
-          {formatUTC(releaseTimestamp)}
         </DecodeMessageRow>
         <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>

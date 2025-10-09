@@ -6,16 +6,16 @@ import { useAssetInfos } from "lib/services/assetService";
 import { coinToTokenWithValue } from "lib/utils";
 import { useState } from "react";
 
-import type { TxMsgData } from "../tx-message";
+import type { TxMsgData } from "../../tx-message";
 
-import { DexPoolLink } from "../DexPoolLink";
-import { ExplorerLink } from "../ExplorerLink";
-import { TokenImageWithAmount } from "../token";
-import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
-import { DecodeMessageBody } from "./decode-message-body";
-import { DecodeMessageExecute } from "./decode-message-execute";
-import { DecodeMessageHeader } from "./decode-message-header";
-import { DecodeMessageRow } from "./decode-message-row";
+import { DexPoolLink } from "../../DexPoolLink";
+import { ExplorerLink } from "../../ExplorerLink";
+import { TokenImageWithAmount } from "../../token";
+import { CoinsComponent } from "../../tx-message/msg-receipts/CoinsComponent";
+import { DecodeMessageBody } from "../decode-message-body";
+import { DecodeMessageExecute } from "../decode-message-execute";
+import { DecodeMessageHeader } from "../decode-message-header";
+import { DecodeMessageRow } from "../decode-message-row";
 
 interface DecodeMessageDepositLiquidityProps extends TxMsgData {
   decodedMessage: DecodedMessage & {

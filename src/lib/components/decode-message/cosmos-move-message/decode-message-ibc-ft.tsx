@@ -2,38 +2,40 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
-import { useCurrentChain, useGetAddressType } from "lib/app-provider";
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TokenImageWithAmount } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
-import { coinToTokenWithValue } from "lib/utils";
+import {
+  coinToTokenWithValue,
+  formatUTC,
+  parseNanosecondsToDate,
+} from "lib/utils";
 import { useState } from "react";
 
-import type { TxMsgData } from "../tx-message";
+import type { TxMsgData } from "../../tx-message";
 
-import { ChainBadge } from "../ChainBadge";
-import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
-import { DecodeMessageBody } from "./decode-message-body";
-import { DecodeMessageHeader } from "./decode-message-header";
-import { DecodeMessageRow } from "./decode-message-row";
+import { ChainBadge } from "../../ChainBadge";
+import { ExplorerLink } from "../../ExplorerLink";
+import JsonReadOnly from "../../json/JsonReadOnly";
+import { CoinsComponent } from "../../tx-message/msg-receipts/CoinsComponent";
+import { DecodeMessageBody } from "../decode-message-body";
+import { DecodeMessageHeader } from "../decode-message-header";
+import { DecodeMessageRow } from "../decode-message-row";
 
-interface DecodeMessageOpDepositProps extends TxMsgData {
+interface DecodeMessageIbcFtProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "op_deposit";
+    action: "ibc_ft_receive" | "ibc_ft_send";
   };
 }
 
-export const DecodeMessageOpDeposit = ({
+export const DecodeMessageIbcFt = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageOpDepositProps) => {
+}: DecodeMessageIbcFtProps) => {
   const isSingleMsg = msgCount === 1;
-  const { chainId } = useCurrentChain();
   const [expand, setExpand] = useState(!!isSingleMsg);
-  const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const token = coinToTokenWithValue(data.denom, data.amount, assetInfos);
@@ -53,25 +55,30 @@ export const DecodeMessageOpDeposit = ({
         onClick={() => setExpand(!expand)}
       >
         <TokenImageWithAmount token={token} />
-        <Flex align="center" gap={2}>
-          <Text color="text.dark">to</Text>
-          <ChainBadge chainId={data.dstChainId} />
-        </Flex>
+        {decodedMessage.action === "ibc_ft_send" ? (
+          <Flex align="center" gap={2}>
+            <Text color="text.dark">to</Text>
+            <ChainBadge chainId={data.dstChainId} />
+          </Flex>
+        ) : (
+          <Flex align="center" gap={2}>
+            <Text color="text.dark">from</Text>
+            <ChainBadge chainId={data.srcChainId} />
+          </Flex>
+        )}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
-        <DecodeMessageRow title="Bridge ID">
-          <Text>{data.bridgeId}</Text>
-        </DecodeMessageRow>
         <DecodeMessageRow title="Source chain">
-          <ChainBadge chainId={chainId} />
+          <ChainBadge chainId={data.srcChainId} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
+            chainId={data.srcChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
-            type={getAddressType(data.from)}
-            value={data.from}
+            type="user_address"
+            value={data.sender}
             wordBreak="break-word"
           />
         </DecodeMessageRow>
@@ -84,13 +91,30 @@ export const DecodeMessageOpDeposit = ({
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
-            type={getAddressType(data.to)}
-            value={data.to}
+            type="user_address"
+            value={data.receiver}
             wordBreak="break-word"
           />
         </DecodeMessageRow>
         <DecodeMessageRow title="Amount">
           <CoinsComponent coins={[new Coin(data.denom, data.amount)]} />
+        </DecodeMessageRow>
+        <DecodeMessageRow title="Source channel">
+          <Text>{data.srcChannel}</Text>
+        </DecodeMessageRow>
+        <DecodeMessageRow title="Source port">
+          <Text>{data.srcPort}</Text>
+        </DecodeMessageRow>
+        <DecodeMessageRow title="Timeout height">
+          <JsonReadOnly
+            canCopy
+            fullWidth
+            isExpandable
+            text={JSON.stringify(data.timeoutHeight, null, 2)}
+          />
+        </DecodeMessageRow>
+        <DecodeMessageRow title="Timeout timestamp">
+          {formatUTC(parseNanosecondsToDate(data.timeoutTimestamp))}
         </DecodeMessageRow>
       </DecodeMessageBody>
     </Flex>

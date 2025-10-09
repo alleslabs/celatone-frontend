@@ -10,7 +10,7 @@ import { extractMsgType } from "lib/utils";
 import { useState } from "react";
 
 import { AccordionStepperItem } from "../AccordionStepperItem";
-import { DecodeMessage } from "../decode-message";
+import { DecodeMessage } from "../decode-message/cosmos-move-message";
 import { TableRow } from "./tableComponents";
 
 interface RenderButtonProps {

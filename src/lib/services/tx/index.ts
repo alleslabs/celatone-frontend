@@ -755,6 +755,7 @@ export const useEvmTxHashesByCosmosTxHashes = (
 
 export const useEvmTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
   const evm = useEvmConfig({ shouldRedirect: false });
+  const { txDecoder } = useTxDecoderContext();
 
   return useQuery({
     queryKey: [
@@ -766,7 +767,17 @@ export const useEvmTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useEvmTxDataJsonRpc)");
 
-      return getTxDataJsonRpc(evm.jsonRpc, evmTxHash);
+      const txDataJsonRpc = await getTxDataJsonRpc(evm.jsonRpc, evmTxHash);
+
+      const decodedTx = await txDecoder.decodeEthereumTransaction({
+        tx: txDataJsonRpc.rawTx,
+        txReceipt: txDataJsonRpc.rawTxReceipt,
+      });
+
+      return {
+        ...txDataJsonRpc,
+        decodedTx,
+      };
     },
     enabled: enabled && evm.enabled && !!evm.jsonRpc,
     refetchOnWindowFocus: false,
