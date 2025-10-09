@@ -12,7 +12,7 @@ import { EventBox } from "../tx-message/EventBox";
 interface DecodeMessageBodyProps {
   children: ReactNode;
   compact: boolean;
-  isExpand: boolean;
+  isExpand?: boolean;
   log: Option<Log>;
 }
 

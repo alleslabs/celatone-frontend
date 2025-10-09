@@ -2,45 +2,41 @@ import type { DecodedMessage } from "@initia/tx-decoder";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { TokenImageWithAmount } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
 import { coinToTokenWithValue } from "lib/utils";
 import { useState } from "react";
 
-import type { TxMsgData } from "../tx-message";
+import type { TxMsgData } from "../../tx-message";
 
-import { DexPoolLink } from "../DexPoolLink";
-import { ExplorerLink } from "../ExplorerLink";
-import { TokenImageWithAmount } from "../token";
-import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
-import { DecodeMessageBody } from "./decode-message-body";
-import { DecodeMessageExecute } from "./decode-message-execute";
-import { DecodeMessageHeader } from "./decode-message-header";
-import { DecodeMessageRow } from "./decode-message-row";
+import { ChainBadge } from "../../ChainBadge";
+import { CoinsComponent } from "../../tx-message/msg-receipts/CoinsComponent";
+import { DecodeMessageBody } from "../decode-message-body";
+import { DecodeMessageExecute } from "../decode-message-execute";
+import { DecodeMessageHeader } from "../decode-message-header";
+import { DecodeMessageRow } from "../decode-message-row";
 
-interface DecodeMessageClaimMinitSwapProps extends TxMsgData {
+interface DecodeMessageClaimEsinitProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "claim_minitswap";
+    action: "vip_claim_esinit";
   };
 }
 
-export const DecodeMessageClaimMinitSwap = ({
+export const DecodeMessageClaimEsinit = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageClaimMinitSwapProps) => {
+}: DecodeMessageClaimEsinitProps) => {
   const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
 
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
-  const tokenReceived = coinToTokenWithValue(
-    data.denomReceived,
-    data.amountReceived,
-    assetInfos
-  );
-  const coinWithdrawn = new Coin(data.denomWithdrawn, data.amountWithdrawn);
+  const token = coinToTokenWithValue(data.denom, data.amount, assetInfos);
+  const coin = new Coin(data.denom, data.amount);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -51,17 +47,19 @@ export const DecodeMessageClaimMinitSwap = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Claim"
+        label="VIP Claim"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <TokenImageWithAmount token={tokenReceived} />
-        <Text color="text.dark">from</Text>
-        <DexPoolLink liquidityDenom={data.denomWithdrawn} />
+        <TokenImageWithAmount token={token} />
+        <Text color="text.dark" variant="body2">
+          from
+        </Text>
+        <ChainBadge chainId={data.chainId} />
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
-        <DecodeMessageRow title="Claimer">
+        <DecodeMessageRow title="Address">
           <ExplorerLink
             maxWidth="full"
             showCopyOnHover
@@ -71,11 +69,11 @@ export const DecodeMessageClaimMinitSwap = ({
             wordBreak="break-word"
           />
         </DecodeMessageRow>
-        <DecodeMessageRow title="Pool">
-          <DexPoolLink liquidityDenom={data.denomWithdrawn} />
+        <DecodeMessageRow title="Rollup">
+          <ChainBadge chainId={data.chainId} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Amount">
-          <CoinsComponent coins={[coinWithdrawn]} />
+          <CoinsComponent coins={[coin]} />
         </DecodeMessageRow>
         <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>

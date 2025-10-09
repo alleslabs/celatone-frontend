@@ -6,30 +6,30 @@ import { useAssetInfos } from "lib/services/assetService";
 import { coinToTokenWithValue, formatTokenWithValue } from "lib/utils";
 import { useMemo, useState } from "react";
 
-import type { TxMsgData } from "../tx-message";
+import type { TxMsgData } from "../../tx-message";
 
-import { DexPoolLink } from "../DexPoolLink";
-import { ExplorerLink } from "../ExplorerLink";
-import { TokenImageWithAmount } from "../token";
-import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
-import { DecodeMessageBody } from "./decode-message-body";
-import { DecodeMessageExecute } from "./decode-message-execute";
-import { DecodeMessageHeader } from "./decode-message-header";
-import { DecodeMessageRow } from "./decode-message-row";
+import { DexPoolLink } from "../../DexPoolLink";
+import { ExplorerLink } from "../../ExplorerLink";
+import { TokenImageWithAmount } from "../../token";
+import { CoinsComponent } from "../../tx-message/msg-receipts/CoinsComponent";
+import { DecodeMessageBody } from "../decode-message-body";
+import { DecodeMessageExecute } from "../decode-message-execute";
+import { DecodeMessageHeader } from "../decode-message-header";
+import { DecodeMessageRow } from "../decode-message-row";
 
-interface DecodeMessageWithdrawStableSwapProps extends TxMsgData {
+interface DecodeMessageDepositStableSwapProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "withdraw_stableswap";
+    action: "provide_stableswap";
   };
 }
 
-export const DecodeMessageWithdrawStableSwap = ({
+export const DecodeMessageDepositStableSwap = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageWithdrawStableSwapProps) => {
+}: DecodeMessageDepositStableSwapProps) => {
   const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
@@ -65,7 +65,7 @@ export const DecodeMessageWithdrawStableSwap = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Withdraw"
+        label="Provide"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
@@ -103,7 +103,7 @@ export const DecodeMessageWithdrawStableSwap = ({
             token: lpToken,
           })}
         </DecodeMessageRow>
-        <DecodeMessageRow title="Withdrawn assets">
+        <DecodeMessageRow title="Deposited assets">
           <CoinsComponent coins={coins} />
         </DecodeMessageRow>
         <DecodeMessageExecute log={log} msgBody={msgBody} />

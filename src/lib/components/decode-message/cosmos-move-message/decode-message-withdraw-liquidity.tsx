@@ -4,52 +4,41 @@ import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
 import { useAssetInfos } from "lib/services/assetService";
 import { coinToTokenWithValue, formatTokenWithValue } from "lib/utils";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
-import type { TxMsgData } from "../tx-message";
+import type { TxMsgData } from "../../tx-message";
 
-import { DexPoolLink } from "../DexPoolLink";
-import { ExplorerLink } from "../ExplorerLink";
-import { TokenImageWithAmount } from "../token";
-import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
-import { DecodeMessageBody } from "./decode-message-body";
-import { DecodeMessageExecute } from "./decode-message-execute";
-import { DecodeMessageHeader } from "./decode-message-header";
-import { DecodeMessageRow } from "./decode-message-row";
+import { DexPoolLink } from "../../DexPoolLink";
+import { ExplorerLink } from "../../ExplorerLink";
+import { TokenImageWithAmount } from "../../token";
+import { CoinsComponent } from "../../tx-message/msg-receipts/CoinsComponent";
+import { DecodeMessageBody } from "../decode-message-body";
+import { DecodeMessageExecute } from "../decode-message-execute";
+import { DecodeMessageHeader } from "../decode-message-header";
+import { DecodeMessageRow } from "../decode-message-row";
 
-interface DecodeMessageDepositStableSwapProps extends TxMsgData {
+interface DecodeMessageWithdrawLiquidityProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "provide_stableswap";
+    action: "withdraw_liquidity";
   };
 }
 
-export const DecodeMessageDepositStableSwap = ({
+export const DecodeMessageWithdrawLiquidity = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageDepositStableSwapProps) => {
+}: DecodeMessageWithdrawLiquidityProps) => {
   const isSingleMsg = msgCount === 1;
   const [expand, setExpand] = useState(!!isSingleMsg);
   const { data, isIbc, isOp } = decodedMessage;
 
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
-
-  const tokens = useMemo(
-    () =>
-      data.coinDenoms.map((denom, index) =>
-        coinToTokenWithValue(denom, data.coinAmounts[index], assetInfos)
-      ),
-    [data.coinDenoms, data.coinAmounts, assetInfos]
-  );
-
-  const coins = useMemo(() => {
-    return data.coinDenoms.map(
-      (denom, index) => new Coin(denom, data.coinAmounts[index])
-    );
-  }, [data.coinDenoms, data.coinAmounts]);
-
+  const tokenA = coinToTokenWithValue(data.denomA, data.amountA, assetInfos);
+  const coinA = new Coin(data.denomA, data.amountA);
+  const tokenB = coinToTokenWithValue(data.denomB, data.amountB, assetInfos);
+  const coinB = new Coin(data.denomB, data.amountB);
   const lpToken = coinToTokenWithValue(
     data.liquidityDenom,
     data.liquidity,
@@ -65,21 +54,14 @@ export const DecodeMessageDepositStableSwap = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Provide"
+        label="Withdraw"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        {tokens.map((token, idx) => (
-          <Flex key={token.denom} align="center" as="span">
-            <TokenImageWithAmount token={token} />
-            {idx < tokens.length - 1 && (
-              <Text as="span" color="text.dark" mx={1}>
-                +
-              </Text>
-            )}
-          </Flex>
-        ))}
+        <TokenImageWithAmount token={tokenA} />
+        <Text color="text.dark">+</Text>
+        <TokenImageWithAmount token={tokenB} />
         <Text color="text.dark">from</Text>
         <DexPoolLink liquidityDenom={data.liquidityDenom} />
       </DecodeMessageHeader>
@@ -103,8 +85,8 @@ export const DecodeMessageDepositStableSwap = ({
             token: lpToken,
           })}
         </DecodeMessageRow>
-        <DecodeMessageRow title="Deposited assets">
-          <CoinsComponent coins={coins} />
+        <DecodeMessageRow title="Withdrawn assets">
+          <CoinsComponent coins={[coinA, coinB]} />
         </DecodeMessageRow>
         <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>

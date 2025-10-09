@@ -8,14 +8,14 @@ import { useNftGlyphImage, useNftMetadata } from "lib/services/nft";
 import { zAddr, zHexAddr32 } from "lib/types";
 import { useState } from "react";
 
-import type { TxMsgData } from "../tx-message";
+import type { TxMsgData } from "../../tx-message";
 
-import { AppLink } from "../AppLink";
-import { NftImage } from "../nft/NftImage";
-import { DecodeMessageBody } from "./decode-message-body";
-import { DecodeMessageExecute } from "./decode-message-execute";
-import { DecodeMessageHeader } from "./decode-message-header";
-import { DecodeMessageRow } from "./decode-message-row";
+import { AppLink } from "../../AppLink";
+import { NftImage } from "../../nft/NftImage";
+import { DecodeMessageBody } from "../decode-message-body";
+import { DecodeMessageExecute } from "../decode-message-execute";
+import { DecodeMessageHeader } from "../decode-message-header";
+import { DecodeMessageRow } from "../decode-message-row";
 
 interface DecodeMessageObjectTransferProps extends TxMsgData {
   decodedMessage: DecodedMessage & {

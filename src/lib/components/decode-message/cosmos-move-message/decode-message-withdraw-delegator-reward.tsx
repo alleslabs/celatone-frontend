@@ -7,39 +7,37 @@ import { TokenImageWithAmount } from "lib/components/token";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import { useAssetInfos } from "lib/services/assetService";
 import { zValidatorAddr } from "lib/types";
-import { coinToTokenWithValue, formatUTC, parseUnixToDateOpt } from "lib/utils";
+import { coinToTokenWithValue } from "lib/utils";
 import { useState } from "react";
 
-import type { TxMsgData } from "../tx-message";
+import type { TxMsgData } from "../../tx-message";
 
-import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
-import { DecodeMessageBody } from "./decode-message-body";
-import { DecodeMessageExecute } from "./decode-message-execute";
-import { DecodeMessageHeader } from "./decode-message-header";
-import { DecodeMessageRow } from "./decode-message-row";
+import { CoinsComponent } from "../../tx-message/msg-receipts/CoinsComponent";
+import { DecodeMessageBody } from "../decode-message-body";
+import { DecodeMessageExecute } from "../decode-message-execute";
+import { DecodeMessageHeader } from "../decode-message-header";
+import { DecodeMessageRow } from "../decode-message-row";
 
-interface DecodeMessageUndelegateProps extends TxMsgData {
+interface DecodeMessageWithdrawDelegatorRewardProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "undelegate";
+    action: "withdraw_delegator_reward";
   };
 }
 
-export const DecodeMessageUndelegate = ({
+export const DecodeMessageWithdrawDelegatorReward = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageUndelegateProps) => {
+}: DecodeMessageWithdrawDelegatorRewardProps) => {
   const isSingleMsg = msgCount === 1;
-  const [expand, setExpand] = useState(isSingleMsg);
+  const [expand, setExpand] = useState(!!isSingleMsg);
   const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
   const coin = data.coins[0];
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
-
-  const parsedUnlockTimestamp = parseUnixToDateOpt(data.unlockTimestamp);
 
   return (
     <Flex direction="column" maxW="inherit">
@@ -50,7 +48,7 @@ export const DecodeMessageUndelegate = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Unstake"
+        label="Claim"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
@@ -84,7 +82,7 @@ export const DecodeMessageUndelegate = ({
         )}
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
-        <DecodeMessageRow title="Delegator">
+        <DecodeMessageRow title="Claimer">
           <ExplorerLink
             maxWidth="full"
             showCopyOnHover
@@ -110,11 +108,6 @@ export const DecodeMessageUndelegate = ({
         <DecodeMessageRow title="Amount">
           <CoinsComponent coins={data.coins} />
         </DecodeMessageRow>
-        {parsedUnlockTimestamp && (
-          <DecodeMessageRow title="Unlock timestamp">
-            {formatUTC(parsedUnlockTimestamp)}
-          </DecodeMessageRow>
-        )}
         <DecodeMessageExecute log={log} msgBody={msgBody} />
       </DecodeMessageBody>
     </Flex>
