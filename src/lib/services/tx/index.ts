@@ -755,7 +755,7 @@ export const useEvmTxHashesByCosmosTxHashes = (
 
 export const useEvmTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
   const evm = useEvmConfig({ shouldRedirect: false });
-  // const { txDecoder } = useTxDecoderContext();
+  const { txDecoder } = useTxDecoderContext();
 
   return useQuery({
     queryKey: [
@@ -768,14 +768,15 @@ export const useEvmTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
         throw new Error("EVM is not enabled (useEvmTxDataJsonRpc)");
 
       const txDataJsonRpc = await getTxDataJsonRpc(evm.jsonRpc, evmTxHash);
-      // TODO: Open this
-      // Yominet tx: 0x41daf9032a90f1d4d909b8474785404ae9791b27cf7777d131b035d069e6c3f2
-      // const decodedTx =
-      //   await txDecoder.decodeEthereumTransaction(txDataJsonRpc);
+
+      const decodedTx = await txDecoder.decodeEthereumTransaction({
+        tx: txDataJsonRpc.rawTx,
+        txReceipt: txDataJsonRpc.rawTxReceipt,
+      });
 
       return {
         ...txDataJsonRpc,
-        // decodedTx
+        decodedTx,
       };
     },
     enabled: enabled && evm.enabled && !!evm.jsonRpc,

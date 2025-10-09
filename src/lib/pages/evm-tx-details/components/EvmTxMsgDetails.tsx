@@ -1,4 +1,7 @@
-import type { TxData, TxDataJsonRpc } from "lib/services/types";
+import type {
+  TxData,
+  TxDataJsonRpcWithDecodedEthereumTx,
+} from "lib/services/types";
 
 import {
   Alert,
@@ -33,7 +36,7 @@ import { EvmEventBox } from "./evm-event-box";
 interface EvmTxMsgDetailsProps {
   cosmosTxData: TxData;
   evmDenom: Option<string>;
-  evmTxData: TxDataJsonRpc;
+  evmTxData: TxDataJsonRpcWithDecodedEthereumTx;
 }
 
 export const EvmTxMsgDetails = ({
@@ -69,7 +72,9 @@ export const EvmTxMsgDetails = ({
     },
   } = cosmosTxData;
 
-  // console.log(evmTxData);
+  // const { decodedTx: evmDecodedTx } = evmTxData;
+
+  // console.log({ evmDecodedTx });
 
   return (
     <Stack gap={6} w="full">
