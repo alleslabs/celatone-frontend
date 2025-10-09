@@ -32,7 +32,7 @@ export const DecodeMessageUndelegate = ({
   msgCount,
 }: DecodeMessageUndelegateProps) => {
   const isSingleMsg = msgCount === 1;
-  const [expand, setExpand] = useState(!!isSingleMsg);
+  const [expand, setExpand] = useState(isSingleMsg);
   const getAddressType = useGetAddressType();
   const { data, isIbc, isOp } = decodedMessage;
   const coin = data.coins[0];
