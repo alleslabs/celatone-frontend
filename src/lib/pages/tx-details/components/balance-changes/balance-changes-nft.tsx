@@ -10,7 +10,9 @@ import { zAddr, zHexAddr32 } from "lib/types";
 interface BalanceChangeNftProps {
   change: number;
   id: string;
-  metadata: Metadata;
+  metadata: Metadata & {
+    type: "move";
+  };
 }
 
 export const BalanceChangeNft = ({
@@ -19,18 +21,12 @@ export const BalanceChangeNft = ({
   metadata,
 }: BalanceChangeNftProps) => {
   const formatAddresses = useFormatAddresses();
-  const nftMetadata = metadata[id];
+  const nftMetadata = metadata.data[id];
   const nftObject = {
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
     nftAddress: zHexAddr32.parse(formatAddresses(id).hex),
-    tokenId:
-      nftMetadata?.tokenId && typeof nftMetadata.tokenId === "string"
-        ? nftMetadata.tokenId
-        : undefined,
-    uri:
-      nftMetadata?.tokenUri && typeof nftMetadata.tokenUri === "string"
-        ? nftMetadata.tokenUri
-        : undefined,
+    tokenId: nftMetadata.tokenId,
+    uri: nftMetadata.tokenUri,
   };
   const { data: nft } = useNftMetadata(nftObject);
   const nftImage = useNftGlyphImage(nftObject);

@@ -48,6 +48,7 @@ export const BalanceChangesMobileCard = ({
           />
         ))}
         {metadata &&
+          metadata.type === "move" &&
           objectChangeEntries.map(([id, change]) => (
             <BalanceChangeNft
               key={`${address}-${id}`}

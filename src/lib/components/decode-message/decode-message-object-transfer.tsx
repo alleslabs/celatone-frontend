@@ -21,7 +21,9 @@ interface DecodeMessageObjectTransferProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
     action: "object_transfer";
   };
-  metadata?: Metadata;
+  metadata?: Metadata & {
+    type: "move";
+  };
 }
 
 export const DecodeMessageObjectTransfer = ({
@@ -41,18 +43,12 @@ export const DecodeMessageObjectTransfer = ({
     isOp,
   } = decodedMessage;
   const formatAddresses = useFormatAddresses();
-  const nftMetadata = metadata?.[object];
+  const nftMetadata = metadata?.data?.[object];
   const nftObject = {
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
     nftAddress: zHexAddr32.parse(formatAddresses(object).hex),
-    tokenId:
-      nftMetadata?.tokenId && typeof nftMetadata.tokenId === "string"
-        ? nftMetadata.tokenId
-        : undefined,
-    uri:
-      nftMetadata?.tokenUri && typeof nftMetadata.tokenUri === "string"
-        ? nftMetadata.tokenUri
-        : undefined,
+    tokenId: nftMetadata?.tokenId,
+    uri: nftMetadata?.tokenUri,
   };
   const { data: nft } = useNftMetadata(nftObject);
   const nftImage = useNftGlyphImage(nftObject);

@@ -23,7 +23,9 @@ interface DecodeMessageIbcNftProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
     action: "ibc_nft_receive_move" | "ibc_nft_send_move";
   };
-  metadata?: Metadata;
+  metadata?: Metadata & {
+    type: "move";
+  };
 }
 
 export const DecodeMessageIbcNft = ({
@@ -39,18 +41,12 @@ export const DecodeMessageIbcNft = ({
   const { data, isIbc, isOp } = decodedMessage;
   const getAddressType = useGetAddressType();
   const formatAddresses = useFormatAddresses();
-  const nftMetadata = metadata?.[data.tokenAddress];
+  const nftMetadata = metadata?.data?.[data.tokenAddress];
   const nftObject = {
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
     nftAddress: zHexAddr32.parse(formatAddresses(data.tokenAddress).hex),
-    tokenId:
-      nftMetadata?.tokenId && typeof nftMetadata.tokenId === "string"
-        ? nftMetadata.tokenId
-        : undefined,
-    uri:
-      nftMetadata?.tokenUri && typeof nftMetadata.tokenUri === "string"
-        ? nftMetadata.tokenUri
-        : undefined,
+    tokenId: nftMetadata?.tokenId,
+    uri: nftMetadata?.tokenUri,
   };
   const { data: nft } = useNftMetadata(nftObject);
   const nftImage = useNftGlyphImage(nftObject);

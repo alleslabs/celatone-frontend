@@ -4,7 +4,6 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
-  useCurrentChain,
   useEvmConfig,
 } from "lib/app-provider";
 
@@ -22,19 +21,14 @@ export const useEvmInternalTxsByBlockHeightSequencer = (
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const evm = useEvmConfig({ shouldRedirect: false });
-  const { bech32Prefix } = useCurrentChain();
-
-  const jsonRpc = evm.enabled ? evm.jsonRpc : "";
 
   return useInfiniteQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.EVM_INTERNAL_TXS_BY_BLOCK_HEIGHT_SEQUENCER,
+      evm.enabled,
       indexerEndpoint,
       height,
-      bech32Prefix,
       limit,
-      evm.enabled,
-      jsonRpc,
     ],
     queryFn: async ({ pageParam }: { pageParam?: string }) => {
       if (!evm.enabled)
@@ -62,19 +56,14 @@ export const useEvmInternalTxsByTxHashSequencer = (
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const evm = useEvmConfig({ shouldRedirect: false });
-  const { bech32Prefix } = useCurrentChain();
-
-  const jsonRpc = evm.enabled ? evm.jsonRpc : "";
 
   return useInfiniteQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.EVM_INTERNAL_TXS_BY_TX_HASH_SEQUENCER,
-      indexerEndpoint,
-      txHash,
-      bech32Prefix,
-      limit,
       evm.enabled,
-      jsonRpc,
+      txHash,
+      indexerEndpoint,
+      limit,
     ],
     queryFn: async ({ pageParam }: { pageParam?: string }) => {
       if (!evm.enabled)
@@ -106,19 +95,14 @@ export const useEvmInternalTxsByAccountAddressSequencer = (
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const evm = useEvmConfig({ shouldRedirect: false });
-  const { bech32Prefix } = useCurrentChain();
-
-  const jsonRpc = evm.enabled ? evm.jsonRpc : "";
 
   return useInfiniteQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.EVM_INTERNAL_TXS_BY_ACCOUNT_ADDRESS_SEQUENCER,
-      indexerEndpoint,
-      address,
-      bech32Prefix,
-      limit,
       evm.enabled,
-      jsonRpc,
+      address,
+      indexerEndpoint,
+      limit,
     ],
     queryFn: async ({ pageParam }: { pageParam?: string }) => {
       if (!evm.enabled)
