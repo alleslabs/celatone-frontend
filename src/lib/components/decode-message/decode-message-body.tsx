@@ -1,3 +1,4 @@
+import type { SystemStyleObject } from "@chakra-ui/react";
 import type { Log } from "@cosmjs/stargate/build/logs";
 import type { Option } from "lib/types";
 import type { ReactNode } from "react";
@@ -14,10 +15,11 @@ interface DecodeMessageBodyProps {
   compact: boolean;
   isExpand?: boolean;
   log: Option<Log>;
+  sx?: SystemStyleObject;
 }
 
 export const DecodeMessageBody = memo(
-  ({ children, compact, isExpand, log }: DecodeMessageBodyProps) => {
+  ({ children, compact, isExpand, log, sx }: DecodeMessageBodyProps) => {
     if (compact) return null;
     return (
       <Flex
@@ -26,6 +28,7 @@ export const DecodeMessageBody = memo(
         height={isExpand ? "full" : 0}
         overflow="hidden"
         pl={8}
+        sx={sx}
         transition="all 0.25s ease-in-out"
       >
         <Flex

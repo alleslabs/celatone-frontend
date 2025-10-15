@@ -18,7 +18,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import {
   DecodeCosmosEvmMessageBody,
   DecodeCosmosEvmMessageHeader,
-} from "lib/components/decode-message/cosmos-evm-message";
+} from "lib/components/decode-message/evm-message";
 import { DividerWithArrow } from "lib/components/DividerWithArrow";
 import { EvmInputData } from "lib/components/EvmInputData";
 import { CustomIcon } from "lib/components/icon";
@@ -72,9 +72,7 @@ export const EvmTxMsgDetails = ({
     },
   } = cosmosTxData;
 
-  // const { decodedTx: evmDecodedTx } = evmTxData;
-
-  // console.log({ evmDecodedTx });
+  const { decodedTx: evmDecodedTx } = evmTxData;
 
   return (
     <Stack gap={6} w="full">
@@ -85,6 +83,7 @@ export const EvmTxMsgDetails = ({
               key={JSON.stringify(msg) + idx.toString()}
               compact={false}
               decodedMessage={decodedTx.messages[idx].decodedMessage}
+              evmDecodedMessage={evmDecodedTx}
               log={logs[idx]}
               msgBody={msg}
               msgCount={messages.length}
@@ -131,6 +130,7 @@ export const EvmTxMsgDetails = ({
                       key={JSON.stringify(msg) + idx.toString()}
                       compact={false}
                       decodedMessage={decodedTx.messages[idx].decodedMessage}
+                      evmDecodedMessage={evmDecodedTx}
                       log={logs[idx]}
                       msgBody={msg}
                       msgCount={messages.length}
