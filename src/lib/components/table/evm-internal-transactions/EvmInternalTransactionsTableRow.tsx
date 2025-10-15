@@ -1,5 +1,7 @@
-import type { EvmCallFrame, EvmVerifyInfosResponse } from "lib/services/types";
-import type { AssetInfos, Nullable, Option } from "lib/types";
+import type {
+  EvmInternalTxSequencer,
+  EvmVerifyInfosResponse,
+} from "lib/services/types";
 
 import {
   AccordionButton,
@@ -14,12 +16,14 @@ import { EvmInputData } from "lib/components/EvmInputData";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { type AssetInfos, type Nullable, type Option } from "lib/types";
 import {
   coinToTokenWithValue,
   formatInteger,
   formatUTokenWithPrecision,
   getTokenLabel,
 } from "lib/utils";
+import { useMemo } from "react";
 
 import { TableRow } from "../tableComponents";
 
@@ -28,7 +32,8 @@ interface EvmInternalTransactionTableRowProps {
   evmDenom: Option<string>;
   evmVerifyInfos: Option<Nullable<EvmVerifyInfosResponse>>;
   nestedIndex?: number;
-  result: EvmCallFrame;
+  nestingLevel: number;
+  result: EvmInternalTxSequencer;
   showParentHash?: boolean;
   templateColumns: GridProps["templateColumns"];
   txHash: Option<string>;
@@ -39,6 +44,7 @@ export const EvmInternalTransactionTableRow = ({
   evmDenom,
   evmVerifyInfos,
   nestedIndex = 0,
+  nestingLevel,
   result,
   showParentHash = true,
   templateColumns,
@@ -50,8 +56,28 @@ export const EvmInternalTransactionTableRow = ({
     assetInfos
   );
 
+  // Memoize tooltip labels for better performance
+  const tooltipLabels = useMemo(() => {
+    const fromContractName =
+      evmVerifyInfos?.[result.from.toLowerCase()]?.contractName;
+    const toContractName =
+      evmVerifyInfos?.[result.to.toLowerCase()]?.contractName;
+
+    return {
+      from: fromContractName
+        ? `${fromContractName} - ${result.from}`
+        : result.from,
+      to: toContractName ? `${toContractName} - ${result.to}` : result.to,
+    };
+  }, [evmVerifyInfos, result.from, result.to]);
+
   return (
-    <AccordionItem>
+    <AccordionItem
+      sx={{
+        containIntrinsicSize: "auto 75px",
+        contentVisibility: "auto",
+      }}
+    >
       {({ isExpanded }) => (
         <>
           <AccordionButton p={0}>
@@ -89,15 +115,38 @@ export const EvmInternalTransactionTableRow = ({
                 </TableRow>
               )}
               <TableRow>
-                <ExplorerLink
-                  leftIcon={
-                    <CustomIcon color="primary.main" name="contract-address" />
-                  }
-                  showCopyOnHover
-                  textLabel={evmVerifyInfos?.[result.from]?.contractName}
-                  type="evm_contract_address"
-                  value={result.from}
-                />
+                <Flex align="center" w="full">
+                  <Flex align="center" flexShrink={0}>
+                    {Array.from({ length: nestingLevel }).map((_, index) => (
+                      <CustomIcon
+                        key={`${result.index}-level-${index}`}
+                        boxSize={6}
+                        color="gray.600"
+                        marginLeft={index > 0 ? "-8px" : "0"}
+                        name="l-shape"
+                      />
+                    ))}
+                  </Flex>
+                  <Flex flex={1} minW={0}>
+                    <ExplorerLink
+                      leftIcon={
+                        <CustomIcon
+                          color="primary.main"
+                          name="contract-address"
+                        />
+                      }
+                      showCopyOnHover
+                      textFormat="ellipsis"
+                      textLabel={
+                        evmVerifyInfos?.[result.from.toLowerCase()]
+                          ?.contractName
+                      }
+                      tooltipLabel={tooltipLabels.from}
+                      type="evm_contract_address"
+                      value={result.from}
+                    />
+                  </Flex>
+                </Flex>
               </TableRow>
               <TableRow>
                 <CustomIcon color="gray.600" name="arrow-right" />
@@ -108,7 +157,10 @@ export const EvmInternalTransactionTableRow = ({
                     <CustomIcon color="primary.main" name="contract-address" />
                   }
                   showCopyOnHover
-                  textLabel={evmVerifyInfos?.[result.to]?.contractName}
+                  textLabel={
+                    evmVerifyInfos?.[result.to.toLowerCase()]?.contractName
+                  }
+                  tooltipLabel={tooltipLabels.to}
                   type="evm_contract_address"
                   value={result.to}
                 />

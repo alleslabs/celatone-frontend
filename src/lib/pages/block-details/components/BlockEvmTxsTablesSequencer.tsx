@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { CosmosEvmTxs } from "lib/components/cosmos-evm-txs";
+import { useEvmInternalTxsByBlockHeightSequencer } from "lib/services/evm-internal-txs";
 import { useEvmTxsByBlockHeightSequencer } from "lib/services/evm-txs";
 import { useTxsByBlockHeightSequencer } from "lib/services/tx";
 
@@ -12,6 +13,7 @@ export const BlockEvmTxsTablesSequencer = ({
 }: BlockEvmTxsTablesSequencerProps) => {
   const cosmosTxsData = useTxsByBlockHeightSequencer(height);
   const evmTxsData = useEvmTxsByBlockHeightSequencer(height);
+  const evmInternalTxsData = useEvmInternalTxsByBlockHeightSequencer(height);
 
   return (
     <Box borderTopColor="gray.700" borderTopWidth="1px" pt={8}>
@@ -21,8 +23,9 @@ export const BlockEvmTxsTablesSequencer = ({
           emptyMessage: "There are no submitted transactions in this block",
         }}
         evmData={{
-          data: evmTxsData,
           emptyMessage: "There are no submitted EVM transactions in this block",
+          evmInternalTxsData,
+          evmTxsData,
         }}
       />
     </Box>

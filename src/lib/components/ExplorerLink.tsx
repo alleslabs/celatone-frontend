@@ -2,7 +2,7 @@ import type { FlexProps, TextProps } from "@chakra-ui/react";
 import type { Option } from "lib/types";
 import type { ReactNode } from "react";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { transparentize } from "@chakra-ui/theme-tools";
 import { trackMintScan } from "lib/amplitude";
 import { type AddressReturnType, useChainConfigs } from "lib/app-provider";
@@ -51,6 +51,7 @@ type CommonExplorerLinkProps = FlexProps & {
   textFormat?: TextFormat;
   textLabel?: string;
   textVariant?: TextProps["variant"];
+  tooltipLabel?: string;
 };
 
 type FunctionNameExplorerLinkProps = CommonExplorerLinkProps & {
@@ -167,7 +168,11 @@ const getCopyLabel = (type: LinkType, value: string) => {
 };
 
 const isTooltipHidden = (type: LinkType, textFormat: TextFormat) => {
-  if (textFormat === "ellipsis" || textFormat === "normal") return true;
+  // Always show tooltip for ellipsis format to show full text
+  if (textFormat === "ellipsis") return false;
+
+  // Hide tooltip for normal format since text is not truncated
+  if (textFormat === "normal") return true;
 
   if (
     type === "evm_contract_address" ||
@@ -255,6 +260,7 @@ export const ExplorerLink = ({
   fixedHeight = false,
   hideCopy = false,
   isReadOnly = false,
+  isTruncated,
   leftIcon = null,
   openNewTab,
   queryParams,
@@ -263,6 +269,7 @@ export const ExplorerLink = ({
   textFormat = "truncate",
   textLabel,
   textVariant = "body2",
+  tooltipLabel,
   type,
   value = "",
   ...componentProps
@@ -326,6 +333,7 @@ export const ExplorerLink = ({
       gap={1}
       h={fixedHeight && textFormat !== "normal" ? "24px" : "auto"}
       maxW={textLabel ? "100%" : "fit-content"}
+      maxWidth="full"
       position="relative"
       rounded={4}
       sx={{
@@ -370,25 +378,8 @@ export const ExplorerLink = ({
       {...componentProps}
     >
       {leftIcon}
-      {isMobile ? (
-        <LinkRender
-          chainId={chainId}
-          fallbackValue={copyValue ?? ""}
-          hrefLink={link}
-          isEllipsis={textFormat === "ellipsis"}
-          isInternal={isUndefined(externalLink)}
-          openNewTab={openNewTab}
-          textFormat={textFormat}
-          textValue={textValue}
-          textVariant={textVariant}
-          type={type}
-        />
-      ) : (
-        <Tooltip
-          hidden={isTooltipHidden(type, textFormat)}
-          label={value}
-          textAlign="center"
-        >
+      <Box flex="1" isTruncated={isTruncated} minW={0}>
+        {isMobile ? (
           <LinkRender
             chainId={chainId}
             fallbackValue={copyValue ?? ""}
@@ -401,8 +392,27 @@ export const ExplorerLink = ({
             textVariant={textVariant}
             type={type}
           />
-        </Tooltip>
-      )}
+        ) : (
+          <Tooltip
+            hidden={isTooltipHidden(type, textFormat)}
+            label={tooltipLabel ?? value}
+            textAlign="center"
+          >
+            <LinkRender
+              chainId={chainId}
+              fallbackValue={copyValue ?? ""}
+              hrefLink={link}
+              isEllipsis={textFormat === "ellipsis"}
+              isInternal={isUndefined(externalLink)}
+              openNewTab={openNewTab}
+              textFormat={textFormat}
+              textValue={textValue}
+              textVariant={textVariant}
+              type={type}
+            />
+          </Tooltip>
+        )}
+      </Box>
       {rightIcon}
       {!hideCopy && (
         <Copier

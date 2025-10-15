@@ -21,7 +21,9 @@ interface DecodeMessageNftMintProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
     action: "nft_mint";
   };
-  metadata?: Metadata;
+  metadata?: Metadata & {
+    type: "move";
+  };
 }
 
 export const DecodeMessageNftMint = ({
@@ -41,7 +43,7 @@ export const DecodeMessageNftMint = ({
   } = decodedMessage;
   const getAddressType = useGetAddressType();
   const formatAddresses = useFormatAddresses();
-  const nftMetadata = metadata?.[tokenAddress];
+  const nftMetadata = metadata?.data?.[tokenAddress];
   const nftObject = {
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
     nftAddress: zHexAddr32.parse(formatAddresses(tokenAddress).hex),

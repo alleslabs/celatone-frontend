@@ -37,18 +37,19 @@ export const TransactionsTableWithWalletSequencer = ({
         <EvmTransactionsTable
           emptyState={evmData.emptyMessage}
           evmTransactions={
-            evmData.data.data?.pages.flatMap((page) => page.txs) ?? []
+            evmData.evmTxsData.data?.pages.flatMap((page) => page.txs) ?? []
           }
           isLoading={
-            evmData.data.isLoading ||
-            (evmData.data.isFetching && !evmData.data.isFetchingNextPage)
+            evmData.evmTxsData.isLoading ||
+            (evmData.evmTxsData.isFetching &&
+              !evmData.evmTxsData.isFetchingNextPage)
           }
           showTimestamp
         />
-        {evmData.data.hasNextPage && (
+        {evmData.evmTxsData.hasNextPage && (
           <LoadNext
-            fetchNextPage={evmData.data.fetchNextPage}
-            isFetchingNextPage={evmData.data.isFetchingNextPage}
+            fetchNextPage={evmData.evmTxsData.fetchNextPage}
+            isFetchingNextPage={evmData.evmTxsData.isFetchingNextPage}
             text="Load more transactions"
           />
         )}

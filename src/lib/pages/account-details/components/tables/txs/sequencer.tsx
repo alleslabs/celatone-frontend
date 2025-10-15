@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { CosmosEvmTxs } from "lib/components/cosmos-evm-txs";
 import { MobileTitle } from "lib/components/table";
+import { useEvmInternalTxsByAccountAddressSequencer } from "lib/services/evm-internal-txs";
 import { useEvmTxsByAccountAddressSequencer } from "lib/services/evm-txs";
 import { useTxsByAddressSequencer } from "lib/services/tx";
 import { zBechAddr } from "lib/types";
@@ -24,6 +25,11 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
   const evmTxsData = useEvmTxsByAccountAddressSequencer(
     addressValidation.data,
     undefined,
+    onViewMore ? 5 : 10,
+    addressValidation.success
+  );
+  const evmInternalTxsData = useEvmInternalTxsByAccountAddressSequencer(
+    addressValidation.data,
     onViewMore ? 5 : 10,
     addressValidation.success
   );
@@ -52,8 +58,9 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
         onViewMore,
       }}
       evmData={{
-        data: evmTxsData,
         emptyMessage: "There are no EVM transactions on this account.",
+        evmInternalTxsData,
+        evmTxsData,
         onViewMore,
         showTimestamp: true,
       }}

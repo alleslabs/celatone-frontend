@@ -1,5 +1,5 @@
-import type { EvmCallFrame, EvmDebugTraceResponse } from "lib/services/types";
-import type { HexAddr20 } from "lib/types";
+import type { EvmInternalTxSequencer } from "lib/services/types";
+import type { ReactNode } from "react";
 
 import { Accordion, Flex, Spinner } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
@@ -7,9 +7,29 @@ import { Loading } from "lib/components/Loading";
 import { useAssetInfos } from "lib/services/assetService";
 import { useEvmParams } from "lib/services/evm";
 import { useEvmVerifyInfos } from "lib/services/verification/evm";
-import { zHexAddr20 } from "lib/types";
-import { useEffect, useMemo, useState } from "react";
+import { isHex20Bytes } from "lib/utils/validate";
+import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
+
+// Calculate nesting levels for internal transactions
+const calculateNestingLevels = (
+  transactions: EvmInternalTxSequencer[]
+): Map<number, number> => {
+  const levels = new Map<number, number>();
+
+  transactions.forEach((tx) => {
+    if (tx.parentIndex === -1) {
+      // Root transaction
+      levels.set(tx.index, 1);
+    } else {
+      // Child transaction - get parent's level and add 1
+      const parentLevel = levels.get(tx.parentIndex) ?? 1;
+      levels.set(tx.index, parentLevel + 1);
+    }
+  });
+
+  return levels;
+};
 
 import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { EvmInternalTransactionMobileCard } from "./EvmInternalTransactionMobileCard";
@@ -17,65 +37,61 @@ import { EvmInternalTransactionsTableHeader } from "./EvmInternalTransactionsTab
 import { EvmInternalTransactionTableRow } from "./EvmInternalTransactionsTableRow";
 
 interface EvmInternalTransactionsTableProps {
-  internalTxs: EvmDebugTraceResponse;
+  disableInfiniteLoad?: boolean;
+  emptyState: ReactNode;
+  fetchNextPage: () => void;
+  internalTxs: EvmInternalTxSequencer[];
+  isFetchingNextPage: boolean;
   showParentHash?: boolean;
+  totalCount: number;
 }
 
-const flattenCalls = (
-  calls: EvmCallFrame[],
-  depth: number,
-  txHash: string
-): { depth: number; result: EvmCallFrame; txHash: string }[] =>
-  calls.flatMap((call) => [
-    { depth, result: call, txHash },
-    ...(call.calls ? flattenCalls(call.calls, depth + 1, txHash) : []),
-  ]);
-
-const flattenTransactions = (data: EvmDebugTraceResponse) =>
-  data.flatMap(({ result, txHash }) => [
-    { depth: 0, result, txHash },
-    ...(result.calls ? flattenCalls(result.calls, 1, txHash) : []),
-  ]);
-
 export const EvmInternalTransactionsTable = ({
+  disableInfiniteLoad,
+  emptyState,
+  fetchNextPage,
   internalTxs,
+  isFetchingNextPage,
   showParentHash = true,
+  totalCount,
 }: EvmInternalTransactionsTableProps) => {
   const isMobile = useMobile();
   const { data: evmParams, isLoading: isEvmParamsLoading } = useEvmParams();
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
 
-  const flatInternalTxs = useMemo(
-    () => flattenTransactions(internalTxs),
+  // Collect and filter valid addresses from both 'from' and 'to' fields
+  const validAddresses = useMemo(() => {
+    const addresses = internalTxs.flatMap((tx) => [tx.from, tx.to]);
+    return Array.from(new Set(addresses.filter(isHex20Bytes)));
+  }, [internalTxs]);
+
+  const { data: evmVerifyInfos } = useEvmVerifyInfos(validAddresses);
+
+  // Calculate nesting levels for all transactions
+  const nestingLevels = useMemo(
+    () => calculateNestingLevels(internalTxs),
     [internalTxs]
   );
 
-  const verifiedTxHashes = useMemo(() => {
-    return flatInternalTxs.reduce((acc, { result }) => {
-      const parsedContractFrom = zHexAddr20.safeParse(result.from);
-      if (parsedContractFrom.success) {
-        acc.add(parsedContractFrom.data);
-      }
-      const parsedContractTo = zHexAddr20.safeParse(result.to);
-      if (parsedContractTo.success) {
-        acc.add(parsedContractTo.data);
-      }
-      return acc;
-    }, new Set<HexAddr20>());
-  }, [flatInternalTxs]);
-
-  const { data: evmVerifyInfos, isLoading: isEvmVerifyInfosLoading } =
-    useEvmVerifyInfos(Array.from(verifiedTxHashes));
-
-  const [visibleCount, setVisibleCount] = useState(10);
   const { inView, ref } = useInView({ threshold: 0 });
 
   useEffect(() => {
-    if (inView && visibleCount < flatInternalTxs.length) {
-      setVisibleCount((prev) => Math.min(prev + 10, flatInternalTxs.length));
+    if (
+      inView &&
+      !disableInfiniteLoad &&
+      !isFetchingNextPage &&
+      internalTxs.length < totalCount
+    ) {
+      fetchNextPage();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inView]);
+  }, [
+    inView,
+    disableInfiniteLoad,
+    fetchNextPage,
+    isFetchingNextPage,
+    internalTxs.length,
+    totalCount,
+  ]);
 
   const templateColumns = [
     ...(showParentHash ? ["180px"] : []),
@@ -88,18 +104,19 @@ export const EvmInternalTransactionsTable = ({
     "60px",
   ].join(" ");
 
-  if (isEvmParamsLoading || isEvmVerifyInfosLoading) return <Loading />;
+  if (isEvmParamsLoading) return <Loading />;
+  if (!internalTxs?.length) return emptyState;
 
   return isMobile ? (
     <MobileTableContainer>
-      {flatInternalTxs.slice(0, visibleCount).map((result, index) => (
+      {internalTxs.map((result, index) => (
         <EvmInternalTransactionMobileCard
-          key={`${result.txHash ?? "nested"}-${index}`}
+          key={`${result.hash ?? "nested"}-${index}`}
           assetInfos={assetInfos}
           evmDenom={evmParams?.params.feeDenom}
           evmVerifyInfos={evmVerifyInfos}
-          result={result.result}
-          txHash={result.txHash}
+          result={result}
+          txHash={result.hash}
         />
       ))}
     </MobileTableContainer>
@@ -111,23 +128,24 @@ export const EvmInternalTransactionsTable = ({
       />
 
       <Accordion allowToggle variant="transparent">
-        {flatInternalTxs.slice(0, visibleCount).map((result, index) => (
+        {internalTxs.map((result, index) => (
           <EvmInternalTransactionTableRow
-            key={`${result.txHash ?? "nested"}-${index}`}
+            key={`${result.hash ?? "nested"}-${index}`}
             assetInfos={assetInfos}
             evmDenom={evmParams?.params.feeDenom}
             evmVerifyInfos={evmVerifyInfos}
-            result={result.result}
+            nestingLevel={nestingLevels.get(result.index) ?? 1}
+            result={result}
             showParentHash={showParentHash}
             templateColumns={templateColumns}
-            txHash={result.txHash}
+            txHash={result.hash}
           />
         ))}
       </Accordion>
 
-      {visibleCount < flatInternalTxs.length && (
+      {internalTxs.length < totalCount && (
         <Flex align="center" justify="center" mt={4} ref={ref}>
-          <Spinner />
+          {isFetchingNextPage ? <Spinner /> : null}
         </Flex>
       )}
     </TableContainer>

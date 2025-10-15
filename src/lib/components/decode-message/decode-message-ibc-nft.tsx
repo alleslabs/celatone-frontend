@@ -21,9 +21,11 @@ import { DecodeMessageRow } from "./decode-message-row";
 
 interface DecodeMessageIbcNftProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "ibc_nft_receive" | "ibc_nft_send";
+    action: "ibc_nft_receive_move" | "ibc_nft_send_move";
   };
-  metadata?: Metadata;
+  metadata?: Metadata & {
+    type: "move";
+  };
 }
 
 export const DecodeMessageIbcNft = ({
@@ -39,7 +41,7 @@ export const DecodeMessageIbcNft = ({
   const { data, isIbc, isOp } = decodedMessage;
   const getAddressType = useGetAddressType();
   const formatAddresses = useFormatAddresses();
-  const nftMetadata = metadata?.[data.tokenAddress];
+  const nftMetadata = metadata?.data?.[data.tokenAddress];
   const nftObject = {
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
     nftAddress: zHexAddr32.parse(formatAddresses(data.tokenAddress).hex),
@@ -84,7 +86,7 @@ export const DecodeMessageIbcNft = ({
             />
           </Flex>
         )}
-        {decodedMessage.action === "ibc_nft_send" ? (
+        {decodedMessage.action === "ibc_nft_send_move" ? (
           <Flex align="center" gap={2}>
             <Text color="text.dark">to</Text>
             <ChainBadge chainId={data.dstChainId} />
