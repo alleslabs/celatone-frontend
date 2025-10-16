@@ -1,8 +1,9 @@
 import type { ConnectWalletType } from "lib/types";
 import type { MouseEventHandler, ReactNode } from "react";
 
-import { Button } from "@chakra-ui/react";
+import { Button, Image } from "@chakra-ui/react";
 import { WalletStatus } from "@cosmos-kit/core";
+import { useAccount } from "wagmi";
 
 import { CustomIcon } from "../icon";
 
@@ -13,22 +14,35 @@ export const ConnectWalletButton = ({
   isLoading,
   onClick,
   variant,
-}: ConnectWalletType) => (
-  <Button
-    alignContent="center"
-    gap={1}
-    isDisabled={isDisabled}
-    isLoading={isLoading}
-    maxH="32px"
-    px={hasIcon ? "8px" : "18px"}
-    variant={variant}
-    onClick={onClick}
-  >
-    {hasIcon && <CustomIcon mr={2} name="wallet" />}
-    {buttonText || "Connect wallet"}
-    {hasIcon && <CustomIcon boxSize={3} name="chevron-down" />}
-  </Button>
-);
+}: ConnectWalletType) => {
+  const { connector } = useAccount();
+  return (
+    <Button
+      alignContent="center"
+      gap={1}
+      isDisabled={isDisabled}
+      isLoading={isLoading}
+      maxH="32px"
+      px={hasIcon ? "8px" : "18px"}
+      variant={variant}
+      onClick={onClick}
+    >
+      {hasIcon &&
+        (connector?.icon ? (
+          <Image
+            alt="Connected Wallet logo"
+            mr={2}
+            src={connector?.icon}
+            width={5}
+          />
+        ) : (
+          <CustomIcon mr={2} name="wallet" />
+        ))}
+      {buttonText || "Connect wallet"}
+      {hasIcon && <CustomIcon boxSize={3} name="chevron-down" />}
+    </Button>
+  );
+};
 
 // For Rejected, NotExist or Error
 export const Others = ({
