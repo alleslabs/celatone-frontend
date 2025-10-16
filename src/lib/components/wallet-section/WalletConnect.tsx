@@ -29,7 +29,12 @@ export const ConnectWalletButton = ({
     >
       {hasIcon &&
         (connector?.icon ? (
-          <Image mr={2} src={connector?.icon} width={5} />
+          <Image
+            alt="Connected Wallet logo"
+            mr={2}
+            src={connector?.icon}
+            width={5}
+          />
         ) : (
           <CustomIcon mr={2} name="wallet" />
         ))}
