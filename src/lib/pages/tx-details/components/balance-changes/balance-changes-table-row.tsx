@@ -50,6 +50,7 @@ export const BalanceChangesTableRow = ({
             <Divider borderColor="gray.700" />
           )}
           {metadata &&
+            metadata.type === "move" &&
             objectChangeEntries.map(([id, change], index) => (
               <Stack key={`${address}-${id}`} gap={3}>
                 <BalanceChangeNft

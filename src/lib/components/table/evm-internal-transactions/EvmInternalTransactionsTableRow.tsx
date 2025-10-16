@@ -58,8 +58,10 @@ export const EvmInternalTransactionTableRow = ({
 
   // Memoize tooltip labels for better performance
   const tooltipLabels = useMemo(() => {
-    const fromContractName = evmVerifyInfos?.[result.from]?.contractName;
-    const toContractName = evmVerifyInfos?.[result.to]?.contractName;
+    const fromContractName =
+      evmVerifyInfos?.[result.from.toLowerCase()]?.contractName;
+    const toContractName =
+      evmVerifyInfos?.[result.to.toLowerCase()]?.contractName;
 
     return {
       from: fromContractName
@@ -135,7 +137,10 @@ export const EvmInternalTransactionTableRow = ({
                       }
                       showCopyOnHover
                       textFormat="ellipsis"
-                      textLabel={evmVerifyInfos?.[result.from]?.contractName}
+                      textLabel={
+                        evmVerifyInfos?.[result.from.toLowerCase()]
+                          ?.contractName
+                      }
                       tooltipLabel={tooltipLabels.from}
                       type="evm_contract_address"
                       value={result.from}
@@ -152,7 +157,9 @@ export const EvmInternalTransactionTableRow = ({
                     <CustomIcon color="primary.main" name="contract-address" />
                   }
                   showCopyOnHover
-                  textLabel={evmVerifyInfos?.[result.to]?.contractName}
+                  textLabel={
+                    evmVerifyInfos?.[result.to.toLowerCase()]?.contractName
+                  }
                   tooltipLabel={tooltipLabels.to}
                   type="evm_contract_address"
                   value={result.to}

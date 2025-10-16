@@ -148,6 +148,7 @@ export const DecodeMessage = ({
   ...props
 }: DecodeMessageProps) => {
   const renderMessage = () => {
+    if (metadata?.type !== "move") return null;
     switch (decodedMessage.action) {
       case "claim_minitswap":
         return (
