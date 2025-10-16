@@ -61,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1481](https://github.com/alleslabs/celatone-frontend/pull/1481) Improve Move tx decoder code structure and performance
 - [#1474](https://github.com/alleslabs/celatone-frontend/pull/1474) Improve ExplorerLink component background highlight on hover
 - [#1471](https://github.com/alleslabs/celatone-frontend/pull/1471) Add load more on scroll instead of load all at once
 - [#1470](https://github.com/alleslabs/celatone-frontend/pull/1470) fix spelling issues

@@ -7,7 +7,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TokenImageRender, TokenImageWithAmount } from "lib/components/token";
 import { useAssetInfos } from "lib/services/assetService";
 import { coinToTokenWithValue, getTokenLabel } from "lib/utils";
-import { useState } from "react";
+import { memo, useState } from "react";
 
 import type { TxMsgData } from "../tx-message";
 
@@ -60,92 +60,94 @@ const DecodeMessageSendMultipleCoinsHeader = ({
   </>
 );
 
-export const DecodeMessageSend = ({
-  compact,
-  decodedMessage,
-  log,
-  msgBody,
-  msgCount,
-}: DecodeMessageSendProps) => {
-  const isSingleMsg = msgCount === 1;
-  const [expand, setExpand] = useState(!!isSingleMsg);
-  const getAddressType = useGetAddressType();
-  const { data, isIbc, isOp } = decodedMessage;
-  const { data: assetInfos } = useAssetInfos({ withPrices: false });
+export const DecodeMessageSend = memo(
+  ({
+    compact,
+    decodedMessage,
+    log,
+    msgBody,
+    msgCount,
+  }: DecodeMessageSendProps) => {
+    const isSingleMsg = msgCount === 1;
+    const [expand, setExpand] = useState(!!isSingleMsg);
+    const getAddressType = useGetAddressType();
+    const { data, isIbc, isOp } = decodedMessage;
+    const { data: assetInfos } = useAssetInfos({ withPrices: false });
 
-  return (
-    <Flex direction="column" w="100%">
-      <DecodeMessageHeader
-        compact={compact}
-        gap={2}
-        isExpand={expand}
-        isIbc={isIbc}
-        isOpinit={isOp}
-        isSingleMsg={!!isSingleMsg}
-        label="Send"
-        msgCount={msgCount}
-        type={msgBody["@type"]}
-        onClick={() => setExpand(!expand)}
-      >
-        <Flex align="center" flexWrap="nowrap" gap={2} minWidth="fit-content">
-          {data.coins.length > 1 ? (
-            <DecodeMessageSendMultipleCoinsHeader
-              assetInfos={assetInfos}
-              coins={data.coins}
-            />
-          ) : (
-            <DecodeMessageSendSingleCoinHeader
-              assetInfos={assetInfos}
-              coin={data.coins[0]}
-            />
+    return (
+      <Flex direction="column" w="100%">
+        <DecodeMessageHeader
+          compact={compact}
+          gap={2}
+          isExpand={expand}
+          isIbc={isIbc}
+          isOpinit={isOp}
+          isSingleMsg={!!isSingleMsg}
+          label="Send"
+          msgCount={msgCount}
+          type={msgBody["@type"]}
+          onClick={() => setExpand(!expand)}
+        >
+          <Flex align="center" flexWrap="nowrap" gap={2} minWidth="fit-content">
+            {data.coins.length > 1 ? (
+              <DecodeMessageSendMultipleCoinsHeader
+                assetInfos={assetInfos}
+                coins={data.coins}
+              />
+            ) : (
+              <DecodeMessageSendSingleCoinHeader
+                assetInfos={assetInfos}
+                coin={data.coins[0]}
+              />
+            )}
+          </Flex>
+          {!compact && (
+            <Flex align="center" gap={2}>
+              <Text color="text.dark">from</Text>
+              <ExplorerLink
+                showCopyOnHover
+                textVariant={compact ? "body2" : "body1"}
+                type={getAddressType(data.from)}
+                value={data.from}
+              />
+            </Flex>
           )}
-        </Flex>
-        {!compact && (
           <Flex align="center" gap={2}>
-            <Text color="text.dark">from</Text>
+            <Text color="text.dark">to</Text>
             <ExplorerLink
               showCopyOnHover
               textVariant={compact ? "body2" : "body1"}
-              type={getAddressType(data.from)}
-              value={data.from}
+              type={getAddressType(data.to)}
+              value={data.to}
             />
           </Flex>
-        )}
-        <Flex align="center" gap={2}>
-          <Text color="text.dark">to</Text>
-          <ExplorerLink
-            showCopyOnHover
-            textVariant={compact ? "body2" : "body1"}
-            type={getAddressType(data.to)}
-            value={data.to}
-          />
-        </Flex>
-      </DecodeMessageHeader>
-      <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
-        <DecodeMessageRow title="Sender">
-          <ExplorerLink
-            maxWidth="full"
-            showCopyOnHover
-            textFormat="normal"
-            type={getAddressType(data.from)}
-            value={data.from}
-            wordBreak="break-word"
-          />
-        </DecodeMessageRow>
-        <DecodeMessageRow title="Receiver">
-          <ExplorerLink
-            maxWidth="full"
-            showCopyOnHover
-            textFormat="normal"
-            type={getAddressType(data.to)}
-            value={data.to}
-            wordBreak="break-word"
-          />
-        </DecodeMessageRow>
-        <DecodeMessageRow title="Amount">
-          <CoinsComponent coins={data.coins} />
-        </DecodeMessageRow>
-      </DecodeMessageBody>
-    </Flex>
-  );
-};
+        </DecodeMessageHeader>
+        <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
+          <DecodeMessageRow title="Sender">
+            <ExplorerLink
+              maxWidth="full"
+              showCopyOnHover
+              textFormat="normal"
+              type={getAddressType(data.from)}
+              value={data.from}
+              wordBreak="break-word"
+            />
+          </DecodeMessageRow>
+          <DecodeMessageRow title="Receiver">
+            <ExplorerLink
+              maxWidth="full"
+              showCopyOnHover
+              textFormat="normal"
+              type={getAddressType(data.to)}
+              value={data.to}
+              wordBreak="break-word"
+            />
+          </DecodeMessageRow>
+          <DecodeMessageRow title="Amount">
+            <CoinsComponent coins={data.coins} />
+          </DecodeMessageRow>
+        </DecodeMessageBody>
+      </Flex>
+    );
+  }
+);
