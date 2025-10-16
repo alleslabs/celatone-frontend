@@ -7,6 +7,7 @@ import { Loading } from "lib/components/Loading";
 import { useAssetInfos } from "lib/services/assetService";
 import { useEvmParams } from "lib/services/evm";
 import { useEvmVerifyInfos } from "lib/services/verification/evm";
+import { isHex20Bytes } from "lib/utils/validate";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -57,9 +58,14 @@ export const EvmInternalTransactionsTable = ({
   const isMobile = useMobile();
   const { data: evmParams, isLoading: isEvmParamsLoading } = useEvmParams();
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
-  const { data: evmVerifyInfos } = useEvmVerifyInfos(
-    internalTxs.map((tx) => tx.to)
-  );
+
+  // Collect and filter valid addresses from both 'from' and 'to' fields
+  const validAddresses = useMemo(() => {
+    const addresses = internalTxs.flatMap((tx) => [tx.from, tx.to]);
+    return Array.from(new Set(addresses.filter(isHex20Bytes)));
+  }, [internalTxs]);
+
+  const { data: evmVerifyInfos } = useEvmVerifyInfos(validAddresses);
 
   // Calculate nesting levels for all transactions
   const nestingLevels = useMemo(
@@ -70,13 +76,19 @@ export const EvmInternalTransactionsTable = ({
   const { inView, ref } = useInView({ threshold: 0 });
 
   useEffect(() => {
-    if (inView && !disableInfiniteLoad && internalTxs.length < totalCount) {
+    if (
+      inView &&
+      !disableInfiniteLoad &&
+      !isFetchingNextPage &&
+      internalTxs.length < totalCount
+    ) {
       fetchNextPage();
     }
   }, [
     inView,
     disableInfiniteLoad,
     fetchNextPage,
+    isFetchingNextPage,
     internalTxs.length,
     totalCount,
   ]);
