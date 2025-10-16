@@ -9,27 +9,27 @@ import { useAssetInfos } from "lib/services/assetService";
 import { coinToTokenWithValue } from "lib/utils";
 import { useState } from "react";
 
-import type { TxMsgData } from "../tx-message";
+import type { TxMsgData } from "../../tx-message";
 
-import { ChainBadge } from "../ChainBadge";
-import { CoinsComponent } from "../tx-message/msg-receipts/CoinsComponent";
-import { DecodeMessageBody } from "./decode-message-body";
-import { DecodeMessageHeader } from "./decode-message-header";
-import { DecodeMessageRow } from "./decode-message-row";
+import { ChainBadge } from "../../ChainBadge";
+import { CoinsComponent } from "../../tx-message/msg-receipts/CoinsComponent";
+import { DecodeMessageBody } from "../decode-message-body";
+import { DecodeMessageHeader } from "../decode-message-header";
+import { DecodeMessageRow } from "../decode-message-row";
 
-interface DecodeMessageOpFinalizeWithdrawProps extends TxMsgData {
+interface DecodeMessageOpDepositProps extends TxMsgData {
   decodedMessage: DecodedMessage & {
-    action: "op_finalize_withdraw";
+    action: "op_deposit";
   };
 }
 
-export const DecodeMessageOpFinalizeWithdraw = ({
+export const DecodeMessageOpDeposit = ({
   compact,
   decodedMessage,
   log,
   msgBody,
   msgCount,
-}: DecodeMessageOpFinalizeWithdrawProps) => {
+}: DecodeMessageOpDepositProps) => {
   const isSingleMsg = msgCount === 1;
   const { chainId } = useCurrentChain();
   const [expand, setExpand] = useState(!!isSingleMsg);
@@ -47,15 +47,15 @@ export const DecodeMessageOpFinalizeWithdraw = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="OP Withdraw"
+        label="Bridge"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
         <TokenImageWithAmount token={token} />
         <Flex align="center" gap={2}>
-          <Text color="text.dark">from</Text>
-          <ChainBadge chainId={data.srcChainId} />
+          <Text color="text.dark">to</Text>
+          <ChainBadge chainId={data.dstChainId} />
         </Flex>
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
@@ -63,11 +63,10 @@ export const DecodeMessageOpFinalizeWithdraw = ({
           <Text>{data.bridgeId}</Text>
         </DecodeMessageRow>
         <DecodeMessageRow title="Source chain">
-          <ChainBadge chainId={data.srcChainId} />
+          <ChainBadge chainId={chainId} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Sender">
           <ExplorerLink
-            chainId={data.srcChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
@@ -77,10 +76,11 @@ export const DecodeMessageOpFinalizeWithdraw = ({
           />
         </DecodeMessageRow>
         <DecodeMessageRow title="Destination chain">
-          <ChainBadge chainId={chainId} />
+          <ChainBadge chainId={data.dstChainId} />
         </DecodeMessageRow>
         <DecodeMessageRow title="Receiver">
           <ExplorerLink
+            chainId={data.dstChainId}
             maxWidth="full"
             showCopyOnHover
             textFormat="normal"
