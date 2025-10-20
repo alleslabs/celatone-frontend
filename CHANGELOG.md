@@ -37,6 +37,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Features
+
+- [#1480](https://github.com/alleslabs/celatone-frontend/pull/1480) Add EVM internal transactions from rollytics
+
+### Improvements
+
+- [#1483](https://github.com/alleslabs/celatone-frontend/pull/1483) Align connected wallet logo with widget
+
+### Bug fixes
+
 ## v1.15.0
 
 ### Features
