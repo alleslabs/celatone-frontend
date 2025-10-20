@@ -13,12 +13,11 @@ import {
 } from "@chakra-ui/react";
 import { useEvmConfig, useMoveConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import { DecodeMessage } from "lib/components/decode-message";
+import { DecodeMessage } from "lib/components/decode-message/cosmos-message";
 import { CustomIcon } from "lib/components/icon";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
-import { TxMessage } from "../../../components/tx-message";
 import { BalanceChanges } from "./balance-changes";
 import { EvmRelatedTxSection } from "./evm-related-tx-section";
 
@@ -102,26 +101,19 @@ export const MessageSection = ({
             <>
               {messages
                 .slice(0, visibleCount)
-                .map((msg, idx) =>
-                  decodedTx.messages[idx] ? (
-                    <DecodeMessage
-                      key={JSON.stringify(msg) + idx.toString()}
-                      compact={false}
-                      decodedMessage={decodedTx.messages[idx].decodedMessage}
-                      log={logs[idx]}
-                      metadata={decodedTx.metadata}
-                      msgBody={msg}
-                      msgCount={messages.length}
-                    />
-                  ) : (
-                    <TxMessage
-                      key={JSON.stringify(msg) + idx.toString()}
-                      compact={false}
-                      log={logs[idx]}
-                      msgBody={msg}
-                      msgCount={messages.length}
-                    />
-                  )
+                .map(
+                  (msg, idx) =>
+                    decodedTx.messages[idx] && (
+                      <DecodeMessage
+                        key={JSON.stringify(msg) + idx.toString()}
+                        compact={false}
+                        decodedMessage={decodedTx.messages[idx].decodedMessage}
+                        log={logs[idx]}
+                        metadata={decodedTx.metadata}
+                        msgBody={msg}
+                        msgCount={messages.length}
+                      />
+                    )
                 )}
               {visibleCount < messages.length && (
                 <Flex align="center" justify="center" mt={4} ref={ref}>

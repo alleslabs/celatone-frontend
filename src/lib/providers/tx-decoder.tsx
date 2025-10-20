@@ -3,6 +3,7 @@ import type { Option } from "lib/types";
 import { TxDecoder } from "@initia/tx-decoder";
 import { useCelatoneApp } from "lib/app-provider";
 import { INITIA_REGISTRY_URL, INITIA_TESTNET_REGISTRY_URL } from "lib/data";
+import { getArchivalEndpoint } from "lib/services/utils";
 import { createContext, useContext, useMemo } from "react";
 
 interface TxDecoderContextValue {
@@ -43,7 +44,7 @@ export const TxDecoderProvider = ({
           network_type === "mainnet"
             ? INITIA_REGISTRY_URL
             : INITIA_TESTNET_REGISTRY_URL,
-        restUrl: restEndpoint,
+        restUrl: getArchivalEndpoint(restEndpoint, null) ?? restEndpoint,
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [network_type, restEndpoint, JSON.stringify(evm)]

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run type-check:*)",
+      "Bash(npm run type-check:balance-changes:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx --yes tsc:*)",
+      "Bash(find node_modules/@initia/tx-decoder -name \"*.d.ts\" -exec grep -l \"native_transfer\\|DecodedEthTransferCall\\|DecodedNativeTransferCall\" {} ;)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

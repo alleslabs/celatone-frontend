@@ -1,28 +1,31 @@
 import type { Metadata } from "@initia/tx-decoder";
+import type { LinkType } from "lib/components/ExplorerLink";
 
 import { Divider, Flex, Stack, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
-import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 
+import { BalanceChangeEvmNft } from "./balance-changes-evm-nft";
 import { BalanceChangeNft } from "./balance-changes-nft";
 import { BalanceChangesToken } from "./balance-changes-token";
 
 interface BalanceChangesMobileCardProps {
   address: string;
+  addressType: Exclude<LinkType, "function_name">;
   ftChangeEntries: [string, string][];
   metadata?: Metadata;
-  objectChangeEntries: [string, string][];
+  nftChangeEntries?: [string, [string, string][]][];
+  objectChangeEntries?: [string, string][];
 }
 
 export const BalanceChangesMobileCard = ({
   address,
+  addressType,
   ftChangeEntries,
   metadata,
-  objectChangeEntries,
+  nftChangeEntries = [],
+  objectChangeEntries = [],
 }: BalanceChangesMobileCardProps) => {
-  const getAddressType = useGetAddressType();
-
   return (
     <Stack bg="gray.900" p={3} rounded={8} spacing={3}>
       <Flex align="center" gap={2}>
@@ -32,7 +35,7 @@ export const BalanceChangesMobileCard = ({
         <ExplorerLink
           showCopyOnHover
           textVariant="body2"
-          type={getAddressType(address)}
+          type={addressType}
           value={address}
         />
       </Flex>
@@ -57,6 +60,19 @@ export const BalanceChangesMobileCard = ({
               metadata={metadata}
             />
           ))}
+        {metadata &&
+          metadata.type === "evm" &&
+          nftChangeEntries.map(([contractAddress, tokenIdChanges]) =>
+            tokenIdChanges.map(([tokenId, change]) => (
+              <BalanceChangeEvmNft
+                key={`${address}-${contractAddress}-${tokenId}`}
+                change={Number(change)}
+                contractAddress={contractAddress}
+                metadata={metadata}
+                tokenId={tokenId}
+              />
+            ))
+          )}
       </Stack>
     </Stack>
   );

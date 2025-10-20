@@ -55,16 +55,30 @@ export const useEvmTxsByBlockHeightSequencer = (
       ]);
 
       const blockTimestamp = blockDataJsonRpc.block.timestamp;
+
+      // Create hash maps for O(1) lookup
+      const rawReceiptsMap = new Map(
+        blockDataJsonRpc.rawBlockReceipts.map((receipt, index) => [
+          blockDataJsonRpc.blockReceipts[index].transactionHash,
+          receipt,
+        ])
+      );
+
       const txsWithRpcData = {
         ...txs,
         txs: txs.txs.map((tx, index) => {
-          const rpcTx = blockDataJsonRpc?.block.transactions[index];
+          const rpcTx = blockDataJsonRpc.block.transactions[index];
+          const rawTx = blockDataJsonRpc.block.rawTransactions[index];
+          // Receipt will always exist for transactions in the block
+          const rawTxReceipt = rawReceiptsMap.get(tx.transactionHash)!;
 
           return {
             ...tx,
-            input: rpcTx?.input,
+            input: rpcTx.input,
+            rawTx,
+            rawTxReceipt,
             timestamp: blockTimestamp,
-            value: rpcTx?.value,
+            value: rpcTx.value,
           };
         }),
       };
@@ -114,10 +128,14 @@ export const useEvmTxs = (limit: number = 10) => {
         txs: txs.txs.map((tx, index) => {
           const timestamp = blockDataJsonRpc[index].block.timestamp;
           const rpcTx = txsDataJsonRpc[index].tx;
+          const rawTx = txsDataJsonRpc[index].rawTx;
+          const rawTxReceipt = txsDataJsonRpc[index].rawTxReceipt;
 
           return {
             ...tx,
             input: rpcTx.input,
+            rawTx,
+            rawTxReceipt,
             timestamp,
             value: rpcTx.value,
           };
@@ -191,6 +209,8 @@ export const useEvmTxsByAccountAddressSequencer = (
 
         const timestamp = blockDataJsonRpc[0].block.timestamp;
         const rpcTx = txsDataJsonRpc[0].tx;
+        const rawTx = txsDataJsonRpc[0].rawTx;
+        const rawTxReceipt = txsDataJsonRpc[0].rawTxReceipt;
 
         return {
           pagination: {
@@ -201,6 +221,8 @@ export const useEvmTxsByAccountAddressSequencer = (
             {
               ...tx,
               input: rpcTx.input,
+              rawTx,
+              rawTxReceipt,
               timestamp,
               value: rpcTx.value,
             },
@@ -241,10 +263,14 @@ export const useEvmTxsByAccountAddressSequencer = (
         txs: txs.txs.map((tx, index) => {
           const timestamp = blockDataJsonRpc[index].block.timestamp;
           const rpcTx = txsDataJsonRpc[index].tx;
+          const rawTx = txsDataJsonRpc[index].rawTx;
+          const rawTxReceipt = txsDataJsonRpc[index].rawTxReceipt;
 
           return {
             ...tx,
             input: rpcTx.input,
+            rawTx,
+            rawTxReceipt,
             timestamp,
             value: rpcTx.value,
           };

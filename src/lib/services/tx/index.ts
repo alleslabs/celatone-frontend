@@ -46,6 +46,8 @@ import { useCallback } from "react";
 import type {
   AccountTxsResponse,
   BlockTxsResponse,
+  RawTxJsonRpc,
+  RawTxReceiptJsonRpc,
   RawTxResponse,
   TxData,
   TxsResponseWithTxResponse,
@@ -97,6 +99,24 @@ export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
         ? txDecoder.decodeCosmosEvmTransaction(rawTxResponse)
         : txDecoder.decodeCosmosTransaction(rawTxResponse),
     enabled: !!rawTxResponse,
+  });
+};
+
+export const useEvmTxDecoder = (
+  payload: Option<{
+    tx: RawTxJsonRpc;
+    txReceipt: RawTxReceiptJsonRpc;
+  }>
+) => {
+  const { txDecoder } = useTxDecoderContext();
+
+  return useQuery({
+    queryKey: [CELATONE_QUERY_KEYS.EVM_TX_DECODER, payload],
+    queryFn: async () => {
+      if (!payload) throw new Error("payload is undefined (useEvmTxDecoder)");
+      return txDecoder.decodeEthereumTransaction(payload);
+    },
+    enabled: !!payload,
   });
 };
 
@@ -755,6 +775,7 @@ export const useEvmTxHashesByCosmosTxHashes = (
 
 export const useEvmTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
   const evm = useEvmConfig({ shouldRedirect: false });
+  const { txDecoder } = useTxDecoderContext();
 
   return useQuery({
     queryKey: [
@@ -766,7 +787,17 @@ export const useEvmTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useEvmTxDataJsonRpc)");
 
-      return getTxDataJsonRpc(evm.jsonRpc, evmTxHash);
+      const txDataJsonRpc = await getTxDataJsonRpc(evm.jsonRpc, evmTxHash);
+
+      const decodedTx = await txDecoder.decodeEthereumTransaction({
+        tx: txDataJsonRpc.rawTx,
+        txReceipt: txDataJsonRpc.rawTxReceipt,
+      });
+
+      return {
+        ...txDataJsonRpc,
+        decodedTx,
+      };
     },
     enabled: enabled && evm.enabled && !!evm.jsonRpc,
     refetchOnWindowFocus: false,
