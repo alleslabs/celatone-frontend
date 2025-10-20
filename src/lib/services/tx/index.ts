@@ -46,6 +46,8 @@ import { useCallback } from "react";
 import type {
   AccountTxsResponse,
   BlockTxsResponse,
+  RawTxJsonRpc,
+  RawTxReceiptJsonRpc,
   RawTxResponse,
   TxData,
   TxsResponseWithTxResponse,
@@ -97,6 +99,24 @@ export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
         ? txDecoder.decodeCosmosEvmTransaction(rawTxResponse)
         : txDecoder.decodeCosmosTransaction(rawTxResponse),
     enabled: !!rawTxResponse,
+  });
+};
+
+export const useEvmTxDecoder = (
+  payload: Option<{
+    tx: RawTxJsonRpc;
+    txReceipt: RawTxReceiptJsonRpc;
+  }>
+) => {
+  const { txDecoder } = useTxDecoderContext();
+
+  return useQuery({
+    queryKey: [CELATONE_QUERY_KEYS.EVM_TX_DECODER, payload],
+    queryFn: async () => {
+      if (!payload) throw new Error("payload is undefined (useEvmTxDecoder)");
+      return txDecoder.decodeEthereumTransaction(payload);
+    },
+    enabled: !!payload,
   });
 };
 

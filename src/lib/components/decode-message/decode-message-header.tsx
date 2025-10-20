@@ -77,7 +77,7 @@ export const DecodeMessageHeader = ({
             ? "100%"
             : "auto"
       }
-      zIndex={isHoverOverflowContent ? 1 : "auto"}
+      zIndex={isHoverOverflowContent ? 10 : "auto"}
       onClick={() => {
         if (!isInteractive) return;
         track(AmpEvent.USE_TX_MSG_EXPAND, {

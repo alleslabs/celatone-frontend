@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run type-check:*)",
+      "Bash(npm run type-check:balance-changes:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx --yes tsc:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

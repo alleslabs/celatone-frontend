@@ -1,8 +1,6 @@
-import type {
-  DecodedMessage,
-  DecodedNotSupportedCall,
-} from "@initia/tx-decoder";
-import type { TxMsgData } from "lib/components/tx-message";
+import type { Log } from "@cosmjs/stargate/build/logs";
+import type { DecodedNotSupportedCall } from "@initia/tx-decoder";
+import type { Option } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -12,19 +10,18 @@ import { DecodeMessageBody } from "../decode-message-body";
 import { DecodeMessageHeader } from "../decode-message-header";
 import { DecodeMessageRow } from "../decode-message-row";
 
-interface DecodeEvmMessageNotSupportedProps extends TxMsgData {
-  decodedMessage: DecodedMessage;
+interface DecodeEvmMessageNotSupportedProps {
+  compact: boolean;
   decodedTransaction: DecodedNotSupportedCall;
+  log: Option<Log>;
+  msgCount: number;
 }
 
 export const DecodeEvmMessageNotSupportedHeader = ({
   compact,
-  decodedMessage,
   decodedTransaction,
-  msgBody,
   msgCount,
 }: DecodeEvmMessageNotSupportedProps) => {
-  const { isIbc, isOp } = decodedMessage;
   const {
     data: { from, input, to },
   } = decodedTransaction;
@@ -35,12 +32,12 @@ export const DecodeEvmMessageNotSupportedHeader = ({
         compact={compact}
         gap={2}
         isExpand
-        isIbc={isIbc}
-        isOpinit={isOp}
+        isIbc={false}
+        isOpinit={false}
         isSingleMsg={msgCount === 1}
         label={input.slice(0, 10)}
         msgCount={msgCount}
-        type={msgBody["@type"]}
+        type={decodedTransaction.action}
       >
         {to && (
           <Flex align="center" gap={2}>
@@ -84,6 +81,7 @@ export const DecodeEvmMessageNotSupportedBody = ({
       isExpand
       log={undefined}
       sx={{
+        pb: 1,
         pl: 0,
       }}
     >

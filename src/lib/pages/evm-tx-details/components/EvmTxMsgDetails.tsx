@@ -24,6 +24,7 @@ import { EvmInputData } from "lib/components/EvmInputData";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
 import { EvmInternalTransactionsTable } from "lib/components/table/evm-internal-transactions";
+import { BalanceChanges } from "lib/pages/tx-details/components/balance-changes";
 import { useEvmInternalTxsByTxHashSequencer } from "lib/services/evm-internal-txs";
 import { useEvmVerifyInfos } from "lib/services/verification/evm";
 import { type HexAddr20, type Option, zHexAddr } from "lib/types";
@@ -31,7 +32,6 @@ import plur from "plur";
 import { useMemo } from "react";
 
 import { EvmEventBox } from "./evm-event-box";
-// import { EvmTxMsgDetailsBody } from "./EvmTxMsgDetailsBody";
 
 interface EvmTxMsgDetailsProps {
   cosmosTxData: TxData;
@@ -82,10 +82,8 @@ export const EvmTxMsgDetails = ({
             <DecodeCosmosEvmMessageHeader
               key={JSON.stringify(msg) + idx.toString()}
               compact={false}
-              decodedMessage={decodedTx.messages[idx].decodedMessage}
               evmDecodedMessage={evmDecodedTx}
               log={logs[idx]}
-              msgBody={msg}
               msgCount={messages.length}
             />
           )
@@ -129,10 +127,8 @@ export const EvmTxMsgDetails = ({
                     <DecodeCosmosEvmMessageBody
                       key={JSON.stringify(msg) + idx.toString()}
                       compact={false}
-                      decodedMessage={decodedTx.messages[idx].decodedMessage}
                       evmDecodedMessage={evmDecodedTx}
                       log={logs[idx]}
-                      msgBody={msg}
                       msgCount={messages.length}
                     />
                   )
@@ -181,7 +177,12 @@ export const EvmTxMsgDetails = ({
               totalCount={countTotalEvmInternalTxs ?? 0}
             />
           </TabPanel>
-          <TabPanel>Balance changes</TabPanel>
+          <TabPanel>
+            <BalanceChanges
+              metadata={evmDecodedTx.metadata}
+              totalBalanceChanges={evmDecodedTx.totalBalanceChanges}
+            />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </Stack>
