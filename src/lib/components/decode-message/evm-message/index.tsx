@@ -189,7 +189,6 @@ export const DecodeCosmosEvmMessageHeader = ({
     );
   }
 
-  // TODO: Where is this example
   if (decodedTransaction.action === "eth_transfer") {
     return (
       <DecodeEvmMessageEthTransferHeader
@@ -206,6 +205,16 @@ export const DecodeCosmosEvmMessageHeader = ({
         {...props}
       />
     );
+  }
+
+  // TODO: Add support for cosmos_mirror action
+  if (decodedTransaction.action === "cosmos_mirror") {
+    return null;
+  }
+
+  // TODO: Add support for kami721_public_mint action
+  if (decodedTransaction.action === "kami721_public_mint") {
+    return null;
   }
 
   return null;
@@ -296,6 +305,16 @@ export const DecodeCosmosEvmMessageBody = ({
         {...props}
       />
     );
+  }
+
+  // TODO: Add support for cosmos_mirror action
+  if (decodedTransaction.action === "cosmos_mirror") {
+    return null;
+  }
+
+  // TODO: Add support for kami721_public_mint action
+  if (decodedTransaction.action === "kami721_public_mint") {
+    return null;
   }
 
   return null;

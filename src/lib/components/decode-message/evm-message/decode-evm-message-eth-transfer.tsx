@@ -5,6 +5,7 @@ import type { Option } from "lib/types";
 import { Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TokenImageWithAmount } from "lib/components/token/TokenImageWithAmount";
+import { CoinsComponent } from "lib/components/tx-message/msg-receipts/CoinsComponent";
 import { useAssetInfos } from "lib/services/assetService";
 import { coinToTokenWithValue } from "lib/utils";
 
@@ -24,15 +25,10 @@ export const DecodeEvmMessageEthTransferHeader = ({
   decodedTransaction,
   msgCount,
 }: DecodeEvmMessageEthTransferProps) => {
-  const { amount, from, to } = decodedTransaction.data;
+  const { amount, denom, from, to } = decodedTransaction.data;
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
 
-  // TODO: Confirm is it always this address for ETH transfers
-  const token = coinToTokenWithValue(
-    "E1Ff7038eAAAF027031688E1535a055B2Bac2546",
-    amount,
-    assetInfos
-  );
+  const token = coinToTokenWithValue(denom, amount, assetInfos);
 
   return (
     <Flex direction="column" w="100%">
@@ -63,11 +59,7 @@ export const DecodeEvmMessageEthTransferBody = ({
   compact,
   decodedTransaction,
 }: DecodeEvmMessageEthTransferProps) => {
-  const { amount, from, to } = decodedTransaction.data;
-  const { data: assetInfos } = useAssetInfos({ withPrices: false });
-
-  // ETH transfers don't have a denom field - they're always native ETH
-  const token = coinToTokenWithValue("ETH", amount, assetInfos);
+  const { amount, denom, from, to } = decodedTransaction.data;
 
   return (
     <DecodeMessageBody
@@ -96,7 +88,7 @@ export const DecodeEvmMessageEthTransferBody = ({
         />
       </DecodeMessageRow>
       <DecodeMessageRow title="Amount">
-        <TokenImageWithAmount token={token} />
+        <CoinsComponent coins={[{ amount, denom }]} />
       </DecodeMessageRow>
     </DecodeMessageBody>
   );

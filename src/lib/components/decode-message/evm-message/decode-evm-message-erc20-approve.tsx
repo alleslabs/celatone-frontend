@@ -6,6 +6,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TokenImageWithAmount } from "lib/components/token/TokenImageWithAmount";
+import { CoinsComponent } from "lib/components/tx-message/msg-receipts/CoinsComponent";
 import { useAssetInfos } from "lib/services/assetService";
 import { coinToTokenWithValue } from "lib/utils";
 
@@ -60,9 +61,6 @@ export const DecodeEvmMessageErc20ApproveBody = ({
   decodedTransaction,
 }: DecodeEvmMessageErc20ApproveProps) => {
   const { amount, contract, denom, from, spender } = decodedTransaction.data;
-  const { data: assetInfos } = useAssetInfos({ withPrices: false });
-
-  const token = coinToTokenWithValue(denom, amount, assetInfos);
 
   return (
     <DecodeMessageBody
@@ -91,7 +89,7 @@ export const DecodeEvmMessageErc20ApproveBody = ({
         />
       </DecodeMessageRow>
       <DecodeMessageRow title="Amount">
-        <TokenImageWithAmount token={token} />
+        <CoinsComponent coins={[{ amount, denom }]} />
       </DecodeMessageRow>
       <DecodeMessageRow title="ERC-20 Contract">
         <ExplorerLink

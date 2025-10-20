@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useEvmConfig, useMoveConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import { DecodeMessage } from "lib/components/decode-message/cosmos-move-message";
+import { DecodeMessage } from "lib/components/decode-message/cosmos-message";
 import { CustomIcon } from "lib/components/icon";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
