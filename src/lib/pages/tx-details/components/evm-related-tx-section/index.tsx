@@ -1,5 +1,6 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
+import { DecodeCosmosEvmMessageHeader } from "lib/components/decode-message/evm-message";
 import { EvmToCell } from "lib/components/evm-to-cell";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -40,7 +41,16 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
         />
       </EvmRelatedField>
       <EvmRelatedField label="Method">
-        <EvmMethodChip txInput={data.tx.input} txTo={data.tx.to} width={36} />
+        {data.decodedTx ? (
+          <DecodeCosmosEvmMessageHeader
+            compact
+            evmDecodedMessage={data.decodedTx}
+            log={undefined}
+            msgCount={1}
+          />
+        ) : (
+          <EvmMethodChip txInput={data.tx.input} txTo={data.tx.to} width={36} />
+        )}
       </EvmRelatedField>
       <EvmRelatedField label="Sender">
         <ExplorerLink

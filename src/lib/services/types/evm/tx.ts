@@ -1,7 +1,7 @@
 import { zHexAddr20, zHexBig, zPagination } from "lib/types";
 import { z } from "zod";
 
-import type { TxJsonRpc } from "../tx";
+import type { RawTxJsonRpc, RawTxReceiptJsonRpc, TxJsonRpc } from "../tx";
 
 import { zTxReceiptJsonRpcLog } from "../tx";
 
@@ -32,6 +32,9 @@ export type EvmTxsResponseSequencer = z.infer<typeof zEvmTxsResponseSequencer>;
 export type EvmTxResponseSequencerWithRpcData =
   EvmTxsResponseSequencer["txs"][number] &
     Pick<TxJsonRpc, "input" | "value"> & {
+      rawTx: RawTxJsonRpc;
+      rawTxReceipt: RawTxReceiptJsonRpc;
+    } & {
       timestamp: Date;
     };
 

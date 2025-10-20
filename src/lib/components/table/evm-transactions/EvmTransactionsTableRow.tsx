@@ -3,9 +3,11 @@ import type { AssetInfos, Option } from "lib/types";
 
 import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
+import { DecodeCosmosEvmMessageHeader } from "lib/components/decode-message/evm-message";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { useEvmTxDecoder } from "lib/services/tx";
 import {
   coinToTokenWithValue,
   dateFromNow,
@@ -34,6 +36,11 @@ export const EvmTransactionsTableRow = ({
   templateColumns,
 }: EvmTransactionsTableRowProps) => {
   const navigate = useInternalNavigate();
+  const { rawTx, rawTxReceipt } = evmTransaction;
+  const { data: decodedTx } = useEvmTxDecoder({
+    tx: rawTx,
+    txReceipt: rawTxReceipt,
+  });
   const { amount, denom } = getEvmAmount({
     evmDenom,
     input: evmTransaction.input,
@@ -81,10 +88,19 @@ export const EvmTransactionsTableRow = ({
         />
       </TableRow>
       <TableRow>
-        <EvmMethodChip
-          txInput={evmTransaction.input}
-          txTo={evmTransaction.to}
-        />
+        {decodedTx ? (
+          <DecodeCosmosEvmMessageHeader
+            compact
+            evmDecodedMessage={decodedTx}
+            log={undefined}
+            msgCount={1}
+          />
+        ) : (
+          <EvmMethodChip
+            txInput={evmTransaction.input}
+            txTo={evmTransaction.to}
+          />
+        )}
       </TableRow>
       <TableRow>
         <ExplorerLink

@@ -1,30 +1,41 @@
 import type { Metadata } from "@initia/tx-decoder";
+import type { LinkType } from "lib/components/ExplorerLink";
 
 import { Divider, Grid, Stack } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
-import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 
+import { BalanceChangeEvmNft } from "./balance-changes-evm-nft";
 import { BalanceChangeNft } from "./balance-changes-nft";
 import { BalanceChangesToken } from "./balance-changes-token";
 
 interface BalanceChangesTableRowProps {
   address: string;
+  addressType: Exclude<LinkType, "function_name">;
   ftChangeEntries: [string, string][];
   metadata?: Metadata;
-  objectChangeEntries: [string, string][];
+  nftChangeEntries?: [string, [string, string][]][];
+  objectChangeEntries?: [string, string][];
   templateColumns: string;
 }
 
 export const BalanceChangesTableRow = ({
   address,
+  addressType,
   ftChangeEntries,
   metadata,
-  objectChangeEntries,
+  nftChangeEntries = [],
+  objectChangeEntries = [],
   templateColumns,
 }: BalanceChangesTableRowProps) => {
-  const getAddressType = useGetAddressType();
+  const totalNftOrObjectCount =
+    metadata?.type === "evm"
+      ? nftChangeEntries.reduce(
+          (acc, [, tokenIdChanges]) => acc + tokenIdChanges.length,
+          0
+        )
+      : objectChangeEntries.length;
 
   return (
     <Grid bg="gray.900" rounded={8} templateColumns={templateColumns}>
@@ -32,7 +43,7 @@ export const BalanceChangesTableRow = ({
         <ExplorerLink
           showCopyOnHover
           textVariant="body2"
-          type={getAddressType(address)}
+          type={addressType}
           value={address}
         />
       </TableRow>
@@ -46,7 +57,7 @@ export const BalanceChangesTableRow = ({
               )}
             </Stack>
           ))}
-          {ftChangeEntries.length > 0 && objectChangeEntries.length > 0 && (
+          {ftChangeEntries.length > 0 && totalNftOrObjectCount > 0 && (
             <Divider borderColor="gray.700" />
           )}
           {metadata &&
@@ -63,6 +74,26 @@ export const BalanceChangesTableRow = ({
                 )}
               </Stack>
             ))}
+          {metadata &&
+            metadata.type === "evm" &&
+            nftChangeEntries.map(([contractAddress, tokenIdChanges]) =>
+              tokenIdChanges.map(([tokenId, change], index) => (
+                <Stack key={`${address}-${contractAddress}-${tokenId}`} gap={3}>
+                  <BalanceChangeEvmNft
+                    change={Number(change)}
+                    contractAddress={contractAddress}
+                    metadata={metadata}
+                    tokenId={tokenId}
+                  />
+                  {index <
+                    nftChangeEntries.reduce(
+                      (acc, [, changes]) => acc + changes.length,
+                      0
+                    ) -
+                      1 && <Divider borderColor="gray.700" />}
+                </Stack>
+              ))
+            )}
         </Stack>
       </TableRow>
     </Grid>

@@ -15,7 +15,7 @@ interface DecodeMessageHeaderProps extends FlexProps {
   isSingleMsg: boolean;
   label: string;
   msgCount: number;
-  onClick: () => void;
+  onClick?: () => void;
   type: string;
 }
 
@@ -41,10 +41,12 @@ export const DecodeMessageHeader = ({
       ? ref.current.scrollWidth > ref.current.clientWidth
       : false;
 
+  const isInteractive = !!onClick;
+
   return (
     <Flex
       _after={
-        compact
+        compact || !isInteractive
           ? {}
           : {
               bg: "gray.700",
@@ -57,7 +59,7 @@ export const DecodeMessageHeader = ({
               w: "99%",
             }
       }
-      _hover={compact ? {} : { backgroundColor: "gray.800" }}
+      _hover={compact || !isInteractive ? {} : { backgroundColor: "gray.800" }}
       align="center"
       background={isHoverOverflowContent ? "gray.800" : "transparent"}
       borderRadius={compact && !isHoverOverflowContent ? "0px" : "8px"}
@@ -75,8 +77,9 @@ export const DecodeMessageHeader = ({
             ? "100%"
             : "auto"
       }
-      zIndex={isHoverOverflowContent ? 1 : "auto"}
+      zIndex={isHoverOverflowContent ? 10 : "auto"}
       onClick={() => {
+        if (!isInteractive) return;
         track(AmpEvent.USE_TX_MSG_EXPAND, {
           action: isExpand ? "collapse" : "expand",
           ibc: isIbc,
@@ -119,7 +122,7 @@ export const DecodeMessageHeader = ({
           </Tag>
         )}
       </Flex>
-      {!compact && (
+      {!compact && isInteractive && (
         <CustomIcon
           boxSize={4}
           color="gray.600"
