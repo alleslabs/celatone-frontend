@@ -76,24 +76,30 @@ export const BalanceChangesTableRow = ({
             ))}
           {metadata &&
             metadata.type === "evm" &&
-            nftChangeEntries.map(([contractAddress, tokenIdChanges]) =>
-              tokenIdChanges.map(([tokenId, change], index) => (
-                <Stack key={`${address}-${contractAddress}-${tokenId}`} gap={3}>
-                  <BalanceChangeEvmNft
-                    change={Number(change)}
-                    contractAddress={contractAddress}
-                    metadata={metadata}
-                    tokenId={tokenId}
-                  />
-                  {index <
-                    nftChangeEntries.reduce(
-                      (acc, [, changes]) => acc + changes.length,
-                      0
-                    ) -
-                      1 && <Divider borderColor="gray.700" />}
-                </Stack>
-              ))
-            )}
+            (() => {
+              let globalIndex = 0;
+              return nftChangeEntries.map(([contractAddress, tokenIdChanges]) =>
+                tokenIdChanges.map(([tokenId, change]) => {
+                  const currentIndex = globalIndex++;
+                  return (
+                    <Stack
+                      key={`${address}-${contractAddress}-${tokenId}`}
+                      gap={3}
+                    >
+                      <BalanceChangeEvmNft
+                        change={Number(change)}
+                        contractAddress={contractAddress}
+                        metadata={metadata}
+                        tokenId={tokenId}
+                      />
+                      {currentIndex < totalNftOrObjectCount - 1 && (
+                        <Divider borderColor="gray.700" />
+                      )}
+                    </Stack>
+                  );
+                })
+              );
+            })()}
         </Stack>
       </TableRow>
     </Grid>

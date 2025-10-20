@@ -41,7 +41,7 @@ export const DecodeMessageSend = memo(
             decodedMessage={decodedMessage}
           />
         </DecodeMessageHeader>
-        <DecodeMessageBody compact={compact} log={log}>
+        <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
           <DecodeMessageSendBody decodedMessage={decodedMessage} />
         </DecodeMessageBody>
       </Flex>

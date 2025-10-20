@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1481](https://github.com/alleslabs/celatone-frontend/pull/1481) Add tx decoder decode messages for EVM and Cosmos
 - [#1480](https://github.com/alleslabs/celatone-frontend/pull/1480) Add EVM internal transactions from rollytics
 - [#1475](https://github.com/alleslabs/celatone-frontend/pull/1475) Add indexer rollytics support to custom rollups
 - [#1458](https://github.com/alleslabs/celatone-frontend/pull/1458) Add decoded tx in tx details execute section
@@ -61,7 +62,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1481](https://github.com/alleslabs/celatone-frontend/pull/1481) Improve Move tx decoder code structure and performance
 - [#1474](https://github.com/alleslabs/celatone-frontend/pull/1474) Improve ExplorerLink component background highlight on hover
 - [#1471](https://github.com/alleslabs/celatone-frontend/pull/1471) Add load more on scroll instead of load all at once
 - [#1470](https://github.com/alleslabs/celatone-frontend/pull/1470) fix spelling issues

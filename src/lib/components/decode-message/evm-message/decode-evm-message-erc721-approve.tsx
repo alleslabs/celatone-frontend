@@ -76,9 +76,9 @@ export const DecodeEvmMessageErc721ApproveHeader = ({
           </Flex>
         )}
         <Text color="text.dark">by</Text>
-        <ExplorerLink showCopyOnHover type="evm_tx_hash" value={from} />
+        <ExplorerLink showCopyOnHover type="user_address" value={from} />
         <Text color="text.dark">to</Text>
-        <ExplorerLink showCopyOnHover type="evm_tx_hash" value={spender} />
+        <ExplorerLink showCopyOnHover type="user_address" value={spender} />
       </DecodeMessageHeader>
     </Flex>
   );
@@ -109,7 +109,6 @@ export const DecodeEvmMessageErc721ApproveBody = ({
       isExpand
       log={undefined}
       sx={{
-        pb: 1,
         pl: 0,
       }}
     >
@@ -117,7 +116,7 @@ export const DecodeEvmMessageErc721ApproveBody = ({
         <ExplorerLink
           showCopyOnHover
           textFormat="normal"
-          type="evm_tx_hash"
+          type="user_address"
           value={from}
         />
       </DecodeMessageRow>
@@ -125,7 +124,7 @@ export const DecodeEvmMessageErc721ApproveBody = ({
         <ExplorerLink
           showCopyOnHover
           textFormat="normal"
-          type="evm_tx_hash"
+          type="user_address"
           value={spender}
         />
       </DecodeMessageRow>

@@ -53,15 +53,13 @@ export const CosmosTxs = ({
               typeof emptyMessage === "string" ? (
                 <EmptyState
                   imageVariant="empty"
-                  message={
-                    emptyMessage ?? "There are no internal transactions."
-                  }
+                  message={emptyMessage ?? "There are no transactions"}
                 />
               ) : (
                 (emptyMessage ?? (
                   <EmptyState
                     imageVariant="empty"
-                    message="There are no internal transactions."
+                    message="There are no transactions."
                   />
                 ))
               )

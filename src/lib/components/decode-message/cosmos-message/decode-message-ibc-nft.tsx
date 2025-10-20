@@ -45,14 +45,8 @@ export const DecodeMessageIbcNft = ({
   const nftObject = {
     collectionAddress: zAddr.optional().parse(nftMetadata?.collectionAddress),
     nftAddress: zHexAddr32.parse(formatAddresses(data.tokenAddress).hex),
-    tokenId:
-      nftMetadata?.tokenId && typeof nftMetadata.tokenId === "string"
-        ? nftMetadata.tokenId
-        : undefined,
-    uri:
-      nftMetadata?.tokenUri && typeof nftMetadata.tokenUri === "string"
-        ? nftMetadata.tokenUri
-        : undefined,
+    tokenId: nftMetadata?.tokenId,
+    uri: nftMetadata?.tokenUri,
   };
   const { data: nft } = useNftMetadata(nftObject);
   const nftImage = useNftGlyphImage(nftObject);

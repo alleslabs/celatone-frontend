@@ -40,7 +40,10 @@ export const DecodeMessageDelegate = memo(
     const { data: assetInfos } = useAssetInfos({ withPrices: false });
     const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
 
-    const isLocked = msgBody["@type"] === "/initia.move.v1.MsgExecute";
+    const isLocked = [
+      "/initia.move.v1.MsgExecute",
+      "/initia.move.v1.MsgExecuteJSON",
+    ].includes(msgBody["@type"]);
     const parsedReleaseTimestamp = parseUnixToDateOpt(data.releaseTimestamp);
 
     return (

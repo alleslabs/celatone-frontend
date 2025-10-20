@@ -44,10 +44,13 @@ export const DecodeEvmMessageNotSupportedHeader = ({
             <Text color="text.dark">on</Text>
             <ExplorerLink
               leftIcon={
-                <CustomIcon color="primary.main" name="contract-address" />
+                <CustomIcon
+                  boxSize={4}
+                  color="primary.main"
+                  name="contract-address"
+                />
               }
               showCopyOnHover
-              textVariant={compact ? "body2" : "body1"}
               type="evm_contract_address"
               value={to}
             />
@@ -55,12 +58,7 @@ export const DecodeEvmMessageNotSupportedHeader = ({
         )}
         <Flex align="center" gap={2}>
           <Text color="text.dark">by</Text>
-          <ExplorerLink
-            showCopyOnHover
-            textVariant={compact ? "body2" : "body1"}
-            type="evm_tx_hash"
-            value={from}
-          />
+          <ExplorerLink showCopyOnHover type="user_address" value={from} />
         </Flex>
       </DecodeMessageHeader>
     </Flex>
@@ -81,26 +79,23 @@ export const DecodeEvmMessageNotSupportedBody = ({
       isExpand
       log={undefined}
       sx={{
-        pb: 1,
         pl: 0,
       }}
     >
       <DecodeMessageRow title="From">
-        <ExplorerLink
-          showCopyOnHover
-          textVariant={compact ? "body2" : "body1"}
-          type="evm_tx_hash"
-          value={from}
-        />
+        <ExplorerLink showCopyOnHover type="user_address" value={from} />
       </DecodeMessageRow>
       {to && (
         <DecodeMessageRow title="To contract">
           <ExplorerLink
             leftIcon={
-              <CustomIcon color="primary.main" name="contract-address" />
+              <CustomIcon
+                boxSize={4}
+                color="primary.main"
+                name="contract-address"
+              />
             }
             showCopyOnHover
-            textVariant={compact ? "body2" : "body1"}
             type="evm_contract_address"
             value={to}
           />

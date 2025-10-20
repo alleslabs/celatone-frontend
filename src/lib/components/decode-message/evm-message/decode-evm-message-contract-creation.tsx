@@ -43,7 +43,11 @@ export const DecodeEvmMessageContractCreationHeader = ({
         {isSingleContract && contractAddresses.length > 0 && (
           <ExplorerLink
             leftIcon={
-              <CustomIcon color="primary.main" name="contract-address" />
+              <CustomIcon
+                boxSize={4}
+                color="primary.main"
+                name="contract-address"
+              />
             }
             showCopyOnHover
             type="evm_contract_address"
@@ -56,7 +60,7 @@ export const DecodeEvmMessageContractCreationHeader = ({
           </Text>
         )}
         <Text color="text.dark">by</Text>
-        <ExplorerLink showCopyOnHover type="evm_tx_hash" value={from} />
+        <ExplorerLink showCopyOnHover type="user_address" value={from} />
       </DecodeMessageHeader>
     </Flex>
   );
@@ -76,7 +80,6 @@ export const DecodeEvmMessageContractCreationBody = ({
       isExpand
       log={undefined}
       sx={{
-        pb: 1,
         pl: 0,
       }}
     >
@@ -84,7 +87,7 @@ export const DecodeEvmMessageContractCreationBody = ({
         <ExplorerLink
           showCopyOnHover
           textFormat="normal"
-          type="evm_tx_hash"
+          type="user_address"
           value={from}
         />
       </DecodeMessageRow>
@@ -92,7 +95,11 @@ export const DecodeEvmMessageContractCreationBody = ({
         <DecodeMessageRow title="Created Contract">
           <ExplorerLink
             leftIcon={
-              <CustomIcon color="primary.main" name="contract-address" />
+              <CustomIcon
+                boxSize={4}
+                color="primary.main"
+                name="contract-address"
+              />
             }
             showCopyOnHover
             textFormat="normal"
@@ -107,7 +114,11 @@ export const DecodeEvmMessageContractCreationBody = ({
               <ExplorerLink
                 key={address}
                 leftIcon={
-                  <CustomIcon color="primary.main" name="contract-address" />
+                  <CustomIcon
+                    boxSize={4}
+                    color="primary.main"
+                    name="contract-address"
+                  />
                 }
                 showCopyOnHover
                 textFormat="normal"
