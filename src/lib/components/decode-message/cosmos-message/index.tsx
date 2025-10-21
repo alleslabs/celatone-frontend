@@ -135,6 +135,21 @@ const DecodeMessageWithdrawStableSwap = lazy(() =>
     default: m.DecodeMessageWithdrawStableSwap,
   }))
 );
+const DecodeMessageIbcNftEvm = lazy(() =>
+  import("./decode-message-ibc-nft-evm").then((m) => ({
+    default: m.DecodeMessageIbcNftEvm,
+  }))
+);
+const DecodeMessageOpFinalizeDeposit = lazy(() =>
+  import("./decode-message-op-finalize-deposit").then((m) => ({
+    default: m.DecodeMessageOpFinalizeDeposit,
+  }))
+);
+const DecodeMessageOpInitiateWithdraw = lazy(() =>
+  import("./decode-message-op-initiate-withdraw").then((m) => ({
+    default: m.DecodeMessageOpInitiateWithdraw,
+  }))
+);
 
 interface DecodeMessageProps extends TxMsgData {
   compact: boolean;
@@ -214,9 +229,10 @@ export const DecodeMessage = ({
       return <DecodeMessageIbcFt decodedMessage={decodedMessage} {...props} />;
     }
 
-    // TODO: Add support for ibc_nft_receive_evm action
-    if (action === "ibc_nft_receive_evm") {
-      return null;
+    if (action === "ibc_nft_receive_evm" || action === "ibc_nft_send_evm") {
+      return (
+        <DecodeMessageIbcNftEvm decodedMessage={decodedMessage} {...props} />
+      );
     }
 
     if (
@@ -230,11 +246,6 @@ export const DecodeMessage = ({
           {...props}
         />
       );
-    }
-
-    // TODO: Add support for ibc_nft_send_evm action
-    if (action === "ibc_nft_send_evm") {
-      return null;
     }
 
     if (action === "merge_liquidity") {
@@ -278,9 +289,13 @@ export const DecodeMessage = ({
       );
     }
 
-    // TODO: Add support for op_finalize_deposit action
     if (action === "op_finalize_deposit") {
-      return null;
+      return (
+        <DecodeMessageOpFinalizeDeposit
+          decodedMessage={decodedMessage}
+          {...props}
+        />
+      );
     }
 
     if (action === "op_finalize_withdraw") {
@@ -292,9 +307,13 @@ export const DecodeMessage = ({
       );
     }
 
-    // TODO: Add support for op_initiate_withdraw action
     if (action === "op_initiate_withdraw") {
-      return null;
+      return (
+        <DecodeMessageOpInitiateWithdraw
+          decodedMessage={decodedMessage}
+          {...props}
+        />
+      );
     }
 
     if (action === "provide_stableswap") {
