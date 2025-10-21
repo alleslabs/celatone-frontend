@@ -29,9 +29,15 @@ export const BalanceChangeNft = ({
   const { data: nft } = useNftMetadata(nftObject);
   const nftImage = useNftGlyphImage(nftObject);
 
-  if (!nft) return null;
-
   const isPositiveAmount = change > 0;
+
+  if (!nft)
+    return (
+      <Text color={isPositiveAmount ? "success.main" : "error.main"}>
+        {`${isPositiveAmount ? "+" : "-"}${" "}1`}
+      </Text>
+    );
+
   const formattedAmount = `${isPositiveAmount ? "+" : "-"}${" "}${nft?.name}`;
 
   return (
