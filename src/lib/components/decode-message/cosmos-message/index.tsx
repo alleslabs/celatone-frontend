@@ -262,11 +262,6 @@ export const DecodeMessage = ({
       );
     }
 
-    // TODO: Add support for not_supported action
-    if (action === "not_supported") {
-      return null;
-    }
-
     if (action === "object_transfer" && metadata?.type === "move") {
       return (
         <DecodeMessageObjectTransfer

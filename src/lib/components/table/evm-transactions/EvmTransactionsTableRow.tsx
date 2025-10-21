@@ -87,7 +87,7 @@ export const EvmTransactionsTableRow = ({
           value={formatEvmTxHash(evmTransaction.transactionHash)}
         />
       </TableRow>
-      <TableRow>
+      <TableRow maxW="100%">
         {decodedTx ? (
           <DecodeCosmosEvmMessageHeader
             compact
