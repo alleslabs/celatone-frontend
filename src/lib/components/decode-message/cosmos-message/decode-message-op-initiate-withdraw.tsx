@@ -47,7 +47,7 @@ export const DecodeMessageOpInitiateWithdraw = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Initiate Bridge Withdraw"
+        label="Bridge"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}

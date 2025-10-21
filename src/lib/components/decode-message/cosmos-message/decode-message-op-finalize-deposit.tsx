@@ -47,7 +47,7 @@ export const DecodeMessageOpFinalizeDeposit = ({
         isIbc={isIbc}
         isOpinit={isOp}
         isSingleMsg={!!isSingleMsg}
-        label="Finalize Bridge Deposit"
+        label="Bridge"
         msgCount={msgCount}
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
