@@ -113,6 +113,30 @@ const DecodeEvmMessageNotSupportedBody = lazy(() =>
   }))
 );
 
+const DecodeEvmMessageCosmosMirrorHeader = lazy(() =>
+  import("./decode-evm-message-cosmos-mirror").then((m) => ({
+    default: m.DecodeEvmMessageCosmosMirrorHeader,
+  }))
+);
+
+const DecodeEvmMessageCosmosMirrorBody = lazy(() =>
+  import("./decode-evm-message-cosmos-mirror").then((m) => ({
+    default: m.DecodeEvmMessageCosmosMirrorBody,
+  }))
+);
+
+const DecodeEvmMessageKami721PublicMintHeader = lazy(() =>
+  import("./decode-evm-message-kami721-public-mint").then((m) => ({
+    default: m.DecodeEvmMessageKami721PublicMintHeader,
+  }))
+);
+
+const DecodeEvmMessageKami721PublicMintBody = lazy(() =>
+  import("./decode-evm-message-kami721-public-mint").then((m) => ({
+    default: m.DecodeEvmMessageKami721PublicMintBody,
+  }))
+);
+
 interface DecodeCosmosEvmMessageProps {
   compact: boolean;
   evmDecodedMessage: DecodedEthereumTx;
@@ -207,14 +231,22 @@ export const DecodeCosmosEvmMessageHeader = ({
     );
   }
 
-  // TODO: Add support for cosmos_mirror action
   if (decodedTransaction.action === "cosmos_mirror") {
-    return null;
+    return (
+      <DecodeEvmMessageCosmosMirrorHeader
+        decodedTransaction={decodedTransaction}
+        {...props}
+      />
+    );
   }
 
-  // TODO: Add support for kami721_public_mint action
   if (decodedTransaction.action === "kami721_public_mint") {
-    return null;
+    return (
+      <DecodeEvmMessageKami721PublicMintHeader
+        decodedTransaction={decodedTransaction}
+        {...props}
+      />
+    );
   }
 
   return null;
@@ -307,14 +339,22 @@ export const DecodeCosmosEvmMessageBody = ({
     );
   }
 
-  // TODO: Add support for cosmos_mirror action
   if (decodedTransaction.action === "cosmos_mirror") {
-    return null;
+    return (
+      <DecodeEvmMessageCosmosMirrorBody
+        decodedTransaction={decodedTransaction}
+        {...props}
+      />
+    );
   }
 
-  // TODO: Add support for kami721_public_mint action
   if (decodedTransaction.action === "kami721_public_mint") {
-    return null;
+    return (
+      <DecodeEvmMessageKami721PublicMintBody
+        decodedTransaction={decodedTransaction}
+        {...props}
+      />
+    );
   }
 
   return null;
