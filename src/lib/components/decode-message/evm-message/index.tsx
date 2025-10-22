@@ -1,6 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import type { DecodedEthereumTx } from "@initia/tx-decoder";
-import type { Option } from "lib/types";
+import type { EvmVerifyInfosResponse } from "lib/services/types";
+import type { Nullable, Option } from "lib/types";
 
 import { lazy } from "react";
 
@@ -113,18 +114,6 @@ const DecodeEvmMessageNotSupportedBody = lazy(() =>
   }))
 );
 
-const DecodeEvmMessageCosmosMirrorHeader = lazy(() =>
-  import("./decode-evm-message-cosmos-mirror").then((m) => ({
-    default: m.DecodeEvmMessageCosmosMirrorHeader,
-  }))
-);
-
-const DecodeEvmMessageCosmosMirrorBody = lazy(() =>
-  import("./decode-evm-message-cosmos-mirror").then((m) => ({
-    default: m.DecodeEvmMessageCosmosMirrorBody,
-  }))
-);
-
 const DecodeEvmMessageKami721PublicMintHeader = lazy(() =>
   import("./decode-evm-message-kami721-public-mint").then((m) => ({
     default: m.DecodeEvmMessageKami721PublicMintHeader,
@@ -140,12 +129,14 @@ const DecodeEvmMessageKami721PublicMintBody = lazy(() =>
 interface DecodeCosmosEvmMessageProps {
   compact: boolean;
   evmDecodedMessage: DecodedEthereumTx;
+  evmVerifyInfos: Option<Nullable<EvmVerifyInfosResponse>>;
   log: Option<Log>;
   msgCount: number;
 }
 
 export const DecodeCosmosEvmMessageHeader = ({
   evmDecodedMessage,
+  evmVerifyInfos,
   ...props
 }: DecodeCosmosEvmMessageProps) => {
   const { decodedTransaction } = evmDecodedMessage;
@@ -154,6 +145,7 @@ export const DecodeCosmosEvmMessageHeader = ({
     return (
       <DecodeEvmMessageContractCreationHeader
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -163,6 +155,7 @@ export const DecodeCosmosEvmMessageHeader = ({
     return (
       <DecodeEvmMessageErc20ApproveHeader
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -172,6 +165,7 @@ export const DecodeCosmosEvmMessageHeader = ({
     return (
       <DecodeEvmMessageErc20TransferHeader
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -181,6 +175,7 @@ export const DecodeCosmosEvmMessageHeader = ({
     return (
       <DecodeEvmMessageErc20TransferFromHeader
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -190,6 +185,7 @@ export const DecodeCosmosEvmMessageHeader = ({
     return (
       <DecodeEvmMessageErc721ApproveHeader
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -199,6 +195,7 @@ export const DecodeCosmosEvmMessageHeader = ({
     return (
       <DecodeEvmMessageErc721SafeTransferFromHeader
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -208,6 +205,7 @@ export const DecodeCosmosEvmMessageHeader = ({
     return (
       <DecodeEvmMessageErc721TransferFromHeader
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -217,6 +215,7 @@ export const DecodeCosmosEvmMessageHeader = ({
     return (
       <DecodeEvmMessageEthTransferHeader
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -226,15 +225,7 @@ export const DecodeCosmosEvmMessageHeader = ({
     return (
       <DecodeEvmMessageNotSupportedHeader
         decodedTransaction={decodedTransaction}
-        {...props}
-      />
-    );
-  }
-
-  if (decodedTransaction.action === "cosmos_mirror") {
-    return (
-      <DecodeEvmMessageCosmosMirrorHeader
-        decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -244,6 +235,7 @@ export const DecodeCosmosEvmMessageHeader = ({
     return (
       <DecodeEvmMessageKami721PublicMintHeader
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -254,6 +246,7 @@ export const DecodeCosmosEvmMessageHeader = ({
 
 export const DecodeCosmosEvmMessageBody = ({
   evmDecodedMessage,
+  evmVerifyInfos,
   ...props
 }: DecodeCosmosEvmMessageProps) => {
   const { decodedTransaction } = evmDecodedMessage;
@@ -262,6 +255,7 @@ export const DecodeCosmosEvmMessageBody = ({
     return (
       <DecodeEvmMessageContractCreationBody
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -271,6 +265,7 @@ export const DecodeCosmosEvmMessageBody = ({
     return (
       <DecodeEvmMessageErc20ApproveBody
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -280,6 +275,7 @@ export const DecodeCosmosEvmMessageBody = ({
     return (
       <DecodeEvmMessageErc20TransferBody
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -289,6 +285,7 @@ export const DecodeCosmosEvmMessageBody = ({
     return (
       <DecodeEvmMessageErc20TransferFromBody
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -298,6 +295,7 @@ export const DecodeCosmosEvmMessageBody = ({
     return (
       <DecodeEvmMessageErc721ApproveBody
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -307,6 +305,7 @@ export const DecodeCosmosEvmMessageBody = ({
     return (
       <DecodeEvmMessageErc721SafeTransferFromBody
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -316,6 +315,7 @@ export const DecodeCosmosEvmMessageBody = ({
     return (
       <DecodeEvmMessageErc721TransferFromBody
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -325,6 +325,7 @@ export const DecodeCosmosEvmMessageBody = ({
     return (
       <DecodeEvmMessageEthTransferBody
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -334,15 +335,7 @@ export const DecodeCosmosEvmMessageBody = ({
     return (
       <DecodeEvmMessageNotSupportedBody
         decodedTransaction={decodedTransaction}
-        {...props}
-      />
-    );
-  }
-
-  if (decodedTransaction.action === "cosmos_mirror") {
-    return (
-      <DecodeEvmMessageCosmosMirrorBody
-        decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );
@@ -352,6 +345,7 @@ export const DecodeCosmosEvmMessageBody = ({
     return (
       <DecodeEvmMessageKami721PublicMintBody
         decodedTransaction={decodedTransaction}
+        evmVerifyInfos={evmVerifyInfos}
         {...props}
       />
     );

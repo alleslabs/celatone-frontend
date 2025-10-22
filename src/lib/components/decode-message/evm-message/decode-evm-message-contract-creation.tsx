@@ -1,6 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import type { DecodedContractCreationCall } from "@initia/tx-decoder";
-import type { Option } from "lib/types";
+import type { EvmVerifyInfosResponse } from "lib/services/types";
+import type { Nullable, Option } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -13,6 +14,7 @@ import { DecodeMessageRow } from "../decode-message-row";
 interface DecodeEvmMessageContractCreationProps {
   compact: boolean;
   decodedTransaction: DecodedContractCreationCall;
+  evmVerifyInfos: Option<Nullable<EvmVerifyInfosResponse>>;
   log: Option<Log>;
   msgCount: number;
 }
@@ -20,6 +22,7 @@ interface DecodeEvmMessageContractCreationProps {
 export const DecodeEvmMessageContractCreationHeader = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
   msgCount,
 }: DecodeEvmMessageContractCreationProps) => {
   const { contractAddresses, from } = decodedTransaction.data;
@@ -50,7 +53,10 @@ export const DecodeEvmMessageContractCreationHeader = ({
               />
             }
             showCopyOnHover
-            type="evm_contract_address"
+            textLabel={
+              evmVerifyInfos?.[contractAddresses[0].toLowerCase()]?.contractName
+            }
+            type="user_address"
             value={contractAddresses[0]}
           />
         )}
@@ -69,6 +75,7 @@ export const DecodeEvmMessageContractCreationHeader = ({
 export const DecodeEvmMessageContractCreationBody = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
 }: DecodeEvmMessageContractCreationProps) => {
   const { contractAddresses, from } = decodedTransaction.data;
 
@@ -103,7 +110,10 @@ export const DecodeEvmMessageContractCreationBody = ({
             }
             showCopyOnHover
             textFormat="normal"
-            type="evm_contract_address"
+            textLabel={
+              evmVerifyInfos?.[contractAddresses[0].toLowerCase()]?.contractName
+            }
+            type="user_address"
             value={contractAddresses[0]}
           />
         </DecodeMessageRow>
@@ -122,7 +132,10 @@ export const DecodeEvmMessageContractCreationBody = ({
                 }
                 showCopyOnHover
                 textFormat="normal"
-                type="evm_contract_address"
+                textLabel={
+                  evmVerifyInfos?.[address.toLowerCase()]?.contractName
+                }
+                type="user_address"
                 value={address}
               />
             ))}

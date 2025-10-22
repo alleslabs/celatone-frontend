@@ -1,6 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import type { DecodedErc721TransferFromCall } from "@initia/tx-decoder";
-import type { Option } from "lib/types";
+import type { EvmVerifyInfosResponse } from "lib/services/types";
+import type { Nullable, Option } from "lib/types";
 
 import { Flex, Stack, Text } from "@chakra-ui/react";
 import {
@@ -20,6 +21,7 @@ import { DecodeMessageRow } from "../decode-message-row";
 interface DecodeEvmMessageErc721TransferFromProps {
   compact: boolean;
   decodedTransaction: DecodedErc721TransferFromCall;
+  evmVerifyInfos: Option<Nullable<EvmVerifyInfosResponse>>;
   log: Option<Log>;
   msgCount: number;
 }
@@ -27,9 +29,10 @@ interface DecodeEvmMessageErc721TransferFromProps {
 export const DecodeEvmMessageErc721TransferFromHeader = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
   msgCount,
 }: DecodeEvmMessageErc721TransferFromProps) => {
-  const { contract, from, to, tokenId } = decodedTransaction.data;
+  const { contract, from, owner, to, tokenId } = decodedTransaction.data;
 
   // Fetch NFT data using the contract address and token ID
   const collectionAddressHex = zHexAddr.parse(contract);
@@ -53,7 +56,7 @@ export const DecodeEvmMessageErc721TransferFromHeader = ({
         isIbc={false}
         isOpinit={false}
         isSingleMsg={msgCount === 1}
-        label="NFT transfer"
+        label="ERC721 transfer from"
         msgCount={msgCount}
         type={decodedTransaction.action}
       >
@@ -75,10 +78,27 @@ export const DecodeEvmMessageErc721TransferFromHeader = ({
             />
           </Flex>
         )}
+        <Text color="text.dark">by</Text>
+        <ExplorerLink
+          showCopyOnHover
+          textLabel={evmVerifyInfos?.[owner.toLowerCase()]?.contractName}
+          type="user_address"
+          value={owner}
+        />
         <Text color="text.dark">from</Text>
-        <ExplorerLink showCopyOnHover type="user_address" value={from} />
+        <ExplorerLink
+          showCopyOnHover
+          textLabel={evmVerifyInfos?.[from.toLowerCase()]?.contractName}
+          type="user_address"
+          value={from}
+        />
         <Text color="text.dark">to</Text>
-        <ExplorerLink showCopyOnHover type="user_address" value={to} />
+        <ExplorerLink
+          showCopyOnHover
+          textLabel={evmVerifyInfos?.[to.toLowerCase()]?.contractName}
+          type="user_address"
+          value={to}
+        />
       </DecodeMessageHeader>
     </Flex>
   );
@@ -87,8 +107,9 @@ export const DecodeEvmMessageErc721TransferFromHeader = ({
 export const DecodeEvmMessageErc721TransferFromBody = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
 }: DecodeEvmMessageErc721TransferFromProps) => {
-  const { contract, from, to, tokenId } = decodedTransaction.data;
+  const { contract, from, owner, to, tokenId } = decodedTransaction.data;
 
   // Fetch NFT data using the contract address and token ID
   const collectionAddressHex = zHexAddr.parse(contract);
@@ -112,6 +133,14 @@ export const DecodeEvmMessageErc721TransferFromBody = ({
         pl: 0,
       }}
     >
+      <DecodeMessageRow title="Owner">
+        <ExplorerLink
+          showCopyOnHover
+          textFormat="normal"
+          type="user_address"
+          value={owner}
+        />
+      </DecodeMessageRow>
       <DecodeMessageRow title="Sender">
         <ExplorerLink
           showCopyOnHover
@@ -128,13 +157,15 @@ export const DecodeEvmMessageErc721TransferFromBody = ({
           value={to}
         />
       </DecodeMessageRow>
-      {/* // TODO: Missing collection name */}
       {nft && (
         <DecodeMessageRow title="Collection">
           <ExplorerLink
             showCopyOnHover
-            textLabel={nft.collectionName}
-            type="nft_collection"
+            textLabel={
+              evmVerifyInfos?.[contract.toLowerCase()]?.contractName ??
+              nft.collectionName
+            }
+            type="user_address"
             value={nft.collectionAddress}
           />
         </DecodeMessageRow>

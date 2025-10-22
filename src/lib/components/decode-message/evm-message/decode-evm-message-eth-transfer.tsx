@@ -1,6 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import type { DecodedEthTransferCall } from "@initia/tx-decoder";
-import type { Option } from "lib/types";
+import type { EvmVerifyInfosResponse } from "lib/services/types";
+import type { Nullable, Option } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -16,6 +17,7 @@ import { DecodeMessageRow } from "../decode-message-row";
 interface DecodeEvmMessageEthTransferProps {
   compact: boolean;
   decodedTransaction: DecodedEthTransferCall;
+  evmVerifyInfos: Option<Nullable<EvmVerifyInfosResponse>>;
   log: Option<Log>;
   msgCount: number;
 }
@@ -23,6 +25,7 @@ interface DecodeEvmMessageEthTransferProps {
 export const DecodeEvmMessageEthTransferHeader = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
   msgCount,
 }: DecodeEvmMessageEthTransferProps) => {
   const { amount, denom, from, to } = decodedTransaction.data;
@@ -47,9 +50,19 @@ export const DecodeEvmMessageEthTransferHeader = ({
           <TokenImageWithAmount token={token} />
         </Flex>
         <Text color="text.dark">from</Text>
-        <ExplorerLink showCopyOnHover type="user_address" value={from} />
+        <ExplorerLink
+          showCopyOnHover
+          textLabel={evmVerifyInfos?.[from.toLowerCase()]?.contractName}
+          type="user_address"
+          value={from}
+        />
         <Text color="text.dark">to</Text>
-        <ExplorerLink showCopyOnHover type="user_address" value={to} />
+        <ExplorerLink
+          showCopyOnHover
+          textLabel={evmVerifyInfos?.[to.toLowerCase()]?.contractName}
+          type="user_address"
+          value={to}
+        />
       </DecodeMessageHeader>
     </Flex>
   );

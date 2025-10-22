@@ -1,6 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import type { DecodedKami721PublicMintCall } from "@initia/tx-decoder";
-import type { Option } from "lib/types";
+import type { EvmVerifyInfosResponse } from "lib/services/types";
+import type { Nullable, Option } from "lib/types";
 
 import { Flex, Stack, Text } from "@chakra-ui/react";
 import {
@@ -22,6 +23,7 @@ import { DecodeMessageRow } from "../decode-message-row";
 interface DecodeEvmMessageKami721PublicMintProps {
   compact: boolean;
   decodedTransaction: DecodedKami721PublicMintCall;
+  evmVerifyInfos: Option<Nullable<EvmVerifyInfosResponse>>;
   log: Option<Log>;
   msgCount: number;
 }
@@ -29,6 +31,7 @@ interface DecodeEvmMessageKami721PublicMintProps {
 export const DecodeEvmMessageKami721PublicMintHeader = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
   msgCount,
 }: DecodeEvmMessageKami721PublicMintProps) => {
   const { contract, minter, tokenId } = decodedTransaction.data;
@@ -78,7 +81,12 @@ export const DecodeEvmMessageKami721PublicMintHeader = ({
           </Flex>
         )}
         <Text color="text.dark">by</Text>
-        <ExplorerLink showCopyOnHover type="user_address" value={minter} />
+        <ExplorerLink
+          showCopyOnHover
+          textLabel={evmVerifyInfos?.[minter.toLowerCase()]?.contractName}
+          type="user_address"
+          value={minter}
+        />
       </DecodeMessageHeader>
     </Flex>
   );
@@ -87,6 +95,7 @@ export const DecodeEvmMessageKami721PublicMintHeader = ({
 export const DecodeEvmMessageKami721PublicMintBody = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
 }: DecodeEvmMessageKami721PublicMintProps) => {
   const { contract, minter, paymentAmount, paymentToken, tokenId } =
     decodedTransaction.data;
@@ -132,7 +141,8 @@ export const DecodeEvmMessageKami721PublicMintBody = ({
           }
           showCopyOnHover
           textFormat="normal"
-          type="evm_contract_address"
+          textLabel={evmVerifyInfos?.[contract.toLowerCase()]?.contractName}
+          type="user_address"
           value={contract}
         />
       </DecodeMessageRow>
@@ -140,8 +150,11 @@ export const DecodeEvmMessageKami721PublicMintBody = ({
         <DecodeMessageRow title="Collection">
           <ExplorerLink
             showCopyOnHover
-            textLabel={nft.collectionName}
-            type="nft_collection"
+            textLabel={
+              evmVerifyInfos?.[contract.toLowerCase()]?.contractName ??
+              nft.collectionName
+            }
+            type="user_address"
             value={nft.collectionAddress}
           />
         </DecodeMessageRow>
