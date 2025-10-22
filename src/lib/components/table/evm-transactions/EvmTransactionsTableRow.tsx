@@ -1,5 +1,5 @@
 import type { EvmTxResponseSequencerWithRpcData } from "lib/services/types";
-import type { AssetInfos, Option } from "lib/types";
+import type { AssetInfos, HexAddr20, Option } from "lib/types";
 
 import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
@@ -8,6 +8,7 @@ import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { useEvmTxDecoder } from "lib/services/tx";
+import { useEvmVerifyInfos } from "lib/services/verification/evm";
 import {
   coinToTokenWithValue,
   dateFromNow,
@@ -41,6 +42,11 @@ export const EvmTransactionsTableRow = ({
     tx: rawTx,
     txReceipt: rawTxReceipt,
   });
+  const { data: evmVerifyInfos } = useEvmVerifyInfos(
+    evmTransaction.to
+      ? [evmTransaction.to].filter((addr): addr is HexAddr20 => addr !== null)
+      : []
+  );
   const { amount, denom } = getEvmAmount({
     evmDenom,
     input: evmTransaction.input,
@@ -92,6 +98,7 @@ export const EvmTransactionsTableRow = ({
           <DecodeCosmosEvmMessageHeader
             compact
             evmDecodedMessage={decodedTx}
+            evmVerifyInfos={evmVerifyInfos}
             log={undefined}
             msgCount={1}
           />

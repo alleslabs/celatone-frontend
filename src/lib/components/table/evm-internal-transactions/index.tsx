@@ -42,6 +42,7 @@ interface EvmInternalTransactionsTableProps {
   fetchNextPage: () => void;
   internalTxs: EvmInternalTxSequencer[];
   isFetchingNextPage: boolean;
+  isLoading: boolean;
   showParentHash?: boolean;
   totalCount: number;
 }
@@ -52,6 +53,7 @@ export const EvmInternalTransactionsTable = ({
   fetchNextPage,
   internalTxs,
   isFetchingNextPage,
+  isLoading,
   showParentHash = true,
   totalCount,
 }: EvmInternalTransactionsTableProps) => {
@@ -104,7 +106,7 @@ export const EvmInternalTransactionsTable = ({
     "60px",
   ].join(" ");
 
-  if (isEvmParamsLoading) return <Loading />;
+  if (isLoading || isEvmParamsLoading) return <Loading />;
   if (!internalTxs?.length) return emptyState;
 
   return isMobile ? (
@@ -119,6 +121,11 @@ export const EvmInternalTransactionsTable = ({
           txHash={result.hash}
         />
       ))}
+      {internalTxs.length < totalCount && (
+        <Flex align="center" justify="center" mt={4} ref={ref}>
+          {isFetchingNextPage ? <Spinner /> : null}
+        </Flex>
+      )}
     </MobileTableContainer>
   ) : (
     <TableContainer>

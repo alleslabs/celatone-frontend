@@ -1,6 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import type { DecodedErc721SafeTransferFromCall } from "@initia/tx-decoder";
-import type { Option } from "lib/types";
+import type { EvmVerifyInfosResponse } from "lib/services/types";
+import type { Nullable, Option } from "lib/types";
 
 import { Flex, Stack, Text } from "@chakra-ui/react";
 import {
@@ -20,6 +21,7 @@ import { DecodeMessageRow } from "../decode-message-row";
 interface DecodeEvmMessageErc721SafeTransferFromProps {
   compact: boolean;
   decodedTransaction: DecodedErc721SafeTransferFromCall;
+  evmVerifyInfos: Option<Nullable<EvmVerifyInfosResponse>>;
   log: Option<Log>;
   msgCount: number;
 }
@@ -27,6 +29,7 @@ interface DecodeEvmMessageErc721SafeTransferFromProps {
 export const DecodeEvmMessageErc721SafeTransferFromHeader = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
   msgCount,
 }: DecodeEvmMessageErc721SafeTransferFromProps) => {
   const { contract, from, to, tokenId } = decodedTransaction.data;
@@ -53,7 +56,7 @@ export const DecodeEvmMessageErc721SafeTransferFromHeader = ({
         isIbc={false}
         isOpinit={false}
         isSingleMsg={msgCount === 1}
-        label="NFT transfer"
+        label="ERC721 safe transfer from"
         msgCount={msgCount}
         type={decodedTransaction.action}
       >
@@ -76,9 +79,19 @@ export const DecodeEvmMessageErc721SafeTransferFromHeader = ({
           </Flex>
         )}
         <Text color="text.dark">from</Text>
-        <ExplorerLink showCopyOnHover type="user_address" value={from} />
+        <ExplorerLink
+          showCopyOnHover
+          textLabel={evmVerifyInfos?.[from.toLowerCase()]?.contractName}
+          type="user_address"
+          value={from}
+        />
         <Text color="text.dark">to</Text>
-        <ExplorerLink showCopyOnHover type="user_address" value={to} />
+        <ExplorerLink
+          showCopyOnHover
+          textLabel={evmVerifyInfos?.[to.toLowerCase()]?.contractName}
+          type="user_address"
+          value={to}
+        />
       </DecodeMessageHeader>
     </Flex>
   );
@@ -87,6 +100,7 @@ export const DecodeEvmMessageErc721SafeTransferFromHeader = ({
 export const DecodeEvmMessageErc721SafeTransferFromBody = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
 }: DecodeEvmMessageErc721SafeTransferFromProps) => {
   const { contract, from, to, tokenId } = decodedTransaction.data;
 
@@ -128,13 +142,15 @@ export const DecodeEvmMessageErc721SafeTransferFromBody = ({
           value={to}
         />
       </DecodeMessageRow>
-      {/* // TODO: Missing collection name */}
       {nft && (
         <DecodeMessageRow title="Collection">
           <ExplorerLink
             showCopyOnHover
-            textLabel={nft.collectionName}
-            type="nft_collection"
+            textLabel={
+              evmVerifyInfos?.[contract.toLowerCase()]?.contractName ??
+              nft.collectionName
+            }
+            type="user_address"
             value={nft.collectionAddress}
           />
         </DecodeMessageRow>

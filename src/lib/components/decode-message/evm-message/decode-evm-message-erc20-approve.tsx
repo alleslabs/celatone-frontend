@@ -1,14 +1,12 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import type { DecodedErc20ApproveCall } from "@initia/tx-decoder";
-import type { Option } from "lib/types";
+import type { EvmVerifyInfosResponse } from "lib/services/types";
+import type { Nullable, Option } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { TokenImageWithAmount } from "lib/components/token/TokenImageWithAmount";
 import { CoinsComponent } from "lib/components/tx-message/msg-receipts/CoinsComponent";
-import { useAssetInfos } from "lib/services/assetService";
-import { coinToTokenWithValue } from "lib/utils";
 
 import { DecodeMessageBody } from "../decode-message-body";
 import { DecodeMessageHeader } from "../decode-message-header";
@@ -17,6 +15,7 @@ import { DecodeMessageRow } from "../decode-message-row";
 interface DecodeEvmMessageErc20ApproveProps {
   compact: boolean;
   decodedTransaction: DecodedErc20ApproveCall;
+  evmVerifyInfos: Option<Nullable<EvmVerifyInfosResponse>>;
   log: Option<Log>;
   msgCount: number;
 }
@@ -24,12 +23,10 @@ interface DecodeEvmMessageErc20ApproveProps {
 export const DecodeEvmMessageErc20ApproveHeader = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
   msgCount,
 }: DecodeEvmMessageErc20ApproveProps) => {
-  const { amount, denom, from, spender } = decodedTransaction.data;
-  const { data: assetInfos } = useAssetInfos({ withPrices: false });
-
-  const token = coinToTokenWithValue(denom, amount, assetInfos);
+  const { from, spender } = decodedTransaction.data;
 
   return (
     <Flex direction="column" w="100%">
@@ -40,17 +37,24 @@ export const DecodeEvmMessageErc20ApproveHeader = ({
         isIbc={false}
         isOpinit={false}
         isSingleMsg={msgCount === 1}
-        label="Transfer"
+        label="ERC20 approve"
         msgCount={msgCount}
         type={decodedTransaction.action}
       >
-        <Flex align="center" flexWrap="nowrap" gap={2} minWidth="fit-content">
-          <TokenImageWithAmount token={token} />
-        </Flex>
         <Text color="text.dark">by</Text>
-        <ExplorerLink showCopyOnHover type="user_address" value={from} />
+        <ExplorerLink
+          showCopyOnHover
+          textLabel={evmVerifyInfos?.[from.toLowerCase()]?.contractName}
+          type="user_address"
+          value={from}
+        />
         <Text color="text.dark">to</Text>
-        <ExplorerLink showCopyOnHover type="user_address" value={spender} />
+        <ExplorerLink
+          showCopyOnHover
+          textLabel={evmVerifyInfos?.[spender.toLowerCase()]?.contractName}
+          type="user_address"
+          value={spender}
+        />
       </DecodeMessageHeader>
     </Flex>
   );
@@ -59,6 +63,7 @@ export const DecodeEvmMessageErc20ApproveHeader = ({
 export const DecodeEvmMessageErc20ApproveBody = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
 }: DecodeEvmMessageErc20ApproveProps) => {
   const { amount, contract, denom, from, spender } = decodedTransaction.data;
 
@@ -101,7 +106,8 @@ export const DecodeEvmMessageErc20ApproveBody = ({
           }
           showCopyOnHover
           textFormat="normal"
-          type="evm_contract_address"
+          textLabel={evmVerifyInfos?.[contract.toLowerCase()]?.contractName}
+          type="user_address"
           value={contract}
         />
       </DecodeMessageRow>

@@ -14,6 +14,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
+import { useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import {
   DecodeCosmosEvmMessageBody,
@@ -29,7 +30,7 @@ import { useEvmInternalTxsByTxHashSequencer } from "lib/services/evm-internal-tx
 import { useEvmVerifyInfos } from "lib/services/verification/evm";
 import { type HexAddr20, type Option, zHexAddr } from "lib/types";
 import plur from "plur";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { EvmEventBox } from "./evm-event-box";
 
@@ -45,6 +46,7 @@ export const EvmTxMsgDetails = ({
   evmTxData,
 }: EvmTxMsgDetailsProps) => {
   void evmDenom;
+  const navigate = useInternalNavigate();
   const { data } = useEvmVerifyInfos(
     [
       ...evmTxData.txReceipt.logs.map((log) => log.address),
@@ -74,6 +76,22 @@ export const EvmTxMsgDetails = ({
 
   const { decodedTx: evmDecodedTx } = evmTxData;
 
+  // Redirect to cosmos tx page if this is a cosmos_mirror transaction
+  useEffect(() => {
+    if (evmDecodedTx.decodedTransaction.action === "cosmos_mirror") {
+      const cosmosTxHash = evmDecodedTx.decodedTransaction.data.cosmosTxHash;
+      navigate({
+        pathname: "/txs/[txHash]",
+        query: { txHash: cosmosTxHash },
+      });
+    }
+  }, [evmDecodedTx.decodedTransaction, navigate]);
+
+  // Return null for cosmos_mirror to prevent any UI from showing during redirect
+  if (evmDecodedTx.decodedTransaction.action === "cosmos_mirror") {
+    return null;
+  }
+
   return (
     <Stack gap={6} w="full">
       {messages.map(
@@ -83,6 +101,7 @@ export const EvmTxMsgDetails = ({
               key={JSON.stringify(msg) + idx.toString()}
               compact={false}
               evmDecodedMessage={evmDecodedTx}
+              evmVerifyInfos={data}
               log={logs[idx]}
               msgCount={messages.length}
             />
@@ -128,6 +147,7 @@ export const EvmTxMsgDetails = ({
                       key={JSON.stringify(msg) + idx.toString()}
                       compact={false}
                       evmDecodedMessage={evmDecodedTx}
+                      evmVerifyInfos={data}
                       log={logs[idx]}
                       msgCount={messages.length}
                     />
@@ -163,7 +183,7 @@ export const EvmTxMsgDetails = ({
               emptyState={
                 <EmptyState
                   imageVariant="empty"
-                  message="There are no EVM transactions."
+                  message="There are no internal transactions."
                 />
               }
               fetchNextPage={evmInternalTxsData.fetchNextPage}
@@ -173,6 +193,11 @@ export const EvmTxMsgDetails = ({
                 ) ?? []
               }
               isFetchingNextPage={evmInternalTxsData.isFetchingNextPage}
+              isLoading={
+                evmInternalTxsData.isLoading ||
+                (evmInternalTxsData.isFetching &&
+                  !evmInternalTxsData.isFetchingNextPage)
+              }
               showParentHash={false}
               totalCount={countTotalEvmInternalTxs ?? 0}
             />

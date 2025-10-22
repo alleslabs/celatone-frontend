@@ -89,7 +89,7 @@ export const EvmInputData = ({
             evmVerifyInfo?.isVerified &&
             data && (
               <Text fontFamily="monospace" variant="body2">
-                Functions: {data.signature}
+                Function: {data.signature}
               </Text>
             )}
           <Text fontFamily="monospace" variant="body2">

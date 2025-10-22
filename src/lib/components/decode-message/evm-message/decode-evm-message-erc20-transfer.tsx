@@ -1,6 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import type { DecodedErc20TransferCall } from "@initia/tx-decoder";
-import type { Option } from "lib/types";
+import type { EvmVerifyInfosResponse } from "lib/services/types";
+import type { Nullable, Option } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -17,6 +18,7 @@ import { DecodeMessageRow } from "../decode-message-row";
 interface DecodeEvmMessageErc20TransferProps {
   compact: boolean;
   decodedTransaction: DecodedErc20TransferCall;
+  evmVerifyInfos: Option<Nullable<EvmVerifyInfosResponse>>;
   log: Option<Log>;
   msgCount: number;
 }
@@ -24,6 +26,7 @@ interface DecodeEvmMessageErc20TransferProps {
 export const DecodeEvmMessageErc20TransferHeader = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
   msgCount,
 }: DecodeEvmMessageErc20TransferProps) => {
   const { amount, denom, from, to } = decodedTransaction.data;
@@ -40,7 +43,7 @@ export const DecodeEvmMessageErc20TransferHeader = ({
         isIbc={false}
         isOpinit={false}
         isSingleMsg={msgCount === 1}
-        label="Transfer"
+        label="ERC20 transfer"
         msgCount={msgCount}
         type={decodedTransaction.action}
       >
@@ -48,9 +51,19 @@ export const DecodeEvmMessageErc20TransferHeader = ({
           <TokenImageWithAmount token={token} />
         </Flex>
         <Text color="text.dark">from</Text>
-        <ExplorerLink showCopyOnHover type="user_address" value={from} />
+        <ExplorerLink
+          showCopyOnHover
+          textLabel={evmVerifyInfos?.[from.toLowerCase()]?.contractName}
+          type="user_address"
+          value={from}
+        />
         <Text color="text.dark">to</Text>
-        <ExplorerLink showCopyOnHover type="user_address" value={to} />
+        <ExplorerLink
+          showCopyOnHover
+          textLabel={evmVerifyInfos?.[to.toLowerCase()]?.contractName}
+          type="user_address"
+          value={to}
+        />
       </DecodeMessageHeader>
     </Flex>
   );
@@ -59,6 +72,7 @@ export const DecodeEvmMessageErc20TransferHeader = ({
 export const DecodeEvmMessageErc20TransferBody = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
 }: DecodeEvmMessageErc20TransferProps) => {
   const { amount, contract, denom, from, to } = decodedTransaction.data;
 
@@ -101,7 +115,8 @@ export const DecodeEvmMessageErc20TransferBody = ({
           }
           showCopyOnHover
           textFormat="normal"
-          type="evm_contract_address"
+          textLabel={evmVerifyInfos?.[contract.toLowerCase()]?.contractName}
+          type="user_address"
           value={contract}
         />
       </DecodeMessageRow>

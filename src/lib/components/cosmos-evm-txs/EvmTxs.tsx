@@ -109,13 +109,15 @@ export const EvmTxs = ({
                 typeof emptyMessage === "string" ? (
                   <EmptyState
                     imageVariant="empty"
-                    message={emptyMessage || "There are no EVM transactions."}
+                    message={
+                      emptyMessage || "There are no internal transactions."
+                    }
                   />
                 ) : (
                   (emptyMessage ?? (
                     <EmptyState
                       imageVariant="empty"
-                      message="There are no EVM transactions."
+                      message="There are no internal transactions."
                     />
                   ))
                 )
@@ -127,20 +129,15 @@ export const EvmTxs = ({
                 ) ?? []
               }
               isFetchingNextPage={evmInternalTxsData.isFetchingNextPage}
+              isLoading={
+                evmInternalTxsData.isLoading ||
+                (evmInternalTxsData.isFetching &&
+                  !evmInternalTxsData.isFetchingNextPage)
+              }
               totalCount={countTotalEvmInternalTxs ?? 0}
             />
-            {evmInternalTxsData.hasNextPage && (
-              <>
-                {onViewMore ? (
-                  <ViewMore onClick={onViewMore} />
-                ) : (
-                  <LoadNext
-                    fetchNextPage={evmInternalTxsData.fetchNextPage}
-                    isFetchingNextPage={evmInternalTxsData.isFetchingNextPage}
-                    text="Load more transactions"
-                  />
-                )}
-              </>
+            {onViewMore && evmInternalTxsData.hasNextPage && (
+              <ViewMore onClick={onViewMore} />
             )}
           </TabPanel>
         )}

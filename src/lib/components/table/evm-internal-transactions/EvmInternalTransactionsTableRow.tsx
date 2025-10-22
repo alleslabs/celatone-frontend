@@ -142,7 +142,7 @@ export const EvmInternalTransactionTableRow = ({
                           ?.contractName
                       }
                       tooltipLabel={tooltipLabels.from}
-                      type="evm_contract_address"
+                      type="user_address"
                       value={result.from}
                     />
                   </Flex>
@@ -161,7 +161,7 @@ export const EvmInternalTransactionTableRow = ({
                     evmVerifyInfos?.[result.to.toLowerCase()]?.contractName
                   }
                   tooltipLabel={tooltipLabels.to}
-                  type="evm_contract_address"
+                  type="user_address"
                   value={result.to}
                 />
               </TableRow>

@@ -1,6 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import type { DecodedNotSupportedCall } from "@initia/tx-decoder";
-import type { Option } from "lib/types";
+import type { EvmVerifyInfosResponse } from "lib/services/types";
+import type { Nullable, Option } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -13,6 +14,7 @@ import { DecodeMessageRow } from "../decode-message-row";
 interface DecodeEvmMessageNotSupportedProps {
   compact: boolean;
   decodedTransaction: DecodedNotSupportedCall;
+  evmVerifyInfos: Option<Nullable<EvmVerifyInfosResponse>>;
   log: Option<Log>;
   msgCount: number;
 }
@@ -20,6 +22,7 @@ interface DecodeEvmMessageNotSupportedProps {
 export const DecodeEvmMessageNotSupportedHeader = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
   msgCount,
 }: DecodeEvmMessageNotSupportedProps) => {
   const {
@@ -51,7 +54,8 @@ export const DecodeEvmMessageNotSupportedHeader = ({
                 />
               }
               showCopyOnHover
-              type="evm_contract_address"
+              textLabel={evmVerifyInfos?.[to.toLowerCase()]?.contractName}
+              type="user_address"
               value={to}
             />
           </Flex>
@@ -68,6 +72,7 @@ export const DecodeEvmMessageNotSupportedHeader = ({
 export const DecodeEvmMessageNotSupportedBody = ({
   compact,
   decodedTransaction,
+  evmVerifyInfos,
 }: DecodeEvmMessageNotSupportedProps) => {
   const {
     data: { from, to },
@@ -96,7 +101,8 @@ export const DecodeEvmMessageNotSupportedBody = ({
               />
             }
             showCopyOnHover
-            type="evm_contract_address"
+            textLabel={evmVerifyInfos?.[to.toLowerCase()]?.contractName}
+            type="user_address"
             value={to}
           />
         </DecodeMessageRow>
