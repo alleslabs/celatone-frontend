@@ -325,7 +325,7 @@ export const useNftGlyphImage = (
   const { currentChainId } = useCelatoneApp();
   const formatAddress = useNftAddressFormat();
 
-  if (!nft || (!nft.nftAddress && !nft.nftAddress) || !GLYPH_API_URL) return "";
+  if (!nft || (!nft.tokenId && !nft.nftAddress) || !GLYPH_API_URL) return "";
 
   const params = new URLSearchParams();
   if (width) params.set("width", width);
