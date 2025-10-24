@@ -42,7 +42,6 @@ export const DecodeMessageHeader = ({
       : false;
 
   const isInteractive = !!onClick;
-  const shouldClampContent = compact && !isHoverOverflowContent;
 
   return (
     <Flex
@@ -67,8 +66,9 @@ export const DecodeMessageHeader = ({
       cursor={isInteractive ? "pointer" : "default"}
       justify="space-between"
       marginTop={isHoverOverflowContent ? "-30px" : "0px"}
-      overflow={shouldClampContent ? "hidden" : "visible"}
-      p={compact ? (isHoverOverflowContent ? "12px" : "") : "16px 8px"}
+      overflowX="hidden"
+      overflowY="visible"
+      p={compact ? (isHoverOverflowContent ? "12px" : "4px 0") : "16px 8px"}
       position={isHoverOverflowContent ? "absolute" : "relative"}
       transition={isHoverOverflowContent ? "" : "background 0.25s ease-in-out"}
       width={

@@ -72,7 +72,7 @@ export const TransactionsTableWithWalletSequencer = ({
         <LoadNext
           fetchNextPage={cosmosData.data.fetchNextPage}
           isFetchingNextPage={cosmosData.data.isFetchingNextPage}
-          text="Load more 10 transactions"
+          text="Load more transactions"
         />
       )}
     </>

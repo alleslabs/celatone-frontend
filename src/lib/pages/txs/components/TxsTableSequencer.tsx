@@ -75,7 +75,7 @@ export const TxsTableSequencer = ({
         <LoadNext
           fetchNextPage={cosmosData.fetchNextPage}
           isFetchingNextPage={cosmosData.isFetchingNextPage}
-          text="Load more 10 transactions"
+          text="Load more transactions"
         />
       )}
     </>

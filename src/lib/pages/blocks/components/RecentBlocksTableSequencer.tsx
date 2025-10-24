@@ -45,7 +45,7 @@ export const RecentBlocksTableSequencer = ({
         <LoadNext
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          text="Load more 10 blocks"
+          text="Load more blocks"
         />
       )}
     </>

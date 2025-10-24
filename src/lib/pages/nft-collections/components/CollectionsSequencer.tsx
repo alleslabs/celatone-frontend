@@ -32,7 +32,7 @@ export const CollectionsSequencer = () => {
         <LoadNext
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          text="Load more 10 collections"
+          text="Load more collections"
         />
       )}
     </>

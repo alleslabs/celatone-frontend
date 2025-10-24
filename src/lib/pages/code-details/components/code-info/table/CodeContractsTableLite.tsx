@@ -46,7 +46,7 @@ export const CodeContractsTableLite = observer(
           <LoadNext
             fetchNextPage={fetchNextPage}
             isFetchingNextPage={isFetchingNextPage}
-            text="Load more 10 contracts"
+            text="Load more contracts"
           />
         )}
       </>
