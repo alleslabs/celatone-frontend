@@ -32,7 +32,9 @@ export const TxsTableSequencer = ({
         onViewMore,
       }}
       evmData={{
-        emptyMessage: "There are no EVM transactions on this contract.",
+        emptyEvmInternalMessage:
+          "There are no internal transactions on this contract.",
+        emptyEvmMessage: "There are no EVM transactions on this contract.",
         evmInternalTxsData,
         evmTxsData,
         onViewMore,
