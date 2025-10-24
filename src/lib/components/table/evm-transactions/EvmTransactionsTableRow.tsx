@@ -66,7 +66,7 @@ export const EvmTransactionsTableRow = ({
       <Grid
         className="copier-wrapper"
         _hover={{ bg: "gray.900" }}
-        cursor="default"
+        cursor="pointer"
         templateColumns={templateColumns}
         transition="all 0.25s ease-in-out"
         onClick={() =>
