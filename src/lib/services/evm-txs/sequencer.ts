@@ -22,6 +22,7 @@ export const getEvmTxsByBlockHeightSequencer = (
           params: {
             "pagination.key": nextKey || undefined,
             "pagination.limit": limit,
+            "pagination.reverse": false,
           },
         }
       )

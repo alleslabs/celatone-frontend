@@ -39,12 +39,14 @@ export const TxDecoderProvider = ({
   const txDecoder = useMemo(
     () =>
       new TxDecoder({
-        jsonRpcUrl: evm.enabled ? evm.jsonRpc : undefined,
+        jsonRpcUrl: evm.enabled
+          ? getArchivalEndpoint(evm.jsonRpc, evm.jsonRpc)
+          : undefined,
         registryUrl:
           network_type === "mainnet"
             ? INITIA_REGISTRY_URL
             : INITIA_TESTNET_REGISTRY_URL,
-        restUrl: getArchivalEndpoint(restEndpoint, null) ?? restEndpoint,
+        restUrl: getArchivalEndpoint(restEndpoint, restEndpoint),
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [network_type, restEndpoint, JSON.stringify(evm)]

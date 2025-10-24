@@ -76,7 +76,7 @@ export const getEvmInternalTxsByAccountAddressSequencer = async (
           params: {
             "pagination.key": nextKey || undefined,
             "pagination.limit": limit,
-            "pagination.reverse": false,
+            "pagination.reverse": true,
           },
         }
       )
