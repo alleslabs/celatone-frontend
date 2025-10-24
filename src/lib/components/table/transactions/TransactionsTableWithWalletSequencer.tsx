@@ -35,7 +35,7 @@ export const TransactionsTableWithWalletSequencer = ({
     return (
       <>
         <EvmTransactionsTable
-          emptyState={evmData.emptyMessage}
+          emptyState={evmData.emptyEvmMessage}
           evmTransactions={
             evmData.evmTxsData.data?.pages.flatMap((page) => page.txs) ?? []
           }

@@ -100,7 +100,7 @@ export const PastTxsSequencer = () => {
         }}
         currentTab={currentTab}
         evmData={{
-          emptyMessage: (
+          emptyEvmMessage: (
             <PastTxsSequencerTransactionsTableWithWalletEmptyState
               error={evmTxsData.error}
               search={search}

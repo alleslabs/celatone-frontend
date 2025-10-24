@@ -23,7 +23,10 @@ export const BlockEvmTxsTablesSequencer = ({
           emptyMessage: "There are no submitted transactions in this block",
         }}
         evmData={{
-          emptyMessage: "There are no submitted EVM transactions in this block",
+          emptyEvmInternalMessage:
+            "There are no submitted internal transactions in this block",
+          emptyEvmMessage:
+            "There are no submitted EVM transactions in this block",
           evmInternalTxsData,
           evmTxsData,
         }}

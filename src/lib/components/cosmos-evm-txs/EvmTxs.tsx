@@ -18,7 +18,8 @@ import { EvmTransactionsTable, ViewMore } from "../table";
 import { EvmInternalTransactionsTable } from "../table/evm-internal-transactions";
 
 export interface EvmTxsProps {
-  emptyMessage?: ReactNode;
+  emptyEvmInternalMessage?: ReactNode;
+  emptyEvmMessage?: ReactNode;
   evmInternalTxsData?: UseInfiniteQueryResult<
     InfiniteData<EvmInternalTxsResponseSequencer>
   >;
@@ -30,7 +31,8 @@ export interface EvmTxsProps {
 }
 
 export const EvmTxs = ({
-  emptyMessage,
+  emptyEvmInternalMessage,
+  emptyEvmMessage,
   evmInternalTxsData,
   evmTxsData,
   onViewMore,
@@ -64,13 +66,13 @@ export const EvmTxs = ({
         <TabPanel p={0} pt={{ base: 0, md: 6 }}>
           <EvmTransactionsTable
             emptyState={
-              typeof emptyMessage === "string" ? (
+              typeof emptyEvmMessage === "string" ? (
                 <EmptyState
                   imageVariant="empty"
-                  message={emptyMessage || "There are no EVM transactions."}
+                  message={emptyEvmMessage || "There are no EVM transactions."}
                 />
               ) : (
-                (emptyMessage ?? (
+                (emptyEvmMessage ?? (
                   <EmptyState
                     imageVariant="empty"
                     message="There are no EVM transactions."
@@ -106,15 +108,16 @@ export const EvmTxs = ({
             <EvmInternalTransactionsTable
               disableInfiniteLoad={!!onViewMore}
               emptyState={
-                typeof emptyMessage === "string" ? (
+                typeof emptyEvmInternalMessage === "string" ? (
                   <EmptyState
                     imageVariant="empty"
                     message={
-                      emptyMessage || "There are no internal transactions."
+                      emptyEvmInternalMessage ||
+                      "There are no internal transactions."
                     }
                   />
                 ) : (
-                  (emptyMessage ?? (
+                  (emptyEvmInternalMessage ?? (
                     <EmptyState
                       imageVariant="empty"
                       message="There are no internal transactions."
