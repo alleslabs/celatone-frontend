@@ -11,6 +11,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import {
   coinToTokenWithValue,
+  formatEvmTxHash,
   formatInteger,
   formatUTokenWithPrecision,
   getTokenLabel,
@@ -95,7 +96,11 @@ export const EvmInternalTransactionMobileCard = ({
         <Grid gap={3} gridTemplateColumns="1fr 1fr">
           <Flex direction="column" flex={1}>
             <MobileLabel label="Parent tx hash" />
-            <ExplorerLink showCopyOnHover type="tx_hash" value={txHash} />
+            <ExplorerLink
+              showCopyOnHover
+              type="tx_hash"
+              value={formatEvmTxHash(txHash)}
+            />
           </Flex>
           <Flex direction="column" flex={1}>
             <MobileLabel label="Action type" />

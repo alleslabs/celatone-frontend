@@ -19,6 +19,7 @@ import { CustomIcon } from "lib/components/icon";
 import { type AssetInfos, type Nullable, type Option } from "lib/types";
 import {
   coinToTokenWithValue,
+  formatEvmTxHash,
   formatInteger,
   formatUTokenWithPrecision,
   getTokenLabel,
@@ -99,7 +100,7 @@ export const EvmInternalTransactionTableRow = ({
                     <ExplorerLink
                       showCopyOnHover
                       type="tx_hash"
-                      value={txHash}
+                      value={formatEvmTxHash(txHash)}
                     />
                   ) : (
                     <Flex>
