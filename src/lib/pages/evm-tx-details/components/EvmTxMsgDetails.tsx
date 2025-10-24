@@ -83,6 +83,7 @@ export const EvmTxMsgDetails = ({
       navigate({
         pathname: "/txs/[txHash]",
         query: { txHash: cosmosTxHash },
+        replace: true,
       });
     }
   }, [evmDecodedTx.decodedTransaction, navigate]);

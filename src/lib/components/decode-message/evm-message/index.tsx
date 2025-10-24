@@ -126,6 +126,12 @@ const DecodeEvmMessageKami721PublicMintBody = lazy(() =>
   }))
 );
 
+const DecodeEvmMessageCosmosMirrorHeader = lazy(() =>
+  import("./decode-evm-message-cosmos-mirror").then((m) => ({
+    default: m.DecodeEvmMessageCosmosMirrorHeader,
+  }))
+);
+
 interface DecodeCosmosEvmMessageProps {
   compact: boolean;
   evmDecodedMessage: DecodedEthereumTx;
@@ -236,6 +242,15 @@ export const DecodeCosmosEvmMessageHeader = ({
       <DecodeEvmMessageKami721PublicMintHeader
         decodedTransaction={decodedTransaction}
         evmVerifyInfos={evmVerifyInfos}
+        {...props}
+      />
+    );
+  }
+
+  if (decodedTransaction.action === "cosmos_mirror") {
+    return (
+      <DecodeEvmMessageCosmosMirrorHeader
+        decodedTransaction={decodedTransaction}
         {...props}
       />
     );

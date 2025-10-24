@@ -38,7 +38,10 @@ export const DecodeEvmMessageNotSupportedHeader = ({
         isIbc={false}
         isOpinit={false}
         isSingleMsg={msgCount === 1}
-        label={input.slice(0, 10)}
+        label={
+          evmVerifyInfos?.[input.toLocaleLowerCase()]?.contractName ??
+          input.slice(0, 10)
+        }
         msgCount={msgCount}
         type={decodedTransaction.action}
       >

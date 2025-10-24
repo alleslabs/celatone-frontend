@@ -3,9 +3,10 @@ import type { DecodedContractCreationCall } from "@initia/tx-decoder";
 import type { EvmVerifyInfosResponse } from "lib/services/types";
 import type { Nullable, Option } from "lib/types";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Tag, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import plur from "plur";
 
 import { DecodeMessageBody } from "../decode-message-body";
 import { DecodeMessageHeader } from "../decode-message-header";
@@ -28,7 +29,6 @@ export const DecodeEvmMessageContractCreationHeader = ({
   const { contractAddresses, from } = decodedTransaction.data;
 
   const contractCount = contractAddresses.length;
-  const isSingleContract = contractCount === 1;
 
   return (
     <Flex direction="column" w="100%">
@@ -43,7 +43,7 @@ export const DecodeEvmMessageContractCreationHeader = ({
         msgCount={msgCount}
         type={decodedTransaction.action}
       >
-        {isSingleContract && contractAddresses.length > 0 && (
+        {contractCount === 1 ? (
           <ExplorerLink
             leftIcon={
               <CustomIcon
@@ -59,11 +59,15 @@ export const DecodeEvmMessageContractCreationHeader = ({
             type="user_address"
             value={contractAddresses[0]}
           />
-        )}
-        {!isSingleContract && contractCount > 0 && (
-          <Text color="text.main" fontWeight={600}>
-            {contractCount} contracts
-          </Text>
+        ) : (
+          <>
+            <Tag gap={0.5} minWidth="auto" py={0} variant="gray">
+              <Text variant="body2" whiteSpace="nowrap">
+                {contractCount}
+              </Text>
+            </Tag>
+            <Text color="text.main">{plur("contract", contractCount)}</Text>
+          </>
         )}
         <Text color="text.dark">by</Text>
         <ExplorerLink showCopyOnHover type="user_address" value={from} />
@@ -79,7 +83,7 @@ export const DecodeEvmMessageContractCreationBody = ({
 }: DecodeEvmMessageContractCreationProps) => {
   const { contractAddresses, from } = decodedTransaction.data;
 
-  const isSingleContract = contractAddresses.length === 1;
+  const contractCount = contractAddresses.length;
 
   return (
     <DecodeMessageBody
@@ -98,50 +102,27 @@ export const DecodeEvmMessageContractCreationBody = ({
           value={from}
         />
       </DecodeMessageRow>
-      {isSingleContract ? (
-        <DecodeMessageRow title="Created Contract">
-          <ExplorerLink
-            leftIcon={
-              <CustomIcon
-                boxSize={4}
-                color="primary.main"
-                name="contract-address"
-              />
-            }
-            showCopyOnHover
-            textFormat="normal"
-            textLabel={
-              evmVerifyInfos?.[contractAddresses[0].toLowerCase()]?.contractName
-            }
-            type="user_address"
-            value={contractAddresses[0]}
-          />
-        </DecodeMessageRow>
-      ) : (
-        <DecodeMessageRow title="Created Contracts">
-          <Flex direction="column" gap={2} w="full">
-            {contractAddresses.map((address) => (
-              <ExplorerLink
-                key={address}
-                leftIcon={
-                  <CustomIcon
-                    boxSize={4}
-                    color="primary.main"
-                    name="contract-address"
-                  />
-                }
-                showCopyOnHover
-                textFormat="normal"
-                textLabel={
-                  evmVerifyInfos?.[address.toLowerCase()]?.contractName
-                }
-                type="user_address"
-                value={address}
-              />
-            ))}
-          </Flex>
-        </DecodeMessageRow>
-      )}
+      <DecodeMessageRow title={`Created ${plur("Contract", contractCount)}`}>
+        <Flex direction="column" gap={1} w="full">
+          {contractAddresses.map((address) => (
+            <ExplorerLink
+              key={address}
+              leftIcon={
+                <CustomIcon
+                  boxSize={4}
+                  color="primary.main"
+                  name="contract-address"
+                />
+              }
+              showCopyOnHover
+              textFormat="normal"
+              textLabel={evmVerifyInfos?.[address.toLowerCase()]?.contractName}
+              type="user_address"
+              value={address}
+            />
+          ))}
+        </Flex>
+      </DecodeMessageRow>
     </DecodeMessageBody>
   );
 };
