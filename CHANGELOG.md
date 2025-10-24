@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1488](https://github.com/alleslabs/celatone-frontend/pull/1488) Fix EVM tx decoder and EVM internal txs issue
 - [#1487](https://github.com/alleslabs/celatone-frontend/pull/1487) Fix EVM tx decoder message issue
 - [#1484](https://github.com/alleslabs/celatone-frontend/pull/1484) Fix Cosmos decoded msg disappearing issue in EVM tx details and EVM decoded msg overflow issue
 
