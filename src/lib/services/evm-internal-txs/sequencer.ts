@@ -10,7 +10,8 @@ export const getEvmInternalTxsByBlockHeightSequencer = async (
   endpoint: string,
   height: number,
   limit: number = 10,
-  nextKey?: string
+  nextKey?: string,
+  countTotal: boolean = false
 ) => {
   const fetch = async (endpoint: string) =>
     axios
@@ -20,6 +21,7 @@ export const getEvmInternalTxsByBlockHeightSequencer = async (
         )}`,
         {
           params: {
+            "pagination.count_total": countTotal,
             "pagination.key": nextKey || undefined,
             "pagination.limit": limit,
             "pagination.reverse": false,
@@ -37,7 +39,8 @@ export const getEvmInternalTxsByTxHashSequencer = async (
   endpoint: string,
   txHash: string,
   limit: number = 10,
-  nextKey?: string
+  nextKey?: string,
+  countTotal: boolean = false
 ) => {
   const fetch = async (endpoint: string) =>
     axios
@@ -47,6 +50,7 @@ export const getEvmInternalTxsByTxHashSequencer = async (
         )}`,
         {
           params: {
+            "pagination.count_total": countTotal,
             "pagination.key": nextKey || undefined,
             "pagination.limit": limit,
             "pagination.reverse": false,
@@ -64,7 +68,8 @@ export const getEvmInternalTxsByAccountAddressSequencer = async (
   endpoint: string,
   address: Addr,
   limit: number = 10,
-  nextKey?: string
+  nextKey?: string,
+  countTotal: boolean = false
 ) => {
   const fetch = async (endpoint: string) =>
     axios
@@ -74,6 +79,7 @@ export const getEvmInternalTxsByAccountAddressSequencer = async (
         )}`,
         {
           params: {
+            "pagination.count_total": countTotal,
             "pagination.key": nextKey || undefined,
             "pagination.limit": limit,
             "pagination.reverse": true,

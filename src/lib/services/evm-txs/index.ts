@@ -4,9 +4,12 @@ import {
   useCelatoneApp,
   useEvmConfig,
 } from "lib/app-provider";
+import { useCountQuery } from "lib/hooks/useCountQuery";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { type Addr, type Option, zAddr } from "lib/types";
 import { isTxHash } from "lib/utils";
+
+import type { UseEvmTxsQueryResult } from "../types";
 
 import {
   getBlockDataJsonRpc,
@@ -23,7 +26,7 @@ import {
 export const useEvmTxsByBlockHeightSequencer = (
   height: number,
   limit: number = 10
-) => {
+): UseEvmTxsQueryResult => {
   const {
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
@@ -31,7 +34,7 @@ export const useEvmTxsByBlockHeightSequencer = (
 
   const jsonRpc = evm.enabled ? evm.jsonRpc : "";
 
-  return useInfiniteQuery({
+  const dataQuery = useInfiniteQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.EVM_TXS_BY_BLOCK_HEIGHT_SEQUENCER,
       indexerEndpoint,
@@ -49,7 +52,8 @@ export const useEvmTxsByBlockHeightSequencer = (
           indexerEndpoint,
           height,
           limit,
-          pageParam
+          pageParam,
+          false
         ),
         getBlockDataJsonRpc(jsonRpc, height),
       ]);
@@ -90,16 +94,47 @@ export const useEvmTxsByBlockHeightSequencer = (
     refetchOnWindowFocus: false,
     retry: 1,
   });
+
+  const countQuery = useCountQuery(
+    [
+      CELATONE_QUERY_KEYS.EVM_TXS_BY_BLOCK_HEIGHT_SEQUENCER,
+      indexerEndpoint,
+      height,
+      evm.enabled,
+      jsonRpc,
+      "count",
+    ],
+    async () => {
+      if (!evm.enabled) return 0;
+      const result = await getEvmTxsByBlockHeightSequencer(
+        indexerEndpoint,
+        height,
+        1,
+        undefined,
+        true
+      );
+      return result.pagination.total ?? 0;
+    },
+    evm.enabled
+  );
+
+  return {
+    // eslint-disable-next-line @tanstack/query/no-rest-destructuring
+    ...dataQuery,
+    countError: countQuery.error ?? undefined,
+    isCountLoading: countQuery.isLoading,
+    totalCount: countQuery.data,
+  };
 };
 
-export const useEvmTxs = (limit: number = 10) => {
+export const useEvmTxs = (limit: number = 10): UseEvmTxsQueryResult => {
   const {
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
   const evm = useEvmConfig({ shouldRedirect: false });
   const jsonRpc = evm.enabled ? evm.jsonRpc : "";
 
-  return useInfiniteQuery({
+  const dataQuery = useInfiniteQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.EVM_TXS_SEQUENCER,
       indexerEndpoint,
@@ -110,7 +145,12 @@ export const useEvmTxs = (limit: number = 10) => {
     queryFn: async ({ pageParam }: { pageParam?: string }) => {
       if (!evm.enabled) throw new Error("EVM is not enabled (useEvmTxs)");
 
-      const txs = await getEvmTxsSequencer(indexerEndpoint, limit, pageParam);
+      const txs = await getEvmTxsSequencer(
+        indexerEndpoint,
+        limit,
+        pageParam,
+        false
+      );
 
       const [txsDataJsonRpc, blockDataJsonRpc] = await Promise.all([
         getTxsDataJsonRpc(
@@ -149,6 +189,35 @@ export const useEvmTxs = (limit: number = 10) => {
     refetchOnWindowFocus: false,
     retry: 1,
   });
+
+  const countQuery = useCountQuery(
+    [
+      CELATONE_QUERY_KEYS.EVM_TXS_SEQUENCER,
+      indexerEndpoint,
+      evm.enabled,
+      jsonRpc,
+      "count",
+    ],
+    async () => {
+      if (!evm.enabled) return 0;
+      const result = await getEvmTxsSequencer(
+        indexerEndpoint,
+        1,
+        undefined,
+        true
+      );
+      return result.pagination.total ?? 0;
+    },
+    evm.enabled
+  );
+
+  return {
+    // eslint-disable-next-line @tanstack/query/no-rest-destructuring
+    ...dataQuery,
+    countError: countQuery.error ?? undefined,
+    isCountLoading: countQuery.isLoading,
+    totalCount: countQuery.data,
+  };
 };
 
 export const useEvmTxsByAccountAddressSequencer = (
@@ -156,7 +225,7 @@ export const useEvmTxsByAccountAddressSequencer = (
   search: Option<string>,
   limit: number = 10,
   enabled: boolean = true
-) => {
+): UseEvmTxsQueryResult => {
   const {
     chainConfig: { indexer: indexerEndpoint },
   } = useCelatoneApp();
@@ -165,7 +234,7 @@ export const useEvmTxsByAccountAddressSequencer = (
 
   const jsonRpc = evm.enabled ? evm.jsonRpc : "";
 
-  return useInfiniteQuery({
+  const dataQuery = useInfiniteQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.EVM_TXS_BY_ACCOUNT_ADDRESS_SEQUENCER,
       indexerEndpoint,
@@ -244,7 +313,8 @@ export const useEvmTxsByAccountAddressSequencer = (
         indexerEndpoint,
         address,
         limit,
-        pageParam
+        pageParam,
+        false
       );
 
       const [txsDataJsonRpc, blockDataJsonRpc] = await Promise.all([
@@ -285,4 +355,39 @@ export const useEvmTxsByAccountAddressSequencer = (
     retry: 1,
     enabled: enabled && evm.enabled && !!address,
   });
+
+  const countQuery = useCountQuery(
+    [
+      CELATONE_QUERY_KEYS.EVM_TXS_BY_ACCOUNT_ADDRESS_SEQUENCER,
+      indexerEndpoint,
+      evm.enabled,
+      jsonRpc,
+      address,
+      search,
+      "count",
+    ],
+    async () => {
+      if (!evm.enabled || !address) return 0;
+      if (search && isTxHash(search)) return 1;
+      if (search && !isTxHash(search)) return 0;
+
+      const result = await getEvmTxsByAccountAddressSequencer(
+        indexerEndpoint,
+        address,
+        1,
+        undefined,
+        true
+      );
+      return result.pagination.total ?? 0;
+    },
+    enabled && evm.enabled && !!address
+  );
+
+  return {
+    // eslint-disable-next-line @tanstack/query/no-rest-destructuring
+    ...dataQuery,
+    countError: countQuery.error ?? undefined,
+    isCountLoading: countQuery.isLoading,
+    totalCount: countQuery.data,
+  };
 };
