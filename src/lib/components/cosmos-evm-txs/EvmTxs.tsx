@@ -1,10 +1,6 @@
 import type {
-  InfiniteData,
-  UseInfiniteQueryResult,
-} from "@tanstack/react-query";
-import type {
-  EvmInternalTxsResponseSequencer,
-  EvmTxsResponseSequencerWithRpcData,
+  UseEvmInternalTxsQueryResult,
+  UseEvmTxsQueryResult,
 } from "lib/services/types";
 import type { ReactNode } from "react";
 
@@ -20,12 +16,8 @@ import { EvmInternalTransactionsTable } from "../table/evm-internal-transactions
 export interface EvmTxsProps {
   emptyEvmInternalMessage?: ReactNode;
   emptyEvmMessage?: ReactNode;
-  evmInternalTxsData?: UseInfiniteQueryResult<
-    InfiniteData<EvmInternalTxsResponseSequencer>
-  >;
-  evmTxsData: UseInfiniteQueryResult<
-    InfiniteData<EvmTxsResponseSequencerWithRpcData>
-  >;
+  evmInternalTxsData?: UseEvmInternalTxsQueryResult;
+  evmTxsData: UseEvmTxsQueryResult;
   onViewMore?: () => void;
   showTimestamp?: boolean;
 }
@@ -39,10 +31,8 @@ export const EvmTxs = ({
   showTimestamp = false,
 }: EvmTxsProps) => {
   const [tabIndex, setTabIndex] = useState(0);
-  const countTotalEvmTxs =
-    evmTxsData.data?.pages?.[0]?.pagination?.total ?? undefined;
-  const countTotalEvmInternalTxs =
-    evmInternalTxsData?.data?.pages?.[0]?.pagination?.total ?? undefined;
+  const countTotalEvmTxs = evmTxsData.totalCount;
+  const countTotalEvmInternalTxs = evmInternalTxsData?.totalCount;
 
   return (
     <Tabs
@@ -57,9 +47,19 @@ export const EvmTxs = ({
         borderColor="gray.700"
         overflowX="scroll"
       >
-        <CustomTab count={countTotalEvmTxs}>Transactions</CustomTab>
+        <CustomTab
+          count={countTotalEvmTxs}
+          isLoading={evmTxsData.isCountLoading}
+        >
+          Transactions
+        </CustomTab>
         {evmInternalTxsData && (
-          <CustomTab count={countTotalEvmInternalTxs}>Internal txs</CustomTab>
+          <CustomTab
+            count={countTotalEvmInternalTxs}
+            isLoading={evmInternalTxsData.isCountLoading}
+          >
+            Internal txs
+          </CustomTab>
         )}
       </TabList>
       <TabPanels>

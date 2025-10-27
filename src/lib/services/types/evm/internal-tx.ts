@@ -1,4 +1,9 @@
-import { zHexAddr20, zHexBig, zPagination } from "lib/types";
+import {
+  type UseInfiniteQueryWithCountResult,
+  zHexAddr20,
+  zHexBig,
+  zPagination,
+} from "lib/types";
 import { snakeToCamel } from "lib/utils";
 import { z } from "zod";
 
@@ -32,3 +37,6 @@ export const zEvmInternalTxsResponseSequencer = z
 export type EvmInternalTxsResponseSequencer = z.infer<
   typeof zEvmInternalTxsResponseSequencer
 >;
+
+export type UseEvmInternalTxsQueryResult =
+  UseInfiniteQueryWithCountResult<EvmInternalTxsResponseSequencer>;

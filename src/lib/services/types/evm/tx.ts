@@ -1,4 +1,9 @@
-import { zHexAddr20, zHexBig, zPagination } from "lib/types";
+import {
+  type UseInfiniteQueryWithCountResult,
+  zHexAddr20,
+  zHexBig,
+  zPagination,
+} from "lib/types";
 import { z } from "zod";
 
 import type { RawTxJsonRpc, RawTxReceiptJsonRpc, TxJsonRpc } from "../tx";
@@ -48,3 +53,6 @@ export type EvmTxsResponseSequencerWithRpcData = Omit<
 export const zEvmTxResponseSequencer = z.object({
   tx: zEvmTxSequencer,
 });
+
+export type UseEvmTxsQueryResult =
+  UseInfiniteQueryWithCountResult<EvmTxsResponseSequencerWithRpcData>;

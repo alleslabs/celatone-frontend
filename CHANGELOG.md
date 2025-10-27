@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1491](https://github.com/alleslabs/celatone-frontend/pull/1491) Separate total count in EVM txs sequencer API and EVM internal txs API
 - [#1486](https://github.com/alleslabs/celatone-frontend/pull/1486) Add more EVM tx decoder messages
 - [#1480](https://github.com/alleslabs/celatone-frontend/pull/1480) Add EVM internal transactions from rollytics
 

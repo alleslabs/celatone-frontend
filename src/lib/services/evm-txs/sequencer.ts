@@ -12,7 +12,8 @@ export const getEvmTxsByBlockHeightSequencer = (
   endpoint: string,
   height: number,
   limit: number = 10,
-  nextKey?: string
+  nextKey?: string,
+  countTotal: boolean = false
 ): Promise<EvmTxsResponseSequencer> => {
   const fetch = async (endpoint: string) =>
     axios
@@ -20,6 +21,7 @@ export const getEvmTxsByBlockHeightSequencer = (
         `${endpoint}/indexer/tx/v1/evm-txs/by_height/${encodeURIComponent(height)}`,
         {
           params: {
+            "pagination.count_total": countTotal,
             "pagination.key": nextKey || undefined,
             "pagination.limit": limit,
             "pagination.reverse": false,
@@ -34,11 +36,13 @@ export const getEvmTxsByBlockHeightSequencer = (
 export const getEvmTxsSequencer = (
   endpoint: string,
   limit = 10,
-  nextKey?: string
+  nextKey?: string,
+  countTotal: boolean = false
 ): Promise<EvmTxsResponseSequencer> => {
   return axios
     .get(`${endpoint}/indexer/tx/v1/evm-txs`, {
       params: {
+        "pagination.count_total": countTotal,
         "pagination.key": nextKey || undefined,
         "pagination.limit": limit,
       },
@@ -50,7 +54,8 @@ export const getEvmTxsByAccountAddressSequencer = (
   endpoint: string,
   address: Addr,
   limit = 10,
-  nextKey?: string
+  nextKey?: string,
+  countTotal: boolean = false
 ): Promise<EvmTxsResponseSequencer> => {
   return axios
     .get(
@@ -59,6 +64,7 @@ export const getEvmTxsByAccountAddressSequencer = (
       )}`,
       {
         params: {
+          "pagination.count_total": countTotal,
           "pagination.key": nextKey || undefined,
           "pagination.limit": limit,
         },

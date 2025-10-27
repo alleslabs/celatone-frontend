@@ -63,8 +63,7 @@ export const EvmTxMsgDetails = ({
     addressValidation.success
   );
 
-  const countTotalEvmInternalTxs =
-    evmInternalTxsData.data?.pages?.[0]?.pagination?.total ?? undefined;
+  const countTotalEvmInternalTxs = evmInternalTxsData.totalCount;
 
   const {
     decodedTx,
