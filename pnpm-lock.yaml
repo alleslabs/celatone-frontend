@@ -125,8 +125,8 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       '@initia/interwovenkit-react':
-        specifier: 2.0.5
-        version: 2.0.5(leih36debiqmubbjyiospygs6a)
+        specifier: 2.0.6
+        version: 2.0.6(leih36debiqmubbjyiospygs6a)
       '@initia/react-app-shell':
         specifier: 1.3.1
         version: 1.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -2465,8 +2465,8 @@ packages:
   '@initia/initia.proto@1.0.0':
     resolution: {integrity: sha512-PpHO1bR+mE2KmqfNplhRCcoS5Hn7xiZqgGVE3obNVmzjsfXAO5vaA91KFx4GUupEBdOjXYDyQ/GAS4f+V3rFvA==}
 
-  '@initia/interwovenkit-react@2.0.5':
-    resolution: {integrity: sha512-UiRSMqOh/Nj5gck+vuqKkx2hEYIhgWK8ALndr9OrVlBLolffcJioECMuHyIPoGV6aCXdzADbdGlrfWnhr+cI/w==}
+  '@initia/interwovenkit-react@2.0.6':
+    resolution: {integrity: sha512-zH/2v+B5SvE5M+1DLrOzHVuw7dGqmW6mtbpVwBY5E//WRKRzvpVjxWiWoH6WwlNgdwZbw/X0tQR3TCfO/Po2mQ==}
     peerDependencies:
       '@amplitude/analytics-browser': '>=2.0.0'
       '@base-ui-components/react': 1.0.0-beta.2
@@ -15049,7 +15049,7 @@ snapshots:
       long: 5.3.1
       protobufjs: 7.4.0
 
-  '@initia/interwovenkit-react@2.0.5(leih36debiqmubbjyiospygs6a)':
+  '@initia/interwovenkit-react@2.0.6(leih36debiqmubbjyiospygs6a)':
     dependencies:
       '@amplitude/analytics-browser': 2.11.11
       '@base-ui-components/react': 1.0.0-beta.3(@types/react@19.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
