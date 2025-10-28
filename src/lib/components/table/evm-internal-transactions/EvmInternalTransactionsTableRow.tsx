@@ -118,17 +118,15 @@ export const EvmInternalTransactionTableRow = ({
               <TableRow>
                 <Flex align="center" overflow="hidden" w="full">
                   <Flex align="center" flexShrink={0}>
-                    {Array.from({ length: nestingLevel * 10 }).map(
-                      (_, index) => (
-                        <CustomIcon
-                          key={`${result.index}-level-${index}`}
-                          boxSize={6}
-                          color="gray.600"
-                          marginLeft={index > 0 ? "-8px" : "0"}
-                          name="l-shape"
-                        />
-                      )
-                    )}
+                    {Array.from({ length: nestingLevel }).map((_, index) => (
+                      <CustomIcon
+                        key={`${result.index}-level-${index}`}
+                        boxSize={6}
+                        color="gray.600"
+                        marginLeft={index > 0 ? "-8px" : "0"}
+                        name="l-shape"
+                      />
+                    ))}
                   </Flex>
                   <Flex flex={1} minW={0}>
                     <ExplorerLink

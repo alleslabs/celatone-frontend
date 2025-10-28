@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1493](https://github.com/alleslabs/celatone-frontend/pull/1493) Fix EVM internal txs minor UI bugs
 - [#1490](https://github.com/alleslabs/celatone-frontend/pull/1490) Fix EVM minor UI bugs
 - [#1489](https://github.com/alleslabs/celatone-frontend/pull/1489) Fix EVM txs table empty msgs issue
 - [#1488](https://github.com/alleslabs/celatone-frontend/pull/1488) Fix EVM tx decoder and EVM internal txs issue
