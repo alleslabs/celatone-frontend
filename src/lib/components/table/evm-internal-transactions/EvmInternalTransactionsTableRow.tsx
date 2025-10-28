@@ -116,7 +116,7 @@ export const EvmInternalTransactionTableRow = ({
                 </TableRow>
               )}
               <TableRow>
-                <Flex align="center" w="full">
+                <Flex align="center" overflow="hidden" w="full">
                   <Flex align="center" flexShrink={0}>
                     {Array.from({ length: nestingLevel }).map((_, index) => (
                       <CustomIcon
