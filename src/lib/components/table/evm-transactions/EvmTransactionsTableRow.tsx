@@ -114,7 +114,7 @@ export const EvmTransactionsTableRow = ({
           flexDirection="column"
           justifyContent="center"
         >
-          <Text color="text.dark" variant="body2">
+          <Text color="text.dark" isTruncated maxW="100%" variant="body2">
             {formatUTokenWithPrecision({
               amount: token.amount,
               decimalPoints: token.precision ? 6 : 0,
