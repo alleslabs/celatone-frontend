@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1495](https://github.com/alleslabs/celatone-frontend/pull/1495) Support token fess denom uppercase letter
 - [#1483](https://github.com/alleslabs/celatone-frontend/pull/1483) Align connected wallet logo with widget
 
 ### Bug fixes
