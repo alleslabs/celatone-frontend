@@ -9,10 +9,11 @@ import { TableRow } from "lib/components/table";
 import { BalanceChangeEvmNft } from "./balance-changes-evm-nft";
 import { BalanceChangeNft } from "./balance-changes-nft";
 import { BalanceChangesToken } from "./balance-changes-token";
+import { BalanceChangeWasmNft } from "./balance-changes-wasm-nft";
 
 interface BalanceChangesTableRowProps {
   address: string;
-  addressType: Exclude<LinkType, "function_name">;
+  addressType: Exclude<LinkType, "function_name_wasm" | "function_name">;
   ftChangeEntries: [string, string][];
   metadata?: Metadata;
   nftChangeEntries?: [string, [string, string][]][];
@@ -30,7 +31,7 @@ export const BalanceChangesTableRow = ({
   templateColumns,
 }: BalanceChangesTableRowProps) => {
   const totalNftOrObjectCount =
-    metadata?.type === "evm"
+    metadata?.type === "evm" || metadata?.type === "wasm"
       ? nftChangeEntries.reduce(
           (acc, [, tokenIdChanges]) => acc + tokenIdChanges.length,
           0
@@ -87,6 +88,32 @@ export const BalanceChangesTableRow = ({
                       gap={3}
                     >
                       <BalanceChangeEvmNft
+                        change={Number(change)}
+                        contractAddress={contractAddress}
+                        metadata={metadata}
+                        tokenId={tokenId}
+                      />
+                      {currentIndex < totalNftOrObjectCount - 1 && (
+                        <Divider borderColor="gray.700" />
+                      )}
+                    </Stack>
+                  );
+                })
+              );
+            })()}
+          {metadata &&
+            metadata.type === "wasm" &&
+            (() => {
+              let globalIndex = 0;
+              return nftChangeEntries.map(([contractAddress, tokenIdChanges]) =>
+                tokenIdChanges.map(([tokenId, change]) => {
+                  const currentIndex = globalIndex++;
+                  return (
+                    <Stack
+                      key={`${address}-${contractAddress}-${tokenId}`}
+                      gap={3}
+                    >
+                      <BalanceChangeWasmNft
                         change={Number(change)}
                         contractAddress={contractAddress}
                         metadata={metadata}

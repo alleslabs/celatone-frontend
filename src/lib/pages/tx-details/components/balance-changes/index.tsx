@@ -5,6 +5,7 @@ import type {
 
 import { EvmBalanceChangesComponent } from "./evm-balance-changes-component";
 import { MoveBalanceChangesComponent } from "./move-balance-changes-component";
+import { WasmBalanceChangesComponent } from "./wasm-balance-changes-component";
 
 interface BalanceChangesProps {
   metadata?: Metadata;
@@ -20,6 +21,15 @@ export const BalanceChanges = ({
       <EvmBalanceChangesComponent
         evmBalanceChanges={totalBalanceChanges}
         metadata={metadata}
+      />
+    );
+  }
+
+  if (totalBalanceChanges.vm === "wasm") {
+    return (
+      <WasmBalanceChangesComponent
+        metadata={metadata}
+        wasmBalanceChanges={totalBalanceChanges}
       />
     );
   }

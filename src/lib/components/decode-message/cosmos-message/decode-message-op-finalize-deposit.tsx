@@ -66,19 +66,6 @@ export const DecodeMessageOpFinalizeDeposit = ({
         </Flex>
       </DecodeMessageHeader>
       <DecodeMessageBody compact={compact} isExpand={expand} log={log}>
-        <DecodeMessageRow title="Status">
-          <Flex align="center" gap={2}>
-            <Badge
-              colorScheme={data.success ? "success" : "error"}
-              variant="solid"
-            >
-              {data.success ? "Success" : "Failed"}
-            </Badge>
-            {!data.success && data.reason && (
-              <Text color="text.disabled">Reason: {data.reason}</Text>
-            )}
-          </Flex>
-        </DecodeMessageRow>
         <DecodeMessageRow title="Destination chain">
           <ChainBadge chainId={chainId} />
         </DecodeMessageRow>
