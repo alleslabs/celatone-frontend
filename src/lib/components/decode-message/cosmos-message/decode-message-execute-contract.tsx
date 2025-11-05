@@ -108,6 +108,7 @@ export const DecodeMessageExecuteContract = memo(
           {functionName && (
             <DecodeMessageRow title="Function name">
               <ExplorerLink
+                copyValue={functionName}
                 maxWidth="full"
                 queryParams={{
                   contract,

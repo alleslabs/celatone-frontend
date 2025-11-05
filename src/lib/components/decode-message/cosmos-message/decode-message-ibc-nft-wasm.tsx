@@ -61,10 +61,15 @@ export const DecodeMessageIbcNftWasm = memo(
       [data.classId, formatAddresses, isIbcDenom]
     );
 
+    const isNftQueryEnabled = Boolean(
+      collectionAddressHex && collectionAddressBech && data.tokenIds?.[0]
+    );
+
     const { data: nft } = useNftByTokenId(
       collectionAddressHex!,
       collectionAddressBech!,
-      data.tokenIds?.[0]
+      data.tokenIds?.[0],
+      isNftQueryEnabled
     );
     const { data: nftMetadata } = useNftMetadata(nft);
     const nftImageUrl = useNftGlyphImage(nft);
