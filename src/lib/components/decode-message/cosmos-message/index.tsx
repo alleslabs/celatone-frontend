@@ -150,6 +150,41 @@ const DecodeMessageOpInitiateWithdraw = lazy(() =>
     default: m.DecodeMessageOpInitiateWithdraw,
   }))
 );
+const DecodeMessageCw20Transfer = lazy(() =>
+  import("./decode-message-cw20-transfer").then((m) => ({
+    default: m.DecodeMessageCw20Transfer,
+  }))
+);
+const DecodeMessageCw20TransferFrom = lazy(() =>
+  import("./decode-message-cw20-transfer-from").then((m) => ({
+    default: m.DecodeMessageCw20TransferFrom,
+  }))
+);
+const DecodeMessageCw721Transfer = lazy(() =>
+  import("./decode-message-cw721-transfer").then((m) => ({
+    default: m.DecodeMessageCw721Transfer,
+  }))
+);
+const DecodeMessageCw721Mint = lazy(() =>
+  import("./decode-message-cw721-mint").then((m) => ({
+    default: m.DecodeMessageCw721Mint,
+  }))
+);
+const DecodeMessageInstantiateContract = lazy(() =>
+  import("./decode-message-instantiate-contract").then((m) => ({
+    default: m.DecodeMessageInstantiateContract,
+  }))
+);
+const DecodeMessageExecuteContract = lazy(() =>
+  import("./decode-message-execute-contract").then((m) => ({
+    default: m.DecodeMessageExecuteContract,
+  }))
+);
+const DecodeMessageIbcNftWasm = lazy(() =>
+  import("./decode-message-ibc-nft-wasm").then((m) => ({
+    default: m.DecodeMessageIbcNftWasm,
+  }))
+);
 
 interface DecodeMessageProps extends TxMsgData {
   compact: boolean;
@@ -390,6 +425,61 @@ export const DecodeMessage = ({
           decodedMessage={decodedMessage}
           {...props}
         />
+      );
+    }
+
+    // WASM actions
+    if (action === "cw20_transfer") {
+      return (
+        <DecodeMessageCw20Transfer decodedMessage={decodedMessage} {...props} />
+      );
+    }
+
+    if (action === "cw20_transfer_from") {
+      return (
+        <DecodeMessageCw20TransferFrom
+          decodedMessage={decodedMessage}
+          {...props}
+        />
+      );
+    }
+
+    if (action === "cw721_transfer") {
+      return (
+        <DecodeMessageCw721Transfer
+          decodedMessage={decodedMessage}
+          {...props}
+        />
+      );
+    }
+
+    if (action === "cw721_mint") {
+      return (
+        <DecodeMessageCw721Mint decodedMessage={decodedMessage} {...props} />
+      );
+    }
+
+    if (action === "instantiate_contract") {
+      return (
+        <DecodeMessageInstantiateContract
+          decodedMessage={decodedMessage}
+          {...props}
+        />
+      );
+    }
+
+    if (action === "execute_contract") {
+      return (
+        <DecodeMessageExecuteContract
+          decodedMessage={decodedMessage}
+          {...props}
+        />
+      );
+    }
+
+    if (action === "ibc_nft_send_wasm" || action === "ibc_nft_receive_wasm") {
+      return (
+        <DecodeMessageIbcNftWasm decodedMessage={decodedMessage} {...props} />
       );
     }
 

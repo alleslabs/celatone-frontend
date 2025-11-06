@@ -75,6 +75,7 @@ export const DecodeEvmMessageKami721PublicMintHeader = ({
             <ExplorerLink
               showCopyOnHover
               textLabel={nftMetadata?.name || nft.tokenId}
+              textVariant={compact ? "body2" : "body1"}
               type="nft_collection"
               value={`${contract}/nft/${tokenId}`}
             />
@@ -84,6 +85,7 @@ export const DecodeEvmMessageKami721PublicMintHeader = ({
         <ExplorerLink
           showCopyOnHover
           textLabel={evmVerifyInfos?.[minter.toLowerCase()]?.contractName}
+          textVariant={compact ? "body2" : "body1"}
           type="user_address"
           value={minter}
         />

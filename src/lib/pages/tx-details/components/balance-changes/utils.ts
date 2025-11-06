@@ -1,4 +1,8 @@
-import type { EvmBalanceChanges, MoveBalanceChanges } from "@initia/tx-decoder";
+import type {
+  EvmBalanceChanges,
+  MoveBalanceChanges,
+  WasmBalanceChanges,
+} from "@initia/tx-decoder";
 import type { AddressReturnType } from "lib/app-provider";
 import type { LinkType } from "lib/components/ExplorerLink";
 
@@ -76,8 +80,43 @@ export const getEvmAddresses = (
  */
 export const getEvmAddressType = (
   address: string
-): Exclude<LinkType, "function_name"> =>
+): Exclude<LinkType, "function_name_wasm" | "function_name"> =>
   isHexWalletAddress(address) ? "evm_contract_address" : "user_address";
+
+/**
+ * Gets all unique addresses from WASM balance changes
+ */
+export const getWasmAddresses = (
+  wasmBalanceChanges: WasmBalanceChanges
+): string[] =>
+  Array.from(
+    new Set([
+      ...Object.keys(wasmBalanceChanges.ft),
+      ...Object.keys(wasmBalanceChanges.nft),
+    ])
+  );
+
+/**
+ * Processes NFT changes for WASM balance changes
+ * Groups by contract address and filters out zero-amount changes
+ */
+export const processWasmNftChanges = (
+  nftChange: WasmBalanceChanges["nft"][string] | undefined
+): [string, [string, string][]][] =>
+  Object.entries(nftChange ?? {}).map(([contractAddress, tokenIds]) => {
+    const tokenIdChanges = Object.entries(tokenIds).filter(
+      ([, amount]) => amount !== "0"
+    );
+    return [contractAddress, tokenIdChanges] as [string, [string, string][]];
+  });
+
+/**
+ * Determines the appropriate LinkType for a WASM address
+ */
+export const getWasmAddressType = (
+  address: string
+): Exclude<LinkType, "function_name_wasm" | "function_name"> =>
+  isHexWalletAddress(address) ? "user_address" : "contract_address";
 
 /**
  * Type guard to check if an item has balance changes
@@ -98,5 +137,9 @@ export interface MappedMoveBalanceChange extends MappedBalanceChange {
 }
 
 export interface MappedEvmBalanceChange extends MappedBalanceChange {
+  nftChangeEntries: [string, [string, string][]][];
+}
+
+export interface MappedWasmBalanceChange extends MappedBalanceChange {
   nftChangeEntries: [string, [string, string][]][];
 }

@@ -8,10 +8,11 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { BalanceChangeEvmNft } from "./balance-changes-evm-nft";
 import { BalanceChangeNft } from "./balance-changes-nft";
 import { BalanceChangesToken } from "./balance-changes-token";
+import { BalanceChangeWasmNft } from "./balance-changes-wasm-nft";
 
 interface BalanceChangesMobileCardProps {
   address: string;
-  addressType: Exclude<LinkType, "function_name">;
+  addressType: Exclude<LinkType, "function_name_wasm" | "function_name">;
   ftChangeEntries: [string, string][];
   metadata?: Metadata;
   nftChangeEntries?: [string, [string, string][]][];
@@ -65,6 +66,19 @@ export const BalanceChangesMobileCard = ({
           nftChangeEntries.map(([contractAddress, tokenIdChanges]) =>
             tokenIdChanges.map(([tokenId, change]) => (
               <BalanceChangeEvmNft
+                key={`${address}-${contractAddress}-${tokenId}`}
+                change={Number(change)}
+                contractAddress={contractAddress}
+                metadata={metadata}
+                tokenId={tokenId}
+              />
+            ))
+          )}
+        {metadata &&
+          metadata.type === "wasm" &&
+          nftChangeEntries.map(([contractAddress, tokenIdChanges]) =>
+            tokenIdChanges.map(([tokenId, change]) => (
+              <BalanceChangeWasmNft
                 key={`${address}-${contractAddress}-${tokenId}`}
                 change={Number(change)}
                 contractAddress={contractAddress}

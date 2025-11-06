@@ -81,7 +81,7 @@ export const DecodeMessageDelegate = memo(
               <Text color="text.dark">by</Text>
               <ExplorerLink
                 showCopyOnHover
-                textVariant="body1"
+                textVariant={compact ? "body2" : "body1"}
                 type={getAddressType(data.delegatorAddress)}
                 value={data.delegatorAddress}
               />

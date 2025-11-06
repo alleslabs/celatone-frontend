@@ -73,6 +73,7 @@ export const DecodeEvmMessageErc721TransferFromHeader = ({
             <ExplorerLink
               showCopyOnHover
               textLabel={nftMetadata?.name || nft.tokenId}
+              textVariant={compact ? "body2" : "body1"}
               type="nft_collection"
               value={`${contract}/nft/${tokenId}`}
             />
@@ -82,6 +83,7 @@ export const DecodeEvmMessageErc721TransferFromHeader = ({
         <ExplorerLink
           showCopyOnHover
           textLabel={evmVerifyInfos?.[owner.toLowerCase()]?.contractName}
+          textVariant={compact ? "body2" : "body1"}
           type="user_address"
           value={owner}
         />
@@ -89,6 +91,7 @@ export const DecodeEvmMessageErc721TransferFromHeader = ({
         <ExplorerLink
           showCopyOnHover
           textLabel={evmVerifyInfos?.[from.toLowerCase()]?.contractName}
+          textVariant={compact ? "body2" : "body1"}
           type="user_address"
           value={from}
         />
@@ -96,6 +99,7 @@ export const DecodeEvmMessageErc721TransferFromHeader = ({
         <ExplorerLink
           showCopyOnHover
           textLabel={evmVerifyInfos?.[to.toLowerCase()]?.contractName}
+          textVariant={compact ? "body2" : "body1"}
           type="user_address"
           value={to}
         />

@@ -45,6 +45,7 @@ export const DecodeEvmMessageErc20ApproveHeader = ({
         <ExplorerLink
           showCopyOnHover
           textLabel={evmVerifyInfos?.[from.toLowerCase()]?.contractName}
+          textVariant={compact ? "body2" : "body1"}
           type="user_address"
           value={from}
         />
@@ -52,6 +53,7 @@ export const DecodeEvmMessageErc20ApproveHeader = ({
         <ExplorerLink
           showCopyOnHover
           textLabel={evmVerifyInfos?.[spender.toLowerCase()]?.contractName}
+          textVariant={compact ? "body2" : "body1"}
           type="user_address"
           value={spender}
         />

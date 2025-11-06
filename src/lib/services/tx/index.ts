@@ -85,6 +85,7 @@ import {
 
 export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
   const evm = useEvmConfig({ shouldRedirect: false });
+  const wasm = useWasmConfig({ shouldRedirect: false });
   const { txDecoder } = useTxDecoderContext();
 
   return useQuery({
@@ -93,11 +94,17 @@ export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
       rawTxResponse,
       evm.enabled,
       evm.enabled && evm.jsonRpc,
+      wasm.enabled,
     ],
-    queryFn: async () =>
-      evm.enabled
-        ? txDecoder.decodeCosmosEvmTransaction(rawTxResponse)
-        : txDecoder.decodeCosmosTransaction(rawTxResponse),
+    queryFn: async () => {
+      if (evm.enabled) {
+        return txDecoder.decodeCosmosEvmTransaction(rawTxResponse);
+      }
+      if (wasm.enabled) {
+        return txDecoder.decodeCosmosWasmTransaction(rawTxResponse);
+      }
+      return txDecoder.decodeCosmosTransaction(rawTxResponse);
+    },
     enabled: !!rawTxResponse,
   });
 };
@@ -133,6 +140,7 @@ export const useTxData = (
   const apiEndpoint = useBaseApiRoute("txs");
   const { txDecoder } = useTxDecoderContext();
   const evm = useEvmConfig({ shouldRedirect: false });
+  const wasm = useWasmConfig({ shouldRedirect: false });
 
   const endpoint = isFullTier ? apiEndpoint : restEndpoint;
 
@@ -152,9 +160,15 @@ export const useTxData = (
       );
 
       const logs = extractTxLogs(rawTxResponse);
-      const decodedTx = await (evm.enabled
-        ? txDecoder.decodeCosmosEvmTransaction(rawTxResponse)
-        : txDecoder.decodeCosmosTransaction(rawTxResponse));
+      const decodedTx = await (async () => {
+        if (evm.enabled) {
+          return txDecoder.decodeCosmosEvmTransaction(rawTxResponse);
+        }
+        if (wasm.enabled) {
+          return txDecoder.decodeCosmosWasmTransaction(rawTxResponse);
+        }
+        return txDecoder.decodeCosmosTransaction(rawTxResponse);
+      })();
       return {
         ...txResponse,
         chainId: currentChainId,
@@ -164,7 +178,15 @@ export const useTxData = (
         signer,
       };
     },
-    [bech32Prefix, currentChainId, endpoint, isFullTier, txDecoder, evm.enabled]
+    [
+      bech32Prefix,
+      currentChainId,
+      endpoint,
+      isFullTier,
+      txDecoder,
+      evm.enabled,
+      wasm.enabled,
+    ]
   );
 
   return useQuery({
@@ -176,6 +198,7 @@ export const useTxData = (
       txHash,
       bech32Prefix,
       evm.enabled,
+      wasm.enabled,
     ],
     refetchOnWindowFocus: false,
     staleTime: Infinity,

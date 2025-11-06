@@ -23,6 +23,7 @@ export type LinkType =
   | "code_id"
   | "evm_contract_address"
   | "evm_tx_hash"
+  | "function_name_wasm"
   | "function_name"
   | "module_name"
   | "move_dex_pool_address"
@@ -56,12 +57,12 @@ type CommonExplorerLinkProps = FlexProps & {
 
 type FunctionNameExplorerLinkProps = CommonExplorerLinkProps & {
   queryParams: Record<string, string>;
-  type: "function_name";
+  type: "function_name_wasm" | "function_name";
   value: Option<string>;
 };
 
 type DefaultExplorerLinkProps = CommonExplorerLinkProps & {
-  type: Exclude<LinkType, "function_name">;
+  type: Exclude<LinkType, "function_name_wasm" | "function_name">;
   value: string;
 };
 
@@ -99,6 +100,9 @@ export const getNavigationUrl = ({
       break;
     case "function_name":
       url = "/interact";
+      break;
+    case "function_name_wasm":
+      url = "/interact-contract";
       break;
     case "invalid_address":
       return "";
