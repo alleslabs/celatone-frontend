@@ -116,7 +116,7 @@ export const processWasmNftChanges = (
 export const getWasmAddressType = (
   address: string
 ): Exclude<LinkType, "function_name_wasm" | "function_name"> =>
-  isHexWalletAddress(address) ? "contract_address" : "user_address";
+  isHexWalletAddress(address) ? "user_address" : "contract_address";
 
 /**
  * Type guard to check if an item has balance changes
