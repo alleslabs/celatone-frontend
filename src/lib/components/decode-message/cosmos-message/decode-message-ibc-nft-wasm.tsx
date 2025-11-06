@@ -133,9 +133,14 @@ export const DecodeMessageIbcNftWasm = memo(
             />
           </DecodeMessageRow>
           <DecodeMessageRow title="Receiver">
-            <Text maxWidth="full" wordBreak="break-word">
-              {data.receiver}
-            </Text>
+            <ExplorerLink
+              maxWidth="full"
+              showCopyOnHover
+              textFormat="normal"
+              type={getAddressType(data.receiver)}
+              value={data.receiver}
+              wordBreak="break-word"
+            />
           </DecodeMessageRow>
           {isSend && (
             <>
