@@ -12,34 +12,41 @@ import { EvmTxs } from "./EvmTxs";
 interface CosmosEvmTxsProps {
   cosmosData: CosmosTxsProps;
   evmData: EvmTxsProps;
+  hideTitle?: boolean;
 }
 
-export const CosmosEvmTxs = ({ cosmosData, evmData }: CosmosEvmTxsProps) => {
+export const CosmosEvmTxs = ({
+  cosmosData,
+  evmData,
+  hideTitle = false,
+}: CosmosEvmTxsProps) => {
   const evm = useEvmConfig({ shouldRedirect: false });
   const { currentTab, setCurrentTab, tabs } = useEvmTab();
 
   return (
     <Flex direction="column" gap={evm.enabled ? 6 : 4}>
-      <Flex
-        align="center"
-        gap={6}
-        justify={{
-          base: "space-between",
-          md: "flex-start",
-        }}
-      >
-        <Heading as="h6" variant="h6">
-          Transactions
-        </Heading>
-        {evm.enabled && (
-          <TypeSwitch
-            currentTab={currentTab}
-            disabledScrollToTop
-            tabs={tabs}
-            onTabChange={setCurrentTab}
-          />
-        )}
-      </Flex>
+      {!hideTitle && (
+        <Flex
+          align="center"
+          gap={6}
+          justify={{
+            base: "space-between",
+            md: "flex-start",
+          }}
+        >
+          <Heading as="h6" variant="h6">
+            Transactions
+          </Heading>
+          {evm.enabled && (
+            <TypeSwitch
+              currentTab={currentTab}
+              disabledScrollToTop
+              tabs={tabs}
+              onTabChange={setCurrentTab}
+            />
+          )}
+        </Flex>
+      )}
       {currentTab === CosmosEvmTxsTab.Evm && evm.enabled ? (
         <EvmTxs {...evmData} />
       ) : (

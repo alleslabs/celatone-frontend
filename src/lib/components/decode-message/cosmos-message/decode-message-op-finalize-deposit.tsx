@@ -1,6 +1,6 @@
 import type { DecodedMessage } from "@initia/tx-decoder";
 
-import { Badge, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { Coin } from "@initia/initia.js";
 import { useCurrentChain, useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -52,9 +52,6 @@ export const DecodeMessageOpFinalizeDeposit = ({
         type={msgBody["@type"]}
         onClick={() => setExpand(!expand)}
       >
-        <Badge colorScheme={data.success ? "success" : "error"} variant="solid">
-          {data.success ? "Success" : "Failed"}
-        </Badge>
         <TokenImageWithAmount token={token} />
         <Flex align="center" gap={2}>
           <Text color="text.dark">from</Text>

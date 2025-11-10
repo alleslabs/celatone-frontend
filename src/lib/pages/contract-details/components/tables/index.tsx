@@ -62,6 +62,7 @@ export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
           <TabPanel p={0}>
             <TxsTable
               contractAddress={contractAddress}
+              hideTitle
               refetchCount={refetchCount}
               scrollComponentId={tableHeaderId}
               totalData={data?.tx ?? undefined}
