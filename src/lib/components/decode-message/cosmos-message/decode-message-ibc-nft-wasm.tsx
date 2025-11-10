@@ -162,7 +162,7 @@ export const DecodeMessageIbcNftWasm = memo(
               </DecodeMessageRow>
             </>
           )}
-          {data.classId && (
+          {data.contractAddress && (
             <DecodeMessageRow title="Collection">
               <ExplorerLink
                 leftIcon={
@@ -177,39 +177,31 @@ export const DecodeMessageIbcNftWasm = memo(
                 textFormat="normal"
                 textLabel={nft?.collectionName}
                 type="nft_collection"
-                value={data.classId}
+                value={data.contractAddress}
                 wordBreak="break-word"
               />
             </DecodeMessageRow>
           )}
           {data.tokenIds && data.tokenIds.length > 0 && (
             <DecodeMessageRow title="NFT">
-              {nft && data.tokenIds.length === 1 ? (
-                <Stack spacing={2}>
-                  <AppLink
-                    href={`/nft-collections/${data.classId}/nft/${data.tokenIds[0]}`}
-                  >
-                    <NftImage
-                      borderRadius="8px"
-                      src={nftImageUrl}
-                      width="150px"
-                    />
-                  </AppLink>
-                  <ExplorerLink
-                    showCopyOnHover
-                    textFormat="normal"
-                    textLabel={nftMetadata?.name || `#${data.tokenIds[0]}`}
-                    type="nft_collection"
-                    value={`${data.classId}/nft/${data.tokenIds[0]}`}
+              <Stack spacing={2}>
+                <AppLink
+                  href={`/nft-collections/${data.contractAddress}/nft/${data.tokenIds[0]}`}
+                >
+                  <NftImage
+                    borderRadius="8px"
+                    src={nftImageUrl}
+                    width="150px"
                   />
-                </Stack>
-              ) : (
-                <Text>
-                  {data.tokenIds.length === 1
-                    ? `Token ID: ${data.tokenIds[0]}`
-                    : `${data.tokenIds.length} NFTs: ${data.tokenIds.join(", ")}`}
-                </Text>
-              )}
+                </AppLink>
+                <ExplorerLink
+                  showCopyOnHover
+                  textFormat="normal"
+                  textLabel={nftMetadata?.name || `#${data.tokenIds[0]}`}
+                  type="nft_collection"
+                  value={`${data.classId}/nft/${data.tokenIds[0]}`}
+                />
+              </Stack>
             </DecodeMessageRow>
           )}
           {data.timeoutHeight && (

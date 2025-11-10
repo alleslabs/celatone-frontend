@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1498](https://github.com/alleslabs/celatone-frontend/pull/1498) Fix WASM tx decoder messages issue
 - [#1496](https://github.com/alleslabs/celatone-frontend/pull/1496) Fix EVM txs table cell overflow issue
 - [#1493](https://github.com/alleslabs/celatone-frontend/pull/1493) Fix EVM internal txs minor UI bugs
 - [#1490](https://github.com/alleslabs/celatone-frontend/pull/1490) Fix EVM minor UI bugs

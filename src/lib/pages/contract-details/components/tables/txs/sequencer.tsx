@@ -7,6 +7,7 @@ import type { TxsTableProps } from "./types";
 
 export const TxsTableSequencer = ({
   contractAddress,
+  hideTitle,
   onViewMore,
 }: TxsTableProps) => {
   const cosmosTxsData = useTxsByAddressSequencer(
@@ -40,6 +41,7 @@ export const TxsTableSequencer = ({
         onViewMore,
         showTimestamp: true,
       }}
+      hideTitle={hideTitle}
     />
   );
 };
