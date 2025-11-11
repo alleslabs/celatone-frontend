@@ -1,18 +1,21 @@
 import type { LogDescription } from "ethers";
 import type { TxReceiptJsonRpcLog } from "lib/services/types";
-import type { EvmVerifyInfo, Nullable, Option } from "lib/types";
 
 import { Flex, Stack, Text } from "@chakra-ui/react";
+import { EvmEventBoxData } from "lib/components/evm-event-box-data";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
-import { Tooltip } from "lib/components/Tooltip";
 import { TypeSwitch } from "lib/components/TypeSwitch";
+import {
+  EvmEventBoxTabs,
+  type EvmVerifyInfo,
+  type Nullable,
+  type Option,
+} from "lib/types";
 import { parseEvmLog } from "lib/utils";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
-import { EvmEventBoxTabs } from "../../types";
-import { EvmEventBoxData } from "./evm-event-box-data";
 import { EvmEventBoxTopics } from "./evm-event-box-topics";
 
 interface EvmEventBoxProps {
@@ -52,8 +55,19 @@ const EvmEventBoxName = ({
 };
 
 export const EvmEventBox = ({ evmVerifyInfo, log }: EvmEventBoxProps) => {
-  const [currentTab, setCurrentTab] = useState(EvmEventBoxTabs.Hex);
+  const [currentTab, setCurrentTab] = useState(() =>
+    evmVerifyInfo?.isVerified
+      ? EvmEventBoxTabs.Decoded
+      : EvmEventBoxTabs.Formatted
+  );
   const parsedLog = parseEvmLog(evmVerifyInfo?.abi ?? [], log);
+
+  useEffect(() => {
+    const next = evmVerifyInfo?.isVerified
+      ? EvmEventBoxTabs.Decoded
+      : EvmEventBoxTabs.Formatted;
+    setCurrentTab((prev) => (prev === next ? prev : next));
+  }, [evmVerifyInfo?.isVerified]);
 
   return (
     <Stack
@@ -88,14 +102,17 @@ export const EvmEventBox = ({ evmVerifyInfo, log }: EvmEventBoxProps) => {
             label="Contract address"
             minWidth="120px"
           >
-            <Flex alignItems="center" gap={1}>
-              <CustomIcon
-                boxSize={3}
-                color="primary.main"
-                name="contract-address"
-              />
+            <Flex alignItems="center" ml={-2}>
               <ExplorerLink
+                leftIcon={
+                  <CustomIcon
+                    boxSize={3}
+                    color="primary.main"
+                    name="contract-address"
+                  />
+                }
                 textFormat="normal"
+                textLabel={evmVerifyInfo?.contractName}
                 type="evm_contract_address"
                 value={log.address}
                 wordBreak="break-all"
@@ -122,19 +139,18 @@ export const EvmEventBox = ({ evmVerifyInfo, log }: EvmEventBoxProps) => {
           )}
         </Stack>
         <Stack alignItems="flex-end">
-          <Tooltip
-            hidden={!!evmVerifyInfo?.isVerified}
-            label="Verify the contract to enable decoded"
-            maxWidth="200px"
-          >
+          {log.data.trim() !== "0x" && (
             <TypeSwitch
               currentTab={currentTab}
-              disabled={!evmVerifyInfo?.isVerified}
               disabledScrollToTop
-              tabs={Object.values(EvmEventBoxTabs)}
+              tabs={Object.values(EvmEventBoxTabs).filter((value) =>
+                evmVerifyInfo?.isVerified
+                  ? value !== EvmEventBoxTabs.Formatted
+                  : value !== EvmEventBoxTabs.Decoded
+              )}
               onTabChange={setCurrentTab}
             />
-          </Tooltip>
+          )}
         </Stack>
       </Flex>
       <LabelText
@@ -145,6 +161,7 @@ export const EvmEventBox = ({ evmVerifyInfo, log }: EvmEventBoxProps) => {
         minWidth="120px"
       >
         <EvmEventBoxTopics
+          isVerified={evmVerifyInfo?.isVerified ?? false}
           parsedLog={parsedLog}
           tab={currentTab}
           topics={log.topics}

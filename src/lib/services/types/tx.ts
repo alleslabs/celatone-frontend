@@ -1,5 +1,5 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
-import type { DecodedTx } from "@initia/tx-decoder";
+import type { DecodedEthereumTx, DecodedTx } from "@initia/tx-decoder";
 import type {
   BechAddr20,
   Message,
@@ -314,7 +314,11 @@ export const zTxsResponseSequencer = z
     txs: z.array(zTxsResponseItemFromRest),
   })
   .transform((val) => ({
-    items: val.txs,
+    items: val.txs.map((tx) => ({
+      ...tx.item,
+      rawTxResponse: tx.rawTxResponse,
+      txResponse: tx.txResponse,
+    })),
     pagination: val.pagination,
   }));
 
@@ -332,7 +336,13 @@ export const zTxsByHashResponseSequencer = z
     tx: zTxsResponseItemFromRest,
   })
   .transform((val) => ({
-    items: [val.tx],
+    items: [
+      {
+        ...val.tx.item,
+        rawTxResponse: val.tx.rawTxResponse,
+        txResponse: val.tx.txResponse,
+      },
+    ],
     pagination: {
       nextKey: null,
       total: val.tx ? 1 : 0,
@@ -427,6 +437,9 @@ export const zTxsResponseWithTxResponseItem =
     success: val.success,
     txResponse: val.tx_response,
   }));
+export type TxsResponseWithTxResponseItem = z.infer<
+  typeof zTxsResponseWithTxResponseItem
+>;
 
 export const zTxsResponseWithTxResponse = z.object({
   items: z.array(zTxsResponseWithTxResponseItem),
@@ -564,78 +577,145 @@ export const zEvmTxHashesByCosmosTxHashesJsonRpc = z.array(
   zEvmTxHashByCosmosTxHashJsonRpc
 );
 
-export const zTxJsonRpc = z
-  .object({
-    blockHash: z.string(),
-    blockNumber: zHexBig,
-    chainId: zHexBig,
-    from: zHexAddr20,
-    gas: zHexBig,
-    gasPrice: zHexBig,
-    hash: z.string(),
-    input: z.string(),
-    maxFeePerGas: zHexBig,
-    maxPriorityFeePerGas: zHexBig,
-    nonce: zHexBig,
-    r: z.string(),
-    s: z.string(),
-    to: zHexAddr20.nullable(),
-    transactionIndex: zHexBig,
-    type: z.string(), // TODO: convert to enum later
-    v: z.string(),
-    value: zHexBig,
-    yParity: z.string().optional(),
-  })
-  .transform(({ from, to, ...val }) => ({
-    from: toChecksumAddress(from),
-    to: to ? toChecksumAddress(to) : null,
-    ...val,
-  }));
+export const zRawTxJsonRpc = z.object({
+  blockHash: z.string(),
+  blockNumber: zHex,
+  chainId: zHex,
+  from: zHexAddr20,
+  gas: zHex,
+  gasPrice: zHex,
+  hash: z.string(),
+  input: z.string(),
+  maxFeePerGas: zHex,
+  maxPriorityFeePerGas: zHex,
+  nonce: zHex,
+  r: z.string(),
+  s: z.string(),
+  to: zHexAddr20.nullable(),
+  transactionIndex: zHex,
+  type: z.string(), // TODO: convert to enum later
+  v: z.string(),
+  value: zHex,
+  yParity: z.string().optional(),
+});
+export type RawTxJsonRpc = z.infer<typeof zRawTxJsonRpc>;
 
-const zTxReceiptJsonRpcLog = z.object({
+export const zTxJsonRpc = zRawTxJsonRpc.transform(
+  ({
+    blockNumber,
+    chainId,
+    from,
+    gas,
+    gasPrice,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+    nonce,
+    to,
+    transactionIndex,
+    value,
+    ...val
+  }) => ({
+    blockNumber: zHexBig.parse(blockNumber),
+    chainId: zHexBig.parse(chainId),
+    from: toChecksumAddress(from),
+    gas: zHexBig.parse(gas),
+    gasPrice: zHexBig.parse(gasPrice),
+    maxFeePerGas: zHexBig.parse(maxFeePerGas),
+    maxPriorityFeePerGas: zHexBig.parse(maxPriorityFeePerGas),
+    nonce: zHexBig.parse(nonce),
+    to: to ? toChecksumAddress(to) : null,
+    transactionIndex: zHexBig.parse(transactionIndex),
+    value: zHexBig.parse(value),
+    ...val,
+  })
+);
+export type TxJsonRpc = z.infer<typeof zTxJsonRpc>;
+
+export const zRawTxReceiptJsonRpcLog = z.object({
   address: zHexAddr20,
   blockHash: z.string(),
-  blockNumber: zHexBig,
+  blockNumber: zHex,
   data: z.string(),
-  logIndex: zHexBig,
+  logIndex: zHex,
   removed: z.boolean(),
   topics: z.string().array(),
   transactionHash: z.string(),
-  transactionIndex: zHexBig,
+  transactionIndex: zHex,
 });
+export type RawTxReceiptJsonRpcLog = z.infer<typeof zRawTxReceiptJsonRpcLog>;
+
+export const zTxReceiptJsonRpcLog = zRawTxReceiptJsonRpcLog.transform(
+  (log) => ({
+    ...log,
+    blockNumber: zHexBig.parse(log.blockNumber),
+    logIndex: zHexBig.parse(log.logIndex),
+    transactionIndex: zHexBig.parse(log.transactionIndex),
+  })
+);
 export type TxReceiptJsonRpcLog = z.infer<typeof zTxReceiptJsonRpcLog>;
 
-export const zTxReceiptJsonRpc = z
-  .object({
-    blockHash: z.string(),
-    blockNumber: zHexBig,
-    contractAddress: zHexAddr20.nullable(),
-    cumulativeGasUsed: zHexBig,
-    effectiveGasPrice: zHexBig,
-    from: zHexAddr20,
-    gasUsed: zHexBig,
-    logs: z.array(zTxReceiptJsonRpcLog),
-    logsBloom: zHex,
-    status: zHexBool,
-    to: zHexAddr20.nullable(),
-    transactionHash: z.string(),
-    transactionIndex: zHexBig,
-    type: z.string(), // TODO: convert to enum later
-  })
-  .transform(({ contractAddress, from, to, ...val }) => ({
+export const zRawTxReceiptJsonRpc = z.object({
+  blockHash: z.string(),
+  blockNumber: zHex,
+  contractAddress: zHexAddr20.nullable(),
+  cumulativeGasUsed: zHex,
+  effectiveGasPrice: zHex,
+  from: zHexAddr20,
+  gasUsed: zHex,
+  logs: z.array(zRawTxReceiptJsonRpcLog),
+  logsBloom: zHex,
+  status: zHex,
+  to: zHexAddr20.nullable(),
+  transactionHash: z.string(),
+  transactionIndex: zHex,
+  type: z.string(), // TODO: convert to enum later
+});
+export type RawTxReceiptJsonRpc = z.infer<typeof zRawTxReceiptJsonRpc>;
+
+export const zTxReceiptJsonRpc = zRawTxReceiptJsonRpc.transform(
+  ({
+    blockNumber,
+    contractAddress,
+    cumulativeGasUsed,
+    effectiveGasPrice,
+    from,
+    gasUsed,
+    logs,
+    status,
+    to,
+    transactionIndex,
+    ...val
+  }) => ({
+    blockNumber: zHexBig.parse(blockNumber),
     contractAddress: contractAddress
       ? toChecksumAddress(contractAddress)
       : null,
+    cumulativeGasUsed: zHexBig.parse(cumulativeGasUsed),
+    effectiveGasPrice: zHexBig.parse(effectiveGasPrice),
     from: toChecksumAddress(from),
+    gasUsed: zHexBig.parse(gasUsed),
+    logs: logs.map((log) => zTxReceiptJsonRpcLog.parse(log)),
+    status: zHexBool.parse(status),
     to: to ? toChecksumAddress(to) : null,
+    transactionIndex: zHexBig.parse(transactionIndex),
     ...val,
-  }));
+  })
+);
 export type TxReceiptJsonRpc = z.infer<typeof zTxReceiptJsonRpc>;
 
 export const zTxDataJsonRpc = z
-  .tuple([zTxJsonRpc, zTxReceiptJsonRpc])
-  .transform(([tx, txReceipt]) => ({ tx, txReceipt }));
+  .tuple([zRawTxJsonRpc, zRawTxReceiptJsonRpc])
+  .transform(([rawTx, rawTxReceipt]) => ({
+    rawTx,
+    rawTxReceipt,
+    tx: zTxJsonRpc.parse(rawTx),
+    txReceipt: zTxReceiptJsonRpc.parse(rawTxReceipt),
+  }));
 export type TxDataJsonRpc = z.infer<typeof zTxDataJsonRpc>;
+
+export type TxDataJsonRpcWithDecodedEthereumTx = TxDataJsonRpc & {
+  decodedTx: DecodedEthereumTx;
+};
 
 export const zTxsDataJsonRpc = z.array(zTxDataJsonRpc);
 export type TxsDataJsonRpc = z.infer<typeof zTxsDataJsonRpc>;

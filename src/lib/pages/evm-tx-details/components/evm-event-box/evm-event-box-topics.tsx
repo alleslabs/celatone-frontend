@@ -2,9 +2,8 @@ import type { LogDescription } from "ethers";
 import type { Option } from "lib/types";
 
 import { Flex, Stack, Text } from "@chakra-ui/react";
-
-import { EvmEventBoxTabs } from "../../types";
-import { EvmEventBoxDecoded } from "./evm-event-box-decoded";
+import { EvmBoxDecoded } from "lib/components/EvmBoxDecoded";
+import { EvmEventBoxTabs } from "lib/types";
 
 interface EvmEventBoxTopicProps {
   index: number;
@@ -23,24 +22,32 @@ const EvmEventBoxTopicHex = ({ index, topic }: EvmEventBoxTopicProps) => (
 );
 
 interface EvmEventBoxTopicsProps {
+  isVerified: boolean;
   parsedLog: Option<LogDescription>;
   tab: EvmEventBoxTabs;
   topics: string[];
 }
 
 export const EvmEventBoxTopics = ({
+  isVerified,
   parsedLog,
   tab,
   topics,
 }: EvmEventBoxTopicsProps) => (
-  <Stack columnGap={2} rowGap={4} w="full" wordBreak="break-all">
-    {tab === EvmEventBoxTabs.Hex ? (
+  <Stack columnGap={2} rowGap={2} w="full" wordBreak="break-all">
+    {tab === EvmEventBoxTabs.Raw ? (
       topics.map((topic, index) => (
         <EvmEventBoxTopicHex key={topic} index={index} topic={topic} />
       ))
     ) : (
       <>
-        <EvmEventBoxTopicHex index={0} topic={topics[0]} />
+        {isVerified && topics.length > 0 ? (
+          <EvmEventBoxTopicHex index={0} topic={topics[0]} />
+        ) : (
+          topics.map((topic, index) => (
+            <EvmEventBoxTopicHex key={topic} index={index} topic={topic} />
+          ))
+        )}
         {topics.length > 1 && parsedLog && (
           <Stack
             bgColor="gray.800"
@@ -52,10 +59,10 @@ export const EvmEventBoxTopics = ({
             {parsedLog.fragment.inputs
               .slice(0, topics.length - 1)
               .map((input, index) => (
-                <EvmEventBoxDecoded
+                <EvmBoxDecoded
                   key={topics[index]}
                   decode={parsedLog.args.slice(0, topics.length - 1)[index]}
-                  index={index}
+                  index={index + 1}
                   input={input}
                 />
               ))}

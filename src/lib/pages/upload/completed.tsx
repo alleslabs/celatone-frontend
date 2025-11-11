@@ -106,10 +106,12 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
                 />
               ),
               title: "Code ID",
+              type: "standard",
             },
             {
               html: <ExplorerLink type="tx_hash" value={txResult.txHash} />,
               title: "Tx hash",
+              type: "standard",
             },
             {
               html: (
@@ -119,6 +121,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
                 />
               ),
               title: "Tx fee",
+              type: "standard",
             },
           ]}
           variant="full"

@@ -155,7 +155,9 @@ const SelectWidget = <
         closeMenuOnSelect={!isMultiple}
         inputId={id}
         isMulti={isMultiple}
-        menuPortalTarget={document.body}
+        menuPortalTarget={
+          typeof window !== "undefined" ? document.body : undefined
+        }
         name={id}
         options={displayEnumOptions}
         placeholder={

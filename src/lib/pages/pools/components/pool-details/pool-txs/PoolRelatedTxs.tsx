@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
-import { UPPERBOUND_COUNT } from "lib/data";
 import { PoolType } from "lib/types";
 import { useCallback, useState } from "react";
 
@@ -31,8 +30,6 @@ enum TabIndex {
 interface PoolRelatedTxsProps {
   pool: PoolData;
 }
-
-const FALLBACK_COUNT = `${UPPERBOUND_COUNT}+`;
 
 export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
   const [tab, setTab] = useState(TabIndex.All);
@@ -82,7 +79,6 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
         >
           <CustomTab
             count={totalAllData?.total}
-            fallbackValue={FALLBACK_COUNT}
             isLoading={isTotalAllLoading}
             onClick={() => handleTabChange(TabIndex.All)}
           >
@@ -90,7 +86,6 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           </CustomTab>
           <CustomTab
             count={totalSwapData?.total}
-            fallbackValue={FALLBACK_COUNT}
             isDisabled={totalSwapData?.total === 0}
             isLoading={isTotalSwapLoading}
             onClick={() => handleTabChange(TabIndex.Swap)}
@@ -100,7 +95,6 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           {pool.type === PoolType.CL ? (
             <CustomTab
               count={totalClpData?.total}
-              fallbackValue={FALLBACK_COUNT}
               isDisabled={totalClpData?.total === 0}
               isLoading={isTotalClpLoading}
               onClick={() => handleTabChange(TabIndex.CLP)}
@@ -110,7 +104,6 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           ) : (
             <CustomTab
               count={totalLpData?.total}
-              fallbackValue={FALLBACK_COUNT}
               isDisabled={totalLpData?.total === 0}
               isLoading={isTotalLpLoading}
               onClick={() => handleTabChange(TabIndex.LP)}
@@ -120,7 +113,6 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           )}
           <CustomTab
             count={totalBondingData?.total}
-            fallbackValue={FALLBACK_COUNT}
             isDisabled={totalBondingData?.total === 0}
             isLoading={isTotalBondingLoading}
             onClick={() => handleTabChange(TabIndex.Bonding)}
@@ -130,7 +122,6 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           {pool.isSuperfluid && (
             <CustomTab
               count={totalSuperfluidData?.total}
-              fallbackValue={FALLBACK_COUNT}
               isDisabled={totalSuperfluidData?.total === 0}
               isLoading={isTotalSuperfluidLoading}
               onClick={() => handleTabChange(TabIndex.Superfluid)}
@@ -141,7 +132,6 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           {pool.type === PoolType.CL && (
             <CustomTab
               count={totalCollectData?.total}
-              fallbackValue={FALLBACK_COUNT}
               isDisabled={totalCollectData?.total === 0}
               isLoading={isTotalCollectLoading}
               onClick={() => handleTabChange(TabIndex.Collect)}
@@ -152,7 +142,6 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           {(pool.type === PoolType.CL || pool.type === PoolType.BALANCER) && (
             <CustomTab
               count={totalMigrateData?.total}
-              fallbackValue={FALLBACK_COUNT}
               isDisabled={totalMigrateData?.total === 0}
               isLoading={isTotalMigrateLoading}
               onClick={() => trackUseTab("Migrate")}

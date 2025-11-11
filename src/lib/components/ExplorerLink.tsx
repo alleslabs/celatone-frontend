@@ -2,7 +2,7 @@ import type { FlexProps, TextProps } from "@chakra-ui/react";
 import type { Option } from "lib/types";
 import type { ReactNode } from "react";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { transparentize } from "@chakra-ui/theme-tools";
 import { trackMintScan } from "lib/amplitude";
 import { type AddressReturnType, useChainConfigs } from "lib/app-provider";
@@ -23,6 +23,7 @@ export type LinkType =
   | "code_id"
   | "evm_contract_address"
   | "evm_tx_hash"
+  | "function_name_wasm"
   | "function_name"
   | "module_name"
   | "move_dex_pool_address"
@@ -51,16 +52,17 @@ type CommonExplorerLinkProps = FlexProps & {
   textFormat?: TextFormat;
   textLabel?: string;
   textVariant?: TextProps["variant"];
+  tooltipLabel?: string;
 };
 
 type FunctionNameExplorerLinkProps = CommonExplorerLinkProps & {
   queryParams: Record<string, string>;
-  type: "function_name";
+  type: "function_name_wasm" | "function_name";
   value: Option<string>;
 };
 
 type DefaultExplorerLinkProps = CommonExplorerLinkProps & {
-  type: Exclude<LinkType, "function_name">;
+  type: Exclude<LinkType, "function_name_wasm" | "function_name">;
   value: string;
 };
 
@@ -98,6 +100,9 @@ export const getNavigationUrl = ({
       break;
     case "function_name":
       url = "/interact";
+      break;
+    case "function_name_wasm":
+      url = "/interact-contract";
       break;
     case "invalid_address":
       return "";
@@ -167,7 +172,11 @@ const getCopyLabel = (type: LinkType, value: string) => {
 };
 
 const isTooltipHidden = (type: LinkType, textFormat: TextFormat) => {
-  if (textFormat === "ellipsis" || textFormat === "normal") return true;
+  // Always show tooltip for ellipsis format to show full text
+  if (textFormat === "ellipsis") return false;
+
+  // Hide tooltip for normal format since text is not truncated
+  if (textFormat === "normal") return true;
 
   if (
     type === "evm_contract_address" ||
@@ -252,9 +261,10 @@ export const ExplorerLink = ({
   chainId,
   copyValue,
   externalLink,
-  fixedHeight = true,
+  fixedHeight = false,
   hideCopy = false,
   isReadOnly = false,
+  isTruncated,
   leftIcon = null,
   openNewTab,
   queryParams,
@@ -263,6 +273,7 @@ export const ExplorerLink = ({
   textFormat = "truncate",
   textLabel,
   textVariant = "body2",
+  tooltipLabel,
   type,
   value = "",
   ...componentProps
@@ -323,20 +334,42 @@ export const ExplorerLink = ({
       borderStyle="dashed"
       borderWidth="1px"
       display="inline-flex"
-      gap={1}
       h={fixedHeight && textFormat !== "normal" ? "24px" : "auto"}
       maxW={textLabel ? "100%" : "fit-content"}
-      px={1}
+      maxWidth="full"
+      position="relative"
       rounded={4}
       sx={{
-        ...(isHighlighted && {
-          backgroundColor: transparentize("warning.dark", 0.3),
-          borderColor: "warning.dark",
-        }),
+        "&::before": {
+          backgroundColor: isHighlighted
+            ? transparentize("warning.dark", 0.3)
+            : "transparent",
+          border: isHighlighted ? "1px dashed" : "1px dashed transparent",
+          borderColor: isHighlighted ? "warning.dark" : "transparent",
+          borderRadius: "4px",
+          bottom: "-2px",
+          content: '""',
+          left: "-4px",
+          position: "absolute",
+          right: "-4px",
+          top: "-2px",
+          transition: "all 0.15s ease-in-out",
+          zIndex: 1,
+        },
+
         "&:hover": {
-          backgroundColor: transparentize("warning.dark", 0.3),
           textDecoration: "underline",
           textDecorationColor: "primary.light",
+        },
+
+        "&:hover::before": {
+          backgroundColor: transparentize("warning.dark", 0.3),
+          borderColor: "warning.dark",
+        },
+
+        "& > *": {
+          position: "relative",
+          zIndex: 2,
         },
       }}
       transition="all 0.15s ease-in-out"
@@ -348,25 +381,8 @@ export const ExplorerLink = ({
       {...componentProps}
     >
       {leftIcon}
-      {isMobile ? (
-        <LinkRender
-          chainId={chainId}
-          fallbackValue={copyValue ?? ""}
-          hrefLink={link}
-          isEllipsis={textFormat === "ellipsis"}
-          isInternal={isUndefined(externalLink)}
-          openNewTab={openNewTab}
-          textFormat={textFormat}
-          textValue={textValue}
-          textVariant={textVariant}
-          type={type}
-        />
-      ) : (
-        <Tooltip
-          hidden={isTooltipHidden(type, textFormat)}
-          label={value}
-          textAlign="center"
-        >
+      <Box flex="1" isTruncated={isTruncated} minW={0}>
+        {isMobile ? (
           <LinkRender
             chainId={chainId}
             fallbackValue={copyValue ?? ""}
@@ -379,8 +395,27 @@ export const ExplorerLink = ({
             textVariant={textVariant}
             type={type}
           />
-        </Tooltip>
-      )}
+        ) : (
+          <Tooltip
+            hidden={isTooltipHidden(type, textFormat)}
+            label={tooltipLabel ?? value}
+            textAlign="center"
+          >
+            <LinkRender
+              chainId={chainId}
+              fallbackValue={copyValue ?? ""}
+              hrefLink={link}
+              isEllipsis={textFormat === "ellipsis"}
+              isInternal={isUndefined(externalLink)}
+              openNewTab={openNewTab}
+              textFormat={textFormat}
+              textValue={textValue}
+              textVariant={textVariant}
+              type={type}
+            />
+          </Tooltip>
+        )}
+      </Box>
       {rightIcon}
       {!hideCopy && (
         <Copier

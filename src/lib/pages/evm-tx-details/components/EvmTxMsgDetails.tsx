@@ -1,20 +1,43 @@
-import type { TxData, TxDataJsonRpc } from "lib/services/types";
-import type { Option } from "lib/types";
+import type {
+  TxData,
+  TxDataJsonRpcWithDecodedEthereumTx,
+} from "lib/services/types";
 
-import { Alert, AlertDescription, Flex, Text } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  Flex,
+  Stack,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+} from "@chakra-ui/react";
+import { useInternalNavigate } from "lib/app-provider";
+import { CustomTab } from "lib/components/CustomTab";
+import {
+  DecodeCosmosEvmMessageBody,
+  DecodeCosmosEvmMessageHeader,
+} from "lib/components/decode-message/evm-message";
 import { DividerWithArrow } from "lib/components/DividerWithArrow";
+import { EvmInputData } from "lib/components/EvmInputData";
 import { CustomIcon } from "lib/components/icon";
+import { EmptyState } from "lib/components/state";
+import { EvmInternalTransactionsTable } from "lib/components/table/evm-internal-transactions";
+import { BalanceChanges } from "lib/pages/tx-details/components/balance-changes";
+import { useEvmInternalTxsByTxHashSequencer } from "lib/services/evm-internal-txs";
 import { useEvmVerifyInfos } from "lib/services/verification/evm";
+import { type HexAddr20, type Option, zHexAddr } from "lib/types";
 import plur from "plur";
+import { useEffect, useMemo } from "react";
 
 import { EvmEventBox } from "./evm-event-box";
-import { EvmInputData } from "./EvmInputData";
-import { EvmTxMsgDetailsBody } from "./EvmTxMsgDetailsBody";
 
 interface EvmTxMsgDetailsProps {
   cosmosTxData: TxData;
   evmDenom: Option<string>;
-  evmTxData: TxDataJsonRpc;
+  evmTxData: TxDataJsonRpcWithDecodedEthereumTx;
 }
 
 export const EvmTxMsgDetails = ({
@@ -22,45 +45,171 @@ export const EvmTxMsgDetails = ({
   evmDenom,
   evmTxData,
 }: EvmTxMsgDetailsProps) => {
+  void evmDenom;
+  const navigate = useInternalNavigate();
   const { data } = useEvmVerifyInfos(
-    evmTxData.txReceipt.logs.map((log) => log.address)
+    [
+      ...evmTxData.txReceipt.logs.map((log) => log.address),
+      evmTxData.tx.to,
+    ].filter((addr): addr is HexAddr20 => addr !== null)
+  );
+  const addressValidation = useMemo(
+    () => zHexAddr.safeParse(evmTxData.txReceipt.transactionHash),
+    [evmTxData.txReceipt.transactionHash]
+  );
+  const evmInternalTxsData = useEvmInternalTxsByTxHashSequencer(
+    addressValidation.data,
+    10,
+    addressValidation.success
   );
 
+  const countTotalEvmInternalTxs = evmInternalTxsData.totalCount;
+
+  const {
+    decodedTx,
+    logs,
+    tx: {
+      body: { messages },
+    },
+  } = cosmosTxData;
+
+  const { decodedTx: evmDecodedTx } = evmTxData;
+
+  // Redirect to cosmos tx page if this is a cosmos_mirror transaction
+  useEffect(() => {
+    if (evmDecodedTx.decodedTransaction.action === "cosmos_mirror") {
+      const cosmosTxHash = evmDecodedTx.decodedTransaction.data.cosmosTxHash;
+      navigate({
+        pathname: "/txs/[txHash]",
+        query: { txHash: cosmosTxHash },
+        replace: true,
+      });
+    }
+  }, [evmDecodedTx.decodedTransaction, navigate]);
+
+  // Return null for cosmos_mirror to prevent any UI from showing during redirect
+  if (evmDecodedTx.decodedTransaction.action === "cosmos_mirror") {
+    return null;
+  }
+
   return (
-    <Flex direction="column" flex={1} gap={4} w="full">
-      {cosmosTxData.isTxFailed && (
-        <Alert alignItems="center" mb={2} overflow="unset" variant="error">
-          <Flex align="start" gap={2}>
-            <CustomIcon
-              boxSize={4}
-              color="error.main"
-              name="alert-triangle-solid"
+    <Stack gap={6} w="full">
+      {messages.map(
+        (msg, idx) =>
+          decodedTx.messages[idx] && (
+            <DecodeCosmosEvmMessageHeader
+              key={JSON.stringify(msg) + idx.toString()}
+              compact={false}
+              evmDecodedMessage={evmDecodedTx}
+              evmVerifyInfos={data}
+              log={logs[idx]}
+              msgCount={messages.length}
             />
-            <AlertDescription wordBreak="break-word">
-              {cosmosTxData.rawLog}
-            </AlertDescription>
-          </Flex>
-        </Alert>
+          )
       )}
-      <EvmTxMsgDetailsBody evmDenom={evmDenom} evmTxData={evmTxData} />
-      <EvmInputData txInput={evmTxData.tx.input} txTo={evmTxData.tx.to} />
-      {!!evmTxData.txReceipt.logs.length && (
-        <>
-          <DividerWithArrow />
-          <Text color="text.dark" fontWeight={500} variant="body2">
-            {plur("Event log", evmTxData.txReceipt.logs.length)}
-          </Text>
-          <Flex direction="column" gap={3} w="full">
-            {evmTxData.txReceipt.logs.map((log) => (
-              <EvmEventBox
-                key={log.logIndex.toString()}
-                evmVerifyInfo={data?.[log.address] ?? null}
-                log={log}
+      <Tabs isLazy lazyBehavior="keepMounted" w="full">
+        <TabList
+          id="cosmos-evm-txs-tab-list"
+          borderBottomWidth="1px"
+          borderColor="gray.700"
+          overflowX="scroll"
+        >
+          <CustomTab>Overview</CustomTab>
+          <CustomTab>Internal txs</CustomTab>
+          <CustomTab>Balance changes</CustomTab>
+        </TabList>
+        <TabPanels>
+          <TabPanel pt={8}>
+            <Flex direction="column" flex={1} gap={4} w="full">
+              {cosmosTxData.isTxFailed && (
+                <Alert
+                  alignItems="center"
+                  mb={2}
+                  overflow="unset"
+                  variant="error"
+                >
+                  <Flex align="start" gap={2}>
+                    <CustomIcon
+                      boxSize={4}
+                      color="error.main"
+                      name="alert-triangle-solid"
+                    />
+                    <AlertDescription wordBreak="break-word">
+                      {cosmosTxData.rawLog}
+                    </AlertDescription>
+                  </Flex>
+                </Alert>
+              )}
+              {messages.map(
+                (msg, idx) =>
+                  decodedTx.messages[idx] && (
+                    <DecodeCosmosEvmMessageBody
+                      key={JSON.stringify(msg) + idx.toString()}
+                      compact={false}
+                      evmDecodedMessage={evmDecodedTx}
+                      evmVerifyInfos={data}
+                      log={logs[idx]}
+                      msgCount={messages.length}
+                    />
+                  )
+              )}
+              <EvmInputData
+                evmVerifyInfo={
+                  data?.[evmTxData.tx.to?.toLowerCase() ?? ""] ?? null
+                }
+                txInput={evmTxData.tx.input}
               />
-            ))}
-          </Flex>
-        </>
-      )}
-    </Flex>
+              {!!evmTxData.txReceipt.logs.length && (
+                <>
+                  <DividerWithArrow />
+                  <Text color="text.dark" fontWeight={500} variant="body2">
+                    {plur("Event log", evmTxData.txReceipt.logs.length)}
+                  </Text>
+                  <Flex direction="column" gap={3} w="full">
+                    {evmTxData.txReceipt.logs.map((log) => (
+                      <EvmEventBox
+                        key={log.logIndex.toString()}
+                        evmVerifyInfo={data?.[log.address] ?? null}
+                        log={log}
+                      />
+                    ))}
+                  </Flex>
+                </>
+              )}
+            </Flex>
+          </TabPanel>
+          <TabPanel>
+            <EvmInternalTransactionsTable
+              emptyState={
+                <EmptyState
+                  imageVariant="empty"
+                  message="There are no internal transactions."
+                />
+              }
+              fetchNextPage={evmInternalTxsData.fetchNextPage}
+              internalTxs={
+                evmInternalTxsData.data?.pages?.flatMap(
+                  (page) => page.internalTxs
+                ) ?? []
+              }
+              isFetchingNextPage={evmInternalTxsData.isFetchingNextPage}
+              isLoading={
+                evmInternalTxsData.isLoading ||
+                (evmInternalTxsData.isFetching &&
+                  !evmInternalTxsData.isFetchingNextPage)
+              }
+              showParentHash={false}
+              totalCount={countTotalEvmInternalTxs ?? 0}
+            />
+          </TabPanel>
+          <TabPanel>
+            <BalanceChanges
+              metadata={evmDecodedTx.metadata}
+              totalBalanceChanges={evmDecodedTx.totalBalanceChanges}
+            />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Stack>
   );
 };

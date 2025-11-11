@@ -20,7 +20,13 @@ import { z } from "zod";
 
 import type { TxsResponseItemFromRest } from "./tx";
 
-import { zTx, zTxJsonRpc, zTxReceiptJsonRpc } from "./tx";
+import {
+  zRawTxJsonRpc,
+  zRawTxReceiptJsonRpc,
+  zTx,
+  zTxJsonRpc,
+  zTxReceiptJsonRpc,
+} from "./tx";
 
 const zNullableValidator = z.nullable(
   z
@@ -217,30 +223,61 @@ export const zBlockDataResponseSequencer = zBlockSequencer.transform<BlockData>(
 );
 
 // ---------------- JSON RPC ----------------
-export const zBlockJsonRpc = z.object({
-  baseFeePerGas: zHexBig,
-  difficulty: zHexBig,
+export const zRawBlockJsonRpc = z.object({
+  baseFeePerGas: z.string(),
+  difficulty: z.string(),
   extraData: z.string(),
-  gasLimit: zHexBig,
-  gasUsed: zHexBig,
+  gasLimit: z.string(),
+  gasUsed: z.string(),
   hash: z.string(),
   logsBloom: z.string(),
   miner: zHexAddr20,
   mixHash: z.string(),
-  nonce: zHexBig,
-  number: zHexBig,
+  nonce: z.string(),
+  number: z.string(),
   parentHash: z.string(),
   receiptsRoot: z.string(),
   sha3Uncles: z.string(),
   size: z.string(),
   stateRoot: z.string(),
-  timestamp: zHexUtcDate,
-  transactions: z.array(zTxJsonRpc),
+  timestamp: z.string(),
+  transactions: z.array(zRawTxJsonRpc),
   transactionsRoot: z.string(),
 });
 
-const zBlockReceiptsJsonRpc = z.array(zTxReceiptJsonRpc);
+export const zBlockJsonRpc = zRawBlockJsonRpc.transform(
+  ({
+    baseFeePerGas,
+    difficulty,
+    gasLimit,
+    gasUsed,
+    nonce,
+    number,
+    timestamp,
+    transactions,
+    ...val
+  }) => ({
+    baseFeePerGas: zHexBig.parse(baseFeePerGas),
+    difficulty: zHexBig.parse(difficulty),
+    gasLimit: zHexBig.parse(gasLimit),
+    gasUsed: zHexBig.parse(gasUsed),
+    nonce: zHexBig.parse(nonce),
+    number: zHexBig.parse(number),
+    timestamp: zHexUtcDate.parse(timestamp),
+    transactions: transactions.map((tx) => zTxJsonRpc.parse(tx)),
+    ...val,
+  })
+);
 
 export const zBlockDataJsonRpc = z
-  .tuple([zBlockJsonRpc, zBlockReceiptsJsonRpc])
-  .transform(([block, blockReceipts]) => ({ block, blockReceipts }));
+  .tuple([zRawBlockJsonRpc, z.array(zRawTxReceiptJsonRpc)])
+  .transform(([rawBlock, rawBlockReceipts]) => ({
+    block: {
+      ...zBlockJsonRpc.parse(rawBlock),
+      rawTransactions: rawBlock.transactions,
+    },
+    blockReceipts: rawBlockReceipts.map((receipt) =>
+      zTxReceiptJsonRpc.parse(receipt)
+    ),
+    rawBlockReceipts,
+  }));

@@ -44,7 +44,7 @@ export const RecentCodesTableLite = observer(() => {
         <LoadNext
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          text="Load more 10 codes"
+          text="Load more codes"
         />
       )}
     </>

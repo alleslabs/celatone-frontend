@@ -42,6 +42,7 @@ export const PublishCompleted = ({
           {
             html: <ExplorerLink type="tx_hash" value={txHash} />,
             title: "Tx hash",
+            type: "standard",
           },
           {
             html: (
@@ -51,9 +52,11 @@ export const PublishCompleted = ({
               />
             ),
             title: "Tx fee",
+            type: "standard",
           },
           {
             title: "Upgrade policy",
+            type: "standard",
             value: capitalize(upgradePolicy),
           },
         ]}

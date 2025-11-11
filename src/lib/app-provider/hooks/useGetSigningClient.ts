@@ -48,7 +48,7 @@ export const useGetSigningClient = () => {
         (await walletClient.getOfflineSigner?.(chainId, "amino"));
 
       if (!signer || !("signAmino" in signer))
-        throw new Error("Unsupport signAmino type for getSigningClient");
+        throw new Error("Unsupported signAmino type for getSigningClient");
 
       return SigningCosmWasmClient.connectWithSigner(
         rpcEndpoint,

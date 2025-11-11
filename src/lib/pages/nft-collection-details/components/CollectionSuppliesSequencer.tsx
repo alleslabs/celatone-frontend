@@ -44,7 +44,7 @@ export const CollectionSuppliesSequencer = ({
         <LoadNext
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          text="Load more 10 NFTs"
+          text="Load more NFTs"
         />
       )}
     </Box>

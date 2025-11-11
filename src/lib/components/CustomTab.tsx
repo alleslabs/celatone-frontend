@@ -11,13 +11,11 @@ import {
 
 interface CustomTabProps extends TabProps {
   count?: Nullish<number>;
-  fallbackValue?: string;
   isLoading?: boolean;
 }
 
 export const CustomTab = ({
   count,
-  fallbackValue = "N/A",
   isDisabled,
   isLoading,
   ...restProps
@@ -64,9 +62,10 @@ export const CustomTab = ({
           w={8}
         />
       ) : (
-        count !== undefined && (
+        !!count &&
+        count > 0 && (
           <Badge ml={2} variant={isSelected ? "white" : "gray"}>
-            {count === null ? fallbackValue : count}
+            {count}
           </Badge>
         )
       )}
