@@ -99,6 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1500](https://github.com/alleslabs/celatone-frontend/pull/1500) Fix WASM ibc nft message decoder issue
 - [#1494](https://github.com/alleslabs/celatone-frontend/pull/1494) Fix Select Fund component render token issue
 - [#1492](https://github.com/alleslabs/celatone-frontend/pull/1492) Fix Nft detail title token id
 - [#1485](https://github.com/alleslabs/celatone-frontend/pull/1485) Fix format address in NFT decoder

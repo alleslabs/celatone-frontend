@@ -43,22 +43,19 @@ export const DecodeMessageIbcNftWasm = memo(
     const formatAddresses = useFormatAddresses();
     const { action, data, isIbc, isOp } = decodedMessage;
 
-    // Check if classId is an IBC denom path (contains '/')
-    const isIbcDenom = data.classId?.includes("/");
-
     const collectionAddressHex = useMemo(
       () =>
-        data.classId && !isIbcDenom
-          ? zHexAddr.parse(formatAddresses(data.classId).hex)
+        data.contractAddress
+          ? zHexAddr.parse(formatAddresses(data.contractAddress).hex)
           : undefined,
-      [data.classId, formatAddresses, isIbcDenom]
+      [data.contractAddress, formatAddresses]
     );
     const collectionAddressBech = useMemo(
       () =>
-        data.classId && !isIbcDenom
-          ? zBechAddr32.parse(formatAddresses(data.classId).address)
+        data.contractAddress
+          ? zBechAddr32.parse(formatAddresses(data.contractAddress).address)
           : undefined,
-      [data.classId, formatAddresses, isIbcDenom]
+      [data.contractAddress, formatAddresses]
     );
 
     const isNftQueryEnabled = Boolean(
@@ -94,7 +91,7 @@ export const DecodeMessageIbcNftWasm = memo(
           {nft && data.tokenIds?.[0] && (
             <Flex align="center" gap={1} minW="fit-content">
               <AppLink
-                href={`/nft-collections/${data.classId}/nft/${data.tokenIds[0]}`}
+                href={`/nft-collections/${data.contractAddress}/nft/${data.tokenIds[0]}`}
               >
                 <NftImage
                   borderRadius="4px"
@@ -108,7 +105,7 @@ export const DecodeMessageIbcNftWasm = memo(
                 textFormat="normal"
                 textLabel={nftMetadata?.name || `#${data.tokenIds[0]}`}
                 type="nft_collection"
-                value={`${data.classId}/nft/${data.tokenIds[0]}`}
+                value={`${data.contractAddress}/nft/${data.tokenIds[0]}`}
               />
             </Flex>
           )}
@@ -199,7 +196,7 @@ export const DecodeMessageIbcNftWasm = memo(
                   textFormat="normal"
                   textLabel={nftMetadata?.name || `#${data.tokenIds[0]}`}
                   type="nft_collection"
-                  value={`${data.classId}/nft/${data.tokenIds[0]}`}
+                  value={`${data.contractAddress}/nft/${data.tokenIds[0]}`}
                 />
               </Stack>
             </DecodeMessageRow>
