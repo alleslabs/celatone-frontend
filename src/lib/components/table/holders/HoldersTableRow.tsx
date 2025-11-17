@@ -49,7 +49,7 @@ export const HoldersTableRow = ({
         <Text variant="body2">
           {formatUTokenWithPrecision({
             amount: token.amount,
-            decimalPoints: token.precision ? 6 : 0,
+            decimalPoints: token.precision !== null ? 6 : 0,
             isSuffix: true,
             precision: token.precision ?? 0,
           })}

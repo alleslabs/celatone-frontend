@@ -33,11 +33,14 @@ export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {
   const evmDenom = contractAddress.replace("0x", "evm/");
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
 
+  // Note: The API's reverse=true shows highest holders first (descending order).
+  // We pass !isReversed because when isReversed=false (default), we want reverse=true (top holders).
+  // When user toggles to isReversed=true, we pass reverse=false (lowest holders first).
   const { data, error, isLoading } = useRichlistSequencer(
     evmDenom,
     pageSize,
     offset,
-    !isReversed,
+    !isReversed, // API reverse parameter: true = descending (top holders), false = ascending
     true
   );
 
@@ -60,6 +63,12 @@ export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {
     );
   }
 
+  // Calculate dynamic heading count
+  // Cap at 100 for UI display, but use actual total if less than 100
+  const displayCount = data?.pagination?.total
+    ? Math.min(data.pagination.total, 100)
+    : 100;
+
   return (
     <Stack
       gap={{
@@ -68,7 +77,7 @@ export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {
       }}
     >
       <Heading as="h5" fontWeight={700} variant="h5">
-        Top 100 Holders
+        Top {displayCount} Holders
       </Heading>
       <Box>
         <HoldersTable
