@@ -352,6 +352,7 @@ export const zAddNetworkManualChainConfigJson = ({
       fixed_min_gas_price,
       gasAdjustment,
       ibc_transfer,
+      indexer,
       logoUri,
       low_gas_price,
       maxGasLimit,
@@ -398,7 +399,7 @@ export const zAddNetworkManualChainConfigJson = ({
         gasAdjustment,
         maxGasLimit,
       },
-      indexer: rest,
+      indexer: indexer || rest,
       logo_URIs: {
         png: logoUri || undefined,
       },
@@ -434,6 +435,7 @@ export const zAddNetworkJsonChainConfigJson = zChainConfig
     chainId: true,
     fees: true,
     gas: true,
+    indexer: true,
     logo_URIs: true,
     prettyName: true,
     registry: true,
@@ -459,7 +461,7 @@ export const zAddNetworkJsonChainConfigJson = zChainConfig
       pool: DEFAULT_POOL_CONFIG,
       publicProject: DEFAULT_PUBLIC_PROJECT_CONFIG,
     },
-    indexer: val.rest,
+    indexer: val.indexer || val.rest,
     registryChainName: val.chainId,
   }));
 

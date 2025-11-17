@@ -100,9 +100,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#1500](https://github.com/alleslabs/celatone-frontend/pull/1500) Fix WASM ibc nft message decoder issue
+- [#1494](https://github.com/alleslabs/celatone-frontend/pull/1494) Fix Select Fund component render token issue
+- [#1492](https://github.com/alleslabs/celatone-frontend/pull/1492) Fix Nft detail title token id
+- [#1485](https://github.com/alleslabs/celatone-frontend/pull/1485) Fix format address in NFT decoder
+- [#1479](https://github.com/alleslabs/celatone-frontend/pull/1479) Fix token card not showing pool symbol pair
 - [#1478](https://github.com/alleslabs/celatone-frontend/pull/1478) Fix EVM event box decode issue
 - [#1477](https://github.com/alleslabs/celatone-frontend/pull/1477) Fix EVM minor bugs
 - [#1473](https://github.com/alleslabs/celatone-frontend/pull/1473) Fix event logs title overflow wrap issue
+- [#1472](https://github.com/alleslabs/celatone-frontend/pull/1472) Fix Glyph image not showing
 - [#1469](https://github.com/alleslabs/celatone-frontend/pull/1469) Fix JSON rpc batch request issue
 - [#1462](https://github.com/alleslabs/celatone-frontend/pull/1462) Fix account details nfts overview not showing correct count
 - [#1460](https://github.com/alleslabs/celatone-frontend/pull/1460) Fix account details nfts tab not showing correct count

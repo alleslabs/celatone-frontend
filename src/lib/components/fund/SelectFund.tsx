@@ -155,30 +155,35 @@ export const SelectFund = ({
 
   return (
     <>
-      {fields.map((field, idx) => (
-        <AssetInput
-          key={field.id}
-          amountInput={
-            <ControllerInput
-              {...handleControllerInputProps(idx)}
-              control={control}
-              label="Amount"
-              labelBgColor={labelBgColor}
-              name={`${ASSETS_SELECT}.${idx}.amount`}
-              placeholder="0.00"
-              type="decimal"
-              variant="fixed-floating"
-            />
-          }
-          assetOptions={assetOptions}
-          disableDelete={fields.length <= 1}
-          setCurrencyValue={(newVal: string) =>
-            setValue(`${ASSETS_SELECT}.${idx}.denom`, newVal)
-          }
-          value={assetOptions.find((option) => option.value.id === field.denom)}
-          onDelete={() => remove(idx)}
-        />
-      ))}
+      {fields.map((field, idx) => {
+        const controllerInputProps = handleControllerInputProps(idx);
+        return (
+          <AssetInput
+            key={field.id}
+            amountInput={
+              <ControllerInput
+                {...controllerInputProps}
+                control={control}
+                label="Amount"
+                labelBgColor={labelBgColor}
+                name={`${ASSETS_SELECT}.${idx}.amount`}
+                placeholder="0.00"
+                type="decimal"
+                variant="fixed-floating"
+              />
+            }
+            assetOptions={assetOptions}
+            disableDelete={fields.length <= 1}
+            setCurrencyValue={(newVal: string) =>
+              setValue(`${ASSETS_SELECT}.${idx}.denom`, newVal)
+            }
+            value={assetOptions.find(
+              (option) => option.value.id === assetsSelect[idx]?.denom
+            )}
+            onDelete={() => remove(idx)}
+          />
+        );
+      })}
       <Button
         isDisabled={assetOptions.length === selectedAssets.length}
         mb={5}

@@ -4,6 +4,7 @@ import { useCelatoneApp, useConvertHexAddress } from "lib/app-provider";
 import { zBechAddr, zHexAddr } from "lib/types";
 import {
   bech32AddressToHex,
+  isBech32Address,
   isHexModuleAddress,
   isHexWalletAddress,
   toChecksumAddress,
@@ -30,6 +31,14 @@ export const useFormatAddresses = () => {
 
   return useCallback(
     (address: string) => {
+      // Handle empty or invalid input
+      if (!address || address.trim() === "") {
+        return {
+          address: zBechAddr.parse(""),
+          hex: zHexAddr.parse("0x0"),
+        };
+      }
+
       if (isHexWalletAddress(address))
         return {
           address: convertHexWalletAddress(zHexAddr.parse(address)),
@@ -40,9 +49,21 @@ export const useFormatAddresses = () => {
           address: convertHexModuleAddress(zHexAddr.parse(address)),
           hex: formatHexAddress(zHexAddr.parse(address)),
         };
+
+      // Validate bech32 address before conversion
+      if (!isBech32Address(address)) {
+        // Return fallback values for invalid bech32 addresses
+        // This handles cases where the address is too short or malformed
+        return {
+          address: zBechAddr.parse(""),
+          hex: zHexAddr.parse("0x0"),
+        };
+      }
+
+      const bechAddr = zBechAddr.parse(address);
       return {
-        address: zBechAddr.parse(address),
-        hex: formatHexAddress(bech32AddressToHex(zBechAddr.parse(address))),
+        address: bechAddr,
+        hex: formatHexAddress(bech32AddressToHex(bechAddr)),
       };
     },
     [convertHexModuleAddress, convertHexWalletAddress, formatHexAddress]

@@ -50,8 +50,13 @@ export const DexPoolLink = ({ liquidityDenom }: DexPoolLinkProps) => {
         copyValue={liquidityDenom}
         externalLink={externalLink}
         hideCopy={true}
+        textLabel={
+          lpToken?.symbol ??
+          underlyingCoins?.map((token) => token.symbol ?? "").join("-") ??
+          liquidityDenom
+        }
         type="move_dex_pool_address"
-        value={lpToken?.name || liquidityDenom}
+        value={liquidityDenom}
       />
     </HStack>
   );
