@@ -1,11 +1,13 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import type { DecodedNotSupportedCall } from "@initia/tx-decoder";
 import type { EvmVerifyInfosResponse } from "lib/services/types";
-import type { Nullable, Option } from "lib/types";
 
 import { Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { type Nullable, type Option, zHexAddr20 } from "lib/types";
+import { getEvmMethod, getEvmMethodName } from "lib/utils";
+import { useMemo } from "react";
 
 import { DecodeMessageBody } from "../decode-message-body";
 import { DecodeMessageHeader } from "../decode-message-header";
@@ -29,6 +31,21 @@ export const DecodeEvmMessageNotSupportedHeader = ({
     data: { from, input, to },
   } = decodedTransaction;
 
+  const methodName = useMemo(() => {
+    if (to) {
+      const evmVerifyInfo = evmVerifyInfos?.[to.toLowerCase()];
+      if (evmVerifyInfo?.abi) {
+        const decodedName = getEvmMethodName(evmVerifyInfo.abi, input);
+        if (decodedName) return decodedName;
+      }
+
+      const method = getEvmMethod(input, zHexAddr20.parse(to));
+      if (method) return method;
+    }
+
+    return input.slice(0, 10);
+  }, [evmVerifyInfos, input, to]);
+
   return (
     <Flex direction="column" w="100%">
       <DecodeMessageHeader
@@ -38,10 +55,7 @@ export const DecodeEvmMessageNotSupportedHeader = ({
         isIbc={false}
         isOpinit={false}
         isSingleMsg={msgCount === 1}
-        label={
-          evmVerifyInfos?.[input.toLowerCase()]?.contractName ??
-          input.slice(0, 10)
-        }
+        label={methodName}
         msgCount={msgCount}
         type={decodedTransaction.action}
       >
