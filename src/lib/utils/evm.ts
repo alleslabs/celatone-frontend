@@ -210,3 +210,15 @@ export const parseTransaction = (abi: JsonFragment[], data: string) => {
     return undefined;
   }
 };
+
+export const getEvmMethodName = (abi: JsonFragment[], txInput: string) => {
+  if (txInput.length < 10) return undefined;
+
+  const iface = new Interface(abi);
+  try {
+    const fragment = iface.getFunction(txInput.slice(0, 10));
+    return fragment?.name;
+  } catch {
+    return undefined;
+  }
+};
