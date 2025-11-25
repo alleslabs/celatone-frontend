@@ -1,3 +1,5 @@
+import type { HexAddr20 } from "lib/types";
+
 import { Box, Heading, Stack } from "@chakra-ui/react";
 import { Loading } from "lib/components/Loading";
 import { Pagination } from "lib/components/pagination";
@@ -9,7 +11,7 @@ import { useRichlistSequencer } from "lib/services/richlist";
 import { useEffect, useState } from "react";
 
 interface HoldersSectionProps {
-  contractAddress: string;
+  contractAddress: HexAddr20;
 }
 
 export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {

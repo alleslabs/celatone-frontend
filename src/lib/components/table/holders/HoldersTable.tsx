@@ -41,7 +41,7 @@ export const HoldersTable = ({
     <MobileTableContainer>
       {holders.map((holder, index) => (
         <HoldersTableMobileCard
-          key={`${holder.account}-${index}`}
+          key={holder.account}
           assetInfos={assetInfos}
           evmDenom={evmDenom}
           holder={holder}
@@ -58,7 +58,7 @@ export const HoldersTable = ({
       />
       {holders.map((holder, index) => (
         <HoldersTableRow
-          key={`${holder.account}-${index}`}
+          key={holder.account}
           assetInfos={assetInfos}
           evmDenom={evmDenom}
           holder={holder}

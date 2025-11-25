@@ -56,7 +56,6 @@ const EvmContractDetailsBody = ({
 }: EvmContractDetailsBodyProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
-  const evm = useEvmConfig({ shouldRedirect: false });
   const { convertHexWalletAddress } = useConvertHexAddress();
   const contractAddressBechAddr = convertHexWalletAddress(contractAddress);
 
@@ -162,10 +161,7 @@ const EvmContractDetailsBody = ({
             <CustomTab onClick={handleTabChange(TabIndex.Transactions)}>
               Transactions
             </CustomTab>
-            <CustomTab
-              hidden={!evm.enabled}
-              onClick={handleTabChange(TabIndex.Holders)}
-            >
+            <CustomTab onClick={handleTabChange(TabIndex.Holders)}>
               Holders
             </CustomTab>
           </TabList>
