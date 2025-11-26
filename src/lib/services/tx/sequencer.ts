@@ -91,7 +91,7 @@ export const getTxsByBlockHeightSequencer = async (
   const result: TxsResponseItemFromRest[] = [];
 
   const fetchTxsByPaginationKey = async (paginationKey: Nullable<string>) => {
-    const fetch = async (endpoint: string, throwErrorIfNoData: boolean) => {
+    const fetch = async (endpoint: string) => {
       const { data } = await axios.get(
         `${endpoint}/indexer/tx/v1/txs/by_height/${encodeURIComponent(height)}`,
         {
@@ -102,18 +102,16 @@ export const getTxsByBlockHeightSequencer = async (
         }
       );
 
-      const parsed = parseWithError(zBlockTxsResponseSequencer, data);
-      if (throwErrorIfNoData && parsed.txs.length === 0) {
-        throw new Error("No data found");
-      }
-
-      return parsed;
+      return parseWithError(zBlockTxsResponseSequencer, data);
     };
 
     const res = await queryWithArchivalFallback(endpoint, fetch);
     result.push(...res.txs.map((item) => item));
-    if (res.pagination.nextKey)
-      await fetchTxsByPaginationKey(res.pagination.nextKey);
+
+    // If no next key, stop pagination
+    if (res.pagination.nextKey === null) return;
+
+    await fetchTxsByPaginationKey(res.pagination.nextKey);
   };
 
   await fetchTxsByPaginationKey(null);
