@@ -109,7 +109,7 @@ export const getTxsByBlockHeightSequencer = async (
     result.push(...res.txs.map((item) => item));
 
     // If no next key, stop pagination
-    if (res.pagination.nextKey === null) return;
+    if (!res.pagination.nextKey) return;
 
     await fetchTxsByPaginationKey(res.pagination.nextKey);
   };
