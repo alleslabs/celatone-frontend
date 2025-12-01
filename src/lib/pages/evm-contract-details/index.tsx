@@ -33,6 +33,7 @@ import { TxsTable } from "../contract-details/components/tables/txs";
 import { EvmContractDetailsContractInfo } from "./components/evm-contract-details-contract-info";
 import { EvmContractDetailsOverview } from "./components/evm-contract-details-overview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
+import { HoldersSection } from "./components/holders-section";
 import { InteractEvmContract } from "./components/interact-evm-contract";
 import { TabIndex, zEvmContractDetailsQueryParams } from "./types";
 
@@ -160,6 +161,9 @@ const EvmContractDetailsBody = ({
             <CustomTab onClick={handleTabChange(TabIndex.Transactions)}>
               Transactions
             </CustomTab>
+            <CustomTab onClick={handleTabChange(TabIndex.Holders)}>
+              Holders
+            </CustomTab>
           </TabList>
           <TabPanels>
             <TabPanel p={0} pt={8}>
@@ -199,6 +203,9 @@ const EvmContractDetailsBody = ({
             </TabPanel>
             <TabPanel p={0} pt={8}>
               <TxsTable contractAddress={contractAddressBechAddr} />
+            </TabPanel>
+            <TabPanel p={0} pt={8}>
+              <HoldersSection contractAddress={contractAddress} />
             </TabPanel>
           </TabPanels>
         </Tabs>

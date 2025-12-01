@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1501](https://github.com/alleslabs/celatone-frontend/pull/1501) Add holders section to EVM contract details page
 - [#1497](https://github.com/alleslabs/celatone-frontend/pull/1497) Add WASM tx decoder messages
 - [#1491](https://github.com/alleslabs/celatone-frontend/pull/1491) Separate total count in EVM txs sequencer API and EVM internal txs API
 - [#1486](https://github.com/alleslabs/celatone-frontend/pull/1486) Add more EVM tx decoder messages
