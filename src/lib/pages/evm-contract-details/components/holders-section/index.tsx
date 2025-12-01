@@ -56,15 +56,6 @@ export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {
   if (isLoading) return <Loading />;
   if (error) return <ErrorFetching dataName="holders" />;
 
-  if (!data || !data.holders || data.holders.length === 0) {
-    return (
-      <EmptyState
-        imageVariant="empty"
-        message="No holders found for this contract."
-      />
-    );
-  }
-
   // Calculate dynamic heading count
   // Cap at 100 for UI display, but use actual total if less than 100
   const displayCount = data?.pagination?.total
