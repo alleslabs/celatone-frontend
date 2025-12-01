@@ -126,6 +126,7 @@ export const EvmTxs = ({
                 )
               }
               fetchNextPage={evmInternalTxsData.fetchNextPage}
+              hasNextPage={evmInternalTxsData.hasNextPage}
               internalTxs={
                 evmInternalTxsData.data?.pages?.flatMap(
                   (page) => page.internalTxs
@@ -137,7 +138,6 @@ export const EvmTxs = ({
                 (evmInternalTxsData.isFetching &&
                   !evmInternalTxsData.isFetchingNextPage)
               }
-              totalCount={countTotalEvmInternalTxs ?? 0}
             />
             {onViewMore && evmInternalTxsData.hasNextPage && (
               <ViewMore onClick={onViewMore} />

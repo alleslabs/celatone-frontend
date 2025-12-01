@@ -63,8 +63,6 @@ export const EvmTxMsgDetails = ({
     addressValidation.success
   );
 
-  const countTotalEvmInternalTxs = evmInternalTxsData.totalCount;
-
   const {
     decodedTx,
     logs,
@@ -187,6 +185,7 @@ export const EvmTxMsgDetails = ({
                 />
               }
               fetchNextPage={evmInternalTxsData.fetchNextPage}
+              hasNextPage={evmInternalTxsData.hasNextPage}
               internalTxs={
                 evmInternalTxsData.data?.pages?.flatMap(
                   (page) => page.internalTxs
@@ -199,7 +198,6 @@ export const EvmTxMsgDetails = ({
                   !evmInternalTxsData.isFetchingNextPage)
               }
               showParentHash={false}
-              totalCount={countTotalEvmInternalTxs ?? 0}
             />
           </TabPanel>
           <TabPanel>
