@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1504](https://github.com/alleslabs/celatone-frontend/pull/1504) Fix EVM internal transactions infinite load relying on next key instead of total count
 - [#1502](https://github.com/alleslabs/celatone-frontend/pull/1502) Fix EvmMethodChip to decode method names from verified contract ABI
 - [#1498](https://github.com/alleslabs/celatone-frontend/pull/1498) Fix WASM tx decoder messages issue
 - [#1496](https://github.com/alleslabs/celatone-frontend/pull/1496) Fix EVM txs table cell overflow issue
