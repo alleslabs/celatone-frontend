@@ -40,22 +40,22 @@ interface EvmInternalTransactionsTableProps {
   disableInfiniteLoad?: boolean;
   emptyState: ReactNode;
   fetchNextPage: () => void;
+  hasNextPage: boolean;
   internalTxs: EvmInternalTxSequencer[];
   isFetchingNextPage: boolean;
   isLoading: boolean;
   showParentHash?: boolean;
-  totalCount: number;
 }
 
 export const EvmInternalTransactionsTable = ({
   disableInfiniteLoad,
   emptyState,
   fetchNextPage,
+  hasNextPage,
   internalTxs,
   isFetchingNextPage,
   isLoading,
   showParentHash = true,
-  totalCount,
 }: EvmInternalTransactionsTableProps) => {
   const isMobile = useMobile();
   const { data: evmParams, isLoading: isEvmParamsLoading } = useEvmParams();
@@ -78,12 +78,7 @@ export const EvmInternalTransactionsTable = ({
   const { inView, ref } = useInView({ threshold: 0 });
 
   useEffect(() => {
-    if (
-      inView &&
-      !disableInfiniteLoad &&
-      !isFetchingNextPage &&
-      internalTxs.length < totalCount
-    ) {
+    if (inView && !disableInfiniteLoad && !isFetchingNextPage && hasNextPage) {
       fetchNextPage();
     }
   }, [
@@ -91,8 +86,7 @@ export const EvmInternalTransactionsTable = ({
     disableInfiniteLoad,
     fetchNextPage,
     isFetchingNextPage,
-    internalTxs.length,
-    totalCount,
+    hasNextPage,
   ]);
 
   const templateColumns = [
@@ -121,7 +115,7 @@ export const EvmInternalTransactionsTable = ({
           txHash={result.hash}
         />
       ))}
-      {internalTxs.length < totalCount && (
+      {hasNextPage && (
         <Flex align="center" justify="center" mt={4} ref={ref}>
           {isFetchingNextPage ? <Spinner /> : null}
         </Flex>
@@ -150,7 +144,7 @@ export const EvmInternalTransactionsTable = ({
         ))}
       </Accordion>
 
-      {internalTxs.length < totalCount && (
+      {hasNextPage && (
         <Flex align="center" justify="center" mt={4} ref={ref}>
           {isFetchingNextPage ? <Spinner /> : null}
         </Flex>
