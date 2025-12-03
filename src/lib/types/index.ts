@@ -21,6 +21,7 @@ export * from "./nft";
 export * from "./pool";
 export * from "./projects";
 export * from "./proposal";
+export * from "./query";
 export * from "./rest";
 export * from "./rpc";
 export * from "./time";

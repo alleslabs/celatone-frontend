@@ -54,7 +54,9 @@ export const EvmVersionToTarget = <T extends FieldValues>({
         <SelectInput
           isRequired
           label="EVM version to target"
-          menuPortalTarget={document.body}
+          menuPortalTarget={
+            typeof window !== "undefined" ? document.body : undefined
+          }
           options={evmVersionOptions}
           value={evmVersionOptions.find(
             (option) => option.value === evmVersion

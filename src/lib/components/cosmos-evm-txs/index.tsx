@@ -1,72 +1,57 @@
-import type { BechAddr20 } from "lib/types";
+import { Flex, Heading } from "@chakra-ui/react";
+import { useEvmConfig } from "lib/app-provider";
+import { CosmosEvmTxsTab, useEvmTab } from "lib/hooks";
 
-import {
-  Heading,
-  Stack,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from "@chakra-ui/react";
-import { trackUseTab } from "lib/amplitude";
-import { CustomTab } from "lib/components/CustomTab";
-import { useCallback } from "react";
+import type { CosmosTxsProps } from "./CosmosTxs";
+import type { EvmTxsProps } from "./EvmTxs";
 
+import { TypeSwitch } from "../TypeSwitch";
 import { CosmosTxs } from "./CosmosTxs";
 import { EvmTxs } from "./EvmTxs";
-import { CosmosEvmTxsTab } from "./types";
 
 interface CosmosEvmTxsProps {
-  address: BechAddr20;
-  onViewMore?: () => void;
-  setTab: (tab: CosmosEvmTxsTab) => void;
-  tab: CosmosEvmTxsTab;
-  type: "account" | "contract";
+  cosmosData: CosmosTxsProps;
+  evmData: EvmTxsProps;
+  hideTitle?: boolean;
 }
 
 export const CosmosEvmTxs = ({
-  address,
-  onViewMore,
-  setTab,
-  tab,
-  type,
+  cosmosData,
+  evmData,
+  hideTitle = false,
 }: CosmosEvmTxsProps) => {
-  const handleTabChange = useCallback(
-    (nextTab: CosmosEvmTxsTab) => () => {
-      if (nextTab === tab) return;
-      trackUseTab(nextTab);
-      setTab(nextTab);
-    },
-    [tab, setTab]
-  );
+  const evm = useEvmConfig({ shouldRedirect: false });
+  const { currentTab, setCurrentTab, tabs } = useEvmTab();
 
   return (
-    <Stack gap={6}>
-      <Heading as="h6" variant="h6">
-        Transactions
-      </Heading>
-      <Tabs
-        index={Object.values(CosmosEvmTxsTab).indexOf(tab)}
-        isLazy
-        lazyBehavior="keepMounted"
-      >
-        <TabList>
-          <CustomTab onClick={handleTabChange(CosmosEvmTxsTab.Cosmos)}>
-            Cosmos
-          </CustomTab>
-          <CustomTab onClick={handleTabChange(CosmosEvmTxsTab.Evm)}>
-            EVM
-          </CustomTab>
-        </TabList>
-        <TabPanels>
-          <TabPanel p={0} pt={6}>
-            <CosmosTxs address={address} type={type} onViewMore={onViewMore} />
-          </TabPanel>
-          <TabPanel p={0} pt={6}>
-            <EvmTxs address={address} type={type} onViewMore={onViewMore} />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </Stack>
+    <Flex direction="column" gap={evm.enabled ? 6 : 4}>
+      {!hideTitle && (
+        <Flex
+          align="center"
+          gap={6}
+          justify={{
+            base: "space-between",
+            md: "flex-start",
+          }}
+        >
+          <Heading as="h6" variant="h6">
+            Transactions
+          </Heading>
+          {evm.enabled && (
+            <TypeSwitch
+              currentTab={currentTab}
+              disabledScrollToTop
+              tabs={tabs}
+              onTabChange={setCurrentTab}
+            />
+          )}
+        </Flex>
+      )}
+      {currentTab === CosmosEvmTxsTab.Evm && evm.enabled ? (
+        <EvmTxs {...evmData} />
+      ) : (
+        <CosmosTxs {...cosmosData} />
+      )}
+    </Flex>
   );
 };

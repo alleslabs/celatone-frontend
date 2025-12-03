@@ -5,7 +5,7 @@ import type {
   BechAddr,
   Nullable,
   Option,
-  TxReceipt,
+  StandardTxReceipt,
   ValidatorAddr,
 } from "lib/types";
 
@@ -86,8 +86,8 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
 export const getGenericValueEntry = (
   [title, value]: [string, object | string],
   getAddressType: (address: string) => AddressReturnType
-): TxReceipt => {
-  let valueObj: Omit<TxReceipt, "title">;
+): StandardTxReceipt => {
+  let valueObj: Omit<StandardTxReceipt, "title" | "type">;
   switch (typeof value) {
     case "object":
       valueObj = {
@@ -112,10 +112,12 @@ export const getGenericValueEntry = (
       valueObj = { value };
   }
 
-  return { title: convertToTitle(title), ...valueObj };
+  return { title: convertToTitle(title), type: "standard", ...valueObj };
 };
 
-export const attachFundsReceipt = (value: Option<Coin[]>): TxReceipt => ({
+export const attachFundsReceipt = (
+  value: Option<Coin[]>
+): StandardTxReceipt => ({
   html: value?.length ? (
     <CoinsComponent coins={value} />
   ) : (
@@ -124,54 +126,66 @@ export const attachFundsReceipt = (value: Option<Coin[]>): TxReceipt => ({
     </Text>
   ),
   title: "Attached funds",
+  type: "standard",
 });
 
 export const delegatorAddrReceipt = (
   value: BechAddr,
   addrType: LinkType
-): TxReceipt => ({
+): StandardTxReceipt => ({
   html: getCommonReceiptHtml({
     linkType: addrType,
     type: "explorer",
     value,
   }),
   title: "Delegator address",
+  type: "standard",
 });
 
-export const validatorAddrReceipt = (value: ValidatorAddr): TxReceipt => ({
+export const validatorAddrReceipt = (
+  value: ValidatorAddr
+): StandardTxReceipt => ({
   html: getCommonReceiptHtml({
     linkType: "validator_address",
     type: "explorer",
     value,
   }),
   title: "Validator address",
+  type: "standard",
 });
 
-export const proposalIdReceipt = (value: Option<string>): TxReceipt => ({
+export const proposalIdReceipt = (
+  value: Option<string>
+): StandardTxReceipt => ({
   html: getCommonReceiptHtml({
     linkType: "proposal_id",
     type: "explorer",
     value,
   }),
   title: "Proposal ID",
+  type: "standard",
 });
 
-export const clientStateReceipt = (value: object): TxReceipt => ({
+export const clientStateReceipt = (value: object): StandardTxReceipt => ({
   html: getCommonReceiptHtml({ type: "json", value }),
   title: "Client state",
+  type: "standard",
 });
 
-export const proofInitReceipt = (value: string): TxReceipt => ({
+export const proofInitReceipt = (value: string): StandardTxReceipt => ({
   title: "Proof init",
+  type: "standard",
   value,
 });
 
-export const proofHeightReceipt = (value: object): TxReceipt => ({
+export const proofHeightReceipt = (value: object): StandardTxReceipt => ({
   html: getCommonReceiptHtml({ type: "json", value }),
   title: "Proof height",
+  type: "standard",
 });
 
-export const channelIdReceipt = (value: string): TxReceipt => ({
+export const channelIdReceipt = (value: string): StandardTxReceipt => ({
   title: "Channel ID",
+  type: "standard",
   value,
 });

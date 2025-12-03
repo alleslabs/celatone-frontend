@@ -32,10 +32,10 @@ import {
 } from "./constant";
 
 const isAlphabetNumberAndSpecialCharacters = (str: string) =>
-  /^[a-z0-9/:._-]+$/.test(str);
+  /^[a-zA-Z0-9/:._-]+$/.test(str);
 
 const mustBeAlphabetNumberAndSpecialCharacters =
-  "Must be alphabet (a-z), numbers (0-9), or these special characters: “/”, “:”, “.”, “_”, “-”";
+  'Must be alphabet (a-z, A-Z), numbers (0-9), or these special characters: "/", ":", ".", "_", "-"';
 
 interface ValidateExistingChain {
   isChainIdExist: (chainId: string) => boolean;

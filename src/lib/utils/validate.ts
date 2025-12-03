@@ -28,8 +28,10 @@ export const isHex = (input: string): boolean => {
   return true;
 };
 
-export const isTxHash = (input: string): boolean =>
-  isHex(input) && input.length === 64;
+export const isTxHash = (input: string): boolean => {
+  const hex = input.replace(/^0x/, "");
+  return isHex(hex) && hex.length === 64;
+};
 
 const isHexAddress = (address: string, length: number): boolean => {
   const regex = new RegExp(`^0x[a-fA-F0-9]{1,${length}}$`);

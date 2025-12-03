@@ -4,7 +4,7 @@ import { Text } from "@chakra-ui/react";
 import { EvmMethodName } from "lib/types";
 
 import { ExplorerLink } from "../ExplorerLink";
-import { EvmToCellCreate } from "./evm-to-cell-create";
+import { EvmToCellCreate } from "./EvmToCellCreate";
 
 interface EvmToCellProps {
   isCompact?: boolean;

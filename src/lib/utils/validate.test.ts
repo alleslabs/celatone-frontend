@@ -38,10 +38,17 @@ describe("isHex", () => {
 });
 
 describe("isTxHash", () => {
-  test("valid", () => {
+  test("valid without 0x", () => {
     expect(
       isTxHash(
         "DE7C3F5D7C223257877BCF145452D8B5D45BFD55620B14EE97E6C86EDE16BFE7"
+      )
+    ).toBeTruthy();
+  });
+  test("valid with 0x", () => {
+    expect(
+      isTxHash(
+        "0x24fd7981faacd8f453971f196ca29561d1938018548480e112a5bde95945a486"
       )
     ).toBeTruthy();
   });

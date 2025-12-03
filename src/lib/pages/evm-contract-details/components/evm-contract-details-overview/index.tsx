@@ -1,4 +1,3 @@
-import type { CosmosEvmTxsTab } from "lib/components/cosmos-evm-txs/types";
 import type {
   BechAddr,
   BechAddr20,
@@ -10,8 +9,8 @@ import type {
 
 import { Stack } from "@chakra-ui/react";
 import { AssetsSection } from "lib/components/asset";
-import { CosmosEvmTxs } from "lib/components/cosmos-evm-txs";
 import { EvmVerifySection } from "lib/components/evm-verify-section";
+import { TxsTable } from "lib/pages/contract-details/components/tables/txs";
 
 import { OverviewInfo } from "./OverviewInfo";
 import { OverviewVerifiedCmds } from "./OverviewVerifiedCmds";
@@ -30,8 +29,6 @@ interface EvmContractDetailsOverviewProps {
   onViewMoreTxs: () => void;
   proxyTargetEvmVerifyInfo: Option<EvmVerifyInfo>;
   sender: Option<BechAddr>;
-  setTab: (tab: CosmosEvmTxsTab) => void;
-  tab: CosmosEvmTxsTab;
 }
 
 export const EvmContractDetailsOverview = ({
@@ -46,8 +43,6 @@ export const EvmContractDetailsOverview = ({
   onViewMoreTxs,
   proxyTargetEvmVerifyInfo,
   sender,
-  setTab,
-  tab,
 }: EvmContractDetailsOverviewProps) => (
   <Stack gap={8}>
     <EvmVerifySection
@@ -80,11 +75,8 @@ export const EvmContractDetailsOverview = ({
       address={contractAddressBech}
       onViewMore={onViewMoreAssets}
     />
-    <CosmosEvmTxs
-      address={contractAddressBech}
-      setTab={setTab}
-      tab={tab}
-      type="contract"
+    <TxsTable
+      contractAddress={contractAddressBech}
       onViewMore={onViewMoreTxs}
     />
   </Stack>

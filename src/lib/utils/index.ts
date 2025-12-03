@@ -11,6 +11,7 @@ export * from "./contractState";
 export * from "./countMessages";
 export * from "./cw2";
 export * from "./date";
+export * from "./decode-args";
 export * from "./descriptionAndName";
 export * from "./evm";
 export * from "./executeTags";

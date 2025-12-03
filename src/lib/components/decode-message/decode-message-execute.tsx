@@ -1,29 +1,28 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
-import type { MessageResponse, Option } from "lib/types";
+import type { MsgBodyWithoutType } from "lib/utils";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import { type MessageResponse, type Option } from "lib/types";
 import { extractTxDetails } from "lib/utils";
+import { useState } from "react";
 
+import { ArgsDisplayToggle } from "../ArgsDisplayToggle";
+import { MoveExecuteArgsReceipt } from "../MoveExecuteArgsReceipt";
 import { DecodeMessageRow } from "./decode-message-row";
 
-interface DecodeMessageExecuteProps {
+interface DecodeMessageExecuteBodyProps {
+  body: MsgBodyWithoutType;
   log: Option<Log>;
-  msgBody: MessageResponse;
+  type: "/initia.move.v1.MsgExecute" | "/initia.move.v1.MsgExecuteJSON";
 }
 
-export const DecodeMessageExecute = ({
+const DecodeMessageExecuteBody = ({
+  body,
   log,
-  msgBody,
-}: DecodeMessageExecuteProps) => {
-  const { "@type": type, ...body } = msgBody;
-
-  if (
-    type !== "/initia.move.v1.MsgExecute" &&
-    type !== "/initia.move.v1.MsgExecuteJSON"
-  )
-    return null;
-
+  type,
+}: DecodeMessageExecuteBodyProps) => {
+  const [value, setValue] = useState<string | undefined>("decoded");
   const details = extractTxDetails(type, body, log);
 
   return (
@@ -73,14 +72,39 @@ export const DecodeMessageExecute = ({
           text={JSON.stringify(details.type_args, null, 2)}
         />
       </DecodeMessageRow>
-      <DecodeMessageRow title="Args">
-        <JsonReadOnly
-          canCopy
-          fullWidth
-          isExpandable
-          text={JSON.stringify(details.args, null, 2)}
+      <DecodeMessageRow
+        title={
+          <ArgsDisplayToggle title="Args" value={value} onChange={setValue} />
+        }
+      >
+        <MoveExecuteArgsReceipt
+          displayMode={value}
+          functionName={details.function_name}
+          moduleAddress={details.module_address}
+          moduleName={details.module_name}
+          rawArgs={Array.isArray(details.args) ? details.args : []}
         />
       </DecodeMessageRow>
     </>
   );
+};
+
+interface DecodeMessageExecuteProps {
+  log: Option<Log>;
+  msgBody: MessageResponse;
+}
+
+export const DecodeMessageExecute = ({
+  log,
+  msgBody,
+}: DecodeMessageExecuteProps) => {
+  const { "@type": type, ...body } = msgBody;
+
+  if (
+    type !== "/initia.move.v1.MsgExecute" &&
+    type !== "/initia.move.v1.MsgExecuteJSON"
+  )
+    return null;
+
+  return <DecodeMessageExecuteBody body={body} log={log} type={type} />;
 };

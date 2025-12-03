@@ -1,4 +1,4 @@
-import type { Addr, Nullable, Option } from "lib/types";
+import type { Addr, Option, Pagination } from "lib/types";
 
 import axios from "axios";
 import { parseWithError } from "lib/utils";
@@ -86,35 +86,25 @@ export const getTxsByHashSequencer = (endpoint: string, txHash: string) => {
 
 export const getTxsByBlockHeightSequencer = async (
   endpoint: string,
-  height: number
-): Promise<TxsResponseItemFromRest[]> => {
-  const result: TxsResponseItemFromRest[] = [];
-
-  const fetchTxsByPaginationKey = async (paginationKey: Nullable<string>) => {
-    const fetch = async (endpoint: string) => {
-      const { data } = await axios.get(
+  height: number,
+  limit: number = 10,
+  nextKey?: string
+): Promise<{
+  pagination: Pagination;
+  txs: TxsResponseItemFromRest[];
+}> => {
+  const fetch = async (endpoint: string) =>
+    axios
+      .get(
         `${endpoint}/indexer/tx/v1/txs/by_height/${encodeURIComponent(height)}`,
         {
           params: {
-            "pagination.key": paginationKey,
-            "pagination.limit": "100",
+            "pagination.key": nextKey || undefined,
+            "pagination.limit": limit,
           },
         }
-      );
+      )
+      .then(({ data }) => parseWithError(zBlockTxsResponseSequencer, data));
 
-      return parseWithError(zBlockTxsResponseSequencer, data);
-    };
-
-    const res = await queryWithArchivalFallback(endpoint, fetch);
-    result.push(...res.txs.map((item) => item));
-
-    // If no next key, stop pagination
-    if (!res.pagination.nextKey) return;
-
-    await fetchTxsByPaginationKey(res.pagination.nextKey);
-  };
-
-  await fetchTxsByPaginationKey(null);
-
-  return result;
+  return queryWithArchivalFallback(endpoint, fetch);
 };

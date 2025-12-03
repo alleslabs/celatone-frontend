@@ -32,7 +32,9 @@ export const BoolField = <T extends FieldValues>({
   return (
     <SelectInput
       isDisabled={isDisabled}
-      menuPortalTarget={document.body}
+      menuPortalTarget={
+        typeof window !== "undefined" ? document.body : undefined
+      }
       options={BOOL_FIELD_OPTIONS}
       size="md"
       value={BOOL_FIELD_OPTIONS.find((option) => option.value === value)}

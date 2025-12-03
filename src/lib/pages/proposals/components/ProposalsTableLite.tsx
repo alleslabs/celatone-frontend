@@ -104,7 +104,7 @@ export const ProposalsTableLite = () => {
         <LoadNext
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          text="Load more 10 proposals"
+          text="Load more proposals"
         />
       )}
     </>
