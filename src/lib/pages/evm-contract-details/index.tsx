@@ -10,8 +10,6 @@ import {
   useMobile,
 } from "lib/app-provider";
 import { AssetsSection } from "lib/components/asset";
-import { CosmosEvmTxs } from "lib/components/cosmos-evm-txs";
-import { CosmosEvmTxsTab } from "lib/components/cosmos-evm-txs/types";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -27,13 +25,15 @@ import { useEvmTxHashByCosmosTxHash } from "lib/services/tx";
 import { useEvmVerifyInfos } from "lib/services/verification/evm";
 import { isHexWalletAddress, toChecksumAddress, truncate } from "lib/utils";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 import type { InteractTabsIndex } from "./types";
 
+import { TxsTable } from "../contract-details/components/tables/txs";
 import { EvmContractDetailsContractInfo } from "./components/evm-contract-details-contract-info";
 import { EvmContractDetailsOverview } from "./components/evm-contract-details-overview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
+import { HoldersSection } from "./components/holders-section";
 import { InteractEvmContract } from "./components/interact-evm-contract";
 import { TabIndex, zEvmContractDetailsQueryParams } from "./types";
 
@@ -86,11 +86,6 @@ const EvmContractDetailsBody = ({
     contractAddressBechAddr
   );
 
-  const [overviewTabIndex, setOverviewTabIndex] = useState(
-    CosmosEvmTxsTab.Cosmos
-  );
-  const [tableTabIndex, setTableTabIndex] = useState(CosmosEvmTxsTab.Cosmos);
-
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
       if (nextTab === tab) return;
@@ -108,11 +103,6 @@ const EvmContractDetailsBody = ({
     },
     [contractAddress, tab, navigate]
   );
-
-  const handleOnViewMoreTxs = useCallback(() => {
-    setTableTabIndex(overviewTabIndex);
-    handleTabChange(TabIndex.Transactions)();
-  }, [handleTabChange, overviewTabIndex]);
 
   if (
     isEvmCodesByAddressLoading ||
@@ -171,6 +161,10 @@ const EvmContractDetailsBody = ({
             <CustomTab onClick={handleTabChange(TabIndex.Transactions)}>
               Transactions
             </CustomTab>
+            {/* // TODO: Reopen when top holders is ready */}
+            {/* <CustomTab onClick={handleTabChange(TabIndex.Holders)}>
+              Holders
+            </CustomTab> */}
           </TabList>
           <TabPanels>
             <TabPanel p={0} pt={8}>
@@ -184,10 +178,8 @@ const EvmContractDetailsBody = ({
                 isContractInfoLoading={isEvmContractInfoLoading}
                 proxyTargetEvmVerifyInfo={proxyTargetEvmVerifyInfo}
                 sender={evmContractInfoData?.sender}
-                setTab={setOverviewTabIndex}
-                tab={overviewTabIndex}
                 onViewMoreAssets={handleTabChange(TabIndex.Assets)}
-                onViewMoreTxs={handleOnViewMoreTxs}
+                onViewMoreTxs={handleTabChange(TabIndex.Transactions)}
               />
             </TabPanel>
             <TabPanel p={0} pt={8}>
@@ -211,12 +203,10 @@ const EvmContractDetailsBody = ({
               <AssetsSection address={contractAddressBechAddr} />
             </TabPanel>
             <TabPanel p={0} pt={8}>
-              <CosmosEvmTxs
-                address={contractAddressBechAddr}
-                setTab={setTableTabIndex}
-                tab={tableTabIndex}
-                type="contract"
-              />
+              <TxsTable contractAddress={contractAddressBechAddr} />
+            </TabPanel>
+            <TabPanel p={0} pt={8}>
+              <HoldersSection contractAddress={contractAddress} />
             </TabPanel>
           </TabPanels>
         </Tabs>

@@ -36,6 +36,7 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
               <ExplorerLink type="tx_hash" value={txInfo.transactionHash} />
             ),
             title: "Tx hash",
+            type: "standard",
           },
           {
             html: txInfo.contractAddress ? (
@@ -45,6 +46,7 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
               />
             ) : undefined,
             title: "Contract address",
+            type: "standard",
           },
           {
             html: (
@@ -54,6 +56,7 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
               />
             ),
             title: "Tx fee",
+            type: "standard",
           },
         ]}
         variant="full"

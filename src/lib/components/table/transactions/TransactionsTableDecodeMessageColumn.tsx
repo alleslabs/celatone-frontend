@@ -4,7 +4,7 @@ import type { Option, TransactionWithTxResponse } from "lib/types";
 
 import { Spinner } from "@chakra-ui/react";
 import { ActionMessages } from "lib/components/action-msg/ActionMessages";
-import { DecodeMessage } from "lib/components/decode-message";
+import { DecodeMessage } from "lib/components/decode-message/cosmos-message";
 
 interface TransactionsTableDecodeMessageColumnProps {
   decodedTx: Option<DecodedTx>;

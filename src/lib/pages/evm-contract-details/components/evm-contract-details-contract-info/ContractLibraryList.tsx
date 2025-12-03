@@ -53,6 +53,7 @@ export const ContractLibraryList = ({
               <ExplorerLink
                 showCopyOnHover
                 textFormat={isMobile ? "truncate" : "normal"}
+                textLabel={library.contractName}
                 type="evm_contract_address"
                 value={library.contractAddress}
               />

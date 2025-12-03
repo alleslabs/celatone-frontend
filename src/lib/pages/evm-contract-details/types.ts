@@ -7,6 +7,7 @@ export enum TabIndex {
   ReadWrite = "read-write",
   Assets = "assets",
   Transactions = "transactions",
+  Holders = "holders",
 }
 
 export enum InteractTabsIndex {

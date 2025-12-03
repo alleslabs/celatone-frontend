@@ -37,11 +37,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Features
+
+- [#1505](https://github.com/alleslabs/celatone-frontend/pull/1505) Disable top rich list tab in holders section
+- [#1501](https://github.com/alleslabs/celatone-frontend/pull/1501) Add holders section to EVM contract details page
+- [#1497](https://github.com/alleslabs/celatone-frontend/pull/1497) Add WASM tx decoder messages
+- [#1491](https://github.com/alleslabs/celatone-frontend/pull/1491) Separate total count in EVM txs sequencer API and EVM internal txs API
+- [#1486](https://github.com/alleslabs/celatone-frontend/pull/1486) Add more EVM tx decoder messages
+- [#1480](https://github.com/alleslabs/celatone-frontend/pull/1480) Add EVM internal transactions from rollytics
+
+### Improvements
+
+- [#1495](https://github.com/alleslabs/celatone-frontend/pull/1495) Support token fess denom uppercase letter
+- [#1483](https://github.com/alleslabs/celatone-frontend/pull/1483) Align connected wallet logo with widget
+
+### Bug fixes
+
+- [#1504](https://github.com/alleslabs/celatone-frontend/pull/1504) Fix EVM internal transactions infinite load relying on next key instead of total count
+- [#1502](https://github.com/alleslabs/celatone-frontend/pull/1502) Fix EvmMethodChip to decode method names from verified contract ABI
+- [#1498](https://github.com/alleslabs/celatone-frontend/pull/1498) Fix WASM tx decoder messages issue
+- [#1496](https://github.com/alleslabs/celatone-frontend/pull/1496) Fix EVM txs table cell overflow issue
+- [#1493](https://github.com/alleslabs/celatone-frontend/pull/1493) Fix EVM internal txs minor UI bugs
+- [#1490](https://github.com/alleslabs/celatone-frontend/pull/1490) Fix EVM minor UI bugs
+- [#1489](https://github.com/alleslabs/celatone-frontend/pull/1489) Fix EVM txs table empty msgs issue
+- [#1488](https://github.com/alleslabs/celatone-frontend/pull/1488) Fix EVM tx decoder and EVM internal txs issue
+- [#1487](https://github.com/alleslabs/celatone-frontend/pull/1487) Fix EVM tx decoder message issue
+- [#1484](https://github.com/alleslabs/celatone-frontend/pull/1484) Fix Cosmos decoded msg disappearing issue in EVM tx details and EVM decoded msg overflow issue
+
 ## v1.15.0
 
 ### Features
 
+- [#1481](https://github.com/alleslabs/celatone-frontend/pull/1481) Add tx decoder decode messages for EVM and Cosmos
+- [#1480](https://github.com/alleslabs/celatone-frontend/pull/1480) Add EVM internal transactions from rollytics
 - [#1475](https://github.com/alleslabs/celatone-frontend/pull/1475) Add indexer rollytics support to custom rollups
+- [#1458](https://github.com/alleslabs/celatone-frontend/pull/1458) Add decoded tx in tx details execute section
 - [#1455](https://github.com/alleslabs/celatone-frontend/pull/1455) Update transactions table tx decoder column
 - [#1454](https://github.com/alleslabs/celatone-frontend/pull/1454) Update react-app-shell to v1.3.0
 - [#1452](https://github.com/alleslabs/celatone-frontend/pull/1452) Support non-initia chain config
@@ -53,12 +83,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#1432](https://github.com/alleslabs/celatone-frontend/pull/1432) Replace Initia Widget by InterwovenKit provider
 - [#1435](https://github.com/alleslabs/celatone-frontend/pull/1435) Merge Rollytics version back to develop
 - [#1411](https://github.com/alleslabs/celatone-frontend/pull/1411) Introduce useNftAddressFormat to automatically switch based on VM, and do some refactoring
+- [#1402](https://github.com/alleslabs/celatone-frontend/pull/1402) Replace qrcode.react with qr-code-styling, update UI according to redesign
 - [#1352](https://github.com/alleslabs/celatone-frontend/pull/1352) Support link module in execution message tx details, and new tx decoder UI
 - [#1350](https://github.com/alleslabs/celatone-frontend/pull/1350) Support new APIs v2
-- [#1402](https://github.com/alleslabs/celatone-frontend/pull/1402) Replace qrcode.react with qr-code-styling, update UI according to redesign
 
 ### Improvements
 
+- [#1474](https://github.com/alleslabs/celatone-frontend/pull/1474) Improve ExplorerLink component background highlight on hover
+- [#1471](https://github.com/alleslabs/celatone-frontend/pull/1471) Add load more on scroll instead of load all at once
+- [#1470](https://github.com/alleslabs/celatone-frontend/pull/1470) fix spelling issues
 - [#1467](https://github.com/alleslabs/celatone-frontend/pull/1467) Upgrade Tx Decoder to 0.7.2
 - [#1464](https://github.com/alleslabs/celatone-frontend/pull/1464) Upgrade InterwovenKit to 2.0.2
 - [#1456](https://github.com/alleslabs/celatone-frontend/pull/1456) Upgrade Tx Decoder to 0.7.1
@@ -70,11 +103,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1500](https://github.com/alleslabs/celatone-frontend/pull/1500) Fix WASM ibc nft message decoder issue
 - [#1494](https://github.com/alleslabs/celatone-frontend/pull/1494) Fix Select Fund component render token issue
 - [#1492](https://github.com/alleslabs/celatone-frontend/pull/1492) Fix Nft detail title token id
 - [#1485](https://github.com/alleslabs/celatone-frontend/pull/1485) Fix format address in NFT decoder
 - [#1479](https://github.com/alleslabs/celatone-frontend/pull/1479) Fix token card not showing pool symbol pair
+- [#1478](https://github.com/alleslabs/celatone-frontend/pull/1478) Fix EVM event box decode issue
+- [#1477](https://github.com/alleslabs/celatone-frontend/pull/1477) Fix EVM minor bugs
+- [#1473](https://github.com/alleslabs/celatone-frontend/pull/1473) Fix event logs title overflow wrap issue
 - [#1472](https://github.com/alleslabs/celatone-frontend/pull/1472) Fix Glyph image not showing
+- [#1469](https://github.com/alleslabs/celatone-frontend/pull/1469) Fix JSON rpc batch request issue
 - [#1462](https://github.com/alleslabs/celatone-frontend/pull/1462) Fix account details nfts overview not showing correct count
 - [#1460](https://github.com/alleslabs/celatone-frontend/pull/1460) Fix account details nfts tab not showing correct count
 - [#1447](https://github.com/alleslabs/celatone-frontend/pull/1447) Fix NFT collections fetching issue with limit and query key

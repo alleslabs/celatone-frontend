@@ -9,6 +9,7 @@ export * from "./nft-collection";
 export * from "./pool";
 export * from "./proposal";
 export * from "./protobuf";
+export * from "./richlist";
 export * from "./staking";
 export * from "./stats";
 export * from "./tx";

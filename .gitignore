@@ -54,3 +54,5 @@ next.config.wizardcopy.js
 # Localization
 credentials.json
 token.json
+
+.claude
