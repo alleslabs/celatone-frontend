@@ -78,10 +78,10 @@ export const getEvmAddresses = (
 /**
  * Determines the appropriate LinkType for an EVM address
  */
-export const getEvmAddressType = (
-  address: string
-): Exclude<LinkType, "function_name_wasm" | "function_name"> =>
-  isHexWalletAddress(address) ? "evm_contract_address" : "user_address";
+export const getEvmAddressType = (): Exclude<
+  LinkType,
+  "function_name_wasm" | "function_name"
+> => "user_address"; // Account detail page will auto redirect to contract page if needed
 
 /**
  * Gets all unique addresses from WASM balance changes
