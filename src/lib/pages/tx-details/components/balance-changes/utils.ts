@@ -6,8 +6,6 @@ import type {
 import type { AddressReturnType } from "lib/app-provider";
 import type { LinkType } from "lib/components/ExplorerLink";
 
-import { isHexWalletAddress } from "lib/utils";
-
 /**
  * Filters out zero-amount changes from FT balance changes
  */
@@ -78,10 +76,10 @@ export const getEvmAddresses = (
 /**
  * Determines the appropriate LinkType for an EVM address
  */
-export const getEvmAddressType = (
-  address: string
-): Exclude<LinkType, "function_name_wasm" | "function_name"> =>
-  isHexWalletAddress(address) ? "evm_contract_address" : "user_address";
+export const getEvmAddressType = (): Exclude<
+  LinkType,
+  "function_name_wasm" | "function_name"
+> => "user_address"; // Account detail page will auto redirect to contract page if needed
 
 /**
  * Gets all unique addresses from WASM balance changes
@@ -113,10 +111,10 @@ export const processWasmNftChanges = (
 /**
  * Determines the appropriate LinkType for a WASM address
  */
-export const getWasmAddressType = (
-  address: string
-): Exclude<LinkType, "function_name_wasm" | "function_name"> =>
-  isHexWalletAddress(address) ? "user_address" : "contract_address";
+export const getWasmAddressType = (): Exclude<
+  LinkType,
+  "function_name_wasm" | "function_name"
+> => "user_address";
 
 /**
  * Type guard to check if an item has balance changes

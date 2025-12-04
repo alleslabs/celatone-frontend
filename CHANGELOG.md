@@ -39,6 +39,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+### Bug fixes
+
+- [#1508](https://github.com/alleslabs/celatone-frontend/pull/1508) Fix balance change WASM redirection
+- [#1507](https://github.com/alleslabs/celatone-frontend/pull/1507) Fix balance change EVM redirection
+
+## v1.16.0
+
+### Features
+
 - [#1505](https://github.com/alleslabs/celatone-frontend/pull/1505) Disable top rich list tab in holders section
 - [#1501](https://github.com/alleslabs/celatone-frontend/pull/1501) Add holders section to EVM contract details page
 - [#1497](https://github.com/alleslabs/celatone-frontend/pull/1497) Add WASM tx decoder messages
