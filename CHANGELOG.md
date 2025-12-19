@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1511](https://github.com/alleslabs/celatone-frontend/pull/1511) Upgrade dependencies to fix security vulnerabilities (next, react, axios, sentry, typescript)
+
 ### Bug fixes
 
 - [#1508](https://github.com/alleslabs/celatone-frontend/pull/1508) Fix balance change WASM redirection
