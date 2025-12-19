@@ -16,9 +16,7 @@ interface HoldersTableProps {
   evmDenom: string;
   holders: TokenHolder[];
   isLoading: boolean;
-  isReversed: boolean;
   offset: number;
-  onToggleSort: () => void;
 }
 
 export const HoldersTable = ({
@@ -27,9 +25,7 @@ export const HoldersTable = ({
   evmDenom,
   holders,
   isLoading,
-  isReversed,
   offset,
-  onToggleSort,
 }: HoldersTableProps) => {
   const isMobile = useMobile();
   const templateColumns = "64px 1fr 300px";
@@ -51,11 +47,7 @@ export const HoldersTable = ({
     </MobileTableContainer>
   ) : (
     <TableContainer>
-      <HoldersTableHeader
-        isReversed={isReversed}
-        templateColumns={templateColumns}
-        onToggleSort={onToggleSort}
-      />
+      <HoldersTableHeader templateColumns={templateColumns} />
       {holders.map((holder, index) => (
         <HoldersTableRow
           key={holder.account}

@@ -161,10 +161,9 @@ const EvmContractDetailsBody = ({
             <CustomTab onClick={handleTabChange(TabIndex.Transactions)}>
               Transactions
             </CustomTab>
-            {/* // TODO: Reopen when top holders is ready */}
-            {/* <CustomTab onClick={handleTabChange(TabIndex.Holders)}>
+            <CustomTab onClick={handleTabChange(TabIndex.Holders)}>
               Holders
-            </CustomTab> */}
+            </CustomTab>
           </TabList>
           <TabPanels>
             <TabPanel p={0} pt={8}>

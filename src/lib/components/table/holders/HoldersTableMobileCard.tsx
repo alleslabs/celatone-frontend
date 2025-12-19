@@ -31,9 +31,9 @@ export const HoldersTableMobileCard = ({
           <Text variant="body2">
             {formatUTokenWithPrecision({
               amount: token.amount,
-              decimalPoints: token.precision ? 6 : 0,
+              decimalPoints: token.precision !== null ? 6 : 0,
               isSuffix: true,
-              precision: token.precision !== null ? 6 : 0,
+              precision: token.precision ?? 0,
             })}
           </Text>
         </Flex>

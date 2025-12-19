@@ -8,14 +8,13 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { HoldersTable } from "lib/components/table/holders";
 import { useAssetInfos } from "lib/services/assetService";
 import { useRichlistSequencer } from "lib/services/richlist";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface HoldersSectionProps {
   contractAddress: HexAddr20;
 }
 
 export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {
-  const [isReversed, setIsReversed] = useState(false);
   const {
     currentPage,
     offset,
@@ -35,14 +34,11 @@ export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {
   const evmDenom = contractAddress.replace("0x", "evm/");
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
 
-  // Note: The API's reverse=true shows highest holders first (descending order).
-  // We pass !isReversed because when isReversed=false (default), we want reverse=true (top holders).
-  // When user toggles to isReversed=true, we pass reverse=false (lowest holders first).
   const { data, error, isLoading } = useRichlistSequencer(
     evmDenom,
     pageSize,
     offset,
-    !isReversed, // API reverse parameter: true = descending (top holders), false = ascending
+    true, // reverse=true shows highest holders first (descending order)
     true
   );
 
@@ -56,12 +52,6 @@ export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {
   if (isLoading) return <Loading />;
   if (error) return <ErrorFetching dataName="holders" />;
 
-  // Calculate dynamic heading count
-  // Cap at 100 for UI display, but use actual total if less than 100
-  const displayCount = data?.pagination?.total
-    ? Math.min(data.pagination.total, 100)
-    : 100;
-
   return (
     <Stack
       gap={{
@@ -70,7 +60,7 @@ export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {
       }}
     >
       <Heading as="h5" fontWeight={700} variant="h5">
-        Top {displayCount} Holders
+        Top holders
       </Heading>
       <Box>
         <HoldersTable
@@ -84,11 +74,9 @@ export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {
           evmDenom={evmDenom}
           holders={data?.holders ?? []}
           isLoading={isLoading}
-          isReversed={isReversed}
           offset={offset}
-          onToggleSort={() => setIsReversed(!isReversed)}
         />
-        {data?.pagination?.total && data.pagination.total > 10 && (
+        {!!data?.pagination?.total && data.pagination.total > 10 && (
           <Pagination
             currentPage={currentPage}
             offset={offset}
