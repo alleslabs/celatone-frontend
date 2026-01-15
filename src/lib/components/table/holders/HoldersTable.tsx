@@ -18,6 +18,8 @@ interface HoldersTableProps {
   isLoading: boolean;
   offset: number;
   totalSupply: Nullable<bigint>;
+  totalSupplyError: boolean;
+  totalSupplyLoading: boolean;
 }
 
 export const HoldersTable = ({
@@ -28,6 +30,8 @@ export const HoldersTable = ({
   isLoading,
   offset,
   totalSupply,
+  totalSupplyError,
+  totalSupplyLoading,
 }: HoldersTableProps) => {
   const isMobile = useMobile();
   const templateColumns = "64px 1fr 200px 160px";
@@ -45,6 +49,8 @@ export const HoldersTable = ({
           holder={holder}
           rank={offset + index + 1}
           totalSupply={totalSupply}
+          totalSupplyError={totalSupplyError}
+          totalSupplyLoading={totalSupplyLoading}
         />
       ))}
     </MobileTableContainer>
@@ -60,6 +66,8 @@ export const HoldersTable = ({
           rank={offset + index + 1}
           templateColumns={templateColumns}
           totalSupply={totalSupply}
+          totalSupplyError={totalSupplyError}
+          totalSupplyLoading={totalSupplyLoading}
         />
       ))}
     </TableContainer>

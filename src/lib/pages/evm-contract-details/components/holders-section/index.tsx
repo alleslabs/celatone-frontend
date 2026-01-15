@@ -34,7 +34,11 @@ export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {
 
   const evmDenom = contractAddress.replace("0x", "evm/");
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
-  const { data: totalSupply } = useEvmTotalSupply(contractAddress);
+  const {
+    data: totalSupply,
+    error: totalSupplyError,
+    isLoading: totalSupplyLoading,
+  } = useEvmTotalSupply(contractAddress);
 
   const { data, error, isLoading } = useRichlistSequencer(
     evmDenom,
@@ -78,6 +82,8 @@ export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {
           isLoading={isLoading}
           offset={offset}
           totalSupply={totalSupply ?? null}
+          totalSupplyError={!!totalSupplyError}
+          totalSupplyLoading={totalSupplyLoading}
         />
         {!!data?.pagination?.total && data.pagination.total > 10 && (
           <Pagination

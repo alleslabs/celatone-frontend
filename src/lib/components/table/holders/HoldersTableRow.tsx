@@ -17,6 +17,8 @@ interface HoldersTableRowProps {
   rank: number;
   templateColumns: GridProps["templateColumns"];
   totalSupply: Nullable<bigint>;
+  totalSupplyError: boolean;
+  totalSupplyLoading: boolean;
 }
 
 export const HoldersTableRow = ({
@@ -26,6 +28,8 @@ export const HoldersTableRow = ({
   rank,
   templateColumns,
   totalSupply,
+  totalSupplyError,
+  totalSupplyLoading,
 }: HoldersTableRowProps) => {
   const token = coinToTokenWithValue(evmDenom, holder.amount, assetInfos);
 
@@ -37,6 +41,27 @@ export const HoldersTableRow = ({
   // Calculate values for progress bar
   const holderAmount = Big(holder.amount);
   const totalSupplyBig = totalSupply ? Big(totalSupply.toString()) : Big(0);
+
+  // Render percentage cell content - show percentage and progress bar, or dash
+  const renderPercentageContent = () => {
+    if (!totalSupply || totalSupplyLoading || totalSupplyError) {
+      return <Text variant="body2">—</Text>;
+    }
+
+    return (
+      <Stack spacing={2} w="full">
+        <Text variant="body2">{percentage ? `${percentage}%` : "—"}</Text>
+        {percentage && (
+          <ProgressBar
+            borderRadius={1}
+            height="6px"
+            max={totalSupplyBig}
+            value={holderAmount}
+          />
+        )}
+      </Stack>
+    );
+  };
 
   return (
     <Grid
@@ -68,19 +93,7 @@ export const HoldersTableRow = ({
           })}
         </Text>
       </TableRow>
-      <TableRow>
-        <Stack spacing={2} w="full">
-          <Text variant="body2">{percentage ? `${percentage}%` : "—"}</Text>
-          {totalSupply && percentage && (
-            <ProgressBar
-              borderRadius={1}
-              height="6px"
-              max={totalSupplyBig}
-              value={holderAmount}
-            />
-          )}
-        </Stack>
-      </TableRow>
+      <TableRow>{renderPercentageContent()}</TableRow>
     </Grid>
   );
 };

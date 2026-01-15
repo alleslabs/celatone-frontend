@@ -34,7 +34,8 @@ export const EvmContractMaxSupplyValue = ({
     : null;
 
   // If it's an asset with total supply, show total supply
-  if (assetInfo && token && !totalSupplyError) {
+  // Show skeleton while loading, or show value when token is available
+  if (assetInfo && !totalSupplyError && (totalSupplyIsLoading || token)) {
     return (
       <Flex
         border="1px solid"
@@ -56,20 +57,22 @@ export const EvmContractMaxSupplyValue = ({
             startColor="gray.500"
           />
         ) : (
-          <Heading
-            as="h5"
-            color={
-              !totalSupply || totalSupply.toString() === "0"
-                ? "text.disabled"
-                : "text.main"
-            }
-            variant="h5"
-          >
-            {formatUTokenWithPrecision({
-              amount: token.amount,
-              precision: token.precision ?? 0,
-            })}
-          </Heading>
+          token && (
+            <Heading
+              as="h5"
+              color={
+                !totalSupply || totalSupply.toString() === "0"
+                  ? "text.disabled"
+                  : "text.main"
+              }
+              variant="h5"
+            >
+              {formatUTokenWithPrecision({
+                amount: token.amount,
+                precision: token.precision ?? 0,
+              })}
+            </Heading>
+          )
         )}
       </Flex>
     );

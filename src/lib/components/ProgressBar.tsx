@@ -6,15 +6,15 @@ import { divWithDefault } from "lib/utils";
 
 interface ProgressBarProps {
   /**
-   * The background color of the unfilled portion (default: "accent.bg")
+   * The background color of the unfilled portion (default: "primary.background")
    */
   backgroundColor?: string;
   /**
-   * The background color of the filled portion (default: "accent.main")
+   * The background color of the filled portion (default: "primary.main")
    */
   barColor?: string;
   /**
-   * Border radius (default: 4)
+   * Border radius (default: 6)
    */
   borderRadius?: number;
   /**

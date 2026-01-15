@@ -15,6 +15,8 @@ interface HoldersTableMobileCardProps {
   holder: TokenHolder;
   rank: number;
   totalSupply: Nullable<bigint>;
+  totalSupplyError: boolean;
+  totalSupplyLoading: boolean;
 }
 
 export const HoldersTableMobileCard = ({
@@ -23,6 +25,8 @@ export const HoldersTableMobileCard = ({
   holder,
   rank,
   totalSupply,
+  totalSupplyError,
+  totalSupplyLoading,
 }: HoldersTableMobileCardProps) => {
   const token = coinToTokenWithValue(evmDenom, holder.amount, assetInfos);
 
@@ -30,6 +34,15 @@ export const HoldersTableMobileCard = ({
   const percentage = totalSupply
     ? Big(holder.amount).div(totalSupply.toString()).times(100).toFixed(2)
     : null;
+
+  // Render percentage value - show percentage or dash
+  const renderPercentageValue = () => {
+    if (!totalSupply || totalSupplyLoading || totalSupplyError) {
+      return <Text variant="body2">—</Text>;
+    }
+
+    return <Text variant="body2">{percentage ? `${percentage}%` : "—"}</Text>;
+  };
 
   return (
     <MobileCardTemplate
@@ -48,7 +61,7 @@ export const HoldersTableMobileCard = ({
           </Flex>
           <Flex direction="column">
             <MobileLabel label="Percentage" />
-            <Text variant="body2">{percentage ? `${percentage}%` : "—"}</Text>
+            {renderPercentageValue()}
           </Flex>
         </Grid>
       }
