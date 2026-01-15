@@ -1,4 +1,5 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
+import type { JsonFragment } from "ethers";
 import type { HexAddr20, Nullable } from "lib/types";
 
 import { useQuery } from "@tanstack/react-query";
@@ -9,7 +10,12 @@ import {
   useEvmConfig,
 } from "lib/app-provider";
 import { zHexAddr20 } from "lib/types";
-import { bech32AddressToHex, isHexWalletAddress } from "lib/utils";
+import {
+  bech32AddressToHex,
+  decodeEvmFunctionResult,
+  encodeEvmFunctionData,
+  isHexWalletAddress,
+} from "lib/utils";
 
 import type { ProxyResult } from "./json-rpc/proxy/types";
 
@@ -172,5 +178,54 @@ export const useDebugTraceTransaction = (height: number, txHash: string) => {
       const internalTxs = await getDebugTraceBlockByNumber(evm.jsonRpc, height);
       return internalTxs.filter((tx) => tx.txHash === txHash);
     },
+  });
+};
+
+const EvmTotalSupplyAbi: JsonFragment = {
+  inputs: [],
+  name: "totalSupply",
+  outputs: [{ name: "", type: "uint256" }],
+  stateMutability: "view",
+  type: "function",
+};
+
+export const useEvmTotalSupply = (contractAddress: HexAddr20) => {
+  const {
+    chainConfig: {
+      features: { evm },
+    },
+  } = useCelatoneApp();
+
+  return useQuery<bigint>({
+    enabled: evm.enabled && !!evm.jsonRpc,
+    queryFn: async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useEvmTotalSupply)");
+
+      const encodedData = encodeEvmFunctionData(EvmTotalSupplyAbi, []);
+      if (!encodedData) throw new Error("Failed to encode totalSupply call");
+
+      const result = await getEthCall(
+        evm.jsonRpc,
+        null,
+        contractAddress,
+        encodedData
+      );
+
+      const decoded = decodeEvmFunctionResult(EvmTotalSupplyAbi, result);
+      const totalSupply = decoded?.[0];
+
+      if (typeof totalSupply !== "string")
+        throw new Error("Failed to decode totalSupply");
+
+      return BigInt(totalSupply);
+    },
+    queryKey: [
+      CELATONE_QUERY_KEYS.EVM_TOTAL_SUPPLY,
+      evm.enabled && evm.jsonRpc,
+      contractAddress,
+    ],
+    refetchOnWindowFocus: false,
+    retry: false,
   });
 };

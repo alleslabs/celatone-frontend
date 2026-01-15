@@ -7,6 +7,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { HoldersTable } from "lib/components/table/holders";
 import { useAssetInfos } from "lib/services/assetService";
+import { useEvmTotalSupply } from "lib/services/evm";
 import { useRichlistSequencer } from "lib/services/richlist";
 import { useEffect } from "react";
 
@@ -33,6 +34,7 @@ export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {
 
   const evmDenom = contractAddress.replace("0x", "evm/");
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
+  const { data: totalSupply } = useEvmTotalSupply(contractAddress);
 
   const { data, error, isLoading } = useRichlistSequencer(
     evmDenom,
@@ -75,6 +77,7 @@ export const HoldersSection = ({ contractAddress }: HoldersSectionProps) => {
           holders={data?.holders ?? []}
           isLoading={isLoading}
           offset={offset}
+          totalSupply={totalSupply ?? null}
         />
         {!!data?.pagination?.total && data.pagination.total > 10 && (
           <Pagination

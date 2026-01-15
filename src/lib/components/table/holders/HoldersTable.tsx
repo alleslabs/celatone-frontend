@@ -1,5 +1,5 @@
 import type { TokenHolder } from "lib/services/types";
-import type { AssetInfos, Option } from "lib/types";
+import type { AssetInfos, Nullable, Option } from "lib/types";
 import type { ReactNode } from "react";
 
 import { useMobile } from "lib/app-provider";
@@ -17,6 +17,7 @@ interface HoldersTableProps {
   holders: TokenHolder[];
   isLoading: boolean;
   offset: number;
+  totalSupply: Nullable<bigint>;
 }
 
 export const HoldersTable = ({
@@ -26,9 +27,10 @@ export const HoldersTable = ({
   holders,
   isLoading,
   offset,
+  totalSupply,
 }: HoldersTableProps) => {
   const isMobile = useMobile();
-  const templateColumns = "64px 1fr 300px";
+  const templateColumns = "64px 1fr 200px 160px";
 
   if (isLoading) return <Loading />;
   if (!holders || holders.length === 0) return emptyState;
@@ -42,6 +44,7 @@ export const HoldersTable = ({
           evmDenom={evmDenom}
           holder={holder}
           rank={offset + index + 1}
+          totalSupply={totalSupply}
         />
       ))}
     </MobileTableContainer>
@@ -56,6 +59,7 @@ export const HoldersTable = ({
           holder={holder}
           rank={offset + index + 1}
           templateColumns={templateColumns}
+          totalSupply={totalSupply}
         />
       ))}
     </TableContainer>
