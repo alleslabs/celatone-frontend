@@ -11,7 +11,7 @@ export const HoldersTableHeader = ({
 }) => (
   <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader textAlign="center">Rank</TableHeader>
-    <TableHeader>Holder Address</TableHeader>
+    <TableHeader>Holder address</TableHeader>
     <TableHeader textAlign="left">Quantity</TableHeader>
     <TableHeader textAlign="left">Percentage</TableHeader>
   </Grid>
