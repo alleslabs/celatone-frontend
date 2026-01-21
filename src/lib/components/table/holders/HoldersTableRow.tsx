@@ -1,9 +1,11 @@
 import type { GridProps } from "@chakra-ui/react";
 import type { TokenHolder } from "lib/services/types";
-import type { AssetInfos, Option } from "lib/types";
+import type { AssetInfos, Nullable, Option } from "lib/types";
 
-import { Grid, Text } from "@chakra-ui/react";
+import { Grid, Stack, Text } from "@chakra-ui/react";
+import Big from "big.js";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { ProgressBar } from "lib/components/ProgressBar";
 import { coinToTokenWithValue, formatUTokenWithPrecision } from "lib/utils";
 
 import { TableRow } from "../tableComponents";
@@ -14,6 +16,9 @@ interface HoldersTableRowProps {
   holder: TokenHolder;
   rank: number;
   templateColumns: GridProps["templateColumns"];
+  totalSupply: Nullable<bigint>;
+  totalSupplyError: boolean;
+  totalSupplyLoading: boolean;
 }
 
 export const HoldersTableRow = ({
@@ -22,8 +27,41 @@ export const HoldersTableRow = ({
   holder,
   rank,
   templateColumns,
+  totalSupply,
+  totalSupplyError,
+  totalSupplyLoading,
 }: HoldersTableRowProps) => {
   const token = coinToTokenWithValue(evmDenom, holder.amount, assetInfos);
+
+  // Calculate percentage
+  const percentage = totalSupply
+    ? Big(holder.amount).div(totalSupply.toString()).times(100).toFixed(2)
+    : null;
+
+  // Calculate values for progress bar
+  const holderAmount = Big(holder.amount);
+  const totalSupplyBig = totalSupply ? Big(totalSupply.toString()) : Big(0);
+
+  // Render percentage cell content - show percentage and progress bar, or dash
+  const renderPercentageContent = () => {
+    if (!totalSupply || totalSupplyLoading || totalSupplyError) {
+      return <Text variant="body2">—</Text>;
+    }
+
+    return (
+      <Stack spacing={2} w="full">
+        <Text variant="body2">{percentage ? `${percentage}%` : "—"}</Text>
+        {percentage && (
+          <ProgressBar
+            borderRadius={1}
+            height="6px"
+            max={totalSupplyBig}
+            value={holderAmount}
+          />
+        )}
+      </Stack>
+    );
+  };
 
   return (
     <Grid
@@ -45,7 +83,7 @@ export const HoldersTableRow = ({
           value={holder.account}
         />
       </TableRow>
-      <TableRow justifyContent="flex-end">
+      <TableRow>
         <Text variant="body2">
           {formatUTokenWithPrecision({
             amount: token.amount,
@@ -55,6 +93,7 @@ export const HoldersTableRow = ({
           })}
         </Text>
       </TableRow>
+      <TableRow>{renderPercentageContent()}</TableRow>
     </Grid>
   );
 };
