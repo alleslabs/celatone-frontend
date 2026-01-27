@@ -1,6 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import type { MsgBodyWithoutType } from "lib/utils";
 
+import { Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { type MessageResponse, type Option } from "lib/types";
@@ -22,7 +23,10 @@ const DecodeMessageExecuteBody = ({
   log,
   type,
 }: DecodeMessageExecuteBodyProps) => {
-  const [value, setValue] = useState<string | undefined>("decoded");
+  const isJsonExecute = type === "/initia.move.v1.MsgExecuteJSON";
+  const [value, setValue] = useState<string | undefined>(
+    isJsonExecute ? "raw" : "decoded"
+  );
   const details = extractTxDetails(type, body, log);
 
   return (
@@ -74,7 +78,11 @@ const DecodeMessageExecuteBody = ({
       </DecodeMessageRow>
       <DecodeMessageRow
         title={
-          <ArgsDisplayToggle title="Args" value={value} onChange={setValue} />
+          isJsonExecute ? (
+            <Text variant="body2">Args</Text>
+          ) : (
+            <ArgsDisplayToggle title="Args" value={value} onChange={setValue} />
+          )
         }
       >
         <MoveExecuteArgsReceipt
