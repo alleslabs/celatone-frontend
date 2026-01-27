@@ -4,7 +4,7 @@ import type {
   ProposalVotesInfo,
 } from "lib/types";
 
-import { Box, Divider, Flex, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, Grid, Text } from "@chakra-ui/react";
 import { LegendText } from "lib/components/LegendText";
 import { Tooltip } from "lib/components/Tooltip";
 import {
@@ -48,7 +48,7 @@ export const VotingOverviewQuorum = ({
         </Text>
       </Flex>
       <Divider borderColor="gray.700" />
-      <Flex gap={4}>
+      <Grid gap={4} templateColumns="64px 1fr">
         <Tooltip
           bgColor="gray.700"
           hidden={isNull(nonAbstainRatio) || isNull(abstainRatio)}
@@ -92,7 +92,7 @@ export const VotingOverviewQuorum = ({
             </Text>
           </div>
         </Flex>
-      </Flex>
+      </Grid>
     </Flex>
   );
 };
