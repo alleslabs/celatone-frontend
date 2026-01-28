@@ -39,6 +39,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+### Bug fixes
+
+## v1.17.0
+
+### Features
+
+### Improvements
+
+- [#1511](https://github.com/alleslabs/celatone-frontend/pull/1511) Upgrade dependencies to fix security vulnerabilities (next, react, axios, sentry, typescript)
+
+### Bug fixes
+
+- [#1513](https://github.com/alleslabs/celatone-frontend/pull/1513) Fix MsgExecuteJSON args display to show raw JSON without BCS decoding
+- [#1514](https://github.com/alleslabs/celatone-frontend/pull/1514) Fix bank balances pagination limit to prevent gas limit error
+- [#1512](https://github.com/alleslabs/celatone-frontend/pull/1512) Fix voting overview quorum text overlap issue
+- [#1508](https://github.com/alleslabs/celatone-frontend/pull/1508) Fix balance change WASM redirection
+- [#1507](https://github.com/alleslabs/celatone-frontend/pull/1507) Fix balance change EVM redirection
+
+## v1.16.0
+
+### Features
+
+
 - [#1510](https://github.com/alleslabs/celatone-frontend/pull/1510) Enhance holders table with total supply and percentage display
 - [#1505](https://github.com/alleslabs/celatone-frontend/pull/1505) Disable top rich list tab in holders section
 - [#1501](https://github.com/alleslabs/celatone-frontend/pull/1501) Add holders section to EVM contract details page
@@ -54,9 +79,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#1513](https://github.com/alleslabs/celatone-frontend/pull/1513) Fix MsgExecuteJSON args display to show raw JSON without BCS decoding
-- [#1514](https://github.com/alleslabs/celatone-frontend/pull/1514) Fix bank balances pagination limit to prevent gas limit error
-- [#1512](https://github.com/alleslabs/celatone-frontend/pull/1512) Fix voting overview quorum text overlap issue
 - [#1504](https://github.com/alleslabs/celatone-frontend/pull/1504) Fix EVM internal transactions infinite load relying on next key instead of total count
 - [#1502](https://github.com/alleslabs/celatone-frontend/pull/1502) Fix EvmMethodChip to decode method names from verified contract ABI
 - [#1498](https://github.com/alleslabs/celatone-frontend/pull/1498) Fix WASM tx decoder messages issue
