@@ -9,12 +9,14 @@ interface TotalValueProps {
   isCompact?: boolean;
   label?: string;
 }
+
 export const TotalValue = ({
   address,
   isCompact = false,
   label = "Total account value",
 }: TotalValueProps) => {
   const { isLoading, totalAccountValue } = useAccountTotalValue(address);
+
   return (
     <Flex
       border="1px solid"

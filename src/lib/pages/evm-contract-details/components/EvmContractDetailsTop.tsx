@@ -1,11 +1,13 @@
 import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
 
 import { Button, Flex, Grid, Heading, Stack, Text } from "@chakra-ui/react";
-import { useConvertHexAddress, useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
+import { EvmContractMaxSupplyValue } from "lib/components/EvmContractMaxSupplyValue";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { TotalValue } from "lib/components/TotalValue";
+import { TokenImageRender } from "lib/components/token";
+import { useAssetInfos } from "lib/services/assetService";
 
 import { TabIndex } from "../types";
 import { getInteractTabsIndex } from "../utils";
@@ -24,7 +26,10 @@ export const EvmContractDetailsTop = ({
   proxyTargetEvmVerifyInfo,
 }: EvmContractDetailsTopProps) => {
   const navigate = useInternalNavigate();
-  const { convertHexWalletAddress } = useConvertHexAddress();
+  const isMobile = useMobile();
+  const evmDenom = contractAddress.replace("0x", "evm/");
+  const { data: assetInfos } = useAssetInfos({ withPrices: false });
+  const assetInfo = assetInfos?.[evmDenom];
 
   return (
     <Flex
@@ -34,14 +39,34 @@ export const EvmContractDetailsTop = ({
     >
       <Stack gap={1}>
         <Flex align="center" gap={2} marginBottom={3}>
-          <CustomIcon
-            boxSize={5}
-            color="primary.main"
-            name="contract-address"
-          />
-          <Heading as="h5" variant="h5" wordBreak="break-word">
-            Contract details
-          </Heading>
+          {assetInfo ? (
+            <>
+              <TokenImageRender
+                alt={assetInfo.symbol}
+                boxSize={isMobile ? 6 : 8}
+                logo={assetInfo.logo}
+                minW={isMobile ? 6 : 8}
+              />
+              <Heading
+                as={isMobile ? "h6" : "h5"}
+                variant={isMobile ? "h6" : "h5"}
+                wordBreak="break-word"
+              >
+                Token: {assetInfo.symbol} ({assetInfo.name})
+              </Heading>
+            </>
+          ) : (
+            <>
+              <CustomIcon
+                boxSize={5}
+                color="primary.main"
+                name="contract-address"
+              />
+              <Heading as="h5" variant="h5" wordBreak="break-word">
+                Contract details
+              </Heading>
+            </>
+          )}
         </Flex>
         <Flex columnGap={2} flexDirection={{ base: "column", md: "row" }}>
           <Text color="text.dark" fontWeight={500} variant="body2">
@@ -137,10 +162,9 @@ export const EvmContractDetailsTop = ({
             </Button>
           </Grid>
         )}
-        <TotalValue
-          address={convertHexWalletAddress(contractAddress)}
+        <EvmContractMaxSupplyValue
+          contractAddress={contractAddress}
           isCompact
-          label="Total value"
         />
       </Stack>
     </Flex>
