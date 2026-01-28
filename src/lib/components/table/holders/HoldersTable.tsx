@@ -1,5 +1,5 @@
 import type { TokenHolder } from "lib/services/types";
-import type { AssetInfos, Option } from "lib/types";
+import type { AssetInfos, Nullable, Option } from "lib/types";
 import type { ReactNode } from "react";
 
 import { useMobile } from "lib/app-provider";
@@ -16,9 +16,10 @@ interface HoldersTableProps {
   evmDenom: string;
   holders: TokenHolder[];
   isLoading: boolean;
-  isReversed: boolean;
   offset: number;
-  onToggleSort: () => void;
+  totalSupply: Nullable<bigint>;
+  totalSupplyError: boolean;
+  totalSupplyLoading: boolean;
 }
 
 export const HoldersTable = ({
@@ -27,12 +28,13 @@ export const HoldersTable = ({
   evmDenom,
   holders,
   isLoading,
-  isReversed,
   offset,
-  onToggleSort,
+  totalSupply,
+  totalSupplyError,
+  totalSupplyLoading,
 }: HoldersTableProps) => {
   const isMobile = useMobile();
-  const templateColumns = "64px 1fr 300px";
+  const templateColumns = "64px 1fr 200px 160px";
 
   if (isLoading) return <Loading />;
   if (!holders || holders.length === 0) return emptyState;
@@ -46,16 +48,15 @@ export const HoldersTable = ({
           evmDenom={evmDenom}
           holder={holder}
           rank={offset + index + 1}
+          totalSupply={totalSupply}
+          totalSupplyError={totalSupplyError}
+          totalSupplyLoading={totalSupplyLoading}
         />
       ))}
     </MobileTableContainer>
   ) : (
     <TableContainer>
-      <HoldersTableHeader
-        isReversed={isReversed}
-        templateColumns={templateColumns}
-        onToggleSort={onToggleSort}
-      />
+      <HoldersTableHeader templateColumns={templateColumns} />
       {holders.map((holder, index) => (
         <HoldersTableRow
           key={holder.account}
@@ -64,6 +65,9 @@ export const HoldersTable = ({
           holder={holder}
           rank={offset + index + 1}
           templateColumns={templateColumns}
+          totalSupply={totalSupply}
+          totalSupplyError={totalSupplyError}
+          totalSupplyLoading={totalSupplyLoading}
         />
       ))}
     </TableContainer>
