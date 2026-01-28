@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1513](https://github.com/alleslabs/celatone-frontend/pull/1513) Fix MsgExecuteJSON args display to show raw JSON without BCS decoding
 - [#1514](https://github.com/alleslabs/celatone-frontend/pull/1514) Fix bank balances pagination limit to prevent gas limit error
 - [#1512](https://github.com/alleslabs/celatone-frontend/pull/1512) Fix voting overview quorum text overlap issue
 - [#1504](https://github.com/alleslabs/celatone-frontend/pull/1504) Fix EVM internal transactions infinite load relying on next key instead of total count

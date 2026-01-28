@@ -53,8 +53,11 @@ const variantStyle: Record<
 };
 
 const ReceiptExecuteArgsRow = ({ title, value }: ExecuteTxReceipt) => {
-  const [displayMode, setDisplayMode] = useState<string | undefined>("decoded");
   const details = value; // Now properly typed
+  const isJsonExecute = details.type === "/initia.move.v1.MsgExecuteJSON";
+  const [displayMode, setDisplayMode] = useState<string | undefined>(
+    isJsonExecute ? "raw" : "decoded"
+  );
 
   return (
     <Flex
@@ -64,11 +67,17 @@ const ReceiptExecuteArgsRow = ({ title, value }: ExecuteTxReceipt) => {
       w="full"
     >
       <Flex className="receipt-row-label">
-        <ArgsDisplayToggle
-          title={title}
-          value={displayMode}
-          onChange={(value) => setDisplayMode(value)}
-        />
+        {isJsonExecute ? (
+          <Text color="text.dark" variant="body2">
+            {title}
+          </Text>
+        ) : (
+          <ArgsDisplayToggle
+            title={title}
+            value={displayMode}
+            onChange={(value) => setDisplayMode(value)}
+          />
+        )}
       </Flex>
       <MoveExecuteArgsReceipt
         displayMode={displayMode}
