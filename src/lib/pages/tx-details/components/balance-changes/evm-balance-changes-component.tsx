@@ -50,7 +50,7 @@ export const EvmBalanceChangesComponent = ({
 
           return {
             address,
-            addressType: getEvmAddressType(address),
+            addressType: getEvmAddressType(),
             ftChangeEntries,
             nftChangeEntries,
           };

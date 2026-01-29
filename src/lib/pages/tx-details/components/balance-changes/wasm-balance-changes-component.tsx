@@ -50,7 +50,7 @@ export const WasmBalanceChangesComponent = ({
 
           return {
             address,
-            addressType: getWasmAddressType(address),
+            addressType: getWasmAddressType(),
             ftChangeEntries,
             nftChangeEntries,
           };

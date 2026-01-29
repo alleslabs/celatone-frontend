@@ -15,6 +15,7 @@ export default defineConfig([
     "**/pnpm-lock.yaml",
     "**/node_modules",
     "**/dist",
+    "next-env.d.ts",
   ]),
   { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
   {
