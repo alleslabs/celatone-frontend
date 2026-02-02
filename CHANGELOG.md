@@ -63,7 +63,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-
 - [#1510](https://github.com/alleslabs/celatone-frontend/pull/1510) Enhance holders table with total supply and percentage display
 - [#1505](https://github.com/alleslabs/celatone-frontend/pull/1505) Disable top rich list tab in holders section
 - [#1501](https://github.com/alleslabs/celatone-frontend/pull/1501) Add holders section to EVM contract details page
