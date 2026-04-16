@@ -43,6 +43,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+## v1.17.1
+
+### Improvements
+
+- [#1519](https://github.com/alleslabs/celatone-frontend/pull/1519) Upgrade `@initia/tx-decoder` to 0.13.0
+
 ## v1.17.0
 
 ### Features
