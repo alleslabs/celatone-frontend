@@ -9,7 +9,6 @@ import {
   toBech32,
   toHex,
 } from "@cosmjs/encoding";
-import { HEX_MODULE_ADDRESS_LENGTH } from "lib/data";
 import { zBechAddr20, zHexAddr } from "lib/types";
 
 import { utf8ToBytes } from "./base64";
@@ -46,10 +45,7 @@ const removeLeadingZeros = (hex: string) => hex.replace(/^0+/, "") || "0";
 const isPaddedMoveAddress = (hex: string) => {
   const unpadded = removeLeadingZeros(hex);
 
-  return (
-    hex.length === HEX_MODULE_ADDRESS_LENGTH ||
-    (hex.length > unpadded.length && unpadded.length <= 3)
-  );
+  return hex.length > unpadded.length && unpadded.length <= 3;
 };
 
 export const unpadHexAddress = (hexAddr: HexAddr) => {
