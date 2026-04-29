@@ -93,7 +93,9 @@ export const SearchComponent = () => {
     };
   }, [isMac, isOpen, onCloseWithClear, onOpen]);
 
-  const { isLoading, results } = useSearchHandler(keyword, () =>
+  const trimmedKeyword = keyword.trim();
+
+  const { isLoading, results } = useSearchHandler(trimmedKeyword, () =>
     setIsTyping(false)
   );
 
@@ -111,7 +113,7 @@ export const SearchComponent = () => {
           return splitModulePath(result.value) as [Addr, string];
         if (result?.type === "NFT address")
           return [result.metadata?.nft?.collectionAddress ?? "", result.value];
-        return result?.value || keyword;
+        return result?.value || trimmedKeyword;
       };
 
       trackUseMainSearch(isClick, result?.type);
@@ -125,7 +127,7 @@ export const SearchComponent = () => {
         onCloseWithClear();
       }
     },
-    [isEvm, keyword, navigate, onCloseWithClear]
+    [isEvm, trimmedKeyword, navigate, onCloseWithClear]
   );
 
   const handleOnKeyDown = useCallback(

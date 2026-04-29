@@ -1,6 +1,6 @@
-import { zHexAddr20 } from "lib/types";
+import { zHexAddr, zHexAddr20 } from "lib/types";
 
-import { toChecksumAddress } from "./address";
+import { toChecksumAddress, unpadHexAddress } from "./address";
 
 describe("toChecksumAddress", () => {
   test("valid case 1", () => {
@@ -31,5 +31,63 @@ describe("toChecksumAddress", () => {
     const expected = "0x19b95Ef8a6B4C4CcbdEaa76Fe03eB86C89b6AB6C";
     const result = toChecksumAddress(zHexAddr20.parse(expected.toLowerCase()));
     expect(result).toEqual(expected);
+  });
+});
+
+describe("unpadHexAddress", () => {
+  test("preserves leading zero nibble in 20-byte wallet with non-zero first byte", () => {
+    const wallet = "0x0c4b28c50a786ae5501662f4443e8724a0b6fe99";
+    expect(unpadHexAddress(zHexAddr.parse(wallet))).toEqual(wallet);
+  });
+
+  test("preserves leading zero byte in 20-byte wallet address", () => {
+    const wallet = "0x00ab28c50a786ae5501662f4443e8724a0b6fe99";
+    expect(unpadHexAddress(zHexAddr.parse(wallet))).toEqual(wallet);
+  });
+
+  test.each(["0x1", "0x2", "0x3", "0x5", "0x6", "0x8", "0xc", "0xcc"])(
+    "collapses padded short Move address %s to short form",
+    (address) => {
+      const padded = `0x${address.slice(2).padStart(40, "0")}`;
+      expect(unpadHexAddress(zHexAddr.parse(padded))).toEqual(address);
+    }
+  );
+
+  test("collapses padded 20-byte reserved Move address to short form", () => {
+    const padded = "0x0000000000000000000000000000000000000403";
+    expect(unpadHexAddress(zHexAddr.parse(padded))).toEqual("0x403");
+  });
+
+  test("collapses padded short wallet-length Move address to short form", () => {
+    const padded = "0x00000000000000000001";
+    expect(unpadHexAddress(zHexAddr.parse(padded))).toEqual("0x1");
+  });
+
+  test("collapses all-zero 20-byte address to 0x0", () => {
+    const padded = "0x0000000000000000000000000000000000000000";
+    expect(unpadHexAddress(zHexAddr.parse(padded))).toEqual("0x0");
+  });
+
+  test("collapses 32-byte padded module address to short form", () => {
+    const padded =
+      "0x0000000000000000000000000000000000000000000000000000000000000001";
+    expect(unpadHexAddress(zHexAddr.parse(padded))).toEqual("0x1");
+  });
+
+  test("collapses multi-nibble 32-byte Move address to short form", () => {
+    const padded =
+      "0x0000000000000000000000000000000000000000000000000000000000000403";
+    expect(unpadHexAddress(zHexAddr.parse(padded))).toEqual("0x403");
+  });
+
+  test("collapses all-zero address to 0x0", () => {
+    const padded =
+      "0x0000000000000000000000000000000000000000000000000000000000000000";
+    expect(unpadHexAddress(zHexAddr.parse(padded))).toEqual("0x0");
+  });
+
+  test("passes already-short forms through unchanged", () => {
+    const named = "0x1";
+    expect(unpadHexAddress(zHexAddr.parse(named))).toEqual(named);
   });
 });
