@@ -272,7 +272,7 @@ export const SearchComponent = () => {
             minH={{ base: "80vh", md: "460px" }}
             px={3}
           >
-            {keyword.length > 0 ? (
+            {trimmedKeyword.length > 0 ? (
               <>
                 {isLoading || isTyping ? (
                   <Flex
