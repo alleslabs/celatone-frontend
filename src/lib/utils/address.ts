@@ -40,8 +40,21 @@ export const bech32AddressToHex = (addr: BechAddr): HexAddr =>
 export const padHexAddress = (hexAddr: HexAddr, length: number): HexAddr =>
   zHexAddr.parse(`0x${hexAddr.slice(2).padStart(length, "0")}`);
 
-export const unpadHexAddress = (hexAddr: HexAddr) =>
-  zHexAddr.parse(`0x${hexAddr.slice(2).replace(/^0+/, "")}`);
+const removeLeadingZeros = (hex: string) => hex.replace(/^0+/, "") || "0";
+
+const isPaddedMoveAddress = (hex: string) => {
+  const unpadded = removeLeadingZeros(hex);
+
+  return hex.length > unpadded.length && unpadded.length <= 3;
+};
+
+export const unpadHexAddress = (hexAddr: HexAddr) => {
+  const stripped = hexAddr.slice(2);
+
+  return isPaddedMoveAddress(stripped)
+    ? zHexAddr.parse(`0x${removeLeadingZeros(stripped)}`)
+    : hexAddr;
+};
 
 export const hexToBech32Address = (
   prefix: string,
