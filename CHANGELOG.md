@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1525](https://github.com/alleslabs/celatone-frontend/pull/1525) Fetch tx details from indexer on sequencer tier
+
 ### Bug fixes
 
 - [#1521](https://github.com/alleslabs/celatone-frontend/pull/1521) Preserve leading nibble of 20-byte hex wallet addresses on Move chains so they round-trip with EVM tooling, trim leading and trailing spaces in Scan search
