@@ -371,6 +371,25 @@ export const zTxByHashResponseRest = z.preprocess(
     }))
 );
 
+export const zTxByHashResponseSequencer = z.preprocess(
+  (arg: unknown) => {
+    const val = arg as Record<string, unknown>;
+    return {
+      raw_tx_response: val.tx,
+      tx_response: val.tx,
+    };
+  },
+  z
+    .object({
+      raw_tx_response: z.any(),
+      tx_response: zTxResponse.transform(snakeToCamel),
+    })
+    .transform((val) => ({
+      rawTxResponse: val.raw_tx_response,
+      txResponse: val.tx_response,
+    }))
+);
+
 const zBaseTxsResponseItem = z.preprocess(
   (arg: unknown) => {
     const val = arg as Record<string, unknown>;

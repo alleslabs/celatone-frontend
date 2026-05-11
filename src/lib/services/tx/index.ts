@@ -76,6 +76,7 @@ import {
   getTxsByHashRest,
 } from "./rest";
 import {
+  getTxDataSequencer,
   getTxsByAccountAddressSequencer,
   getTxsByBlockHeightSequencer,
   getTxsByHashSequencer,
@@ -133,16 +134,20 @@ export const useTxData = (
 ): UseQueryResult<TxData> => {
   const { bech32Prefix } = useCurrentChain();
   const {
-    chainConfig: { rest: restEndpoint },
+    chainConfig: { indexer: indexerEndpoint, rest: restEndpoint },
     currentChainId,
   } = useCelatoneApp();
-  const { isFullTier } = useTierConfig();
+  const { isFullTier, isSequencerTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("txs");
   const { txDecoder } = useTxDecoderContext();
   const evm = useEvmConfig({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
 
-  const endpoint = isFullTier ? apiEndpoint : restEndpoint;
+  const endpoint = isFullTier
+    ? apiEndpoint
+    : isSequencerTier
+      ? indexerEndpoint
+      : restEndpoint;
 
   const queryFn = useCallback(
     async (hash: Option<string>) => {
@@ -150,7 +155,9 @@ export const useTxData = (
 
       const txData = isFullTier
         ? await getTxData(endpoint, hash)
-        : await getTxDataRest(endpoint, hash);
+        : isSequencerTier
+          ? await getTxDataSequencer(endpoint, hash)
+          : await getTxDataRest(endpoint, hash);
 
       const { rawTxResponse, txResponse } = txData;
 
@@ -183,6 +190,7 @@ export const useTxData = (
       currentChainId,
       endpoint,
       isFullTier,
+      isSequencerTier,
       txDecoder,
       evm.enabled,
       wasm.enabled,

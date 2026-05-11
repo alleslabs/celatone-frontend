@@ -7,10 +7,20 @@ import type { TxsResponseItemFromRest } from "../types";
 
 import {
   zBlockTxsResponseSequencer,
+  zTxByHashResponseSequencer,
   zTxsByHashResponseSequencer,
   zTxsResponseSequencer,
 } from "../types";
 import { queryWithArchivalFallback } from "../utils";
+
+export const getTxDataSequencer = (endpoint: string, txHash: string) => {
+  const fetch = (endpoint: string) =>
+    axios
+      .get(`${endpoint}/indexer/tx/v1/txs/${encodeURI(txHash)}`)
+      .then(({ data }) => parseWithError(zTxByHashResponseSequencer, data));
+
+  return queryWithArchivalFallback(endpoint, fetch);
+};
 
 // NOTE: Replace with new txs count endpoint
 export const getTxsCountSequencer = (endpoint: string) =>
