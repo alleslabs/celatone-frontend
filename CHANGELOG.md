@@ -41,6 +41,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+### Bug fixes
+
+## v1.18.0
+
+### Improvements
+
 - [#1525](https://github.com/alleslabs/celatone-frontend/pull/1525) Fetch tx details from indexer on sequencer tier
 
 ### Bug fixes
