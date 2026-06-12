@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1527](https://github.com/alleslabs/celatone-frontend/pull/1527) Fix tx parsing for txs with extension options (e.g. `ExtensionOptionQueuedTx`) by upgrading `@initia/tx-decoder` to 0.13.2, and fix expanded messages rendering detached from their row in tx tables
+
 ## v1.18.0
 
 ### Improvements
