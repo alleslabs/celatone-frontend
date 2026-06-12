@@ -141,11 +141,14 @@ export const TransactionsTableRow = ({
             )}
           </>
         )}
-        {showAction && (
-          <TableNoBorderRow>
-            <FurtherActionButton transaction={transaction} />
-          </TableNoBorderRow>
-        )}
+        {showAction &&
+          (isTxHasNoData ? (
+            <NARow />
+          ) : (
+            <TableNoBorderRow>
+              <FurtherActionButton transaction={transaction} />
+            </TableNoBorderRow>
+          ))}
       </Grid>
       {isAccordion && (
         <Grid hidden={!isOpen} py={4} w="full">
