@@ -37,8 +37,6 @@ import {
 } from "lib/utils";
 import { z } from "zod";
 
-import { zAny } from "./protobuf";
-
 // ----------------------------------------
 // --------------AuthInfo------------------
 // ----------------------------------------
@@ -94,10 +92,10 @@ export type AuthInfo = z.infer<typeof zAuthInfo>;
 // -----------------Tx---------------------
 // ----------------------------------------
 const zTxBody = z.object({
-  extension_options: zAny.array(),
+  extension_options: zMessageResponse.array(),
   memo: z.string(),
   messages: z.array(zMessageResponse),
-  non_critical_extension_options: zAny.array(),
+  non_critical_extension_options: zMessageResponse.array(),
   timeout_height: z.string(),
 });
 export type TxBody = z.infer<typeof zTxBody>;

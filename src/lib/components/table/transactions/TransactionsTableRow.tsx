@@ -6,7 +6,7 @@ import { type TransactionWithTxResponse } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { AccordionTx } from "../AccordionTx";
-import { TableRow } from "../tableComponents";
+import { TableNoBorderRow } from "../tableComponents";
 import { FurtherActionButton } from "./FurtherActionButton";
 import { RelationChip } from "./RelationChip";
 import { TransactionsTableDecodeMessageColumn } from "./TransactionsTableDecodeMessageColumn";
@@ -21,9 +21,9 @@ interface TransactionsTableRowProps {
 }
 
 const NARow = () => (
-  <TableRow>
+  <TableNoBorderRow>
     <Text color="gray.600">N/A</Text>
-  </TableRow>
+  </TableNoBorderRow>
 );
 
 export const TransactionsTableRow = ({
@@ -42,7 +42,12 @@ export const TransactionsTableRow = ({
     useTxDecoder(rawTxResponse);
 
   return (
-    <Box minW="min-content" w="full">
+    <Box
+      borderBottom="1px solid"
+      borderColor="gray.700"
+      minW="min-content"
+      w="full"
+    >
       <Grid
         className="copier-wrapper"
         _hover={{ background: "gray.900" }}
@@ -51,7 +56,7 @@ export const TransactionsTableRow = ({
         transition="all 0.25s ease-in-out"
         onClick={isAccordion ? onToggle : undefined}
       >
-        <TableRow pl={2}>
+        <TableNoBorderRow pl={2}>
           {isAccordion && (
             <CustomIcon
               color="gray.600"
@@ -60,8 +65,8 @@ export const TransactionsTableRow = ({
               transition="all 0.25s ease-in-out"
             />
           )}
-        </TableRow>
-        <TableRow>
+        </TableNoBorderRow>
+        <TableNoBorderRow>
           {showSuccess && (
             <>
               {transaction.success ? (
@@ -84,62 +89,62 @@ export const TransactionsTableRow = ({
             type="tx_hash"
             value={transaction.hash.toLocaleUpperCase()}
           />
-        </TableRow>
+        </TableNoBorderRow>
         {isTxHasNoData ? (
-          <TableRow>
+          <TableNoBorderRow>
             <Text color="gray.600">
               Unable to load data due to large transaction size
             </Text>
-          </TableRow>
+          </TableNoBorderRow>
         ) : (
-          <TableRow maxW="100%">
+          <TableNoBorderRow maxW="100%">
             <TransactionsTableDecodeMessageColumn
               decodedTx={decodedTx}
               isDecodedTxFetching={isDecodedTxFetching}
               transaction={transaction}
               txResponse={txResponse}
             />
-          </TableRow>
+          </TableNoBorderRow>
         )}
         {showRelations &&
           (isTxHasNoData ? (
             <NARow />
           ) : (
-            <TableRow>
+            <TableNoBorderRow>
               <RelationChip isSigner={transaction.isSigner} />
-            </TableRow>
+            </TableNoBorderRow>
           ))}
         {isTxHasNoData ? (
           <NARow />
         ) : (
-          <TableRow>
+          <TableNoBorderRow>
             <ExplorerLink
               showCopyOnHover
               type="user_address"
               value={transaction.sender}
             />
-          </TableRow>
+          </TableNoBorderRow>
         )}
         {showTimestamp && (
           <>
             {transaction.created && !isTxHasNoData ? (
-              <TableRow>
+              <TableNoBorderRow>
                 <Flex direction="column" gap={1}>
                   <Text variant="body3">{formatUTC(transaction.created)}</Text>
                   <Text color="text.dark" variant="body3">
                     {`(${dateFromNow(transaction.created)})`}
                   </Text>
                 </Flex>
-              </TableRow>
+              </TableNoBorderRow>
             ) : (
               <NARow />
             )}
           </>
         )}
         {showAction && (
-          <TableRow>
+          <TableNoBorderRow>
             <FurtherActionButton transaction={transaction} />
-          </TableRow>
+          </TableNoBorderRow>
         )}
       </Grid>
       {isAccordion && (
