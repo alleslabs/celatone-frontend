@@ -205,7 +205,10 @@ const zRawTxResponse = z.preprocess(
     gas_wanted: z.string(),
     height: z.string(),
     info: z.string(),
-    logs: z.array(zLog),
+    logs: z
+      .array(zLog)
+      .nullable()
+      .transform((val) => val ?? []),
     raw_log: z.string(),
     timestamp: z.string(),
     tx: zTx,
