@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- Upgrade `@initia/tx-decoder` to 0.14.0 to support pretty display for `swap_and_action_with_recover` transactions (EXP-1051)
+
 ### Bug fixes
 
 ## v1.18.0
