@@ -133,8 +133,8 @@ importers:
         specifier: 1.3.1
         version: 1.3.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@initia/tx-decoder':
-        specifier: 0.13.2
-        version: 0.13.2(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
+        specifier: 0.14.0
+        version: 0.14.0(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
       '@initia/utils':
         specifier: 2.0.0
         version: 2.0.0(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(ky@1.8.0)(viem@2.37.2(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.24.2))
@@ -2656,8 +2656,8 @@ packages:
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@initia/tx-decoder@0.13.2':
-    resolution: {integrity: sha512-J53NcSKwJBBaIIIe3cYAUkEm66A78RiWby1NV4MF+K0bpNl2JYH7BQ6orS8p40V2qqkgurm+SAEGQgTE3co6Hw==}
+  '@initia/tx-decoder@0.14.0':
+    resolution: {integrity: sha512-GS4wPVoczdM7Lzk8S8qgO+9AeumWuM8K00yEx6Hg3RcywPSyy4EzkqWB9jj8ra1HYQSi/ZO2j0gd/6epBnPKyg==}
     engines: {node: '>=24.0.0'}
 
   '@initia/utils@2.0.0':
@@ -15730,7 +15730,7 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
-  '@initia/tx-decoder@0.13.2(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)':
+  '@initia/tx-decoder@0.14.0(@mysten/bcs@1.2.0)(bignumber.js@9.1.2)(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@cosmjs/encoding': 0.36.0
       '@initia/utils': 2.0.0-alpha.3(@cosmjs/encoding@0.36.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.8.0)(bignumber.js@9.1.2)(viem@2.37.5(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)(zod@3.25.67))
