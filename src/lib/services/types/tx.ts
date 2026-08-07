@@ -26,15 +26,13 @@ import {
   zPubkeySingle,
   zUtcDate,
 } from "lib/types";
-import {
-  extractTxLogs,
-  getActionMsgType,
-  getMsgFurtherAction,
-  getTxBadges,
-  parseTxHash,
-  snakeToCamel,
-  toChecksumAddress,
-} from "lib/utils";
+import { toChecksumAddress } from "lib/utils/address";
+import { getActionMsgType } from "lib/utils/extractMsgType";
+import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
+import { getMsgFurtherAction } from "lib/utils/msgFurtherAction";
+import { getTxBadges } from "lib/utils/tx/badge";
+import { extractTxLogs } from "lib/utils/tx/extractTxLogs";
+import { parseTxHash } from "lib/utils/txHash";
 import { z } from "zod";
 
 // ----------------------------------------
@@ -217,11 +215,13 @@ const zRawTxResponse = z.preprocess(
 );
 export type RawTxResponse = z.infer<typeof zRawTxResponse>;
 
-const zTxResponse = zRawTxResponse.transform((val) => ({
+const toTxResponse = (val: RawTxResponse) => ({
   ...snakeToCamel(val),
   logs: val.logs,
   timestamp: zUtcDate.parse(val.timestamp),
-}));
+});
+
+const zTxResponse = zRawTxResponse.transform(toTxResponse);
 export type TxResponse = Omit<
   SnakeToCamelCaseNested<z.infer<typeof zRawTxResponse>>,
   "logs" | "timestamp"
@@ -237,64 +237,68 @@ export interface TxData extends TxResponse {
   signer: BechAddr20;
 }
 
-export const zTxsResponseItemFromRest = z.preprocess(
-  (args: unknown) => {
-    const val = args as TxResponse;
-    return {
-      item: val,
-      rawTxResponse: val,
-      txResponse: val,
-    };
-  },
-  z.object({
-    item: zTxResponse.transform<TransactionWithSignerPubkey>((val) => {
-      const txBody = val.tx.body;
+const toTransactionWithSignerPubkey = (
+  val: TxResponse
+): TransactionWithSignerPubkey => {
+  const txBody = val.tx.body;
 
-      const logs = extractTxLogs(val);
+  const logs = extractTxLogs(val);
 
-      const messages = txBody.messages.map<Message>((msg, idx) => ({
-        detail: {
-          ...msg,
-        },
-        log: logs[idx],
-        type: msg["@type"] ?? msg["type"],
-      }));
+  const messages = txBody.messages.map<Message>((msg, idx) => ({
+    detail: {
+      ...msg,
+    },
+    log: logs[idx],
+    type: msg["@type"] ?? msg["type"],
+  }));
 
-      const { isEvm, isIbc, isOpinit } = messages.reduce(
-        (acc, msg, idx) => {
-          const current = getTxBadges(msg.type, logs[idx]);
-          return {
-            isEvm: acc.isEvm || current.isEvm,
-            isIbc: acc.isIbc || current.isIbc,
-            isOpinit: acc.isOpinit || current.isOpinit,
-          };
-        },
-        { isEvm: false, isIbc: false, isOpinit: false }
-      );
-
+  const { isEvm, isIbc, isOpinit } = messages.reduce(
+    (acc, msg, idx) => {
+      const current = getTxBadges(msg.type, logs[idx]);
       return {
-        // TODO: implement below later
-        actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
-        created: val.timestamp,
-        events: val.events,
-        furtherAction: MsgFurtherAction.NONE,
-        hash: val.txhash,
-        height: Number(val.height),
-        isEvm,
-        isIbc,
-        isInstantiate: false,
-        isOpinit,
-        isSigner: true,
-        messages,
-        signerPubkey: val.tx.authInfo.signerInfos[0].publicKey,
-        success: val.code === 0,
+        isEvm: acc.isEvm || current.isEvm,
+        isIbc: acc.isIbc || current.isIbc,
+        isOpinit: acc.isOpinit || current.isOpinit,
       };
-    }),
-    rawTxResponse: zRawTxResponse.optional(),
-    txResponse: zTxResponse.optional(),
-  })
-);
-export type TxsResponseItemFromRest = z.infer<typeof zTxsResponseItemFromRest>;
+    },
+    { isEvm: false, isIbc: false, isOpinit: false }
+  );
+
+  return {
+    // TODO: implement below later
+    actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
+    created: val.timestamp,
+    events: val.events,
+    furtherAction: MsgFurtherAction.NONE,
+    hash: val.txhash,
+    height: Number(val.height),
+    isEvm,
+    isIbc,
+    isInstantiate: false,
+    isOpinit,
+    isSigner: true,
+    messages,
+    signerPubkey: val.tx.authInfo.signerInfos[0].publicKey,
+    success: val.code === 0,
+  };
+};
+
+export interface TxsResponseItemFromRest {
+  item: TransactionWithSignerPubkey;
+  rawTxResponse?: RawTxResponse;
+  txResponse?: TxResponse;
+}
+
+export const zTxsResponseItemFromRest =
+  zRawTxResponse.transform<TxsResponseItemFromRest>((val) => {
+    const txResponse = toTxResponse(val);
+
+    return {
+      item: toTransactionWithSignerPubkey(txResponse),
+      rawTxResponse: val,
+      txResponse,
+    };
+  });
 
 export const zTxsByAddressResponseRest = z
   .object({
