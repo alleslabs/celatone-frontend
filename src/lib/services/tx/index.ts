@@ -69,6 +69,7 @@ import {
   getTxDataJsonRpc,
   getTxsDataJsonRpc,
 } from "./jsonRpc";
+import { getTxDecoderQueryKey } from "./queryKey";
 import {
   getTxDataRest,
   getTxsByAccountAddressRest,
@@ -84,20 +85,38 @@ import {
   getTxsSequencer,
 } from "./sequencer";
 
-export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
+interface TxDecoderOptions {
+  defer?: boolean;
+  enabled?: boolean;
+}
+
+const TX_DECODER_IDLE_TIMEOUT_MS = 2000;
+
+const waitForBrowserIdle = () =>
+  new Promise<void>((resolve) => {
+    if (typeof window === "undefined" || !("requestIdleCallback" in window)) {
+      setTimeout(resolve, 0);
+      return;
+    }
+
+    window.requestIdleCallback(() => resolve(), {
+      timeout: TX_DECODER_IDLE_TIMEOUT_MS,
+    });
+  });
+
+export const useTxDecoder = (
+  rawTxResponse: Option<RawTxResponse>,
+  { defer = false, enabled = true }: TxDecoderOptions = {}
+) => {
   const evm = useEvmConfig({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
   const { txDecoder } = useTxDecoderContext();
 
   return useQuery({
-    queryKey: [
-      CELATONE_QUERY_KEYS.TX_DECODER,
-      rawTxResponse,
-      evm.enabled,
-      evm.enabled && evm.jsonRpc,
-      wasm.enabled,
-    ],
+    enabled: enabled && !!rawTxResponse,
     queryFn: async () => {
+      if (defer) await waitForBrowserIdle();
+
       if (evm.enabled) {
         return txDecoder.decodeCosmosEvmTransaction(rawTxResponse);
       }
@@ -106,7 +125,14 @@ export const useTxDecoder = (rawTxResponse: Option<RawTxResponse>) => {
       }
       return txDecoder.decodeCosmosTransaction(rawTxResponse);
     },
-    enabled: !!rawTxResponse,
+    queryKey: getTxDecoderQueryKey({
+      defer,
+      evmEnabled: evm.enabled,
+      evmJsonRpc: evm.enabled ? evm.jsonRpc : undefined,
+      rawTxResponse,
+      wasmEnabled: wasm.enabled,
+    }),
+    staleTime: Infinity,
   });
 };
 

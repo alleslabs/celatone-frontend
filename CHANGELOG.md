@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1533](https://github.com/alleslabs/celatone-frontend/pull/1533) Prevent the transaction list from freezing when loading more transactions
 - [#1529](https://github.com/alleslabs/celatone-frontend/pull/1529) Fix account transaction pagination when historical responses contain null logs
 
 ## v1.18.0

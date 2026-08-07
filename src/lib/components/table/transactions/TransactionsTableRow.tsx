@@ -4,6 +4,8 @@ import { CustomIcon } from "lib/components/icon";
 import { useTxDecoder } from "lib/services/tx";
 import { type TransactionWithTxResponse } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
+import { memo } from "react";
+import { useInView } from "react-intersection-observer";
 
 import { AccordionTx } from "../AccordionTx";
 import { TableNoBorderRow } from "../tableComponents";
@@ -26,7 +28,7 @@ const NARow = () => (
   </TableNoBorderRow>
 );
 
-export const TransactionsTableRow = ({
+const TransactionsTableRowComponent = ({
   showAction,
   showRelations,
   showSuccess,
@@ -35,18 +37,26 @@ export const TransactionsTableRow = ({
   transaction,
 }: TransactionsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
+  const { inView, ref } = useInView({ triggerOnce: true });
   const isAccordion = transaction.messages.length > 1;
   const isTxHasNoData = transaction.height === 0;
   const { rawTxResponse, txResponse } = transaction;
-  const { data: decodedTx, isFetching: isDecodedTxFetching } =
-    useTxDecoder(rawTxResponse);
+  const { data: decodedTx, isFetching: isDecodedTxFetching } = useTxDecoder(
+    rawTxResponse,
+    { defer: true, enabled: inView }
+  );
 
   return (
     <Box
+      style={{
+        containIntrinsicSize: "auto 72px",
+        contentVisibility: "auto",
+      }}
       borderBottom="1px solid"
       borderColor="gray.700"
       minW="min-content"
       w="full"
+      ref={ref}
     >
       <Grid
         className="copier-wrapper"
@@ -170,3 +180,5 @@ export const TransactionsTableRow = ({
     </Box>
   );
 };
+
+export const TransactionsTableRow = memo(TransactionsTableRowComponent);
