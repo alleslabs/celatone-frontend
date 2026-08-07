@@ -90,6 +90,8 @@ interface TxDecoderOptions {
   enabled?: boolean;
 }
 
+const TX_DECODER_IDLE_TIMEOUT_MS = 2000;
+
 const waitForBrowserIdle = () =>
   new Promise<void>((resolve) => {
     if (typeof window === "undefined" || !("requestIdleCallback" in window)) {
@@ -97,7 +99,9 @@ const waitForBrowserIdle = () =>
       return;
     }
 
-    window.requestIdleCallback(() => resolve());
+    window.requestIdleCallback(() => resolve(), {
+      timeout: TX_DECODER_IDLE_TIMEOUT_MS,
+    });
   });
 
 export const useTxDecoder = (

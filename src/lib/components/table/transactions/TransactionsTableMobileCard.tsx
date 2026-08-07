@@ -30,8 +30,10 @@ const TransactionsTableMobileCardComponent = ({
   const { inView, ref } = useInView({ triggerOnce: true });
   const isTxHasNoData = transaction.height === 0;
   const { rawTxResponse, txResponse } = transaction;
-  const { data: decodedTx, isFetching: isDecodedTxFetching } =
-    useTxDecoder(rawTxResponse, { defer: true, enabled: inView });
+  const { data: decodedTx, isFetching: isDecodedTxFetching } = useTxDecoder(
+    rawTxResponse,
+    { defer: true, enabled: inView }
+  );
 
   return (
     <Box
@@ -125,16 +127,6 @@ const TransactionsTableMobileCardComponent = ({
   );
 };
 
-const isSameTransactionMobileCard = (
-  previous: TransactionsTableMobileCardProps,
-  next: TransactionsTableMobileCardProps
-) =>
-  previous.transaction.hash === next.transaction.hash &&
-  previous.showRelations === next.showRelations &&
-  previous.showSuccess === next.showSuccess &&
-  previous.showTimestamp === next.showTimestamp;
-
 export const TransactionsTableMobileCard = memo(
-  TransactionsTableMobileCardComponent,
-  isSameTransactionMobileCard
+  TransactionsTableMobileCardComponent
 );

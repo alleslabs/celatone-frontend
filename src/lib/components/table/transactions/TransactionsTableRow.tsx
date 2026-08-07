@@ -41,8 +41,10 @@ const TransactionsTableRowComponent = ({
   const isAccordion = transaction.messages.length > 1;
   const isTxHasNoData = transaction.height === 0;
   const { rawTxResponse, txResponse } = transaction;
-  const { data: decodedTx, isFetching: isDecodedTxFetching } =
-    useTxDecoder(rawTxResponse, { defer: true, enabled: inView });
+  const { data: decodedTx, isFetching: isDecodedTxFetching } = useTxDecoder(
+    rawTxResponse,
+    { defer: true, enabled: inView }
+  );
 
   return (
     <Box
@@ -179,18 +181,4 @@ const TransactionsTableRowComponent = ({
   );
 };
 
-const isSameTransactionRow = (
-  previous: TransactionsTableRowProps,
-  next: TransactionsTableRowProps
-) =>
-  previous.transaction.hash === next.transaction.hash &&
-  previous.showAction === next.showAction &&
-  previous.showRelations === next.showRelations &&
-  previous.showSuccess === next.showSuccess &&
-  previous.showTimestamp === next.showTimestamp &&
-  previous.templateColumns === next.templateColumns;
-
-export const TransactionsTableRow = memo(
-  TransactionsTableRowComponent,
-  isSameTransactionRow
-);
+export const TransactionsTableRow = memo(TransactionsTableRowComponent);
