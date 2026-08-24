@@ -16,6 +16,10 @@ jobs:
         with:
           version: 9.10.0
           run_install: false
+      - uses: actions/setup-node@v4
+        name: Install Node.js (from engines.node)
+        with:
+          node-version-file: package.json
       - name: Run Tests
         run: |
           pnpm i
