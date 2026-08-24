@@ -103,6 +103,11 @@ const nextConfig = {
       },
     ];
   },
+  // Bundle CJS packages that require() the ESM-only `ky`: require(esm) (default
+  // since Node 22.12/20.19) throws ERR_REQUIRE_ESM_RACE_CONDITION/ERR_INTERNAL_ASSERTION
+  // when an import() of the same module is in flight, which Next page data
+  // collection triggers on Node 24. Bundling them avoids runtime require() entirely.
+  transpilePackages: ["@initia/utils", "@initia/interwovenkit-react", "ky"],
   webpack: (config, { webpack }) => {
     config.plugins.push(
       new webpack.DefinePlugin({
