@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- Upgrade Vercel builds to Node.js 24: pin via `engines` and bundle `ky` dependents to fix a Node 24 `require(esm)` race during page data collection (EXP-1195)
 - Upgrade `@initia/tx-decoder` to 0.14.0 to support pretty display for `swap_and_action_with_recover` transactions (EXP-1051)
 
 ### Bug fixes
