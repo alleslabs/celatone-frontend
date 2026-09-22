@@ -5,6 +5,7 @@ import { useGetAddressType } from "lib/app-provider";
 import { DividerWithArrow } from "lib/components/DividerWithArrow";
 import { TxReceiptRender } from "lib/components/tx";
 import plur from "plur";
+import { useState } from "react";
 
 import type { TxMsgData } from ".";
 
@@ -21,12 +22,18 @@ export const TxMsgDetails = ({
   ...txMsgData
 }: TxMsgDetailsProps) => {
   const getAddressType = useGetAddressType();
+
+  // ponytail: body mounts on first expand and stays mounted; never-expanded bodies cost nothing
+  const [hasExpanded, setHasExpanded] = useState(isExpand);
+  if (isExpand && !hasExpanded) setHasExpanded(true);
+
+  if (compact || !hasExpanded) return null;
+
   const receipts = generateReceipts(
     { ...txMsgData, compact },
     getAddressType
   ).filter(Boolean) as TxReceipt[];
 
-  if (compact) return null;
   return (
     <Flex
       direction="column"

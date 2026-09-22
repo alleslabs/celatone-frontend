@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 import { DividerWithArrow } from "lib/components/DividerWithArrow";
 import plur from "plur";
-import { memo } from "react";
+import { memo, useState } from "react";
 
 import { EventBox } from "../tx-message/EventBox";
 
@@ -20,7 +20,10 @@ interface DecodeMessageBodyProps {
 
 export const DecodeMessageBody = memo(
   ({ children, compact, isExpand, log, sx }: DecodeMessageBodyProps) => {
-    if (compact) return null;
+    const [hasExpanded, setHasExpanded] = useState(!!isExpand);
+    if (isExpand && !hasExpanded) setHasExpanded(true);
+
+    if (compact || !hasExpanded) return null;
     return (
       <Flex
         direction="column"
