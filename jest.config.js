@@ -7,6 +7,8 @@ module.exports = {
   testPathIgnorePatterns: ["/node_modules/"],
   testRegex: ".test.(tsx?)$",
   transform: {
+    // tsconfig keeps jsx "preserve" for Next, so ts-jest must emit JSX itself
+    "^.+\\.tsx?$": ["ts-jest", { tsconfig: { jsx: "react-jsx" } }],
     "node_modules/(map-obj|camelcase|plur)/.+\\.(j|t)sx?$": "ts-jest",
   },
   transformIgnorePatterns: [
