@@ -246,7 +246,8 @@ const useTxDataQueryOptions = (txHash: Option<string>, enabled = true) => {
       wasm.enabled,
     ],
     refetchOnWindowFocus: false,
-    staleTime: Infinity,
+    staleTime: (query: { state: { data?: PartialTxData | TxData } }) =>
+      query.state.data?.isPartial ? 0 : Infinity,
   };
 };
 
