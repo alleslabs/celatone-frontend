@@ -53,7 +53,7 @@ describe("zTxsResponseItemFromRest", () => {
   test.each([
     ["undefined", { tx: undefined }],
     ["missing", {}],
-  ])("falls back to placeholder tx when tx is %s", (_, txField) => {
+  ])("rejects a response whose tx is %s", (_, txField) => {
     const result = zTxsResponseItemFromRest.safeParse({
       code: 0,
       codespace: "",
@@ -70,7 +70,7 @@ describe("zTxsResponseItemFromRest", () => {
       ...txField,
     });
 
-    expect(result.success).toBe(true);
+    expect(result.success).toBe(false);
   });
 });
 

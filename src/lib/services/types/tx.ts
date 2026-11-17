@@ -132,7 +132,8 @@ const zRawTxResponse = z.preprocess(
     if (
       typeof val === "object" &&
       val !== null &&
-      (!("tx" in val) || val.tx === null || val.tx === undefined)
+      "tx" in val &&
+      val.tx === null
     ) {
       // NOTE: this is a dummy data when tx is too large
       return {
