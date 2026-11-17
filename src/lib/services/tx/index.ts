@@ -46,6 +46,7 @@ import { useCallback } from "react";
 import type {
   AccountTxsResponse,
   BlockTxsResponse,
+  PartialTxData,
   RawTxJsonRpc,
   RawTxReceiptJsonRpc,
   RawTxResponse,
@@ -154,10 +155,7 @@ export const useEvmTxDecoder = (
   });
 };
 
-export const useTxData = (
-  txHash: Option<string>,
-  enabled = true
-): UseQueryResult<TxData> => {
+const useTxDataQueryOptions = (txHash: Option<string>, enabled = true) => {
   const { bech32Prefix } = useCurrentChain();
   const {
     chainConfig: { indexer: indexerEndpoint, rest: restEndpoint },
@@ -176,7 +174,7 @@ export const useTxData = (
       : restEndpoint;
 
   const queryFn = useCallback(
-    async (hash: Option<string>) => {
+    async (hash: Option<string>): Promise<PartialTxData | TxData> => {
       if (!hash) throw new Error("hash is undefined (useTxData)");
 
       const txData = isFullTier
@@ -184,6 +182,18 @@ export const useTxData = (
         : isSequencerTier
           ? await getTxDataSequencer(endpoint, hash)
           : await getTxDataRest(endpoint, hash);
+
+      if (!txData.txResponse)
+        return {
+          chainId: currentChainId,
+          isPartial: true,
+          signer: convertAccountPubkeyToAccountAddress(
+            txData.tx.authInfo.signerInfos[0].publicKey,
+            bech32Prefix
+          ),
+          tx: txData.tx,
+          txhash: hash.toUpperCase(),
+        };
 
       const { rawTxResponse, txResponse } = txData;
 
@@ -206,6 +216,7 @@ export const useTxData = (
         ...txResponse,
         chainId: currentChainId,
         decodedTx,
+        isPartial: false,
         isTxFailed: Boolean(txResponse.code),
         logs,
         signer,
@@ -223,7 +234,7 @@ export const useTxData = (
     ]
   );
 
-  return useQuery({
+  return {
     enabled: enabled && Boolean(txHash && isTxHash(txHash)),
     queryFn: async () => queryFn(txHash),
     queryKey: [
@@ -236,8 +247,22 @@ export const useTxData = (
     ],
     refetchOnWindowFocus: false,
     staleTime: Infinity,
+  };
+};
+
+export const useTxData = (
+  txHash: Option<string>,
+  enabled = true
+): UseQueryResult<Option<TxData>> => {
+  const options = useTxDataQueryOptions(txHash, enabled);
+  return useQuery({
+    ...options,
+    select: (data) => (data.isPartial ? undefined : data),
   });
 };
+
+export const useTxDetailsData = (txHash: string) =>
+  useQuery(useTxDataQueryOptions(txHash));
 
 export const useTxs = (limit: number, offset: number) => {
   const endpoint = useBaseApiRoute("txs");

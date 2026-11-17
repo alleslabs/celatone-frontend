@@ -1,5 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
-import type { TxData } from "lib/services/types";
+import type { PartialTxData, TxData } from "lib/services/types";
 
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { trackUseViewJSON } from "lib/amplitude";
@@ -10,12 +10,39 @@ import { useOpenTxTab } from "lib/hooks";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface TxHeaderProps extends FlexProps {
-  txData: TxData;
+  txData: PartialTxData | TxData;
 }
 
 const DotSeparator = () => (
   <Box bg="primary.darker" borderRadius="50%" h={1} w={1} />
 );
+
+const TxStatus = ({ txData }: Pick<TxHeaderProps, "txData">) => {
+  if (txData.isPartial)
+    return (
+      <Flex align="center" gap={1}>
+        <CustomIcon boxSize={3} color="gray.600" m={0} name="info-circle" />
+        <Text color="text.dark" variant="body2">
+          Status unknown
+        </Text>
+      </Flex>
+    );
+
+  const color = txData.isTxFailed ? "error.main" : "success.main";
+  return (
+    <Flex align="center" gap={1}>
+      <CustomIcon
+        boxSize={3}
+        color={color}
+        m={0}
+        name={txData.isTxFailed ? "close-circle-solid" : "check-circle-solid"}
+      />
+      <Text color={color} variant="body2">
+        {txData.isTxFailed ? "Failed" : "Success"}
+      </Text>
+    </Flex>
+  );
+};
 
 export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
   const isMobile = useMobile();
@@ -29,39 +56,7 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
           <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
             {evm.enabled ? "Cosmos transaction " : "Transaction "}details
           </Heading>
-          {isMobile && (
-            <Flex
-              align="center"
-              color={txData.isTxFailed ? "error.main" : "success.main"}
-              gap={1}
-            >
-              {txData.isTxFailed ? (
-                <>
-                  <CustomIcon
-                    boxSize={3}
-                    color="error.main"
-                    m={0}
-                    name="close-circle-solid"
-                  />
-                  <Text color="error.main" variant="body2">
-                    Failed
-                  </Text>
-                </>
-              ) : (
-                <>
-                  <CustomIcon
-                    boxSize={3}
-                    color="success.main"
-                    m={0}
-                    name="check-circle-solid"
-                  />
-                  <Text color="success.main" variant="body2">
-                    Success
-                  </Text>
-                </>
-              )}
-            </Flex>
-          )}
+          {isMobile && <TxStatus txData={txData} />}
         </Flex>
         {!isMobile && (
           <Button
@@ -94,41 +89,19 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
       <Flex align="center" color="text.dark" fontSize="14px" gap={2}>
         {!isMobile && (
           <>
-            <Flex
-              align="center"
-              color={txData.isTxFailed ? "error.main" : "success.main"}
-              gap={1}
-            >
-              {txData.isTxFailed ? (
-                <>
-                  <CustomIcon
-                    boxSize={3}
-                    color="error.main"
-                    m={0}
-                    name="close-circle-solid"
-                  />
-                  <Text color="error.main" variant="body2">
-                    Failed
-                  </Text>
-                </>
-              ) : (
-                <>
-                  <CustomIcon
-                    boxSize={3}
-                    color="success.main"
-                    m={0}
-                    name="check-circle-solid"
-                  />
-                  <Text color="success.main" variant="body2">
-                    Success
-                  </Text>
-                </>
-              )}
-            </Flex>
+            <TxStatus txData={txData} />
             <DotSeparator />
           </>
         )}
-        {txData.timestamp ? (
+        {txData.isPartial ? (
+          <Text
+            color="text.dark"
+            display="inline"
+            variant={{ base: "body3", md: "body2" }}
+          >
+            Timestamp unavailable
+          </Text>
+        ) : txData.timestamp ? (
           <>
             <Flex alignItems="center" gap={1}>
               <CustomIcon boxSize={3} color="gray.600" name="history" />
