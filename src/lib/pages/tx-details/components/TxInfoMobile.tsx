@@ -1,5 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
-import type { TxData } from "lib/services/types";
+import type { PartialTxData, TxData } from "lib/services/types";
 import type { Option, Ratio } from "lib/types";
 
 import { chakra, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
@@ -16,7 +16,7 @@ import {
 
 interface TxInfoMobileProps extends FlexProps {
   gasRefundRatio: Option<Ratio<number>>;
-  txData: TxData;
+  txData: PartialTxData | TxData;
 }
 
 const Container = chakra(Flex, {
@@ -43,10 +43,14 @@ export const TxInfoMobile = ({
   });
 
   const feeCoin = txData.tx.authInfo.fee?.amount[0];
+  const gasUsed = txData.isPartial ? undefined : txData.gasUsed;
+  const gasWanted = txData.isPartial
+    ? txData.tx.authInfo.fee.gasLimit
+    : txData.gasWanted;
   const feeToken = computeCosmosFee(
     feeCoin,
-    txData.gasUsed,
-    txData.gasWanted,
+    gasUsed,
+    gasWanted,
     gasRefundRatio,
     assetInfos,
     movePoolInfos
@@ -57,12 +61,18 @@ export const TxInfoMobile = ({
       <Grid gap={6} templateColumns="repeat(2, 1fr)">
         <LabelText label="Network">{txData.chainId}</LabelText>
         <LabelText label="Block">
-          <ExplorerLink
-            ampCopierSection="tx_page_block_height"
-            showCopyOnHover
-            type="block_height"
-            value={txData.height}
-          />
+          {txData.isPartial ? (
+            <Text color="text.dark" variant="body2">
+              —
+            </Text>
+          ) : (
+            <ExplorerLink
+              ampCopierSection="tx_page_block_height"
+              showCopyOnHover
+              type="block_height"
+              value={txData.height}
+            />
+          )}
         </LabelText>
         <GridItem colSpan={2}>
           <LabelText label="Signer">
@@ -85,9 +95,7 @@ export const TxInfoMobile = ({
           )}
         </LabelText>
         <LabelText flex={1} label="Gas used/requested">
-          {`${formatInteger(txData.gasUsed)}/${formatInteger(
-            txData.gasWanted
-          )}`}
+          {`${gasUsed ? formatInteger(gasUsed) : "—"}/${formatInteger(gasWanted)}`}
         </LabelText>
       </Flex>
       {gasRefundRatio && (

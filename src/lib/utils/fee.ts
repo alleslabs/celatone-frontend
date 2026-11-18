@@ -19,7 +19,7 @@ export const feeFromStr = (uFee: Option<string>): Option<StdFee> => {
 
 export const computeCosmosFee = (
   feeCoin: Option<Coin>,
-  gasUsed: string,
+  gasUsed: Option<string>,
   gasLimit: string,
   gasRefundRatio: Option<Ratio<number>>,
   assetInfos: Option<AssetInfos>,
@@ -27,7 +27,7 @@ export const computeCosmosFee = (
 ) => {
   if (!feeCoin) return undefined;
 
-  if (gasRefundRatio) {
+  if (gasRefundRatio && gasUsed) {
     const gasPrice = big(feeCoin.amount).div(gasLimit);
     const gasRefund = big(gasLimit).minus(gasUsed).mul(gasRefundRatio);
     const actualFeeAmount = gasPrice.mul(big(gasLimit).minus(gasRefund));

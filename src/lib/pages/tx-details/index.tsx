@@ -1,15 +1,17 @@
+import type { PartialTxData, TxData } from "lib/services/types";
 import type { Option } from "lib/types";
 
-import { Flex } from "@chakra-ui/react";
+import { Alert, AlertDescription, Button, Flex } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useEvmConfig, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
+import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState, InvalidState } from "lib/components/state";
 import { useEvmParams } from "lib/services/evm";
-import { useEvmTxHashByCosmosTxHash, useTxData } from "lib/services/tx";
+import { useEvmTxHashByCosmosTxHash, useTxDetailsData } from "lib/services/tx";
 import { truncate } from "lib/utils";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -19,15 +21,10 @@ import { MessageSection } from "./components/MessageSection";
 import { useTxRedirect } from "./hooks";
 import { zTxDetailsQueryParams } from "./types";
 
-const mapTxisFailed = (isFailed: Option<boolean>) => {
-  switch (isFailed) {
-    case false:
-      return "success";
-    case true:
-      return "failed";
-    default:
-      return "not-found";
-  }
+const mapTxStatus = (data: Option<PartialTxData | TxData>) => {
+  if (!data) return "not-found";
+  if (data.isPartial) return "partial";
+  return data.isTxFailed ? "failed" : "success";
 };
 
 const InvalidTx = () => <InvalidState title="Transaction does not exist" />;
@@ -37,19 +34,20 @@ const TxDetailsBody = ({ txHash }: { txHash: string }) => {
   const isMobile = useMobile();
 
   const isCheckingRedirect = useTxRedirect(txHash);
-  const { data, isLoading } = useTxData(txHash);
+  const { data, isFetching, isLoading, refetch } = useTxDetailsData(txHash);
 
   const { data: evmParams, isFetching: isEvmParamsFetching } = useEvmParams();
   const { data: relatedEvmTxHash, isFetching: isRelatedEvmTxFetching } =
     useEvmTxHashByCosmosTxHash(txHash);
-  const gasRefundRatio = relatedEvmTxHash
-    ? evmParams?.params.gasRefundRatio
-    : undefined;
+  const gasRefundRatio =
+    relatedEvmTxHash && !data?.isPartial
+      ? evmParams?.params.gasRefundRatio
+      : undefined;
 
   useEffect(() => {
     if (router.isReady && !isLoading)
       track(AmpEvent.TO_TRANSACTION_DETAILS, {
-        tx_status: mapTxisFailed(data?.isTxFailed),
+        tx_status: mapTxStatus(data),
       });
   }, [router.isReady, data, isLoading]);
 
@@ -74,6 +72,26 @@ const TxDetailsBody = ({ txHash }: { txHash: string }) => {
       {data ? (
         <>
           <TxHeader mt={2} txData={data} />
+          {data.isPartial && (
+            <Alert alignItems="center" gap={3} mt={4} variant="warning">
+              <CustomIcon
+                boxSize={4}
+                color="warning.main"
+                name="alert-triangle-solid"
+              />
+              <AlertDescription flex={1}>
+                Some details cannot be loaded. Please try again later.
+              </AlertDescription>
+              <Button
+                isLoading={isFetching}
+                size="sm"
+                variant="outline-white"
+                onClick={() => refetch()}
+              >
+                Retry
+              </Button>
+            </Alert>
+          )}
           {isMobile && (
             <TxInfoMobile gasRefundRatio={gasRefundRatio} txData={data} />
           )}

@@ -235,8 +235,17 @@ export type TxResponse = Omit<
 export interface TxData extends TxResponse {
   chainId: string;
   decodedTx: DecodedTx;
+  isPartial: false;
   isTxFailed: boolean;
   signer: BechAddr20;
+}
+
+export interface PartialTxData {
+  chainId: string;
+  isPartial: true;
+  signer: BechAddr20;
+  tx: TxResponse["tx"];
+  txhash: string;
 }
 
 const toTransactionWithSignerPubkey = (
@@ -364,18 +373,31 @@ export const zTxByHashResponseRest = z.preprocess(
     const val = arg as Record<string, unknown>;
     return {
       raw_tx_response: val.tx_response,
+      // top-level tx is only a fallback, so it must not fail a full response
+      tx: val.tx_response ? undefined : val.tx,
       tx_response: val.tx_response,
     };
   },
   z
     .object({
       raw_tx_response: z.any(),
-      tx_response: zTxResponse.transform(snakeToCamel),
+      tx: zTx.transform(snakeToCamel).nullish(),
+      tx_response: zTxResponse.transform(snakeToCamel).nullish(),
     })
-    .transform((val) => ({
-      rawTxResponse: val.raw_tx_response,
-      txResponse: val.tx_response,
-    }))
+    .transform((val, ctx) => {
+      if (val.tx_response)
+        return {
+          rawTxResponse: val.raw_tx_response,
+          txResponse: val.tx_response,
+        };
+      if (val.tx) return { tx: val.tx, txResponse: undefined };
+
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "tx and tx_response are both missing",
+      });
+      return z.NEVER;
+    })
 );
 
 export const zTxByHashResponseSequencer = z.preprocess(
@@ -402,7 +424,8 @@ const zBaseTxsResponseItem = z.preprocess(
     const val = arg as Record<string, unknown>;
     return {
       ...val,
-      raw_tx_response: val?.tx_response,
+      raw_tx_response: val?.tx_response ?? undefined,
+      tx_response: val?.tx_response ?? undefined,
     };
   },
   z.object({
@@ -480,7 +503,8 @@ const zAccountTxsResponseItem = z.preprocess(
     const val = arg as Record<string, unknown>;
     return {
       ...val,
-      raw_tx_response: val?.tx_response,
+      raw_tx_response: val?.tx_response ?? undefined,
+      tx_response: val?.tx_response ?? undefined,
     };
   },
   zBaseTxsResponseItem
