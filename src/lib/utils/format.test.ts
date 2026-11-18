@@ -1,4 +1,26 @@
-import { shortenName } from "./format";
+import { escapeControlChars, shortenName } from "./format";
+
+describe("escapeControlChars", () => {
+  test("escapes IBC ack success byte", () => {
+    expect(escapeControlChars("\u0001")).toBe("\\x01");
+  });
+
+  test("escapes NUL, DEL and C1 controls", () => {
+    expect(escapeControlChars("a\u0000b\u007Fc\u0085")).toBe(
+      "a\\x00b\\x7fc\\x85"
+    );
+  });
+
+  test("keeps tab, newline and carriage return", () => {
+    expect(escapeControlChars("a\tb\nc\r")).toBe("a\tb\nc\r");
+  });
+
+  test("leaves printable text unchanged", () => {
+    expect(escapeControlChars("init1abc ✓ 100uinit")).toBe(
+      "init1abc ✓ 100uinit"
+    );
+  });
+});
 
 describe("shortenName validation", () => {
   test("standard case", () => {
