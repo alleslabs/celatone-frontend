@@ -11,7 +11,7 @@ import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { MotionBox } from "lib/components/MotionBox";
 import { TxReceiptRender } from "lib/components/tx";
-import { jsonPrettify, jsonValidate } from "lib/utils";
+import { escapeControlChars, jsonPrettify, jsonValidate } from "lib/utils";
 import { useState } from "react";
 
 interface EventBoxProps {
@@ -23,7 +23,8 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
   const getAddressType = useGetAddressType();
   const [expand, setExpand] = useState(true);
 
-  const receipts = event.attributes.map<TxReceipt>(({ key, value }) => {
+  const receipts = event.attributes.map<TxReceipt>(({ key, value: raw }) => {
+    const value = escapeControlChars(raw);
     const addrType = getAddressType(value);
     let valueComponent: ReactNode;
 
