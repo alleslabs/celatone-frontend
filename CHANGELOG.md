@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#1543](https://github.com/alleslabs/celatone-frontend/pull/1543) Show control characters in tx event values as `\xNN` so the IBC `success` attribute displays `\x01` instead of a broken glyph
+- [#1542](https://github.com/alleslabs/celatone-frontend/pull/1542) Show tx details from the transaction body when `tx_response` is missing, instead of "Transaction does not exist", and keep tx lists loading when a row's `tx_response` is `null`
 - [#1540](https://github.com/alleslabs/celatone-frontend/pull/1540) Upgrade `@initia/tx-decoder` to 0.14.1 so tokens bridged back to Initia (e.g. USDC from Echelon) show their symbol instead of the raw IBC path
 - [#1538](https://github.com/alleslabs/celatone-frontend/pull/1538) Stop rendering collapsed message bodies on the tx details page so txs with hundreds of events no longer freeze the browser
 - [#1533](https://github.com/alleslabs/celatone-frontend/pull/1533) Prevent the transaction list from freezing when loading more transactions

@@ -1,5 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
-import type { TxData } from "lib/services/types";
+import type { PartialTxData, TxData } from "lib/services/types";
 import type { Option, Ratio } from "lib/types";
 
 import { chakra, Flex, Text } from "@chakra-ui/react";
@@ -16,7 +16,7 @@ import {
 
 interface TxInfoProps extends FlexProps {
   gasRefundRatio: Option<Ratio<number>>;
-  txData: TxData;
+  txData: PartialTxData | TxData;
 }
 
 const Container = chakra(Flex, {
@@ -41,10 +41,14 @@ export const TxInfo = ({
   });
 
   const feeCoin = txData.tx.authInfo?.fee?.amount[0];
+  const gasUsed = txData.isPartial ? undefined : txData.gasUsed;
+  const gasWanted = txData.isPartial
+    ? txData.tx.authInfo.fee.gasLimit
+    : txData.gasWanted;
   const feeToken = computeCosmosFee(
     feeCoin,
-    txData.gasUsed,
-    txData.gasWanted,
+    gasUsed,
+    gasWanted,
     gasRefundRatio,
     assetInfos,
     movePoolInfos
@@ -54,12 +58,18 @@ export const TxInfo = ({
     <Container {...flexProps}>
       <LabelText label="Network">{txData.chainId}</LabelText>
       <LabelText label="Block">
-        <ExplorerLink
-          ampCopierSection="tx_page_block_height"
-          showCopyOnHover
-          type="block_height"
-          value={txData.height}
-        />
+        {txData.isPartial ? (
+          <Text color="text.dark" variant="body2">
+            —
+          </Text>
+        ) : (
+          <ExplorerLink
+            ampCopierSection="tx_page_block_height"
+            showCopyOnHover
+            type="block_height"
+            value={txData.height}
+          />
+        )}
       </LabelText>
       <LabelText label="Signer">
         <ExplorerLink
@@ -78,7 +88,7 @@ export const TxInfo = ({
         )}
       </LabelText>
       <LabelText label="Gas used/requested">
-        {`${formatInteger(txData.gasUsed)}/${formatInteger(txData.gasWanted)}`}
+        {`${gasUsed ? formatInteger(gasUsed) : "—"}/${formatInteger(gasWanted)}`}
       </LabelText>
       {gasRefundRatio && (
         <LabelText label="Gas refund percentage">
