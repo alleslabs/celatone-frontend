@@ -35,11 +35,30 @@ describe("EventBox", () => {
       />
     );
 
-    const { receipts } = jest.mocked(TxReceiptRender).mock.calls[0][0];
+    const { receipts } = jest.mocked(TxReceiptRender).mock.lastCall![0];
 
     expect(receipts.map(({ title, value }) => [title, value])).toEqual([
       ["success", "\\x01"],
       ["msg_index", "1"],
     ]);
+  });
+
+  it("keeps JSON with DEL in the JSON viewer", () => {
+    const memo = '{"note":"gm\u007F"}';
+
+    renderToStaticMarkup(
+      <EventBox
+        event={{
+          attributes: [{ key: "memo", value: memo }],
+          type: "fungible_token_packet",
+        }}
+        msgIndex={4}
+      />
+    );
+
+    const [receipt] = jest.mocked(TxReceiptRender).mock.lastCall![0].receipts;
+
+    expect(receipt).toHaveProperty("value", memo);
+    expect(receipt).toHaveProperty("html");
   });
 });
