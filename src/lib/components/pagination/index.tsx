@@ -11,7 +11,6 @@ import { Paginator } from "./Paginator";
 
 interface PaginationProps {
   currentPage: number;
-  maxPageSize?: number;
   offset: number;
   onPageChange: (pageNumber: number) => void;
   onPageSizeChange: (e: ChangeEvent<HTMLSelectElement>) => void;
@@ -22,7 +21,6 @@ interface PaginationProps {
 }
 export const Pagination = ({
   currentPage,
-  maxPageSize,
   offset,
   onPageChange,
   onPageSizeChange,
@@ -65,7 +63,6 @@ export const Pagination = ({
       >
         <PageDetail
           lastDataInPage={lastDataInPage}
-          maxPageSize={maxPageSize}
           offsetData={offsetData}
           pageSize={pageSize}
           totalData={totalData}

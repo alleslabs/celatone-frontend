@@ -2,7 +2,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
-import { DEFAULT_TX_FILTERS, MAX_TXS_PAGE_SIZE } from "lib/data";
+import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useTxsByAddress } from "lib/services/tx";
 
 import type { TxsTableProps } from "./types";
@@ -59,7 +59,6 @@ export const TxsTableFull = ({
       {!!totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
-          maxPageSize={MAX_TXS_PAGE_SIZE}
           offset={offset}
           pageSize={pageSize}
           pagesQuantity={pagesQuantity}

@@ -81,8 +81,6 @@ export const DEFAULT_TX_FILTERS: TxFilters = {
   ...DEFAULT_INITIA_TX_FILTERS,
 };
 
-export const MAX_TXS_PAGE_SIZE = 20;
-
 export enum StorageKeys {
   Annoucement = "annoucement",
   DevSidebar = "dev-sidebar",

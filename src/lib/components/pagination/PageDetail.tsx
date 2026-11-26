@@ -3,11 +3,8 @@ import type { ChangeEvent } from "react";
 import { Flex, Select, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 
-const PAGE_SIZES = [10, 20, 50, 100];
-
 interface PageDetailProps {
   lastDataInPage: number;
-  maxPageSize?: number;
   offsetData: number;
   onPageSizeChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   pageSize: number;
@@ -16,7 +13,6 @@ interface PageDetailProps {
 
 export const PageDetail = ({
   lastDataInPage,
-  maxPageSize = Infinity,
   offsetData,
   onPageSizeChange,
   pageSize,
@@ -48,11 +44,10 @@ export const PageDetail = ({
           onPageSizeChange(e);
         }}
       >
-        {PAGE_SIZES.filter((size) => size <= maxPageSize).map((size) => (
-          <option key={size} value={size}>
-            {size}
-          </option>
-        ))}
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
       </Select>
     </Flex>
     <Text minW="fit-content" ml={7} variant="body3">

@@ -13,7 +13,7 @@ import { TransactionsTableWithWallet } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { DEFAULT_TX_FILTERS, MAX_TXS_PAGE_SIZE } from "lib/data";
+import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useDebounce } from "lib/hooks";
 import { useTxsByAddress, useTxsCountByAddress } from "lib/services/tx";
 import { useEffect, useMemo } from "react";
@@ -172,7 +172,6 @@ export const PastTxsFull = () => {
       {!!txCount && txCount > 10 && (
         <Pagination
           currentPage={currentPage}
-          maxPageSize={MAX_TXS_PAGE_SIZE}
           offset={offset}
           pageSize={pageSize}
           pagesQuantity={pagesQuantity}
