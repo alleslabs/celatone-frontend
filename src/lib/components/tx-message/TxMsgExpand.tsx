@@ -57,17 +57,19 @@ export const TxMsgExpand = ({
     case "/cosmos.bank.v1beta1.MsgSend":
       {
         const toAddress = body.toAddress as BechAddr;
-        const singleCoin = (body.amount as Coin[])[0];
-        const singleToken = coinToTokenWithValue(
-          singleCoin.denom,
-          singleCoin.amount,
-          assetInfos,
-          movePoolInfos
-        );
-        const assetText =
-          (body.amount as Coin[]).length > 1
-            ? "assets"
-            : formatTokenWithValue({ token: singleToken });
+        const coins = body.amount as Coin[];
+        const [singleCoin] = coins;
+        let assetText = "No assets";
+        if (coins.length > 1) assetText = "assets";
+        else if (singleCoin)
+          assetText = formatTokenWithValue({
+            token: coinToTokenWithValue(
+              singleCoin.denom,
+              singleCoin.amount,
+              assetInfos,
+              movePoolInfos
+            ),
+          });
         msgLabel = "Send";
         content = (
           <Flex display="inline" gap={1}>
