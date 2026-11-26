@@ -2,6 +2,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { TableTitle, TransactionsTable } from "lib/components/table";
+import { MAX_TXS_PAGE_SIZE } from "lib/data";
 import { useQueryEvents } from "lib/hooks";
 import { useTxsByBlockHeight } from "lib/services/tx";
 
@@ -53,6 +54,7 @@ export const BlockTxsTableFull = ({ height }: BlockTxsTableProps) => {
       {data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
+          maxPageSize={MAX_TXS_PAGE_SIZE}
           offset={offset}
           pageSize={pageSize}
           pagesQuantity={pagesQuantity}

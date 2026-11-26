@@ -8,7 +8,7 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTitle, TransactionsTable, ViewMore } from "lib/components/table";
 import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
-import { DEFAULT_TX_FILTERS } from "lib/data";
+import { DEFAULT_TX_FILTERS, MAX_TXS_PAGE_SIZE } from "lib/data";
 import { useTxsByAddress, useTxsCountByAddress } from "lib/services/tx";
 import { useEffect, useMemo, useState } from "react";
 
@@ -118,7 +118,7 @@ export const TxsTableFull = ({
   );
 
   useEffect(() => {
-    if (isTxsCountTimeout) setPageSize(50);
+    if (isTxsCountTimeout) setPageSize(MAX_TXS_PAGE_SIZE);
   }, [isTxsCountTimeout, setPageSize]);
 
   useEffect(() => {
@@ -180,6 +180,7 @@ export const TxsTableFull = ({
                 txsCount > 10 && (
                   <Pagination
                     currentPage={currentPage}
+                    maxPageSize={MAX_TXS_PAGE_SIZE}
                     offset={offset}
                     pageSize={pageSize}
                     pagesQuantity={pagesQuantity}

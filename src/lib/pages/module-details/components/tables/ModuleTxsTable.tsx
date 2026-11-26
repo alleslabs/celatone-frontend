@@ -5,6 +5,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable, ViewMore } from "lib/components/table";
+import { MAX_TXS_PAGE_SIZE } from "lib/data";
 import { useModuleTxs } from "lib/services/move/module";
 import { useEffect } from "react";
 
@@ -77,6 +78,7 @@ export const ModuleTxsTable = ({
           : txCount > 10 && (
               <Pagination
                 currentPage={currentPage}
+                maxPageSize={MAX_TXS_PAGE_SIZE}
                 offset={offset}
                 pageSize={pageSize}
                 pagesQuantity={pagesQuantity}
